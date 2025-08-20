@@ -1,13 +1,13 @@
 default:
   image: 
-    # TODO change
-    name: debian:testing-slim
+    name: ${BASE_IMAGE}
   interruptible: true
   tags:
     - shared-small
 
 stages:
   - i18n
+  - publish
 
 include:
   - project: 'translations/generator'
@@ -18,6 +18,18 @@ include:
     ref: master
     file: '/jobs/commit-locales.gitlab-ci.yml'
 
+  - local: '/ci/github-sync.yml'
+
+
+release-publish-github:
+  stage: publish
+  extends: .release-publish-github-shared
+  variables:
+    OAUTH_URL: "https://oauth2:${GITHUB_PAT}@github.com/ProtonLumo/ios-lumo.git"
+    RELEASE_SYNC_TO_BRANCH: "main"
+    RELEASE_SYNC_FROM_BRANCH: "main"
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main'
 
 ##
 ## ---- Translations
