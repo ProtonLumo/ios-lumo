@@ -12,48 +12,91 @@ Here is our SwiftUI-based iOS application that provides a web-based interface fo
 ```mermaid
 graph TB
     %% App Entry Point
-    App[lumoApp.swift<br/>@main App Entry] --> ContentView
+    App["lumoApp.swift
+    @main App Entry"] --> ContentView
     
     %% Main Content View
-    ContentView[ContentView.swift<br/>Main SwiftUI View] --> WebView
+    ContentView["ContentView.swift
+    Main SwiftUI View"] --> WebView
     ContentView --> PaymentSheet
     ContentView --> CurrentPlansView
     ContentView --> SpeechRecorderView
     
     %% WebView Layer
-    WebView[LumoWebView.swift<br/>WKWebView Wrapper] --> JSBridge
-    WebView --> Config[Config.swift<br/>URL Configuration]
+    WebView["LumoWebView.swift
+    WKWebView Wrapper"] --> JSBridge
+    WebView --> Config["Config.swift
+    URL Configuration"]
     
     %% JavaScript Bridge
-    JSBridge[JSBridgeManager.swift<br/>Native-JS Communication] --> JSFiles
+    JSBridge["JSBridgeManager.swift
+    Native-JS Communication"] --> JSFiles
     
     %% JavaScript Files
-    JSFiles[JavaScript Files<br/>• initial-setup.js<br/>• payment-api.js<br/>• voice-entry-setup.js<br/>• message-submission-listener.js<br/>• manage-plan-handler.js<br/>• upgrade-link-classifier.js<br/>• promotion-button-handler.js<br/>• insert-submit-clear.js<br/>• utilities.js<br/>• common-setup.js<br/>• hide-your-plan.js<br/>• page-utilities.js]
+    JSFiles["JavaScript Files
+    • initial-setup.js
+    • payment-api.js
+    • voice-entry-setup.js
+    • message-submission-listener.js
+    • manage-plan-handler.js
+    • upgrade-link-classifier.js
+    • promotion-button-handler.js
+    • insert-submit-clear.js
+    • utilities.js
+    • common-setup.js
+    • hide-your-plan.js
+    • page-utilities.js"]
     
     %% Payment System
-    PaymentSheet[PaymentSheet.swift<br/>Payment UI] --> PaymentHandler
-    PaymentHandler[PaymentHandler.swift<br/>Payment Orchestration] --> PaymentBridge
-    PaymentBridge[PaymentBridge.swift<br/>WebView-Payment Bridge] --> AppleSubscriptionManager
-    AppleSubscriptionManager[AppleSubscriptionManager.swift<br/>StoreKit Integration] --> StoreKitObserver
-    StoreKitObserver[StoreKitObserver.swift<br/>Transaction Monitoring] --> PurchaseManager
-    PurchaseManager[PurchaseManager.swift<br/>Purchase Logic] --> StoreKitReceiptManager
-    StoreKitReceiptManager[StoreKitReceiptManager.swift<br/>Receipt Validation]
+    PaymentSheet["PaymentSheet.swift
+    Payment UI"] --> PaymentHandler
+    PaymentHandler["PaymentHandler.swift
+    Payment Orchestration"] --> PaymentBridge
+    PaymentBridge["PaymentBridge.swift
+    WebView-Payment Bridge"] --> AppleSubscriptionManager
+    AppleSubscriptionManager["AppleSubscriptionManager.swift
+    StoreKit Integration"] --> StoreKitObserver
+    StoreKitObserver["StoreKitObserver.swift
+    Transaction Monitoring"] --> PurchaseManager
+    PurchaseManager["PurchaseManager.swift
+    Purchase Logic"] --> StoreKitReceiptManager
+    StoreKitReceiptManager["StoreKitReceiptManager.swift
+    Receipt Validation"]
     
     %% UI Components
-    CurrentPlansView[CurrentPlansView.swift<br/>Subscription Display] --> CurrentPlansViewModel
-    CurrentPlansViewModel[CurrentPlansViewModel.swift<br/>Subscription Data]
+    CurrentPlansView["CurrentPlansView.swift
+    Subscription Display"] --> CurrentPlansViewModel
+    CurrentPlansViewModel["CurrentPlansViewModel.swift
+    Subscription Data"]
     
-    SpeechRecorderView[SpeechRecorderView.swift<br/>Voice Input UI] --> SpeechRecognizer
-    SpeechRecognizer[SpeechRecognizer.swift<br/>Speech Recognition]
+    SpeechRecorderView["SpeechRecorderView.swift
+    Voice Input UI"] --> SpeechRecognizer
+    SpeechRecognizer["SpeechRecognizer.swift
+    Speech Recognition"]
     
     %% Data Models
-    DataModels[DataModels/<br/>• AvailablePlans.swift<br/>• ComposedPlan.swift<br/>• CreateSubscription.swift<br/>• CurrentSubscriptionResponse.swift<br/>• Decorations.swift<br/>• Entitlements.swift<br/>• NewToken.swift<br/>• PaymentToken.swift]
+    DataModels["DataModels/
+    • AvailablePlans.swift
+    • ComposedPlan.swift
+    • CreateSubscription.swift
+    • CurrentSubscriptionResponse.swift
+    • Decorations.swift
+    • Entitlements.swift
+    • NewToken.swift
+    • PaymentToken.swift"]
     
     %% Helpers & Utilities
-    Helpers[Helpers/<br/>• DictionaryConvertible.swift<br/>• Extensions.swift<br/>• PlansComposer.swift<br/>• TestExtensions.swift]
+    Helpers["Helpers/
+    • DictionaryConvertible.swift
+    • Extensions.swift
+    • PlansComposer.swift
+    • TestExtensions.swift"]
     
     %% External Services
-    Config --> ExternalServices[External Services<br/>• account.proton.me<br/>• lumo.proton.me<br/>• StoreKit APIs]
+    Config --> ExternalServices["External Services
+    • account.proton.me
+    • lumo.proton.me
+    • StoreKit APIs"]
     
     %% Data Flow
     WebView -.->|JavaScript Calls| JSBridge
