@@ -1,0 +1,113 @@
+{
+   "uid":"adaslkdmalskdn",
+   "plans":[
+      {
+         "Decorations":[],
+         "Description":"Comprehensive privacy and security with all Proton services combined.",
+         "Entitlements":[
+            {
+               "Hint":null,
+               "IconName":"clock-rotate-left",
+               "Text":"Web Search::Yes::Yes",
+               "Type":"description"
+            },
+            {
+               "Hint":null,
+               "IconName":"checkmark",
+               "Text":"Daily chats::Limited::Unlimited",
+               "Type":"description"
+            },
+            {
+               "Hint":null,
+               "IconName":"shield",
+               "Text":"Chat History::Limited::Unlimited",
+               "Type":"description"
+            },
+            {
+               "Hint":null,
+               "IconName":"play",
+               "Text":"Favorite Chats::Limited::Unlimited",
+               "Type":"description"
+            },
+            {
+               "Hint":null,
+               "IconName":"tag",
+               "Text":"File Upload::Small files::Large files",
+               "Type":"description"
+            }
+         ],
+         "Features":1,
+         "ID":"6QeHIh44j9R3b8kckYBHvp84UGeLt3yliLxZWhqVULXfuSNRDRwULijb5e4kpr5wvfluBXmtyCHWe0nYweWRpg==",
+         "Instances":[
+            {
+               "Cycle":12,
+               "Description":"Per year",
+               "PeriodEnd":1758194800,
+               "Price":[
+                  {
+                     "Currency":"USD",
+                     "Current":11988,
+                     "Default":11988,
+                     "ID":"IDAj2rZGOXCdx2HL5h4ggc7SjAubaBiXtf3L4xwFLFBnDHYWqqSqBaKpLIU43OEl-rU16xG608NDMfPRxayV3Q=="
+                  },
+                  {
+                     "Currency":"EUR",
+                     "Current":11988,
+                     "Default":11988,
+                     "ID":"PBC5x7E9eIdBOdLcvFuyE4Z1gKDKeaYpDv1Ugt6SFDvyZDP5a6w4sKjxKR8fXdQMv8ncDmADnjyIcOYl-cmJxg=="
+                  },
+                  {
+                     "Currency":"CHF",
+                     "Current":11988,
+                     "Default":11988,
+                     "ID":"Xf1cxRh1uDa-H1Bdk8y_EI0aSlfQxWnXQ8011hTeDbcpHbfcP5K1B1Wd0_8nWCFl3U93SfMWZcrwUa2kK2JhtQ=="
+                  }
+               ],
+               "Vendors":{
+                  "Apple":{
+                     "ProductID":"ioslumo_lumo2024_12_usd_auto_renewing"
+                  }
+               }
+            },
+            {
+               "Cycle":1,
+               "Description":"Per month",
+               "PeriodEnd":1758194800,
+               "Price":[
+                  {
+                     "Currency":"USD",
+                     "Current":1299,
+                     "Default":1299,
+                     "ID":"IDAj2rZGOXCdx2HL5h4ggc7SjAubaBiXtf3L4xwFLFBnDHYWqqSqBaKpLIU43OEl-rU16xG608NDMfPRxayV3Q=="
+                  },
+                  {
+                     "Currency":"EUR",
+                     "Current":1299,
+                     "Default":1299,
+                     "ID":"PBC5x7E9eIdBOdLcvFuyE4Z1gKDKeaYpDv1Ugt6SFDvyZDP5a6w4sKjxKR8fXdQMv8ncDmADnjyIcOYl-cmJxg=="
+                  },
+                  {
+                     "Currency":"CHF",
+                     "Current":1299,
+                     "Default":1299,
+                     "ID":"Xf1cxRh1uDa-H1Bdk8y_EI0aSlfQxWnXQ8011hTeDbcpHbfcP5K1B1Wd0_8nWCFl3U93SfMWZcrwUa2kK2JhtQ=="
+                  }
+               ],
+               "Vendors":{
+                  "Apple":{
+                     "ProductID":"ioslumo_lumo2024_1_usd_auto_renewing"
+                  }
+               }
+            }
+         ],
+         "Layout":"default",
+         "Name":"bundle2022",
+         "Offers":[],
+         "ParentMetaPlanID":null,
+         "Services":31,
+         "State":1,
+         "Title":"Lumo Plus",
+         "Type":1
+      }
+   ]
+}

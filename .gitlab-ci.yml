@@ -1,0 +1,42 @@
+default:
+  image: 
+    # TODO change
+    name: debian:testing-slim
+  interruptible: true
+  tags:
+    - shared-small
+
+stages:
+  - i18n
+
+include:
+  - project: 'translations/generator'
+    ref: master
+    file: '/jobs/sync-crowdin.gitlab-ci.yml'
+
+  - project: 'translations/generator'
+    ref: master
+    file: '/jobs/commit-locales.gitlab-ci.yml'
+
+
+##
+## ---- Translations
+##
+
+# Send translations from your main branch -> won't run inside schedule
+i18n-sync-crowdin:
+  stage: i18n
+  variables:
+      I18N_SYNC_BRANCH: master
+      I18N_SYNC_CROWDIN_PROJECT: 'apple-lumo'
+  extends: .i18n-sync-crowdin-common-rules
+  
+# Will generate a MR via a schedule pipeline
+i18n-commit-locales:
+  stage: i18n
+  variables:
+      I18N_COMMIT_CROWDIN_PROJECT: 'apple-lumo'
+      I18N_COMMIT_BRANCH_PUSH: master
+      I18N_COMMIT_BRANCH_ALLOWED: master
+  extends: .i18n-commit-locales-shared
+  
