@@ -39,7 +39,7 @@ release-publish-github:
 i18n-sync-crowdin:
   stage: i18n
   variables:
-      I18N_SYNC_BRANCH: master
+      I18N_SYNC_BRANCH: main
       I18N_SYNC_CROWDIN_PROJECT: 'apple-lumo'
   extends: .i18n-sync-crowdin-common-rules
   
@@ -48,7 +48,7 @@ i18n-commit-locales:
   stage: i18n
   variables:
       I18N_COMMIT_CROWDIN_PROJECT: 'apple-lumo'
-      I18N_COMMIT_BRANCH_PUSH: master
-      I18N_COMMIT_BRANCH_ALLOWED: master
+      I18N_COMMIT_BRANCH_PUSH: main
+      I18N_COMMIT_BRANCH_ALLOWED: main
   extends: .i18n-commit-locales-shared
   
