@@ -73,7 +73,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bir ağ hatası oluştu. Lütfen internete bağlı olduğunuzdan emin olun."
+            "value" : "Bir ağ sorunu çıktı. Lütfen internete bağlı olduğunuzdan emin olun."
           }
         }
       }
@@ -227,7 +227,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beklenmedik bir hata oluştu."
+            "value" : "Beklenmedik bir sorun çıktı."
           }
         }
       }
@@ -304,7 +304,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo yüklenirken hata oluştu"
+            "value" : "Lumo yüklenirken sorun çıktı"
           }
         }
       }
@@ -534,7 +534,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dikkat... ve işlem gücü gerektiriyor..."
+            "value" : "Dikkatinizi... ve işlem gücünüzü istiyor..."
           }
         }
       }
@@ -611,7 +611,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yükleme çubuklarına pati atıyor..."
+            "value" : "Yükleme çubuklarını patiliyor..."
           }
         }
       }
@@ -1073,7 +1073,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dünya hakimiyeti planlıyor... ve uygulamanızın başlatılmasını..."
+            "value" : "Dünyaya hakim olmayı... ve uygulamanızın başlatılmasını bekliyor..."
           }
         }
       }
@@ -1150,7 +1150,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Motorları mırıldayarak çalıştırıyor.."
+            "value" : "Mırıldayarak motorları çalıştırıyor.."
           }
         }
       }
@@ -1381,7 +1381,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Hesabı"
+            "value" : "Proton hesabı"
           }
         }
       }
@@ -1458,7 +1458,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo'ya Geri Dön"
+            "value" : "Lumo'ya dön"
           }
         }
       }
@@ -1857,7 +1857,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Storniert"
+            "value" : "Gekündigt"
           }
         },
         "en" : {
@@ -1884,12 +1884,6 @@
             "value" : "Annulé"
           }
         },
-        "ga" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cealaithe"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1900,18 +1894,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geannuleerd"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anulowane"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancelado"
           }
         },
         "pt-BR" : {
@@ -1940,13 +1922,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zrušeno • Vyprší %@"
+            "value" : "Zrušeno • Vypršelo %@"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Storniert • Läuft ab %@"
+            "value" : "Gekündigt • Gültig bis %@"
           }
         },
         "en" : {
@@ -1958,13 +1940,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cancelado • Expira %@"
+            "value" : "Cancelado • Caduca el %@"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cancelado • Expira %@"
+            "value" : "Cancelado • Expira el %@"
           }
         },
         "fr" : {
@@ -1973,40 +1955,22 @@
             "value" : "Annulé • Expire %@"
           }
         },
-        "ga" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cealaithe • Éagann %@"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Annullato • Scade %@"
+            "value" : "Annullato • Scade il %@"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Geannuleerd • Verloopt %@"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anulowane • Wygasa %@"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancelado • Expira %@"
+            "value" : "Geannuleerd • Vervallen %@"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cancelado • Expira %@"
+            "value" : "Cancelado • Expira em %@"
           }
         },
         "ru" : {
@@ -2018,7 +1982,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "İptal edildi • %@ tarihinde sona eriyor"
+            "value" : "İptal edildi. Geçerlilik süresi: %@"
           }
         }
       }
@@ -2324,7 +2288,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo Plus ile ücretli özelliklerin keyfini çıkarın."
+            "value" : "Lumo Plus ile ücretli özelliklerin tadını çıkarın."
           }
         }
       }
@@ -2368,12 +2332,6 @@
             "value" : "Erreur"
           }
         },
-        "ga" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Earráid"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2384,18 +2342,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fout"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Błąd"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erro"
           }
         },
         "pt-BR" : {
@@ -2798,7 +2744,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Satın alma doğrulaması başarısız oldu"
+            "value" : "Satın alma doğrulanamadı"
           }
         }
       }
@@ -3051,7 +2997,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "/měsíc"
+            "value" : "/měsíčně"
           }
         },
         "de" : {
@@ -3084,12 +3030,6 @@
             "value" : "/mois"
           }
         },
-        "ga" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "/mí"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3100,18 +3040,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "/maand"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "/miesiąc"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "/mês"
           }
         },
         "pt-BR" : {
@@ -3282,7 +3210,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tarifeler Yükleniyor…"
+            "value" : "Tarifeler yükleniyor…"
           }
         }
       }
@@ -3369,7 +3297,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tarifeniz otomatik olarak yenilenecektir"
+            "value" : "Tarifeniz otomatik olarak yenilenecek"
           }
         }
       }
@@ -3380,13 +3308,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ušetříte "
+            "value" : "Uložit "
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sparen Sie "
+            "value" : "Spare "
           }
         },
         "en" : {
@@ -3398,67 +3326,49 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ahorre "
+            "value" : "Guardar "
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ahorre "
+            "value" : "Guardar "
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Économisez "
-          }
-        },
-        "ga" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sábháil "
+            "value" : "Enregistrer "
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Risparmia "
+            "value" : "Salva "
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bespaar "
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oszczędź "
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Poupe "
+            "value" : "Opslaan "
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Economize "
+            "value" : "Salvar "
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сэкономьте "
+            "value" : "Сохранить "
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tasarruf edin "
+            "value" : "Kaydet "
           }
         }
       }
@@ -3843,7 +3753,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ödemeye Geri Dön"
+            "value" : "Ödemeye dön"
           }
         }
       }
@@ -3920,7 +3830,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ödemeniz işlenirken bir hata oluştu."
+            "value" : "Ödemeniz işlenirken bir sorun çıktı."
           }
         }
       }
@@ -3997,7 +3907,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ödeme işlenirken hata"
+            "value" : "Ödeme işlenirken sorun çıktı"
           }
         }
       }
@@ -4151,7 +4061,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu işlem bir dakikadan fazla sürmemelidir"
+            "value" : "Bu işlem bir dakikadan uzun sürmemeli"
           }
         }
       }
@@ -4303,7 +4213,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Metne dönüştürme aygıtta çalışıyor"
+            "value" : "Yazıya dönüştürme aygıt üzerinde çalışıyor"
           }
         }
       }
@@ -4380,7 +4290,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sunucu aracılığıyla transkripsiyon"
+            "value" : "Sunucu üzerinde yazıya dönüştürme"
           }
         }
       }
@@ -5073,7 +4983,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mevcut tarifeler"
+            "value" : "Geçerli tarifeler"
           }
         }
       }
@@ -5150,7 +5060,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abonelik Özeti"
+            "value" : "Abonelik özeti"
           }
         }
       }
@@ -5304,7 +5214,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tüm günlükleri temizlemek istediğinizden emin misiniz?"
+            "value" : "Tüm günlük kayıtlarını temizlemek istediğinize emin misiniz?"
           }
         }
       }
@@ -5381,7 +5291,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Günlükleri Temizleyin"
+            "value" : "Günlük kayıtlarını temizle"
           }
         }
       }
@@ -5689,7 +5599,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sesle yazmak için aygıt ayarlarınızdan mikrofon erişimini lütfen kullanıma alın."
+            "value" : "Ses girişini kullanmak için aygıt ayarlarınızdan mikrofona erişme izni verin."
           }
         }
       }
@@ -5766,7 +5676,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mikrofon Erişimi Gerekiyor"
+            "value" : "Mikrofona erişme izni gerekiyor"
           }
         }
       }
@@ -5920,7 +5830,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo'da Açın"
+            "value" : "Lumo ile aç"
           }
         }
       }
@@ -5997,7 +5907,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo'nun en kullanışlı özelliklerine hızlı erişim"
+            "value" : "En kullanışlı Lumo özelliklerine hızlı erişim"
           }
         }
       }
@@ -6074,7 +5984,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo Hızlı İşlemleri"
+            "value" : "Lumo hızlı işlemleri"
           }
         }
       }
@@ -6151,7 +6061,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öğleden sonra takviyesine mi ihtiyacınız var?"
+            "value" : "Öğleden sonrası için destek mi gerekiyor?"
           }
         }
       }
@@ -7075,7 +6985,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bana kısa, rahatlatıcı bir uyku vakti hikayesi yazın."
+            "value" : "Bana kısa, rahatlatıcı bir uyku vakti hikayesi yaz."
           }
         }
       }
@@ -7306,7 +7216,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rahatlamama ve uykuya dalmama yardımcı olacak bir nefes egzersizi için bana rehberlik et."
+            "value" : "Rahatlamama ve uykuya dalmama yardımcı olacak bir nefes egzersizi için bana yol göster."
           }
         }
       }
@@ -7460,7 +7370,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uyumak için zihnimi sakinleştirmem için bana bazı rahatlatıcı düşüncelerle yardımcı olun."
+            "value" : "Uyumadan önce zihnimi sakinleştirmek için bana bazı rahatlatıcı düşüncelerle yardımcı ol."
           }
         }
       }
@@ -7768,7 +7678,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zihnimi yenilemek için bazı sağlıklı ve enerji verici kahve molası aktiviteleri önerin."
+            "value" : "Zihnimi yenilemek için bazı sağlıklı ve enerji verici kahve molası aktiviteleri öner."
           }
         }
       }
@@ -8076,7 +7986,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hayata bakış açısı kazandıran, evrenle ilgili bir şey paylaşın."
+            "value" : "Hayata bakış açısı kazandıran, evrenle ilgili bir şey paylaş."
           }
         }
       }
@@ -8461,7 +8371,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bilgiyi daha iyi değerlendirmek için kullanabileceğim pratik eleştirel düşünme becerileri öğretin bana."
+            "value" : "Bilgiyi daha iyi değerlendirmek için kullanabileceğim pratik eleştirel düşünme becerileri öğret."
           }
         }
       }
@@ -8615,7 +8525,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bana 2 dakikada büyüleyici bir şey öğretin."
+            "value" : "Bana 2 dakikada büyüleyici bir şey öğret."
           }
         }
       }
@@ -8923,7 +8833,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bir sorunu birden fazla kültürel ve ideolojik bakış açısından anlamama yardımcı olun."
+            "value" : "Bir sorunu birden fazla kültürel ve ideolojik bakış açısından anlamama yardımcı ol."
           }
         }
       }
@@ -9231,7 +9141,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Daha iyi uyku için yatak odası ortamımı nasıl optimize edebilirim?"
+            "value" : "Daha iyi uyku için yatak odası ortamımı nasıl iyileştirebilirim?"
           }
         }
       }
@@ -9308,7 +9218,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uykuyu etkilemeyecek iyi bir akşam egzersiz rutini nedir?"
+            "value" : "Uykuyu etkilemeyecek iyi bir akşam egzersizi rutini nedir?"
           }
         }
       }
@@ -9539,7 +9449,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vücudumu rahatlatmak için yatmadan önce yapabileceğim hafif esneme hareketleri verin."
+            "value" : "Vücudumu rahatlatmak için yatmadan önce yapabileceğim hafif esneme hareketleri öner."
           }
         }
       }
@@ -9693,7 +9603,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Çevrim içi karşılaştığım iddiaları doğrulamak için etkili teknikleri gösterin."
+            "value" : "Çevrim içi karşılaştığım iddiaları doğrulamak için etkili teknikleri göster."
           }
         }
       }
@@ -9924,7 +9834,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öğleden sonraki rehavet sırasında odaklanmayı yeniden kazanmak için etkili teknikler nelerdir?"
+            "value" : "Öğleden sonra rehaveti sırasında odaklanmayı yeniden kazanmak için etkili teknikler nelerdir?"
           }
         }
       }
@@ -10078,7 +9988,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "İlginç bilgi"
+            "value" : "İlginç bilgiler"
           }
         }
       }
@@ -10155,7 +10065,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bugün beni şaşırtacak ilginç bir bilgi paylaşın."
+            "value" : "Bugün beni şaşırtacak ilginç bir bilgi paylaş."
           }
         }
       }
@@ -10540,7 +10450,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Önyargıyı nasıl belirleyeceğimi ve haber kaynaklarının güvenilirliğini nasıl değerlendireceğimi öğretin."
+            "value" : "Önyargıyı nasıl belirleyeceğimi ve haber kaynaklarının güvenilirliğini nasıl değerlendireceğimi öğret."
           }
         }
       }
@@ -11772,7 +11682,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bugün zihnimi canlandırmak için büyüleyici bir fizik kavramı açıklayın."
+            "value" : "Bugün zihnimi canlandırmak için büyüleyici bir fizik kavramını açıkla."
           }
         }
       }
@@ -11926,7 +11836,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Büyük Hadron Çarpıştırıcısı'nın nasıl çalıştığını basit terimlerle açıklayın."
+            "value" : "Büyük Hadron Çarpıştırıcısı'nın nasıl çalıştığını basit terimlerle açıkla."
           }
         }
       }
@@ -12157,7 +12067,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bugün dijital gizliliğimi korumak için pratik ipuçları verin."
+            "value" : "Bugün dijital gizliliğimi korumak için pratik ipuçları ver."
           }
         }
       }
@@ -12311,7 +12221,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Çalışma saatlerinde odaklanmayı sürdürmek için bazı etkili üretkenlik teknikleri paylaşın."
+            "value" : "Çalışma saatlerinde odaklanmayı sürdürmek için bazı etkili üretkenlik teknikleri paylaş."
           }
         }
       }
@@ -12696,7 +12606,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bir antrenman sıkıştırın"
+            "value" : "Bir antrenman ile toparlanın"
           }
         }
       }
@@ -12773,7 +12683,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öğle aramda yapabileceğim hızlı bir 10 dakikalık antrenman verin."
+            "value" : "Öğle aramda yapabileceğim hızlı bir 10 dakikalık antrenman ver."
           }
         }
       }
@@ -13235,7 +13145,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dolandırıcı metinleri ve şüpheli iletileri nasıl tespit edip kaçınabilirim?"
+            "value" : "Dolandırıcı yazılarını ve şüpheli iletileri nasıl tespit edip kaçınabilirim?"
           }
         }
       }
@@ -13389,7 +13299,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bana her şeyi değiştiren bir fizik keşfi hakkında anlatın."
+            "value" : "Bana her şeyi değiştiren bir fizik keşfini anlat."
           }
         }
       }
@@ -13543,7 +13453,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uyku alanınızı optimize edin"
+            "value" : "Uyku alanınızı iyileştirin"
           }
         }
       }
@@ -13774,7 +13684,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Şeker düşüşü olmadan enerjimi artıracak bazı sağlıklı öğleden sonra atıştırmalıkları önerin."
+            "value" : "Şekerimi düşürmeden enerjimi artıracak bazı sağlıklı öğleden sonra atıştırmalıkları öner."
           }
         }
       }
@@ -13851,7 +13761,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gerginliği azaltmak ve dolaşımı iyileştirmek için bana hızlı bir esneme rutini verin."
+            "value" : "Gerginliği azaltmak ve dolaşımı iyileştirmek için bana hızlı bir esneme rutini ver."
           }
         }
       }
@@ -14159,7 +14069,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kozmos ve parçacık fiziği hakkında akıl almaz bir gerçek paylaşın."
+            "value" : "Kozmos ve parçacık fiziği hakkında akıl almaz bir gerçek paylaş."
           }
         }
       }
@@ -14247,13 +14157,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zeptejte se Lumo na otázku"
+            "value" : "Zeptej se Lumo na otázku"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stellen Sie Lumo eine Frage"
+            "value" : "Lumo eine Frage stellen"
           }
         },
         "en" : {
@@ -14265,31 +14175,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Haz una pregunta a Lumo"
+            "value" : "Pregunta lo que quieras a Lumo"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Haz una pregunta a Lumo"
+            "value" : "Pregunte a Lumo"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Posez une question à Lumo"
-          }
-        },
-        "ga" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cuir ceist ar Lumo"
+            "value" : "Poser une question à Lumo"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fai una domanda a Lumo"
+            "value" : "Chiedi qualcosa a Lumo"
           }
         },
         "nl" : {
@@ -14298,28 +14202,16 @@
             "value" : "Stel Lumo een vraag"
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zadaj pytanie Lumo"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Faça uma pergunta ao Lumo"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Faça uma pergunta ao Lumo"
+            "value" : "Pergunte ao Lumo"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Задайте вопрос Lumo"
+            "value" : "Задайте Lumo вопрос"
           }
         },
         "tr" : {
