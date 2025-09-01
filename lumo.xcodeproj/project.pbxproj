@@ -1,0 +1,613 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		403C8A512DB7D7D800DC72F5 /* ProtonUIFoundations in Frameworks */ = {isa = PBXBuildFile; productRef = 403C8A502DB7D7D800DC72F5 /* ProtonUIFoundations */; };
+		963FD38F2DF106740021FE14 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 963FD38E2DF106740021FE14 /* Lottie */; };
+		96E796F32DCCF3E90003A094 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 96E796F22DCCF3E90003A094 /* Lottie */; };
+		96E80DD12DA8C642000194CB /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E80DB82DA8C613000194CB /* WidgetKit.framework */; };
+		96E80DD22DA8C642000194CB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E80DBA2DA8C613000194CB /* SwiftUI.framework */; };
+		96E80DDD2DA8C643000194CB /* LumoWidgetExtensionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 96E80DD02DA8C642000194CB /* LumoWidgetExtensionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		96E80DE32DA8C7CF000194CB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E80DE22DA8C7CF000194CB /* StoreKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		96E80DDB2DA8C643000194CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96E80D972DA8C56B000194CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 96E80DCF2DA8C642000194CB;
+			remoteInfo = LumoWidgetExtensionExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		96E80DCB2DA8C614000194CB /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				96E80DDD2DA8C643000194CB /* LumoWidgetExtensionExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		96E80D9F2DA8C56B000194CB /* lumo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lumo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E80DB82DA8C613000194CB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		96E80DBA2DA8C613000194CB /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		96E80DD02DA8C642000194CB /* LumoWidgetExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LumoWidgetExtensionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E80DE22DA8C7CF000194CB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		962695102DFC634900ED39A3 /* Exceptions for "lumo" folder in "LumoWidgetExtensionExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Localizable.xcstrings,
+			);
+			target = 96E80DCF2DA8C642000194CB /* LumoWidgetExtensionExtension */;
+		};
+		96E80DDE2DA8C643000194CB /* Exceptions for "LumoWidgetExtension" folder in "LumoWidgetExtensionExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 96E80DCF2DA8C642000194CB /* LumoWidgetExtensionExtension */;
+		};
+		96E80DF72DABEBC0000194CB /* Exceptions for "lumo" folder in "lumo" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 96E80D9E2DA8C56B000194CB /* lumo */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		96E80DA12DA8C56B000194CB /* lumo */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				96E80DF72DABEBC0000194CB /* Exceptions for "lumo" folder in "lumo" target */,
+				962695102DFC634900ED39A3 /* Exceptions for "lumo" folder in "LumoWidgetExtensionExtension" target */,
+			);
+			path = lumo;
+			sourceTree = "<group>";
+		};
+		96E80DD32DA8C642000194CB /* LumoWidgetExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				96E80DDE2DA8C643000194CB /* Exceptions for "LumoWidgetExtension" folder in "LumoWidgetExtensionExtension" target */,
+			);
+			path = LumoWidgetExtension;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		96E80D9C2DA8C56B000194CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96E80DE32DA8C7CF000194CB /* StoreKit.framework in Frameworks */,
+				403C8A512DB7D7D800DC72F5 /* ProtonUIFoundations in Frameworks */,
+				96E796F32DCCF3E90003A094 /* Lottie in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E80DCD2DA8C642000194CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96E80DD22DA8C642000194CB /* SwiftUI.framework in Frameworks */,
+				96E80DD12DA8C642000194CB /* WidgetKit.framework in Frameworks */,
+				963FD38F2DF106740021FE14 /* Lottie in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		96E80D962DA8C56B000194CB = {
+			isa = PBXGroup;
+			children = (
+				96E80DA12DA8C56B000194CB /* lumo */,
+				96E80DD32DA8C642000194CB /* LumoWidgetExtension */,
+				96E80DB72DA8C613000194CB /* Frameworks */,
+				96E80DA02DA8C56B000194CB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		96E80DA02DA8C56B000194CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				96E80D9F2DA8C56B000194CB /* lumo.app */,
+				96E80DD02DA8C642000194CB /* LumoWidgetExtensionExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		96E80DB72DA8C613000194CB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				96E80DE22DA8C7CF000194CB /* StoreKit.framework */,
+				96E80DB82DA8C613000194CB /* WidgetKit.framework */,
+				96E80DBA2DA8C613000194CB /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		96E80D9E2DA8C56B000194CB /* lumo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96E80DAD2DA8C56C000194CB /* Build configuration list for PBXNativeTarget "lumo" */;
+			buildPhases = (
+				96E80D9B2DA8C56B000194CB /* Sources */,
+				96E80D9C2DA8C56B000194CB /* Frameworks */,
+				96E80D9D2DA8C56B000194CB /* Resources */,
+				96E80DCB2DA8C614000194CB /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				96E80DDC2DA8C643000194CB /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				96E80DA12DA8C56B000194CB /* lumo */,
+			);
+			name = lumo;
+			packageProductDependencies = (
+				403C8A502DB7D7D800DC72F5 /* ProtonUIFoundations */,
+				96E796F22DCCF3E90003A094 /* Lottie */,
+			);
+			productName = lumo;
+			productReference = 96E80D9F2DA8C56B000194CB /* lumo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		96E80DCF2DA8C642000194CB /* LumoWidgetExtensionExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96E80DDF2DA8C643000194CB /* Build configuration list for PBXNativeTarget "LumoWidgetExtensionExtension" */;
+			buildPhases = (
+				96E80DCC2DA8C642000194CB /* Sources */,
+				96E80DCD2DA8C642000194CB /* Frameworks */,
+				96E80DCE2DA8C642000194CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				96E80DD32DA8C642000194CB /* LumoWidgetExtension */,
+			);
+			name = LumoWidgetExtensionExtension;
+			packageProductDependencies = (
+				963FD38E2DF106740021FE14 /* Lottie */,
+			);
+			productName = LumoWidgetExtensionExtension;
+			productReference = 96E80DD02DA8C642000194CB /* LumoWidgetExtensionExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		96E80D972DA8C56B000194CB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1630;
+				TargetAttributes = {
+					96E80D9E2DA8C56B000194CB = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					96E80DCF2DA8C642000194CB = {
+						CreatedOnToolsVersion = 16.2;
+					};
+				};
+			};
+			buildConfigurationList = 96E80D9A2DA8C56B000194CB /* Build configuration list for PBXProject "lumo" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				cs,
+				de,
+				es,
+				"es-419",
+				fr,
+				it,
+				nl,
+				pl,
+				"pt-BR",
+				ru,
+				tr,
+			);
+			mainGroup = 96E80D962DA8C56B000194CB;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				403C8A4F2DB7D71900DC72F5 /* XCRemoteSwiftPackageReference "ProtonUIFoundations" */,
+				96E796F12DCCF1A80003A094 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 96E80DA02DA8C56B000194CB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				96E80D9E2DA8C56B000194CB /* lumo */,
+				96E80DCF2DA8C642000194CB /* LumoWidgetExtensionExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		96E80D9D2DA8C56B000194CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E80DCE2DA8C642000194CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		96E80D9B2DA8C56B000194CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E80DCC2DA8C642000194CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		96E80DDC2DA8C643000194CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 96E80DCF2DA8C642000194CB /* LumoWidgetExtensionExtension */;
+			targetProxy = 96E80DDB2DA8C643000194CB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		96E80DAB2DA8C56C000194CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		96E80DAC2DA8C56C000194CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		96E80DAE2DA8C56C000194CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 16;
+				DEVELOPMENT_ASSET_PATHS = "\"lumo/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = lumo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Lumo;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Lumo needs microphone access to enable voice input for AI assistance.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Lumo needs speech recognition to convert your voice to text for AI queries.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.lumo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		96E80DAF2DA8C56C000194CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 16;
+				DEVELOPMENT_ASSET_PATHS = "\"lumo/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = lumo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Lumo;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Lumo needs microphone access to enable voice input for AI assistance.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Lumo needs speech recognition to convert your voice to text for AI queries.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.lumo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		96E80DE02DA8C643000194CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LumoWidgetExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LumoWidgetExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.lumo.LumoWidgetExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		96E80DE12DA8C643000194CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LumoWidgetExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LumoWidgetExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.proton.lumo.LumoWidgetExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		96E80D9A2DA8C56B000194CB /* Build configuration list for PBXProject "lumo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96E80DAB2DA8C56C000194CB /* Debug */,
+				96E80DAC2DA8C56C000194CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		96E80DAD2DA8C56C000194CB /* Build configuration list for PBXNativeTarget "lumo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96E80DAE2DA8C56C000194CB /* Debug */,
+				96E80DAF2DA8C56C000194CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		96E80DDF2DA8C643000194CB /* Build configuration list for PBXNativeTarget "LumoWidgetExtensionExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96E80DE02DA8C643000194CB /* Debug */,
+				96E80DE12DA8C643000194CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		403C8A4F2DB7D71900DC72F5 /* XCRemoteSwiftPackageReference "ProtonUIFoundations" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@gitlab.protontech.ch:apple/shared/ProtonUIFoundations.git";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+		96E796F12DCCF1A80003A094 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		403C8A502DB7D7D800DC72F5 /* ProtonUIFoundations */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 403C8A4F2DB7D71900DC72F5 /* XCRemoteSwiftPackageReference "ProtonUIFoundations" */;
+			productName = ProtonUIFoundations;
+		};
+		963FD38E2DF106740021FE14 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96E796F12DCCF1A80003A094 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		96E796F22DCCF3E90003A094 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96E796F12DCCF1A80003A094 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 96E80D972DA8C56B000194CB /* Project object */;
+}

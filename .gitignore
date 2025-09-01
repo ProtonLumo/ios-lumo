@@ -56,7 +56,7 @@ xcuserdata/
 Carthage/
 
 ### Xcode Patch ###
-*.xcodeproj/**
+*.xcodeproj/xcuserdata/**
 *.xcodeproj.bak/**
 # End of https://www.gitignore.io/api/xcode,osx
 
