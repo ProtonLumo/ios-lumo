@@ -412,6 +412,9 @@ struct WebView: UIViewRepresentable {
                         }
                     }
                 }
+                
+                // Inject deferred scripts for lumo.proton.me as backup
+                self.injectDeferredScriptsBackup(webView: webView)
             }
             else {
                 Logger.shared.log("On other domain: \(urlString) - applying standard loading behavior")
@@ -451,6 +454,23 @@ struct WebView: UIViewRepresentable {
                     Logger.shared.log("Error injecting voice entry setup: \(error)")
                 } else {
                     Logger.shared.log("Successfully injected voice entry setup")
+                }
+            }
+        }
+
+        private func injectDeferredScriptsBackup(webView: WKWebView) {
+            let deferredScripts: [JSBridgeScript] = [
+                .promotionButtonHandler,
+                .managePlanHandler,
+                .upgradeLinkClassifier,
+                .messageSubmissionListener
+            ]
+            
+            for script in deferredScripts {
+                JSBridgeManager.shared.evaluateScript(script, in: webView) { result, error in
+                    if let error = error {
+                        Logger.shared.log("Error injecting deferred script \(script.rawValue): \(error)")
+                    }
                 }
             }
         }
