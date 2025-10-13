@@ -30,41 +30,12 @@ class ThemeManager: NSObject {
     // MARK: - Public API
     
     func setup(webView: WKWebView) {
-        print("🎨 DEBUG: ThemeManager.setup() called with webView")
         self.webView = webView
         
         // Always start with system theme detection
         updateCurrentMode()
         
         Logger.shared.log("🎨 ThemeManager setup complete - initial theme: \(currentTheme), mode: \(currentMode)")
-        print("🎨 DEBUG: ThemeManager setup complete - initial theme: \(currentTheme), mode: \(currentMode)")
-        
-        // Don't inject theme immediately - wait for stored theme to be read first
-        // injectCurrentTheme() will be called by setStoredTheme() or when theme reading completes
-    }
-    
-    func injectTheme(_ theme: LumoTheme, mode: LumoThemeMode) {
-        guard let webView = webView else {
-            Logger.shared.log("❌ ThemeManager: WebView not set")
-            return
-        }
-        
-        currentTheme = theme
-        currentMode = mode
-        
-        Logger.shared.log("🎨 Injecting theme: \(theme.rawValue), mode: \(mode.rawValue)")
-        
-        JSBridgeManager.shared.injectTheme(
-            theme: theme.rawValue,
-            mode: mode.rawValue,
-            in: webView
-        ) { result, error in
-            if let error = error {
-                Logger.shared.log("❌ Theme injection failed: \(error)")
-            } else {
-                Logger.shared.log("✅ Theme injected successfully")
-            }
-        }
     }
     
     func setupThemeChangeListener() {
@@ -87,20 +58,16 @@ class ThemeManager: NSObject {
     func readStoredTheme() {
         guard let webView = webView else {
             Logger.shared.log("❌ ThemeManager: WebView not set for theme reading")
-            print("❌ DEBUG: ThemeManager: WebView not set for theme reading")
             return
         }
         
         Logger.shared.log("🎨 Reading stored theme from localStorage")
-        print("🎨 DEBUG: ThemeManager.readStoredTheme() called")
         
         JSBridgeManager.shared.readStoredTheme(in: webView) { result, error in
             if let error = error {
                 Logger.shared.log("❌ Theme reading failed: \(error)")
-                print("❌ DEBUG: Theme reading failed: \(error)")
             } else {
                 Logger.shared.log("✅ Theme reading script executed")
-                print("✅ DEBUG: Theme reading script executed")
             }
         }
     }
@@ -109,18 +76,14 @@ class ThemeManager: NSObject {
         let newMode: LumoThemeMode = isDark ? .dark : .light
         
         Logger.shared.log("🎨 updateSystemThemeMode called - isDark: \(isDark), newMode: \(newMode), currentTheme: \(currentTheme), currentMode: \(currentMode)")
-        print("🎨 DEBUG: updateSystemThemeMode - SwiftUI says isDark: \(isDark), newMode: \(newMode)")
         
-        // Always update currentMode when using system theme, regardless of previous value
-        // This ensures we stay in sync with SwiftUI's colorScheme
+        // Only update if we're using system theme
         if currentTheme == .system {
             let oldMode = currentMode
             currentMode = newMode
             
             if oldMode != newMode {
                 Logger.shared.log("🎨 System theme mode updated from \(oldMode) to \(newMode)")
-                print("🎨 DEBUG: System theme mode updated from \(oldMode) to \(newMode)")
-                // injectCurrentTheme() // Don't inject - let web app manage localStorage
                 
                 // Notify the app to update its UI
                 NotificationCenter.default.post(
@@ -132,8 +95,6 @@ class ThemeManager: NSObject {
                         "source": "system"
                     ]
                 )
-            } else {
-                print("🎨 DEBUG: System theme mode unchanged: \(newMode)")
             }
         }
     }
@@ -143,12 +104,6 @@ class ThemeManager: NSObject {
         
         currentTheme = theme
         currentMode = mode // Always use the mode provided - JavaScript already calculated it correctly
-        
-        Logger.shared.log("🎨 Theme set to: \(theme), mode: \(mode)")
-        print("🎨 DEBUG: Theme set to: \(theme), mode: \(mode)")
-        
-        // Don't inject theme back to webview - let web app manage its own localStorage
-        // injectCurrentTheme()
         
         // Notify app about theme change
         NotificationCenter.default.post(
@@ -164,18 +119,11 @@ class ThemeManager: NSObject {
     
     func setDefaultSystemTheme() {
         Logger.shared.log("🎨 No stored theme found, using smart system default")
-        print("🎨 DEBUG: setDefaultSystemTheme called")
         
         // Default to system theme
         currentTheme = .system
-        // Don't set currentMode here - let ContentView's updateSystemThemeMode() set it
+        // currentMode will be set by ContentView's updateSystemThemeMode()
         // based on SwiftUI's colorScheme which is more reliable
-        
-        Logger.shared.log("🎨 Smart default: theme=\(currentTheme), mode will be set by SwiftUI")
-        print("🎨 DEBUG: Smart default: theme=\(currentTheme), mode will be set by SwiftUI")
-        
-        // Don't inject theme here - let updateSystemThemeMode() handle it
-        // This ensures we use the correct SwiftUI-detected mode
         
         // Notify app about theme change (mode will be updated by ContentView)
         NotificationCenter.default.post(
@@ -275,7 +223,6 @@ class ThemeManager: NSObject {
         if currentTheme == .system && newMode != currentMode {
             Logger.shared.log("🎨 System theme changed from \(currentMode) to \(newMode)")
             currentMode = newMode
-            // injectCurrentTheme() // Don't inject - let web app manage localStorage
             
             // Notify the app to update its UI
             NotificationCenter.default.post(
@@ -343,10 +290,6 @@ class ThemeManager: NSObject {
             currentMode = getSystemThemeMode()
         }
         Logger.shared.log("🎨 ThemeManager updateCurrentMode - theme: \(currentTheme), changed from \(oldMode) to \(currentMode)")
-    }
-    
-    private func injectCurrentTheme() {
-        injectTheme(currentTheme, mode: currentMode)
     }
     
     deinit {

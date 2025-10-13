@@ -31,10 +31,6 @@ class ThemeMessageHandler: NSObject, WKScriptMessageHandler {
         switch messageName {
         case "themeChanged":
             handleThemeChanged(message)
-        case "themeInjected":
-            handleThemeInjected(message)
-        case "themeDebug":
-            handleThemeDebug(message)
         case "themeRead":
             handleThemeRead(message)
         default:
@@ -53,38 +49,13 @@ class ThemeMessageHandler: NSObject, WKScriptMessageHandler {
         ThemeManager.shared.handleThemeChangeFromWeb(theme)
     }
     
-    private func handleThemeInjected(_ message: WKScriptMessage) {
-        guard let messageBody = message.body as? [String: Any],
-              let success = messageBody["success"] as? Bool else {
-            Logger.shared.log("❌ Invalid theme injection message format")
-            return
-        }
-        
-        if success {
-            let theme = messageBody["theme"] as? Int ?? -1
-            let mode = messageBody["mode"] as? Int ?? -1
-            Logger.shared.log("✅ Theme injection confirmed: theme=\(theme), mode=\(mode)")
-        } else {
-            Logger.shared.log("❌ Theme injection failed")
-        }
-    }
-    
-    private func handleThemeDebug(_ message: WKScriptMessage) {
-        if let debugMessage = message.body as? String {
-            Logger.shared.log("🎨 Theme Debug: \(debugMessage)")
-        }
-    }
-    
     private func handleThemeRead(_ message: WKScriptMessage) {
-        print("🎨 DEBUG: handleThemeRead called with message: \(message.body)")
         guard let messageBody = message.body as? [String: Any] else {
             Logger.shared.log("❌ Invalid theme read message format")
-            print("❌ DEBUG: Invalid theme read message format: \(message.body)")
             return
         }
         
         let success = messageBody["success"] as? Bool ?? false
-        print("🎨 DEBUG: Theme read success: \(success)")
         
         if success {
             let theme = messageBody["theme"] as? Int ?? 2 // default to system
@@ -100,7 +71,6 @@ class ThemeMessageHandler: NSObject, WKScriptMessageHandler {
             } else {
                 // Stored theme found - use it (allows web override of system)
                 Logger.shared.log("✅ Theme read from localStorage: theme=\(theme), mode=\(mode), key=\(key)")
-                print("🎨 DEBUG: Raw theme=\(theme), mode=\(mode)")
                 
                 // Convert web app values to native enum values
                 let lumoTheme: LumoTheme
@@ -119,12 +89,7 @@ class ThemeMessageHandler: NSObject, WKScriptMessageHandler {
                 default: lumoMode = .light
                 }
                 
-                Logger.shared.log("🎨 Converted to: theme=\(lumoTheme), mode=\(lumoMode)")
-                print("🎨 DEBUG: Converted to: theme=\(lumoTheme), mode=\(lumoMode)")
-                print("🎨 DEBUG: Calling ThemeManager.shared.setStoredTheme")
-                
                 ThemeManager.shared.setStoredTheme(lumoTheme, mode: lumoMode)
-                print("🎨 DEBUG: ThemeManager.shared.setStoredTheme completed")
             }
         } else {
             let reason = messageBody["reason"] as? String ?? "Unknown error"
@@ -437,17 +402,6 @@ struct WebView: UIViewRepresentable {
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             let urlString = webView.url?.absoluteString ?? "unknown"
             Logger.shared.log("WebView finished navigating to: \(urlString)")
-            print("🎨 DEBUG: WebView finished navigating to: \(urlString)")
-            Logger.shared.log("🎨 DEBUG: WebView finished navigating to: \(urlString)")
-            
-            // Simple test to see if this method is called at all
-            webView.evaluateJavaScript("console.log('🎨 DEBUG: Native didFinish called - JavaScript is working')") { result, error in
-                if let error = error {
-                    print("🎨 DEBUG: JavaScript evaluation failed: \(error)")
-                } else {
-                    print("🎨 DEBUG: JavaScript evaluation succeeded: \(result ?? "nil")")
-                }
-            }
             
             // Immediately update URL to ensure proper state tracking
             DispatchQueue.main.async {
@@ -455,22 +409,9 @@ struct WebView: UIViewRepresentable {
             }
             
             // Read stored theme from localStorage now that the page is loaded
-            // Add a longer delay to ensure web app has fully initialized
+            // Add a delay to ensure web app has fully initialized
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                webView.evaluateJavaScript("console.log('🎨 DEBUG: About to call readStoredTheme with delay')") { result, error in
-                    if let error = error {
-                        print("🎨 DEBUG: JavaScript evaluation failed: \(error)")
-                    } else {
-                        print("🎨 DEBUG: JavaScript evaluation succeeded: \(result ?? "nil")")
-                    }
-                }
-                
-                print("🎨 DEBUG: About to call ThemeManager.shared.readStoredTheme() with delay")
-                Logger.shared.log("🎨 DEBUG: About to call ThemeManager.shared.readStoredTheme() with delay")
-                
                 ThemeManager.shared.readStoredTheme()
-                print("🎨 DEBUG: ThemeManager.shared.readStoredTheme() called with delay")
-                Logger.shared.log("🎨 DEBUG: ThemeManager.shared.readStoredTheme() called with delay")
             }
             
             // Fallback: Check if we landed on a signup page without plan parameter
@@ -980,8 +921,6 @@ struct WebView: UIViewRepresentable {
         // Add theme message handlers
         let themeHandler = ThemeMessageHandler.shared
         configuration.userContentController.add(themeHandler, name: "themeChanged")
-        configuration.userContentController.add(themeHandler, name: "themeInjected")
-        configuration.userContentController.add(themeHandler, name: "themeDebug")
         configuration.userContentController.add(themeHandler, name: "themeRead")
 
         if let utilitiesScript = JSBridgeManager.shared.createUserScript(.utilities, injectionTime: .atDocumentStart, forMainFrameOnly: true) {
@@ -1007,9 +946,7 @@ struct WebView: UIViewRepresentable {
             self.webViewStore = webView
             
         // Setup theme management
-        Logger.shared.log("🎨 DEBUG: About to call ThemeManager.shared.setup(webView:)")
         ThemeManager.shared.setup(webView: webView)
-        Logger.shared.log("🎨 DEBUG: ThemeManager.shared.setup(webView:) completed")
         }
         
         webView.navigationDelegate = context.coordinator

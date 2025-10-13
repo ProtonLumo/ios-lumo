@@ -225,7 +225,6 @@ struct ContentView: View {
             checkMicrophonePermissionOnForeground()
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("ThemeChangedFromWeb"))) { _ in
-            print("🎨 DEBUG: ThemeChangedFromWeb notification received")
             updateThemeState()
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
@@ -233,15 +232,12 @@ struct ContentView: View {
         }
         .onChange(of: colorScheme) { newValue in
             Logger.shared.log("🎨 ColorScheme changed to \(newValue)")
-            print("🎨 DEBUG: ColorScheme changed to \(newValue)")
             updateThemeState()
         }
         .task {
             // Initialize isDarkMode immediately based on colorScheme before anything else loads
             // This prevents white flash on dark mode startup
-            // Use colorScheme as fallback since ThemeManager might not have read localStorage yet
             isDarkMode = colorScheme == .dark
-            print("🎨 DEBUG: .task initialization - isDarkMode set to \(isDarkMode) based on colorScheme: \(colorScheme)")
         }
         .onAppear {
             Logger.shared.log("ContentView appeared")
@@ -738,7 +734,6 @@ struct ContentView: View {
         let themeManager = ThemeManager.shared
         
         Logger.shared.log("🎨 ContentView updateThemeState - SwiftUI colorScheme: \(colorScheme), current theme: \(themeManager.currentTheme)")
-        print("🎨 DEBUG: updateThemeState - colorScheme: \(colorScheme), currentTheme: \(themeManager.currentTheme)")
         
         // Update ThemeManager with current system theme info
         themeManager.updateSystemThemeMode(colorScheme == .dark)
@@ -756,18 +751,11 @@ struct ContentView: View {
             shouldBeDark = colorScheme == .dark
         }
         
-        print("🎨 DEBUG: updateThemeState - isDarkMode: \(isDarkMode), shouldBeDark: \(shouldBeDark)")
         if isDarkMode != shouldBeDark {
-            print("🎨 DEBUG: Theme change needed - updating isDarkMode from \(isDarkMode) to \(shouldBeDark)")
             withAnimation(.easeInOut(duration: 0.3)) {
                 isDarkMode = shouldBeDark
             }
             Logger.shared.log("🎨 App theme updated to: \(shouldBeDark ? "dark" : "light") (theme: \(themeManager.currentTheme), colorScheme: \(colorScheme))")
-            print("🎨 DEBUG: App theme updated to: \(shouldBeDark ? "dark" : "light") (theme: \(themeManager.currentTheme), colorScheme: \(colorScheme))")
-            print("🎨 DEBUG: SwiftUI colorScheme raw value: \(colorScheme == .dark ? "dark" : "light")")
-            print("🎨 DEBUG: isDarkMode updated to: \(isDarkMode)")
-        } else {
-            print("🎨 DEBUG: No theme change needed - isDarkMode already \(isDarkMode)")
         }
     }
 

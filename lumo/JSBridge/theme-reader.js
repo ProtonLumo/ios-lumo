@@ -1,6 +1,4 @@
 (function() {
-    console.log("🎨 DEBUG: theme-reader.js loaded and executing");
-    
     function getLocalId() {
         try {
             const url = window.location.href;
@@ -27,9 +25,6 @@
             if (storedSettings) {
                 const settings = JSON.parse(storedSettings);
                 
-                // Debug: log what we found in localStorage
-                console.log("🎨 DEBUG: Found stored theme:", settings);
-                
                 // For system theme, always use current system preference, not stored mode
                 // The stored mode might be stale if device appearance changed since last save
                 let actualMode = settings.mode;
@@ -40,7 +35,6 @@
                 }
                 
                 // Send the stored theme to native
-                console.log("🎨 DEBUG: Sending theme to native:", { theme: settings.theme, mode: actualMode, isSystemTheme });
                 if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.themeRead) {
                     window.webkit.messageHandlers.themeRead.postMessage({
                         success: true,
@@ -51,9 +45,6 @@
                         rawSettings: storedSettings,
                         isSystemTheme: isSystemTheme
                     });
-                    console.log("🎨 DEBUG: Theme message sent to native successfully");
-                } else {
-                    console.log("🎨 DEBUG: window.webkit.messageHandlers.themeRead not available");
                 }
                 
                 return {
@@ -64,7 +55,6 @@
                 // No stored theme found, default to system theme
                 const systemMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 1 : 2; // 1=dark, 2=light
                 
-                console.log("🎨 DEBUG: No stored theme found, defaulting to system:", { theme: 16, mode: systemMode });
                 if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.themeRead) {
                     window.webkit.messageHandlers.themeRead.postMessage({
                         success: true,
@@ -74,9 +64,6 @@
                         reason: "No stored theme found, defaulting to system",
                         isDefault: true
                     });
-                    console.log("🎨 DEBUG: Default system theme message sent to native");
-                } else {
-                    console.log("🎨 DEBUG: window.webkit.messageHandlers.themeRead not available for default");
                 }
                 
                 return {
