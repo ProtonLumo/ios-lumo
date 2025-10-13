@@ -55,6 +55,9 @@ class PaymentSheetDelegate: NSObject, PaymentSheetViewModelDelegate {
 }
 
 struct ContentView: View {
+    // MARK: - Environment
+    @Environment(\.colorScheme) private var colorScheme
+    
     // MARK: - State Properties
     @StateObject private var speechRecognizer = SpeechRecognizer()
     @State private var isLoading = true
@@ -80,11 +83,13 @@ struct ContentView: View {
     @State private var showLoader = false
     @State private var showCurrentPlans = false
     @State private var currentPlansViewModel: CurrentPlansViewModel?
+    @State private var isDarkMode = false
 
     // MARK: - Constants
     private let paymentSheetDelegate = PaymentSheetDelegate()
     private let brandPurple = Color(hex: 0x6D4AFF)
     private let recordingColor = Color(hex: 0xE67553)
+    private let darkModeBackgroundColor = Color(hex: 0x16141c)
     
     private let safetyTimeoutDuration: TimeInterval = 3.0
 
@@ -111,14 +116,33 @@ struct ContentView: View {
         // Only show back button when on account pages (outside main Lumo app)
         return url.contains(Config.ACCOUNT_BASE_URL)
     }
+    
+    private var backgroundColor: Color {
+        // Compute backgroundColor from ThemeManager and colorScheme to avoid race conditions
+        let shouldBeDark: Bool
+        switch ThemeManager.shared.currentTheme {
+        case .light:
+            shouldBeDark = false
+        case .dark:
+            shouldBeDark = true
+        case .system:
+            shouldBeDark = colorScheme == .dark
+        }
+        return shouldBeDark ? darkModeBackgroundColor : Color.white
+    }
 
     var body: some View {
         ZStack(alignment: .top) {
+            // Background color that adapts to theme
+            backgroundColor
+                .ignoresSafeArea()
+            
             VStack(spacing: 0) {
                 if shouldShowBackButton {
                     LumoNavigationBar(
                         currentURL: currentWebViewURL,
-                        onBackButtonPress: handleBackButtonPress
+                        onBackButtonPress: handleBackButtonPress,
+                        isDarkMode: isDarkMode
                     )
                 }
 
@@ -140,7 +164,7 @@ struct ContentView: View {
             }
 
             if !webViewReady && (showLoader || currentWebViewURL == nil) {
-                LoadingView()
+                LoadingView(isDarkMode: isDarkMode)
                     .transition(.opacity)
                     .animation(.easeInOut(duration: 0.3), value: !webViewReady && (showLoader || currentWebViewURL == nil))
                     .onAppear {
@@ -200,8 +224,30 @@ struct ContentView: View {
             // This helps handle cases where user went to Settings and changed permissions
             checkMicrophonePermissionOnForeground()
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("ThemeChangedFromWeb"))) { _ in
+            print("🎨 DEBUG: ThemeChangedFromWeb notification received")
+            updateThemeState()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+            updateThemeState()
+        }
+        .onChange(of: colorScheme) { newValue in
+            Logger.shared.log("🎨 ColorScheme changed to \(newValue)")
+            print("🎨 DEBUG: ColorScheme changed to \(newValue)")
+            updateThemeState()
+        }
+        .task {
+            // Initialize isDarkMode immediately based on colorScheme before anything else loads
+            // This prevents white flash on dark mode startup
+            // Use colorScheme as fallback since ThemeManager might not have read localStorage yet
+            isDarkMode = colorScheme == .dark
+            print("🎨 DEBUG: .task initialization - isDarkMode set to \(isDarkMode) based on colorScheme: \(colorScheme)")
+        }
         .onAppear {
             Logger.shared.log("ContentView appeared")
+            
+            // Update theme state immediately on appear
+            updateThemeState()
 
             // Reduced from 5 seconds to 2 seconds for faster perceived loading
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -209,6 +255,9 @@ struct ContentView: View {
             }
 
             setupNotificationObservers()
+            
+            // Initialize theme state
+            updateThemeState()
         }
         .sheet(isPresented: $showCurrentPlans) {
             
@@ -287,7 +336,7 @@ struct ContentView: View {
         let urlString = newURL?.absoluteString ?? "nil"
         Logger.shared.log("currentWebViewURL changed to: \(urlString)")
 
-        guard let url = newURL else { return }
+        guard newURL != nil else { return }
         
         // Check if this is a signup URL without plan parameter and redirect if needed
         if urlString.hasPrefix("\(Config.ACCOUNT_BASE_URL)/lumo/signup") &&
@@ -683,6 +732,43 @@ struct ContentView: View {
         setupProcessTerminationObserver()
         setupDomainNavigationObserver()
         setupSessionSaveObserver()
+    }
+    
+    private func updateThemeState() {
+        let themeManager = ThemeManager.shared
+        
+        Logger.shared.log("🎨 ContentView updateThemeState - SwiftUI colorScheme: \(colorScheme), current theme: \(themeManager.currentTheme)")
+        print("🎨 DEBUG: updateThemeState - colorScheme: \(colorScheme), currentTheme: \(themeManager.currentTheme)")
+        
+        // Update ThemeManager with current system theme info
+        themeManager.updateSystemThemeMode(colorScheme == .dark)
+        
+        // Determine if we should be in dark mode
+        let shouldBeDark: Bool
+        
+        switch themeManager.currentTheme {
+        case .light:
+            shouldBeDark = false
+        case .dark:
+            shouldBeDark = true
+        case .system:
+            // Use SwiftUI's colorScheme environment which is more reliable
+            shouldBeDark = colorScheme == .dark
+        }
+        
+        print("🎨 DEBUG: updateThemeState - isDarkMode: \(isDarkMode), shouldBeDark: \(shouldBeDark)")
+        if isDarkMode != shouldBeDark {
+            print("🎨 DEBUG: Theme change needed - updating isDarkMode from \(isDarkMode) to \(shouldBeDark)")
+            withAnimation(.easeInOut(duration: 0.3)) {
+                isDarkMode = shouldBeDark
+            }
+            Logger.shared.log("🎨 App theme updated to: \(shouldBeDark ? "dark" : "light") (theme: \(themeManager.currentTheme), colorScheme: \(colorScheme))")
+            print("🎨 DEBUG: App theme updated to: \(shouldBeDark ? "dark" : "light") (theme: \(themeManager.currentTheme), colorScheme: \(colorScheme))")
+            print("🎨 DEBUG: SwiftUI colorScheme raw value: \(colorScheme == .dark ? "dark" : "light")")
+            print("🎨 DEBUG: isDarkMode updated to: \(isDarkMode)")
+        } else {
+            print("🎨 DEBUG: No theme change needed - isDarkMode already \(isDarkMode)")
+        }
     }
 
     private func setupPromptObserver() {

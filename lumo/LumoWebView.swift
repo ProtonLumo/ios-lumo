@@ -4,10 +4,7 @@ import os.log
 import Darwin
 
 
-private let sharedProcessPool: WKProcessPool = {
-    let pool = WKProcessPool()
-    return pool
-}()
+// Note: WKProcessPool was deprecated in iOS 15.0 - the system now manages process pools automatically
 
 class PaymentBridgeCallbackHandler: NSObject, WKScriptMessageHandler {
     static var shared = PaymentBridgeCallbackHandler()
@@ -22,6 +19,121 @@ class PaymentBridgeCallbackHandler: NSObject, WKScriptMessageHandler {
         
         Logger.shared.log("Payment bridge callback received for transaction: \(txId)")
         PaymentBridge.shared.processJavascriptResult(resultString, transactionId: txId)
+    }
+}
+
+class ThemeMessageHandler: NSObject, WKScriptMessageHandler {
+    static let shared = ThemeMessageHandler()
+    
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        let messageName = message.name
+        
+        switch messageName {
+        case "themeChanged":
+            handleThemeChanged(message)
+        case "themeInjected":
+            handleThemeInjected(message)
+        case "themeDebug":
+            handleThemeDebug(message)
+        case "themeRead":
+            handleThemeRead(message)
+        default:
+            Logger.shared.log("⚠️ Unknown theme message: \(messageName)")
+        }
+    }
+    
+    private func handleThemeChanged(_ message: WKScriptMessage) {
+        guard let messageBody = message.body as? [String: Any],
+              let theme = messageBody["theme"] as? String else {
+            Logger.shared.log("❌ Invalid theme change message format")
+            return
+        }
+        
+        Logger.shared.log("🎨 Theme change received: \(theme)")
+        ThemeManager.shared.handleThemeChangeFromWeb(theme)
+    }
+    
+    private func handleThemeInjected(_ message: WKScriptMessage) {
+        guard let messageBody = message.body as? [String: Any],
+              let success = messageBody["success"] as? Bool else {
+            Logger.shared.log("❌ Invalid theme injection message format")
+            return
+        }
+        
+        if success {
+            let theme = messageBody["theme"] as? Int ?? -1
+            let mode = messageBody["mode"] as? Int ?? -1
+            Logger.shared.log("✅ Theme injection confirmed: theme=\(theme), mode=\(mode)")
+        } else {
+            Logger.shared.log("❌ Theme injection failed")
+        }
+    }
+    
+    private func handleThemeDebug(_ message: WKScriptMessage) {
+        if let debugMessage = message.body as? String {
+            Logger.shared.log("🎨 Theme Debug: \(debugMessage)")
+        }
+    }
+    
+    private func handleThemeRead(_ message: WKScriptMessage) {
+        print("🎨 DEBUG: handleThemeRead called with message: \(message.body)")
+        guard let messageBody = message.body as? [String: Any] else {
+            Logger.shared.log("❌ Invalid theme read message format")
+            print("❌ DEBUG: Invalid theme read message format: \(message.body)")
+            return
+        }
+        
+        let success = messageBody["success"] as? Bool ?? false
+        print("🎨 DEBUG: Theme read success: \(success)")
+        
+        if success {
+            let theme = messageBody["theme"] as? Int ?? 2 // default to system
+            let mode = messageBody["mode"] as? Int ?? 0 // default to light
+            let key = messageBody["key"] as? String ?? "unknown"
+            let isDefault = messageBody["isDefault"] as? Bool ?? false
+            let reason = messageBody["reason"] as? String
+            
+            if isDefault {
+                // No stored theme found - use smart system default
+                Logger.shared.log("✅ No stored theme found, using smart system default: theme=\(theme), mode=\(mode), reason=\(reason ?? "No stored preference")")
+                ThemeManager.shared.setDefaultSystemTheme()
+            } else {
+                // Stored theme found - use it (allows web override of system)
+                Logger.shared.log("✅ Theme read from localStorage: theme=\(theme), mode=\(mode), key=\(key)")
+                print("🎨 DEBUG: Raw theme=\(theme), mode=\(mode)")
+                
+                // Convert web app values to native enum values
+                let lumoTheme: LumoTheme
+                let lumoMode: LumoThemeMode
+                
+                switch theme {
+                case 14: lumoTheme = .light
+                case 15: lumoTheme = .dark
+                case 16: lumoTheme = .system
+                default: lumoTheme = .system
+                }
+                
+                switch mode {
+                case 1: lumoMode = .dark
+                case 2: lumoMode = .light
+                default: lumoMode = .light
+                }
+                
+                Logger.shared.log("🎨 Converted to: theme=\(lumoTheme), mode=\(lumoMode)")
+                print("🎨 DEBUG: Converted to: theme=\(lumoTheme), mode=\(lumoMode)")
+                print("🎨 DEBUG: Calling ThemeManager.shared.setStoredTheme")
+                
+                ThemeManager.shared.setStoredTheme(lumoTheme, mode: lumoMode)
+                print("🎨 DEBUG: ThemeManager.shared.setStoredTheme completed")
+            }
+        } else {
+            let reason = messageBody["reason"] as? String ?? "Unknown error"
+            Logger.shared.log("⚠️ Could not read stored theme: \(reason)")
+            
+            // Default to smart system theme when reading fails
+            Logger.shared.log("🎨 Falling back to smart system default due to read failure")
+            ThemeManager.shared.setDefaultSystemTheme()
+        }
     }
 }
 
@@ -325,10 +437,40 @@ struct WebView: UIViewRepresentable {
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             let urlString = webView.url?.absoluteString ?? "unknown"
             Logger.shared.log("WebView finished navigating to: \(urlString)")
+            print("🎨 DEBUG: WebView finished navigating to: \(urlString)")
+            Logger.shared.log("🎨 DEBUG: WebView finished navigating to: \(urlString)")
+            
+            // Simple test to see if this method is called at all
+            webView.evaluateJavaScript("console.log('🎨 DEBUG: Native didFinish called - JavaScript is working')") { result, error in
+                if let error = error {
+                    print("🎨 DEBUG: JavaScript evaluation failed: \(error)")
+                } else {
+                    print("🎨 DEBUG: JavaScript evaluation succeeded: \(result ?? "nil")")
+                }
+            }
             
             // Immediately update URL to ensure proper state tracking
             DispatchQueue.main.async {
                 self.parent.currentURL = webView.url
+            }
+            
+            // Read stored theme from localStorage now that the page is loaded
+            // Add a longer delay to ensure web app has fully initialized
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                webView.evaluateJavaScript("console.log('🎨 DEBUG: About to call readStoredTheme with delay')") { result, error in
+                    if let error = error {
+                        print("🎨 DEBUG: JavaScript evaluation failed: \(error)")
+                    } else {
+                        print("🎨 DEBUG: JavaScript evaluation succeeded: \(result ?? "nil")")
+                    }
+                }
+                
+                print("🎨 DEBUG: About to call ThemeManager.shared.readStoredTheme() with delay")
+                Logger.shared.log("🎨 DEBUG: About to call ThemeManager.shared.readStoredTheme() with delay")
+                
+                ThemeManager.shared.readStoredTheme()
+                print("🎨 DEBUG: ThemeManager.shared.readStoredTheme() called with delay")
+                Logger.shared.log("🎨 DEBUG: ThemeManager.shared.readStoredTheme() called with delay")
             }
             
             // Fallback: Check if we landed on a signup page without plan parameter
@@ -473,6 +615,9 @@ struct WebView: UIViewRepresentable {
                     }
                 }
             }
+            
+            // Setup theme change listener
+            ThemeManager.shared.setupThemeChangeListener()
         }
 
         private func checkForElementWithRetry(webView: WKWebView) {
@@ -665,7 +810,7 @@ struct WebView: UIViewRepresentable {
         }
         
         configuration.websiteDataStore = dataStore
-        configuration.processPool = sharedProcessPool
+        // Note: No need to set processPool - iOS 15.0+ manages this automatically
         configuration.limitsNavigationsToAppBoundDomains = true
         
         let preferences = WKPreferences()
@@ -831,6 +976,13 @@ struct WebView: UIViewRepresentable {
         }
 
         configuration.userContentController.add(PaymentBridgeCallbackHandler.shared, name: "paymentBridgeCallback")
+        
+        // Add theme message handlers
+        let themeHandler = ThemeMessageHandler.shared
+        configuration.userContentController.add(themeHandler, name: "themeChanged")
+        configuration.userContentController.add(themeHandler, name: "themeInjected")
+        configuration.userContentController.add(themeHandler, name: "themeDebug")
+        configuration.userContentController.add(themeHandler, name: "themeRead")
 
         if let utilitiesScript = JSBridgeManager.shared.createUserScript(.utilities, injectionTime: .atDocumentStart, forMainFrameOnly: true) {
             configuration.userContentController.addUserScript(utilitiesScript)
@@ -853,6 +1005,11 @@ struct WebView: UIViewRepresentable {
         DispatchQueue.main.async {
             self.disableAllZoomGestures(in: webView)
             self.webViewStore = webView
+            
+        // Setup theme management
+        Logger.shared.log("🎨 DEBUG: About to call ThemeManager.shared.setup(webView:)")
+        ThemeManager.shared.setup(webView: webView)
+        Logger.shared.log("🎨 DEBUG: ThemeManager.shared.setup(webView:) completed")
         }
         
         webView.navigationDelegate = context.coordinator
@@ -912,6 +1069,9 @@ struct WebView: UIViewRepresentable {
                         }
                     }
                 }
+                
+                // Setup theme change listener
+                ThemeManager.shared.setupThemeChangeListener()
             }
         }
 

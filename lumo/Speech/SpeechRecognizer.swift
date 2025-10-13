@@ -87,7 +87,7 @@ class SpeechRecognizer: ObservableObject {
             Logger.shared.log("Setting up audio session for recording")
             
             try audioSession.setCategory(.playAndRecord, mode: .spokenAudio, 
-                                        options: [.defaultToSpeaker, .allowBluetooth])
+                                        options: [.defaultToSpeaker, .allowBluetoothHFP])
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
             
             try? audioSession.setPreferredSampleRate(16000.0)

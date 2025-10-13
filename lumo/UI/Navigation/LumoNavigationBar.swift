@@ -6,6 +6,19 @@ import ProtonUIFoundations
 struct LumoNavigationBar: View {
     let currentURL: URL?
     let onBackButtonPress: () -> Void
+    let isDarkMode: Bool
+    
+    private var backgroundColor: Color {
+        return isDarkMode ? Color(hex: 0x16141c) : Color.white
+    }
+    
+    private var textColor: Color {
+        return isDarkMode ? Color.white : Theme.color.black
+    }
+    
+    private var separatorColor: Color {
+        return isDarkMode ? Color.white.opacity(0.2) : Theme.color.separatorNorm
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -30,7 +43,7 @@ struct LumoNavigationBar: View {
                 if let url = currentURL?.absoluteString {
                     Text(getTitleForURL(url: url))
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(Theme.color.black)
+                        .foregroundColor(textColor)
                         .lineLimit(1)
                         .truncationMode(.tail)
                 }
@@ -39,9 +52,9 @@ struct LumoNavigationBar: View {
             .padding(.vertical, 12)
             
             Divider()
-                .background(Theme.color.separatorNorm)
+                .background(separatorColor)
         }
-        .background(Color.white)
+        .background(backgroundColor)
         .zIndex(2)
     }
     

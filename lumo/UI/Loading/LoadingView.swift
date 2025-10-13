@@ -4,6 +4,8 @@ import UIKit
 import Lottie
 
 struct LoadingView: View {
+    let isDarkMode: Bool
+    
     // State to track the current message index
     @State private var currentMessageIndex = 0
     
@@ -25,9 +27,17 @@ struct LoadingView: View {
         String(localized: "app.loading.stretching"),
     ]
     
+    private var backgroundColor: Color {
+        return isDarkMode ? Color(hex: 0x16141c) : Color.white
+    }
+    
+    private var textColor: Color {
+        return isDarkMode ? Color.white : Color.black
+    }
+    
     var body: some View {
         ZStack {
-            Color.white
+            backgroundColor
                 .ignoresSafeArea()
                        
             
@@ -39,7 +49,7 @@ struct LoadingView: View {
                 // Message with fade transition
                 Text(loadingMessages[currentMessageIndex])
                     .font(.footnote)
-                    .foregroundColor(.black)
+                    .foregroundColor(textColor)
                     .multilineTextAlignment(.center)
                     .frame(height: 40) // Fixed height to prevent layout shifts
                     .transition(.opacity)

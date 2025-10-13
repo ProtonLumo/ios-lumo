@@ -144,7 +144,7 @@ private extension PurchaseManager {
                 return
             }
             
-            var tokenPayload = newToken.toDictionary()
+            let tokenPayload = newToken.toDictionary()
             
             // ✅ Step 2: Token Post Started
             Logger.shared.log("Notifying delegate: Token post started")

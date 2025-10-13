@@ -304,7 +304,7 @@ public class AppleSubscriptionManager: ObservableObject {
             Logger.shared.log("=== DEBUG: Subscription Management ===")
             Logger.shared.log("Subscription statuses count: \(subscriptionStatuses.count)")
             
-            for (productId, status) in subscriptionStatuses {
+            for (_, status) in subscriptionStatuses {
                 
                 switch status.transaction {
                 case .verified(let transaction):
@@ -348,7 +348,7 @@ public class AppleSubscriptionManager: ObservableObject {
             await updateSubscriptionStatuses()
             
             // Monitor for subscription status updates
-            for await update in Transaction.updates {
+            for await _ in Transaction.updates {
                 Logger.shared.log("Received transaction update")
                 await updateSubscriptionStatuses()
             }

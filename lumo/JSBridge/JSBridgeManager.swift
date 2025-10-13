@@ -18,13 +18,18 @@ enum JSBridgeScript: String, CaseIterable {
     
     case insertSubmitClear = "insert-submit-clear"
     
+    // Theme management scripts
+    case themeInjection = "theme-injection"
+    case themeChangeListener = "theme-change-listener"
+    case themeReader = "theme-reader"
+    
     var filename: String {
         return "\(self.rawValue).js"
     }
     
     var requiresParameters: Bool {
         switch self {
-        case .insertSubmitClear, .paymentApi:
+        case .insertSubmitClear, .paymentApi, .themeInjection:
             return true
         default:
             return false
@@ -154,6 +159,32 @@ class JSBridgeManager {
                                   parameters: parameters,
                                   in: webView,
                                   completion: completion)
+    }
+    
+    func injectTheme(theme: Int,
+                    mode: Int,
+                    in webView: WKWebView,
+                    completion: ((Any?, Error?) -> Void)? = nil) {
+        let parameters = [
+            "THEME": String(theme),
+            "MODE": String(mode)
+        ]
+        
+        evaluateParameterizedScript(.themeInjection,
+                                  parameters: parameters,
+                                  in: webView,
+                                  completion: completion)
+    }
+    
+    func setupThemeChangeListener(in webView: WKWebView,
+                                completion: ((Any?, Error?) -> Void)? = nil) {
+        evaluateScript(.themeChangeListener, in: webView, completion: completion)
+    }
+    
+    func readStoredTheme(in webView: WKWebView, completion: ((Any?, Error?) -> Void)? = nil) {
+        Logger.shared.log("🎨 JSBridgeManager: Loading theme-reader.js")
+        print("🎨 DEBUG: JSBridgeManager loading theme-reader.js")
+        evaluateScript(.themeReader, in: webView, completion: completion)
     }
     
     // MARK: - Private Methods
