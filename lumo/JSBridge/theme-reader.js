@@ -25,50 +25,36 @@
             if (storedSettings) {
                 const settings = JSON.parse(storedSettings);
                 
-                // For system theme, always use current system preference, not stored mode
-                // The stored mode might be stale if device appearance changed since last save
-                let actualMode = settings.mode;
-                // Check if theme is "system" (stored as theme 14 with mode 0, or possibly theme 16)
-                const isSystemTheme = (settings.theme === 14 && settings.mode === 0) || settings.theme === 16;
-                if (isSystemTheme) {
-                    actualMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 1 : 2; // 1=dark, 2=light
-                }
+                // Just send the mode value as-is (0=system, 1=dark, 2=light)
+                // Native code will handle determining the actual appearance for system theme
+                const mode = settings.mode;
                 
                 // Send the stored theme to native
                 if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.themeRead) {
                     window.webkit.messageHandlers.themeRead.postMessage({
                         success: true,
-                        theme: settings.theme,
-                        mode: actualMode,
-                        storedMode: settings.mode,
-                        key: key,
-                        rawSettings: storedSettings,
-                        isSystemTheme: isSystemTheme
+                        mode: mode,
+                        key: key
                     });
                 }
                 
                 return {
-                    theme: settings.theme,
-                    mode: actualMode
+                    mode: mode
                 };
             } else {
-                // No stored theme found, default to system theme
-                const systemMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 1 : 2; // 1=dark, 2=light
+                // No stored theme found, default to system theme (mode 0)
                 
                 if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.themeRead) {
                     window.webkit.messageHandlers.themeRead.postMessage({
                         success: true,
-                        theme: 16, // system theme (assuming 16, or could use 14 with mode 0)
-                        mode: systemMode,
+                        mode: 0, // 0 = system theme
                         key: key,
-                        reason: "No stored theme found, defaulting to system",
-                        isDefault: true
+                        reason: "No stored theme found, defaulting to system"
                     });
                 }
                 
                 return {
-                    theme: 16, // system (or 14)
-                    mode: systemMode
+                    mode: 0
                 };
             }
         } catch (error) {

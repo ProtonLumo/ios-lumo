@@ -16,18 +16,8 @@
         const ariaLabel = button.getAttribute("aria-label");
         const theme = extractThemeFromAriaLabel(ariaLabel);
 
-        // Log for debugging
-        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.themeDebug) {
-            window.webkit.messageHandlers.themeDebug.postMessage("✅ Observing theme button: " + ariaLabel);
-        }
-
         button.addEventListener('click', function() {
             const clickedTheme = extractThemeFromAriaLabel(this.getAttribute("aria-label"));
-            
-            // Log for debugging
-            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.themeDebug) {
-                window.webkit.messageHandlers.themeDebug.postMessage("🎯 Theme button clicked: " + clickedTheme);
-            }
             
             // Send theme change to iOS
             if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.themeChanged) {
@@ -44,9 +34,6 @@
         const buttons = document.querySelectorAll('button.lumo-theme-card-button');
 
         if (buttons.length > 0) {
-            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.themeDebug) {
-                window.webkit.messageHandlers.themeDebug.postMessage("Found " + buttons.length + " theme buttons");
-            }
             buttons.forEach(attachClickObserver);
         }
     }
@@ -76,10 +63,6 @@
         childList: true,
         subtree: true
     });
-
-    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.themeDebug) {
-        window.webkit.messageHandlers.themeDebug.postMessage("Theme change listener initialized");
-    }
 })();
 
 

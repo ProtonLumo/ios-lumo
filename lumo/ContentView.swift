@@ -118,17 +118,8 @@ struct ContentView: View {
     }
     
     private var backgroundColor: Color {
-        // Compute backgroundColor from ThemeManager and colorScheme to avoid race conditions
-        let shouldBeDark: Bool
-        switch ThemeManager.shared.currentTheme {
-        case .light:
-            shouldBeDark = false
-        case .dark:
-            shouldBeDark = true
-        case .system:
-            shouldBeDark = colorScheme == .dark
-        }
-        return shouldBeDark ? darkModeBackgroundColor : Color.white
+        // Use isDarkMode state which is kept in sync by updateThemeState()
+        return isDarkMode ? darkModeBackgroundColor : Color.white
     }
 
     var body: some View {
@@ -231,18 +222,21 @@ struct ContentView: View {
             updateThemeState()
         }
         .onChange(of: colorScheme) { newValue in
-            Logger.shared.log("🎨 ColorScheme changed to \(newValue)")
-            updateThemeState()
-        }
-        .task {
-            // Initialize isDarkMode immediately based on colorScheme before anything else loads
-            // This prevents white flash on dark mode startup
-            isDarkMode = colorScheme == .dark
+            Logger.shared.log("📱 ColorScheme changed to: \(newValue == .dark ? "dark" : "light")")
+            // Only respond to colorScheme changes if we're on system theme
+            let themeManager = ThemeManager.shared
+            Logger.shared.log("📱 Current theme is: \(themeManager.currentTheme.rawValue) (\(themeManager.currentTheme.rawValue == 0 ? "light" : themeManager.currentTheme.rawValue == 1 ? "dark" : "system"))")
+            if themeManager.currentTheme == .system {
+                Logger.shared.log("📱 Theme is .system, calling updateThemeState()")
+                updateThemeState()
+            } else {
+                Logger.shared.log("📱 Theme is NOT .system, ignoring colorScheme change")
+            }
         }
         .onAppear {
             Logger.shared.log("ContentView appeared")
             
-            // Update theme state immediately on appear
+            // Update theme state - this will set isDarkMode based on stored theme or system default
             updateThemeState()
 
             // Reduced from 5 seconds to 2 seconds for faster perceived loading
@@ -251,9 +245,6 @@ struct ContentView: View {
             }
 
             setupNotificationObservers()
-            
-            // Initialize theme state
-            updateThemeState()
         }
         .sheet(isPresented: $showCurrentPlans) {
             
@@ -733,10 +724,13 @@ struct ContentView: View {
     private func updateThemeState() {
         let themeManager = ThemeManager.shared
         
-        Logger.shared.log("🎨 ContentView updateThemeState - SwiftUI colorScheme: \(colorScheme), current theme: \(themeManager.currentTheme)")
+        Logger.shared.log("📱 updateThemeState called: currentTheme=\(themeManager.currentTheme.rawValue), currentMode=\(themeManager.currentMode.rawValue), colorScheme=\(colorScheme == .dark ? "dark" : "light"), isDarkMode=\(isDarkMode)")
         
-        // Update ThemeManager with current system theme info
-        themeManager.updateSystemThemeMode(colorScheme == .dark)
+        // Only update system theme mode if we're actually on system theme
+        // This prevents unnecessary updates when theme is explicitly Light or Dark
+        if themeManager.currentTheme == .system {
+            themeManager.updateSystemThemeMode(colorScheme == .dark)
+        }
         
         // Determine if we should be in dark mode
         let shouldBeDark: Bool
@@ -747,15 +741,19 @@ struct ContentView: View {
         case .dark:
             shouldBeDark = true
         case .system:
-            // Use SwiftUI's colorScheme environment which is more reliable
-            shouldBeDark = colorScheme == .dark
+            shouldBeDark = themeManager.currentMode == .dark
         }
         
+        Logger.shared.log("📱 shouldBeDark=\(shouldBeDark), current isDarkMode=\(isDarkMode)")
+        
+        // Only update if there's an actual change to prevent unnecessary animations
         if isDarkMode != shouldBeDark {
+            Logger.shared.log("📱 UPDATING isDarkMode from \(isDarkMode) to \(shouldBeDark)")
             withAnimation(.easeInOut(duration: 0.3)) {
                 isDarkMode = shouldBeDark
             }
-            Logger.shared.log("🎨 App theme updated to: \(shouldBeDark ? "dark" : "light") (theme: \(themeManager.currentTheme), colorScheme: \(colorScheme))")
+        } else {
+            Logger.shared.log("📱 No change needed - isDarkMode already \(isDarkMode)")
         }
     }
 

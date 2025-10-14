@@ -21,21 +21,32 @@ class ThemeManager: NSObject {
     private(set) var currentTheme: LumoTheme = .system
     private(set) var currentMode: LumoThemeMode = .light
     
+    // Cache the true system appearance at app launch BEFORE any overrides are set
+    // This is the ONLY reliable way to know the actual iOS system appearance
+    private var cachedSystemAppearance: LumoThemeMode
+    
     private override init() {
+        // Detect system appearance FIRST, before any UI initialization
+        cachedSystemAppearance = ThemeManager.detectSystemAppearanceAtLaunch()
         super.init()
         setupSystemThemeObserver()
         updateCurrentMode()
+    }
+    
+    // Static method to detect system appearance at launch
+    private static func detectSystemAppearanceAtLaunch() -> LumoThemeMode {
+        if #available(iOS 13.0, *) {
+            let style = UITraitCollection.current.userInterfaceStyle
+            return style == .dark ? .dark : .light
+        }
+        return .light
     }
     
     // MARK: - Public API
     
     func setup(webView: WKWebView) {
         self.webView = webView
-        
-        // Always start with system theme detection
         updateCurrentMode()
-        
-        Logger.shared.log("🎨 ThemeManager setup complete - initial theme: \(currentTheme), mode: \(currentMode)")
     }
     
     func setupThemeChangeListener() {
@@ -43,8 +54,6 @@ class ThemeManager: NSObject {
             Logger.shared.log("❌ ThemeManager: WebView not set")
             return
         }
-        
-        Logger.shared.log("🎨 Setting up theme change listener")
         
         JSBridgeManager.shared.setupThemeChangeListener(in: webView) { result, error in
             if let error = error {
@@ -61,8 +70,6 @@ class ThemeManager: NSObject {
             return
         }
         
-        Logger.shared.log("🎨 Reading stored theme from localStorage")
-        
         JSBridgeManager.shared.readStoredTheme(in: webView) { result, error in
             if let error = error {
                 Logger.shared.log("❌ Theme reading failed: \(error)")
@@ -73,37 +80,45 @@ class ThemeManager: NSObject {
     }
     
     func updateSystemThemeMode(_ isDark: Bool) {
-        let newMode: LumoThemeMode = isDark ? .dark : .light
+        // SwiftUI's colorScheme is the reliable source of truth (now that we removed the forced Light mode)
+        let newSystemMode: LumoThemeMode = isDark ? .dark : .light
         
-        Logger.shared.log("🎨 updateSystemThemeMode called - isDark: \(isDark), newMode: \(newMode), currentTheme: \(currentTheme), currentMode: \(currentMode)")
+        Logger.shared.log("📱 System theme mode update: isDark=\(isDark), newSystemMode=\(newSystemMode.rawValue), cachedSystemAppearance=\(cachedSystemAppearance.rawValue), currentTheme=\(currentTheme.rawValue), currentMode=\(currentMode.rawValue)")
         
-        // Only update if we're using system theme
-        if currentTheme == .system {
-            let oldMode = currentMode
-            currentMode = newMode
+        // Update the cache when system appearance changes
+        if cachedSystemAppearance != newSystemMode {
+            Logger.shared.log("📱 Updating cachedSystemAppearance from \(cachedSystemAppearance.rawValue) to \(newSystemMode.rawValue)")
+            cachedSystemAppearance = newSystemMode
+        }
+        
+        // Only update if we're on system theme AND the mode actually changed
+        if currentTheme == .system && currentMode != cachedSystemAppearance {
+            Logger.shared.log("📱 Theme is .system and mode changed - updating from \(currentMode.rawValue) to \(cachedSystemAppearance.rawValue)")
+            currentMode = cachedSystemAppearance
+            updateWebViewInterfaceStyle()
             
-            if oldMode != newMode {
-                Logger.shared.log("🎨 System theme mode updated from \(oldMode) to \(newMode)")
-                
-                // Notify the app to update its UI
-                NotificationCenter.default.post(
-                    name: NSNotification.Name("ThemeChangedFromWeb"),
-                    object: nil,
-                    userInfo: [
-                        "theme": currentTheme.rawValue,
-                        "mode": currentMode.rawValue,
-                        "source": "system"
-                    ]
-                )
-            }
+            // Notify ContentView to update its UI
+            NotificationCenter.default.post(
+                name: NSNotification.Name("ThemeChangedFromWeb"),
+                object: nil,
+                userInfo: [
+                    "theme": currentTheme.rawValue,
+                    "mode": currentMode.rawValue,
+                    "source": "system_update"
+                ]
+            )
+        } else {
+            Logger.shared.log("📱 No update needed: currentTheme=\(currentTheme.rawValue), currentMode=\(currentMode.rawValue), cachedSystemAppearance=\(cachedSystemAppearance.rawValue)")
         }
     }
     
+    
     func setStoredTheme(_ theme: LumoTheme, mode: LumoThemeMode) {
-        Logger.shared.log("🎨 Setting stored theme: \(theme) (\(mode))")
-        
         currentTheme = theme
         currentMode = mode // Always use the mode provided - JavaScript already calculated it correctly
+        
+        // Update webview interface style to reflect the stored theme
+        updateWebViewInterfaceStyle()
         
         // Notify app about theme change
         NotificationCenter.default.post(
@@ -118,12 +133,13 @@ class ThemeManager: NSObject {
     }
     
     func setDefaultSystemTheme() {
-        Logger.shared.log("🎨 No stored theme found, using smart system default")
-        
         // Default to system theme
         currentTheme = .system
         // currentMode will be set by ContentView's updateSystemThemeMode()
         // based on SwiftUI's colorScheme which is more reliable
+        
+        // Update webview interface style for system theme
+        updateWebViewInterfaceStyle()
         
         // Notify app about theme change (mode will be updated by ContentView)
         NotificationCenter.default.post(
@@ -137,9 +153,35 @@ class ThemeManager: NSObject {
         )
     }
     
-    func handleThemeChangeFromWeb(_ themeName: String) {
-        Logger.shared.log("🎨 Theme change received from web: \(themeName)")
+    func updateWebViewInterfaceStyle() {
+        guard let webView = webView else {
+            Logger.shared.log("⚠️ Cannot update webview interface style - webView is nil")
+            return
+        }
         
+        // Set the webview's user interface style based on current theme
+        // Only override for explicit Light/Dark themes
+        // For System theme, don't set anything - let it inherit naturally
+        DispatchQueue.main.async { [weak webView] in
+            guard let webView = webView else {
+                Logger.shared.log("⚠️ WebView deallocated before interface style update")
+                return
+            }
+            
+            switch self.currentTheme {
+            case .light:
+                webView.overrideUserInterfaceStyle = .light
+            case .dark:
+                webView.overrideUserInterfaceStyle = .dark
+            case .system:
+                // Don't set overrideUserInterfaceStyle at all for system theme
+                // This allows the webview to naturally inherit the system appearance
+                webView.overrideUserInterfaceStyle = .unspecified
+            }
+        }
+    }
+    
+    func handleThemeChangeFromWeb(_ themeName: String) {
         let theme: LumoTheme
         switch themeName.lowercased() {
         case "light":
@@ -156,37 +198,33 @@ class ThemeManager: NSObject {
         currentTheme = theme
         
         // Update mode based on theme selection
-        let mode: LumoThemeMode
         switch theme {
         case .light:
-            mode = .light
+            currentMode = .light
         case .dark:
-            mode = .dark
+            currentMode = .dark
         case .system:
-            mode = getSystemThemeMode()
+            currentMode = cachedSystemAppearance
         }
         
-        currentMode = mode
+        // Update webview interface style to match new theme
+        updateWebViewInterfaceStyle()
         
-        // Notify app about theme change if needed
+        // Notify app about theme change - ContentView will call updateSystemThemeMode()
         NotificationCenter.default.post(
             name: NSNotification.Name("ThemeChangedFromWeb"),
             object: nil,
             userInfo: [
                 "theme": theme.rawValue,
-                "mode": mode.rawValue,
+                "mode": currentMode.rawValue,
                 "themeName": themeName
             ]
         )
-        
-        Logger.shared.log("🎨 Theme updated to: \(theme) (\(mode))")
     }
     
     // MARK: - Private Methods
     
     private func setupSystemThemeObserver() {
-        Logger.shared.log("🎨 Setting up system theme observer")
-        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(systemThemeChanged),
@@ -202,94 +240,27 @@ class ThemeManager: NSObject {
             object: nil
         )
         
-        // Observe trait collection changes directly if available
-        if #available(iOS 13.0, *) {
-            // This will be called by ContentView when colorScheme changes
-            Logger.shared.log("🎨 iOS 13.0+ - relying on SwiftUI colorScheme changes")
-        }
     }
     
     @objc private func systemThemeChanged() {
-        Logger.shared.log("🎨 systemThemeChanged notification received")
-        checkForSystemThemeChange()
+        // SwiftUI's colorScheme will automatically trigger ContentView's onChange
+        // which will call updateSystemThemeMode with the correct value
     }
     
-    private func checkForSystemThemeChange() {
-        let newMode = getSystemThemeMode()
-        
-        Logger.shared.log("🎨 checkForSystemThemeChange - currentTheme: \(currentTheme), currentMode: \(currentMode), newMode: \(newMode)")
-        
-        // Only update if we're using system theme and the mode actually changed
-        if currentTheme == .system && newMode != currentMode {
-            Logger.shared.log("🎨 System theme changed from \(currentMode) to \(newMode)")
-            currentMode = newMode
-            
-            // Notify the app to update its UI
-            NotificationCenter.default.post(
-                name: NSNotification.Name("ThemeChangedFromWeb"),
-                object: nil,
-                userInfo: [
-                    "theme": currentTheme.rawValue,
-                    "mode": currentMode.rawValue,
-                    "source": "system_change"
-                ]
-            )
-        }
-    }
-    
-    private func getSystemThemeMode() -> LumoThemeMode {
-        if #available(iOS 13.0, *) {
-            // Try to get trait collection from key window for more reliable detection
-            let userInterfaceStyle: UIUserInterfaceStyle
-            
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let keyWindow = windowScene.windows.first(where: { $0.isKeyWindow }) {
-                userInterfaceStyle = keyWindow.traitCollection.userInterfaceStyle
-                Logger.shared.log("🎨 System theme detected from keyWindow: \(userInterfaceStyle.rawValue) (\(userInterfaceStyle == .dark ? "dark" : "light"))")
-                print("🎨 DEBUG: keyWindow userInterfaceStyle: \(userInterfaceStyle.rawValue) (\(userInterfaceStyle == .dark ? "dark" : "light"))")
-            } else {
-                // Fallback to current trait collection
-                userInterfaceStyle = UITraitCollection.current.userInterfaceStyle
-                Logger.shared.log("🎨 System theme detected from UITraitCollection.current: \(userInterfaceStyle.rawValue) (\(userInterfaceStyle == .dark ? "dark" : "light"))")
-                print("🎨 DEBUG: UITraitCollection.current userInterfaceStyle: \(userInterfaceStyle.rawValue) (\(userInterfaceStyle == .dark ? "dark" : "light"))")
-            }
-            
-            // Additional debug: check all connected scenes and windows
-            print("🎨 DEBUG: Connected scenes count: \(UIApplication.shared.connectedScenes.count)")
-            for scene in UIApplication.shared.connectedScenes {
-                if let windowScene = scene as? UIWindowScene {
-                    print("🎨 DEBUG: WindowScene: \(windowScene), windows count: \(windowScene.windows.count)")
-                    for (index, window) in windowScene.windows.enumerated() {
-                        print("🎨 DEBUG: Window[\(index)]: isKeyWindow=\(window.isKeyWindow), userInterfaceStyle=\(window.traitCollection.userInterfaceStyle.rawValue)")
-                    }
-                }
-            }
-            
-            switch userInterfaceStyle {
-            case .dark:
-                return .dark
-            case .light, .unspecified:
-                return .light
-            @unknown default:
-                return .light
-            }
-        } else {
-            Logger.shared.log("🎨 iOS < 13.0, defaulting to light mode")
-            return .light
-        }
+    func getSystemThemeMode() -> LumoThemeMode {
+        // Return the cached system appearance
+        return cachedSystemAppearance
     }
     
     private func updateCurrentMode() {
-        let oldMode = currentMode
         switch currentTheme {
         case .light:
             currentMode = .light
         case .dark:
             currentMode = .dark
         case .system:
-            currentMode = getSystemThemeMode()
+            currentMode = cachedSystemAppearance
         }
-        Logger.shared.log("🎨 ThemeManager updateCurrentMode - theme: \(currentTheme), changed from \(oldMode) to \(currentMode)")
     }
     
     deinit {

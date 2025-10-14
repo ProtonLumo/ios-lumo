@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "lumo-app-ios 1.png",
+      "filename" : "lumo-dark.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -25,7 +25,7 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "lumo-app-ios 2.png",
+      "filename" : "lumo-dark 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24128" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,33 +17,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LumoFront" translatesAutoresizingMaskIntoConstraints="NO" id="8EL-Nb-FxD">
-                                <rect key="frame" x="146.5" y="362" width="100" height="113"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="8EL-Nb-FxD" secondAttribute="height" multiplier="236:266.667" id="LumoFront-aspect-ratio"/>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="120" id="LumoFront-max-width"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="LumoFront-min-width"/>
-                                </constraints>
-                            </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ByProton" translatesAutoresizingMaskIntoConstraints="NO" id="pfy-6V-W8Y">
-                                <rect key="frame" x="137" y="731" width="118" height="62"/>
+                                <rect key="frame" x="136.66666666666666" y="681.33333333333337" width="119.99999999999997" height="62.333333333333371"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="pfy-6V-W8Y" secondAttribute="height" multiplier="169:87.3333" id="ByProton-aspect-ratio"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="120" id="ByProton-max-width"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="ByProton-min-width"/>
                                 </constraints>
                             </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="LumoFront" translatesAutoresizingMaskIntoConstraints="NO" id="8EL-Nb-FxD">
+                                <rect key="frame" x="114" y="334" width="164" height="185"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="8EL-Nb-FxD" secondAttribute="height" multiplier="236:266.667" id="LumoFront-aspect-ratio"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="120" id="LumoFront-max-width"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="LumoFront-min-width"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="LaunchScreenBackground"/>
                         <constraints>
-                            <!-- LumoFront logo centered horizontally and vertically -->
+                            <constraint firstItem="pfy-6V-W8Y" firstAttribute="bottom" secondItem="Bcu-3y-fUS" secondAttribute="bottom" constant="-40.5" id="ByProton-bottom"/>
+                            <constraint firstItem="pfy-6V-W8Y" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ByProton-centerX"/>
                             <constraint firstItem="8EL-Nb-FxD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="LumoFront-centerX"/>
                             <constraint firstItem="8EL-Nb-FxD" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="LumoFront-centerY"/>
-                            
-                            <!-- ByProton logo centered horizontally and positioned at bottom -->
-                            <constraint firstItem="pfy-6V-W8Y" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ByProton-centerX"/>
-                            <constraint firstItem="pfy-6V-W8Y" firstAttribute="bottom" secondItem="Bcu-3y-fUS" secondAttribute="bottom" constant="-40" id="ByProton-bottom"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -54,5 +52,8 @@
     <resources>
         <image name="ByProton" width="169" height="87.333335876464844"/>
         <image name="LumoFront" width="236" height="266.66665649414062"/>
+        <namedColor name="LaunchScreenBackground">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

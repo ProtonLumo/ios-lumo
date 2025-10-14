@@ -45,7 +45,6 @@ class ThemeMessageHandler: NSObject, WKScriptMessageHandler {
             return
         }
         
-        Logger.shared.log("🎨 Theme change received: \(theme)")
         ThemeManager.shared.handleThemeChangeFromWeb(theme)
     }
     
@@ -58,45 +57,42 @@ class ThemeMessageHandler: NSObject, WKScriptMessageHandler {
         let success = messageBody["success"] as? Bool ?? false
         
         if success {
-            let theme = messageBody["theme"] as? Int ?? 2 // default to system
-            let mode = messageBody["mode"] as? Int ?? 0 // default to light
+            let mode = messageBody["mode"] as? Int ?? 2 // default to light (web: 0=system, 1=dark, 2=light)
             let key = messageBody["key"] as? String ?? "unknown"
-            let isDefault = messageBody["isDefault"] as? Bool ?? false
-            let reason = messageBody["reason"] as? String
             
-            if isDefault {
-                // No stored theme found - use smart system default
-                Logger.shared.log("✅ No stored theme found, using smart system default: theme=\(theme), mode=\(mode), reason=\(reason ?? "No stored preference")")
-                ThemeManager.shared.setDefaultSystemTheme()
-            } else {
-                // Stored theme found - use it (allows web override of system)
-                Logger.shared.log("✅ Theme read from localStorage: theme=\(theme), mode=\(mode), key=\(key)")
-                
-                // Convert web app values to native enum values
-                let lumoTheme: LumoTheme
-                let lumoMode: LumoThemeMode
-                
-                switch theme {
-                case 14: lumoTheme = .light
-                case 15: lumoTheme = .dark
-                case 16: lumoTheme = .system
-                default: lumoTheme = .system
-                }
-                
-                switch mode {
-                case 1: lumoMode = .dark
-                case 2: lumoMode = .light
-                default: lumoMode = .light
-                }
-                
-                ThemeManager.shared.setStoredTheme(lumoTheme, mode: lumoMode)
+            // Stored theme found - use it (allows web override of system)
+            Logger.shared.log("✅ Theme read from localStorage: mode=\(mode), key=\(key)")
+            
+            // Convert web mode value to native theme and mode
+            // Web format: mode is the only value that matters (0=system, 1=dark, 2=light)
+            let lumoTheme: LumoTheme
+            let lumoMode: LumoThemeMode
+            
+            switch mode {
+                case 0:
+                    // Mode 0 = System theme
+                    lumoTheme = .system
+                    // Use ThemeManager's cached system appearance
+                    lumoMode = ThemeManager.shared.getSystemThemeMode()
+                case 1:
+                    // Mode 1 = Explicit Dark theme
+                    lumoTheme = .dark
+                    lumoMode = .dark
+                case 2:
+                    // Mode 2 = Explicit Light theme
+                    lumoTheme = .light
+                    lumoMode = .light
+                default:
+                    // Fallback to system
+                    lumoTheme = .system
+                    lumoMode = ThemeManager.shared.getSystemThemeMode()
             }
+            
+            ThemeManager.shared.setStoredTheme(lumoTheme, mode: lumoMode)
+        
         } else {
             let reason = messageBody["reason"] as? String ?? "Unknown error"
             Logger.shared.log("⚠️ Could not read stored theme: \(reason)")
-            
-            // Default to smart system theme when reading fails
-            Logger.shared.log("🎨 Falling back to smart system default due to read failure")
             ThemeManager.shared.setDefaultSystemTheme()
         }
     }

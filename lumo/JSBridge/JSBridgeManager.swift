@@ -166,7 +166,6 @@ class JSBridgeManager {
     }
     
     func readStoredTheme(in webView: WKWebView, completion: ((Any?, Error?) -> Void)? = nil) {
-        Logger.shared.log("🎨 JSBridgeManager: Loading theme-reader.js")
         evaluateScript(.themeReader, in: webView, completion: completion)
     }
     

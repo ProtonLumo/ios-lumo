@@ -49,6 +49,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         Logger.shared.log("App launched with options: \(String(describing: launchOptions))", category: "AppDelegate")
         
+        // CRITICAL: Initialize ThemeManager FIRST before any UI is created
+        // This caches the true system appearance before any overrideUserInterfaceStyle is set
+        _ = ThemeManager.shared
+        Logger.shared.log("ThemeManager initialized early", category: "AppDelegate")
+        
         // Initialize Apple Subscription Manager
         Task {
             _ = AppleSubscriptionManager.shared
