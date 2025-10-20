@@ -75,6 +75,7 @@ struct ContentView: View {
     @State private var webViewReference: WKWebView? = nil
     @State private var networkError: Bool = false
     @State private var processTerminated: Bool = false
+    @State private var paymentHandler: PaymentHandler? = nil
     @State private var isSubmittingSpeech = false
     @State private var webProcessTerminated = false
     @State private var processTerminationCount = 0
@@ -145,7 +146,8 @@ struct ContentView: View {
                         currentURL: $currentWebViewURL,
                         webViewStore: $webViewReference,
                         networkError: $networkError,
-                        processTerminated: $processTerminated)
+                        processTerminated: $processTerminated,
+                        paymentHandler: $paymentHandler)
                     .onAppear { Logger.shared.log("WebView appeared") }
                     .onDisappear {
                         Logger.shared.log("ContentView disappeared")
@@ -238,14 +240,6 @@ struct ContentView: View {
             // This gives us ~30 seconds to finish any ongoing generation
             Logger.shared.log("📱 App will resign active - starting background task to complete AI generation")
             BackgroundTaskManager.shared.beginBackgroundTask()
-            
-            // Log remaining time for debugging (safely handle infinity)
-            let remainingTime = BackgroundTaskManager.shared.remainingBackgroundTime
-            if remainingTime == .infinity {
-                Logger.shared.log("📱 Background time: unlimited (still in foreground)")
-            } else {
-                Logger.shared.log("📱 Background time remaining: \(String(format: "%.0f", remainingTime)) seconds")
-            }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)) { _ in
             Logger.shared.log("📱 App entered background")
@@ -254,24 +248,19 @@ struct ContentView: View {
             }
         }
         .onChange(of: colorScheme) { newValue in
-            Logger.shared.log("📱 ColorScheme changed to: \(newValue == .dark ? "dark" : "light")")
             // Only respond to colorScheme changes if we're on system theme
             let themeManager = ThemeManager.shared
             Logger.shared.log("📱 Current theme is: \(themeManager.currentTheme.rawValue) (\(themeManager.currentTheme.rawValue == 0 ? "light" : themeManager.currentTheme.rawValue == 1 ? "dark" : "system"))")
             if themeManager.currentTheme == .system {
                 Logger.shared.log("📱 Theme is .system, calling updateThemeState()")
                 updateThemeState()
-            } else {
-                Logger.shared.log("📱 Theme is NOT .system, ignoring colorScheme change")
             }
         }
         .onAppear {
             Logger.shared.log("ContentView appeared")
-            
-            // Update theme state - this will set isDarkMode based on stored theme or system default
+        
             updateThemeState()
 
-            // Reduced from 5 seconds to 2 seconds for faster perceived loading
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 isLoading = false
             }
@@ -283,7 +272,6 @@ struct ContentView: View {
             if let viewModel = currentPlansViewModel {
                 CurrentPlansView(viewModel: viewModel)
             } else {
-                // Show loading view while view model is being created
                 ZStack {
                     Color(Theme.color.backgroundNorm)
                         .ignoresSafeArea()
@@ -323,29 +311,21 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - Back Navigation (simplified)
-    
+    // MARK: - Back Navigation
     private func handleBackButtonPress() {
         guard let currentURL = currentWebViewURL else {
             Logger.shared.log("No current URL available for back navigation")
             return
         }
         
-        Logger.shared.log("Back to Lumo button pressed from: \(currentURL.absoluteString)")
-        
-        // Always navigate back to Lumo main page
         safeWebViewOperation { webView in
-            // Show loading screen for transition back to Lumo
             DispatchQueue.main.async {
                 self.showLoader = true
                 self.webViewReady = false
             }
             
-            // Navigate to main page
             webView.stopLoading()
             webView.loadLumoBase()
-            
-            Logger.shared.log("Navigating back to Lumo main page")
         }
     }
     
@@ -353,8 +333,6 @@ struct ContentView: View {
     
     private func handleURLChange(_ newURL: URL?) {
         let urlString = newURL?.absoluteString ?? "nil"
-        Logger.shared.log("currentWebViewURL changed to: \(urlString)")
-
         guard newURL != nil else { return }
         
         // Check if this is a signup URL without plan parameter and redirect if needed
@@ -364,17 +342,14 @@ struct ContentView: View {
             
             let modifiedURLString = urlString.addingQueryParameter("plan", value: "free")
             
-            Logger.shared.log("🔄 CONTENTVIEW: Redirecting to: \(modifiedURLString)")
-            
             if let modifiedURL = URL(string: modifiedURLString) {
                 safeWebViewOperation { webView in
                     webView.load(URLRequest(url: modifiedURL))
                 }
-                return // Don't proceed with normal navigation handling
+                return
             }
         }
         
-        // Simple back button state: show when on account pages
         webViewCanGoBack = urlString.contains(Config.ACCOUNT_BASE_URL)
     }
 
@@ -404,7 +379,6 @@ struct ContentView: View {
             webView.scrollView.zoomScale = 1.0
             webView.scrollView.setContentOffset(CGPoint.zero, animated: false)
             
-            // Use coordinator for cleanup commands
             Task {
                 let cleanupCommands: [JSCommand] = [
                     .simulateGarbageCollection,
@@ -418,7 +392,6 @@ struct ContentView: View {
                 self.jsCoordinator.cleanup()
             }
 
-            // Only clear cache data to help with recovery
             let cacheOnlyDataTypes: Set<String> = [
                 WKWebsiteDataTypeDiskCache,
                 WKWebsiteDataTypeMemoryCache,
@@ -459,7 +432,6 @@ struct ContentView: View {
     }
 
     // MARK: - Speech Recognition
-
     private func formatDuration(_ duration: TimeInterval) -> String {
         let minutes = Int(duration) / 60
         let seconds = Int(duration) % 60
@@ -474,21 +446,16 @@ struct ContentView: View {
     }
 
     private func stopRecording(submitText: Bool) {
-        Logger.shared.log("🎤 stopRecording called with submitText: \(submitText)")
-        Logger.shared.log("🎤 Current transcribed text: '\(speechRecognizer.transcribedText)' (length: \(speechRecognizer.transcribedText.count))")
-
         recordingTimer?.invalidate()
         recordingTimer = nil
 
         if submitText && !speechRecognizer.transcribedText.isEmpty {
-            Logger.shared.log("📝 Processing speech submission with text: '\(speechRecognizer.transcribedText)'")
             
             if !isSubmittingSpeech {
                 DispatchQueue.main.async {
                     withAnimation(.easeIn(duration: 0.1)) {
                         self.isSubmittingSpeech = true
                     }
-                    Logger.shared.log("🔄 Set isSubmittingSpeech = true")
                 }
             }
 
@@ -496,14 +463,11 @@ struct ContentView: View {
 
             DispatchQueue.global(qos: .userInitiated).async {
                 self.speechRecognizer.stopRecording()
-                Logger.shared.log("🛑 Speech recognizer stopped")
-
+                
                 DispatchQueue.main.async {
                     self.speechRecognizer.transcribedText = ""
                     self.isInsertingText = true
-                    Logger.shared.log("📤 Inserting transcribed text via coordinator: '\(transcribedText)'")
                     
-                    // Use coordinator to insert prompt
                     Task {
                         let result = await self.jsCoordinator.insertPrompt(transcribedText, editorType: .tiptap)
                         
@@ -520,12 +484,6 @@ struct ContentView: View {
                 }
             }
         } else {
-            if !submitText {
-                Logger.shared.log("❌ Speech recording cancelled by user")
-            } else {
-                Logger.shared.log("⚠️ No transcribed text available - speech recognition may have failed")
-                Logger.shared.log("⚠️ transcribedText is empty: '\(speechRecognizer.transcribedText)'")
-            }
             speechRecognizer.stopRecording()
             isSubmittingSpeech = false
         }
@@ -547,7 +505,6 @@ struct ContentView: View {
     }
 
     // MARK: - Payment Handling
-
     fileprivate func performPostSubscription(payload: [String: Any]) {
         self.paymentResponse = nil
         self.webViewAction = .postSubscription(payload: payload)
@@ -620,61 +577,8 @@ struct ContentView: View {
     }
 
     // MARK: - Plans Handling
-    
     private func fetchPlansAndShowPaymentSheet() {
-        guard let webView = webViewReference else {
-            Logger.shared.log("WebView not available for plans fetch")
-            fallbackToStaticPlans()
-            return
-        }
-        
-        Logger.shared.log("Fetching plans from WebView...")
-        
-        PaymentBridge.shared.getPlansFromWebView(webView: webView) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let response):
-                    guard let planData = response.data else {
-                        Logger.shared.log("No plan data received from WebView")
-                        self.fallbackToStaticPlans()
-                        return
-                    }
-                    
-                    Logger.shared.log("Plans received from WebView, showing payment sheet")
-                    self.showPaymentSheet(with: planData)
-                    
-                case .failure(let error):
-                    Logger.shared.log("Failed to fetch plans from WebView: \(error)")
-                    self.fallbackToStaticPlans()
-                }
-            }
-        }
-    }
-    
-    private func fallbackToStaticPlans() {
-        Logger.shared.log("Falling back to plans.json")
-        do {
-            // Load mock data asynchronously to avoid blocking main thread
-            let mockResponse = try Bundle.main.loadJsonDataToDic(from: "plans.json")
-            showPaymentSheet(with: mockResponse)
-        } catch {
-            Logger.shared.log("Failed to load fallback plans.json: \(error.localizedDescription)")
-            // Could show an error state to the user here instead of crashing
-        }
-    }
-    
-    private func showPaymentSheet(with planData: [String: Any]) {
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            // Initialize PaymentSheet with the plans data
-            let composer = PlansComposer(payload: planData)
-            let viewModel = PaymentSheetViewModel(planComposer: composer)
-            viewModel.delegate = self.paymentSheetDelegate
-            
-            let paymentSheet = PaymentSheet(viewModel: viewModel)
-            let hostingController = UIHostingController(rootView: paymentSheet)
-            hostingController.modalPresentationStyle = .formSheet
-            windowScene.windows.first?.rootViewController?.present(hostingController, animated: true)
-        }
+        paymentHandler?.fetchAndShowPaymentSheet()
     }
 
     // MARK: - Payment and Plans Handling
@@ -682,22 +586,17 @@ struct ContentView: View {
     private func showCurrentPlansView() {
         Logger.shared.log("🔧 showCurrentPlansView called")
         
-        // Create a view model with empty data initially, but set to loading state
         let viewModel = CurrentPlansViewModel(plansData: [])
         
-        // Set the view state to loading while we fetch data using MainActor
         Task { @MainActor in
             viewModel.viewState = .loading
         }
         
         currentPlansViewModel = viewModel
         
-        // Trigger getSubscriptions to load data
         performGetSubscriptions()
         
-        // Set a timeout in case the subscription fetch fails or takes too long
-        // Reduced from 10s to 6s for better user experience
-        DispatchQueue.main.asyncAfter(deadline: .now() + 6.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
             Task { @MainActor in
                 if let currentViewModel = self.currentPlansViewModel,
                    currentViewModel.viewState == .loading {
@@ -707,7 +606,6 @@ struct ContentView: View {
             }
         }
         
-        // Show the view
         showCurrentPlans = true
     }
 
@@ -744,16 +642,10 @@ struct ContentView: View {
             shouldBeDark = themeManager.currentMode == .dark
         }
         
-        Logger.shared.log("📱 shouldBeDark=\(shouldBeDark), current isDarkMode=\(isDarkMode)")
-        
-        // Only update if there's an actual change to prevent unnecessary animations
         if isDarkMode != shouldBeDark {
-            Logger.shared.log("📱 UPDATING isDarkMode from \(isDarkMode) to \(shouldBeDark)")
             withAnimation(.easeInOut(duration: 0.3)) {
                 isDarkMode = shouldBeDark
             }
-        } else {
-            Logger.shared.log("📱 No change needed - isDarkMode already \(isDarkMode)")
         }
     }
 
@@ -763,9 +655,6 @@ struct ContentView: View {
         let notificationObservers: [(name: Notification.Name, handler: (Notification) -> Void)] = [
             (.init("LumoPromptReceived"), { notification in
                 if let prompt = notification.userInfo?["prompt"] as? String {
-                    Logger.shared.log("📱 Widget prompt received: \(prompt)")
-                    
-                    // Use coordinator - it automatically handles queueing if WebView not ready!
                     Task {
                         let result = await self.jsCoordinator.insertPrompt(prompt, editorType: .tiptap)
                         
@@ -870,8 +759,6 @@ struct ContentView: View {
                 if self.processTerminationCount >= 3 {
                     self.performWebViewCleanup()
 
-                    // CRITICAL FIX: Don't clear authentication cookies on process termination!
-                    // Only clear cache data to help with recovery
                     let cacheOnlyDataTypes: Set<String> = [
                         WKWebsiteDataTypeDiskCache,
                         WKWebsiteDataTypeMemoryCache,
@@ -939,33 +826,24 @@ struct ContentView: View {
             object: nil,
             queue: .main
         ) { _ in
-            Logger.shared.log("Received SaveWebViewSession notification")
             self.saveWebViewSession()
         }
     }
     
     private func saveWebViewSession() {
         safeWebViewOperation { webView in
-            Logger.shared.log("Saving WebView session state from ContentView")
-            
-            // Ensure all dataStore operations happen on main thread
             DispatchQueue.main.async { [weak webView] in
                 guard let webView = webView else { return }
                 let dataStore = webView.configuration.websiteDataStore
                 
-                // First, explicitly synchronize cookies to disk
                 dataStore.httpCookieStore.getAllCookies { cookies in
                     Logger.shared.log("Persisting \(cookies.count) cookies for next app launch")
                     
-                    // Force synchronization by re-setting each cookie
-                    // This ensures they're written to persistent storage
                     for cookie in cookies {
                         dataStore.httpCookieStore.setCookie(cookie) {
                             // Cookie has been persisted
                         }
                     }
-                    
-                    Logger.shared.log("Authentication session data saved successfully from ContentView")
                 }
                 
                 // Also force a flush of other persistent data types
@@ -1070,7 +948,6 @@ struct ContentView: View {
     }
     
     private func checkMicrophonePermissionOnForeground() {
-        // Only check if we're currently showing a permission alert
         guard speechRecognizer.showingPermissionAlert else { return }
         
         Logger.shared.log("App came to foreground - checking if microphone permission changed")

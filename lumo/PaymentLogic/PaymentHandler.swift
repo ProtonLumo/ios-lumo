@@ -32,38 +32,52 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
                 return
             }
             
-            // Make sure we have a webView
-            guard let webView = self.webView else {
-                Logger.shared.log("WebView not available for payment handler")
-                return
-            }
-            
-            Logger.shared.log("Fetching plans from WebView...")
-            
-            // Fetch plans from WebView using the shared instance
-            PaymentBridge.shared.getPlansFromWebView(webView: webView) { result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let response):
-                        guard let planData = response.data else {
-                            Logger.shared.log("No plan data received from WebView")
-                            return
-                        }
-                        
-                        Logger.shared.log("Plans received from WebView, showing payment sheet")
-                        self.showPaymentSheet(with: planData)
-                        
-                    case .failure(let error):
-                        Logger.shared.log("Failed to fetch plans from WebView: \(error)")
-                        
-                        // Fallback to using plans.json if WebView fetch fails
+            // Trigger the payment flow
+            fetchAndShowPaymentSheet()
+        }
+    }
+    
+    /// Public method to fetch plans and show payment sheet
+    /// Can be called from JavaScript message handler or from native code
+    public func fetchAndShowPaymentSheet() {
+        // Make sure we have a webView
+        guard let webView = self.webView else {
+            Logger.shared.log("WebView not available for payment handler")
+            return
+        }
+        
+        Logger.shared.log("Fetching plans from WebView...")
+        
+        // Fetch plans from WebView using the shared instance
+        PaymentBridge.shared.getPlansFromWebView(webView: webView) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    guard let planData = response.data else {
+                        Logger.shared.log("No plan data received from WebView")
+                        return
+                    }
+                    
+                    Logger.shared.log("Plans received from WebView, showing payment sheet")
+                    self.showPaymentSheet(with: planData)
+                    
+                case .failure(let error):
+                    Logger.shared.log("Failed to fetch plans from WebView: \(error)")
+                    
+                    // Check if this is an authentication error
+                    let errorMessage = error.localizedDescription
+                    if errorMessage.contains("UID must be set") {
+                        // User is not signed in - show authentication required alert
+                        self.showAuthenticationRequiredAlert()
+                    } else {
+                        // Other errors - fallback to using plans.json
                         Logger.shared.log("Falling back to plans.json")
                         do {
                             let mockResponse = try Bundle.main.loadJsonDataToDic(from: "plans.json")
                             self.showPaymentSheet(with: mockResponse)
                         } catch {
                             Logger.shared.log("Failed to load fallback plans.json: \(error.localizedDescription)")
-                            // Could show an error state to the user here instead of crashing
+                            self.showGenericErrorAlert()
                         }
                     }
                 }
@@ -81,6 +95,40 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
             let hostingController = UIHostingController(rootView: paymentSheet)
             hostingController.modalPresentationStyle = .formSheet
             windowScene.windows.first?.rootViewController?.present(hostingController, animated: true)
+        }
+    }
+    
+    private func showAuthenticationRequiredAlert() {
+        DispatchQueue.main.async {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let rootViewController = windowScene.windows.first?.rootViewController {
+                let alert = UIAlertController(
+                    title: String(localized: "app.payment.authRequired.title"),
+                    message: String(localized: "app.payment.authRequired.message"),
+                    preferredStyle: .alert
+                )
+                
+                alert.addAction(UIAlertAction(title: String(localized: "app.general.ok"), style: .default))
+                
+                rootViewController.present(alert, animated: true)
+            }
+        }
+    }
+    
+    private func showGenericErrorAlert() {
+        DispatchQueue.main.async {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let rootViewController = windowScene.windows.first?.rootViewController {
+                let alert = UIAlertController(
+                    title: String(localized: "app.general.error"),
+                    message: String(localized: "app.payment.error.generic"),
+                    preferredStyle: .alert
+                )
+                
+                alert.addAction(UIAlertAction(title: String(localized: "app.general.ok"), style: .default))
+                
+                rootViewController.present(alert, animated: true)
+            }
         }
     }
 }

@@ -385,6 +385,18 @@
         }
       }
     },
+    "app.general.error" : {
+      "comment" : "Title of an alert that shows when an unexpected error occurs.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
+    },
     "app.general.ok" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1841,6 +1853,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hesap açın"
+          }
+        }
+      }
+    },
+    "app.payment.authRequired.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please sign in or create an account to purchase Lumo Plus."
+          }
+        }
+      }
+    },
+    "app.payment.authRequired.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign In Required"
           }
         }
       }
@@ -14223,5 +14257,5 @@
       }
     }
   },
-  "version" : "1.0"
+  "version" : "1.1"
 }

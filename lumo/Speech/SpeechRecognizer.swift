@@ -204,7 +204,6 @@ class SpeechRecognizer: ObservableObject {
             if let result = result {
                 DispatchQueue.main.async {
                     self.transcribedText = result.bestTranscription.formattedString
-                    Logger.shared.log("🎤 Transcribed text updated: '\(self.transcribedText)'")
                 }
                 
                 if result.isFinal {

@@ -80,14 +80,11 @@ class ThemeManager: NSObject {
     }
     
     func updateSystemThemeMode(_ isDark: Bool) {
-        // SwiftUI's colorScheme is the reliable source of truth (now that we removed the forced Light mode)
         let newSystemMode: LumoThemeMode = isDark ? .dark : .light
         
         Logger.shared.log("📱 System theme mode update: isDark=\(isDark), newSystemMode=\(newSystemMode.rawValue), cachedSystemAppearance=\(cachedSystemAppearance.rawValue), currentTheme=\(currentTheme.rawValue), currentMode=\(currentMode.rawValue)")
         
-        // Update the cache when system appearance changes
         if cachedSystemAppearance != newSystemMode {
-            Logger.shared.log("📱 Updating cachedSystemAppearance from \(cachedSystemAppearance.rawValue) to \(newSystemMode.rawValue)")
             cachedSystemAppearance = newSystemMode
         }
         
@@ -97,7 +94,6 @@ class ThemeManager: NSObject {
             currentMode = cachedSystemAppearance
             updateWebViewInterfaceStyle()
             
-            // Notify ContentView to update its UI
             NotificationCenter.default.post(
                 name: NSNotification.Name("ThemeChangedFromWeb"),
                 object: nil,
@@ -107,15 +103,13 @@ class ThemeManager: NSObject {
                     "source": "system_update"
                 ]
             )
-        } else {
-            Logger.shared.log("📱 No update needed: currentTheme=\(currentTheme.rawValue), currentMode=\(currentMode.rawValue), cachedSystemAppearance=\(cachedSystemAppearance.rawValue)")
         }
     }
     
     
     func setStoredTheme(_ theme: LumoTheme, mode: LumoThemeMode) {
         currentTheme = theme
-        currentMode = mode // Always use the mode provided - JavaScript already calculated it correctly
+        currentMode = mode
         
         // Update webview interface style to reflect the stored theme
         updateWebViewInterfaceStyle()

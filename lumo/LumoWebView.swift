@@ -109,6 +109,7 @@ struct WebView: UIViewRepresentable {
     @Binding var webViewStore: WKWebView?
     @Binding var networkError: Bool
     @Binding var processTerminated: Bool
+    @Binding var paymentHandler: PaymentHandler?
     
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -342,8 +343,7 @@ struct WebView: UIViewRepresentable {
             }
             
             if urlString.contains("proton.me/legal") || 
-               urlString.contains("proton.me/terms") || 
-               urlString.contains("proton.me/privacy") {
+                urlString.contains("proton.me/about") {
                 return true
             }
             
@@ -816,6 +816,11 @@ struct WebView: UIViewRepresentable {
         }
         configuration.userContentController.add(paymentHandler, name: "showPayment")
         
+        // Store payment handler in binding so ContentView can access it
+        DispatchQueue.main.async {
+            self.paymentHandler = paymentHandler
+        }
+        
         PurchaseManager.shared.setup(webView: webView)
         class UnifiedMessageHandler: NSObject, WKScriptMessageHandler {
             let parent: WebView
@@ -1212,4 +1217,3 @@ extension WebView {
                (isDestinationAccount && isSourceLumo)
     }
 }
-
