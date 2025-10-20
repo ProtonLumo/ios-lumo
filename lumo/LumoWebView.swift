@@ -208,6 +208,26 @@ struct WebView: UIViewRepresentable {
                 return
             }
             
+            // Handle links that open in new windows/tabs (target="_blank")
+            // Note: Most external links are already intercepted by JavaScript (external-link-handler.js)
+            // This is a fallback for edge cases where JS doesn't run or is bypassed
+            if navigationAction.targetFrame == nil {
+                Logger.shared.log("Target blank link detected: \(url.absoluteString)")
+                
+                // Check if it should open externally (fallback check)
+                if shouldOpenInExternalBrowser(url: url) {
+                    Logger.shared.log("Opening target blank URL in Safari: \(url.absoluteString)")
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    decisionHandler(.cancel)
+                    return
+                }
+                
+                // Internal target blank - load in current webview instead of creating popup
+                webView.load(URLRequest(url: url))
+                decisionHandler(.cancel)
+                return
+            }
+            
             // Special case handling for about: URLs
             if url.absoluteString.starts(with: "about:") {
                 Logger.shared.log("Allowing about: URL navigation: \(url.absoluteString)")
@@ -285,17 +305,11 @@ struct WebView: UIViewRepresentable {
                 Logger.shared.log("Updated currentURL to: \(url.absoluteString)")
             }
             
-            // Final check: if this is a URL that should open in external browser, do that instead
+            // Final fallback check: if JavaScript interception failed and this should open externally
+            // This is a safety net - should rarely be hit since JS handles most cases
             if shouldOpenInExternalBrowser(url: url) {
-                Logger.shared.log("Opening URL in external browser: \(url.absoluteString)")
-                
-                // Only open valid external URLs
-                if UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                } else {
-                    Logger.shared.log("Can't open URL externally: \(url.absoluteString)")
-                }
-                
+                Logger.shared.log("Fallback: Opening external URL in Safari: \(url.absoluteString)")
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 decisionHandler(.cancel)
                 return
             }
@@ -308,7 +322,6 @@ struct WebView: UIViewRepresentable {
             let urlString = url.absoluteString
             
             if urlString.starts(with: "about:") {
-                Logger.shared.log("Not opening about: URL in external browser: \(urlString)")
                 return false
             }
              
@@ -394,6 +407,26 @@ struct WebView: UIViewRepresentable {
             }
         }
 
+        // Handle popup windows (window.open, target="_blank")
+        func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+            // Check if this URL should open externally
+            if let url = navigationAction.request.url {
+                Logger.shared.log("🪟 Popup window requested for: \(url.absoluteString)")
+                
+                if shouldOpenInExternalBrowser(url: url) {
+                    Logger.shared.log("Opening popup URL in Safari: \(url.absoluteString)")
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                } else {
+                    // Load in current webview instead of creating popup
+                    Logger.shared.log("Loading in current webview instead of popup: \(url.absoluteString)")
+                    webView.load(navigationAction.request)
+                }
+            }
+            
+            // Return nil to prevent popup creation
+            return nil
+        }
+        
         // Called when navigation finishes successfully
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             let urlString = webView.url?.absoluteString ?? "unknown"
@@ -817,6 +850,8 @@ struct WebView: UIViewRepresentable {
                         self.handleManagePlanClicked()
                     case "getSubscriptionsResponseReceived":
                         self.handleGetSubscriptionsResponse(message)
+                    case "openExternalURL":
+                        self.handleOpenExternalURL(message)
                     default:
                         Logger.shared.log("⚠️ Unknown message: \(messageName)")
                     }
@@ -883,6 +918,15 @@ struct WebView: UIViewRepresentable {
                 NotificationCenter.default.post(name: Notification.Name("StartVoiceEntryNotification"), object: nil)
             }
             
+            private func handleOpenExternalURL(_ message: WKScriptMessage) {
+                if let body = message.body as? [String: Any],
+                   let urlString = body["url"] as? String,
+                   let url = URL(string: urlString) {
+                    Logger.shared.log("Opening external URL from JS: \(urlString)")
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+            }
+            
             private func handlePromotionButtonClicked() {
                 NotificationCenter.default.post(name: Notification.Name("PromotionButtonClicked"), object: nil)
             }
@@ -905,7 +949,7 @@ struct WebView: UIViewRepresentable {
         let unifiedHandler = UnifiedMessageHandler(self)
         let messageNames = ["navigationState", "paymentResponse", "submitButtonClicked", "elementFound", 
                            "insertPrompt", "startVoiceEntry", "promotionButtonClicked", "managePlanClicked", 
-                           "getSubscriptionsResponseReceived"]
+                           "getSubscriptionsResponseReceived", "openExternalURL"]
         
         for messageName in messageNames {
             configuration.userContentController.add(unifiedHandler, name: messageName)
@@ -924,6 +968,10 @@ struct WebView: UIViewRepresentable {
 
         if let voiceEntryScript = JSBridgeManager.shared.createUserScript(.voiceEntrySetup, injectionTime: .atDocumentEnd, forMainFrameOnly: false) {
             configuration.userContentController.addUserScript(voiceEntryScript)
+        }
+        
+        if let externalLinkScript = JSBridgeManager.shared.createUserScript(.externalLinkHandler, injectionTime: .atDocumentEnd, forMainFrameOnly: false) {
+            configuration.userContentController.addUserScript(externalLinkScript)
         }
 
         webView.scrollView.isScrollEnabled = true

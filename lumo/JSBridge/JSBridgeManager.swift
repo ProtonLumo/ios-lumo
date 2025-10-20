@@ -13,6 +13,7 @@ enum JSBridgeScript: String, CaseIterable {
     case hideYourPlan = "hide-your-plan"
     case upgradeLinkClassifier = "upgrade-link-classifier"
     case messageSubmissionListener = "message-submission-listener"
+    case externalLinkHandler = "external-link-handler"
     
     case paymentApi = "payment-api"
     
