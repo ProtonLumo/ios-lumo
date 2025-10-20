@@ -16,8 +16,6 @@ enum JSBridgeScript: String, CaseIterable {
     
     case paymentApi = "payment-api"
     
-    case insertSubmitClear = "insert-submit-clear"
-    
     // Theme management scripts
     case themeChangeListener = "theme-change-listener"
     case themeReader = "theme-reader"
@@ -28,7 +26,7 @@ enum JSBridgeScript: String, CaseIterable {
     
     var requiresParameters: Bool {
         switch self {
-        case .insertSubmitClear, .paymentApi:
+        case .paymentApi:
             return true
         default:
             return false
@@ -131,22 +129,6 @@ class JSBridgeManager {
                                        injectionTime: injectionTime)
     }
     
-    func evaluateInsertSubmitClear(prompt: String,
-                                 editorType: String,
-                                 in webView: WKWebView,
-                                 completion: ((Any?, Error?) -> Void)? = nil) {
-        let safePrompt = sanitizePromptForJavaScript(prompt)
-        let parameters = [
-            "SAFE_PROMPT": safePrompt,
-            "EDITOR_TYPE": editorType
-        ]
-        
-        evaluateParameterizedScript(.insertSubmitClear, 
-                                  parameters: parameters, 
-                                  in: webView, 
-                                  completion: completion)
-    }
-    
     func evaluatePaymentApi(operation: String,
                           data: String? = nil,
                           in webView: WKWebView,
@@ -202,14 +184,5 @@ class JSBridgeManager {
         }
         
         return result
-    }
-    
-    private func sanitizePromptForJavaScript(_ prompt: String) -> String {
-        return prompt
-            .replacingOccurrences(of: "\\", with: "\\\\")
-            .replacingOccurrences(of: "'", with: "\\'")
-            .replacingOccurrences(of: "\n", with: "\\n")
-            .replacingOccurrences(of: "\r", with: "\\r")
-            .replacingOccurrences(of: "\t", with: "\\t")
     }
 } 

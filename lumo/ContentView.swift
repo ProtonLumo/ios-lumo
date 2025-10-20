@@ -60,13 +60,11 @@ struct ContentView: View {
     
     // MARK: - State Properties
     @StateObject private var speechRecognizer = SpeechRecognizer()
+    @StateObject private var jsCoordinator = WebViewCoordinator()
     @State private var isLoading = true
-    @State private var promptToInsert: String?
     @State private var webViewIsActive = true
     @State private var webViewReady = false
 
-    @State private var promptReceivedFromWidget = false
-    @State private var pendingWidgetPrompt: String? = nil
     @State private var isInsertingText = false
     @State private var recordingDuration: TimeInterval = 0
     @State private var recordingTimer: Timer?
@@ -141,7 +139,7 @@ struct ContentView: View {
 
                 WebView(url: URL.lumoBase!,
                         isReady: $webViewReady,
-                        promptToInsert: promptToInsert,
+                        jsCoordinator: jsCoordinator,
                         action: $webViewAction,
                         canGoBack: $webViewCanGoBack,
                         currentURL: $currentWebViewURL,
@@ -207,13 +205,12 @@ struct ContentView: View {
             if isReady { 
                 showLoader = false
                 
-                // If we have a pending widget prompt, inject it now that WebView is ready
-                if let pending = pendingWidgetPrompt {
-                    Logger.shared.log("📱 WebView is now ready - injecting pending widget prompt")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.promptToInsert = pending
-                        self.pendingWidgetPrompt = nil
-                    }
+                // Mark coordinator as ready - it will automatically process pending commands
+                jsCoordinator.markReady()
+                
+                // Setup initial scripts
+                Task {
+                    await jsCoordinator.setupInitialScripts()
                 }
             }
         }
@@ -406,35 +403,20 @@ struct ContentView: View {
 
             webView.scrollView.zoomScale = 1.0
             webView.scrollView.setContentOffset(CGPoint.zero, animated: false)
-            webView.evaluateJavaScript("if (window.gc) { window.gc(); }", completionHandler: nil)
-
-            if webView.canGoBack || webView.canGoForward {
-                webView.evaluateJavaScript("history.pushState({}, '', window.location.href)", completionHandler: nil)
-                webView.evaluateJavaScript("history.pushState({}, '', window.location.href)", completionHandler: nil)
-                webView.evaluateJavaScript("history.go(-2)", completionHandler: nil)
+            
+            // Use coordinator for cleanup commands
+            Task {
+                let cleanupCommands: [JSCommand] = [
+                    .simulateGarbageCollection,
+                    .clearHistory
+                ]
+                
+                let results = await self.jsCoordinator.executeBatch(cleanupCommands)
+                let successCount = results.filter { $0.isSuccess }.count
+                Logger.shared.log("✅ Cleanup: \(successCount)/\(cleanupCommands.count) successful")
+                
+                self.jsCoordinator.cleanup()
             }
-
-            let clearScript = """
-            (function() {
-                if (window.lumo && window.lumo.cleanupMemory) {
-                    window.lumo.cleanupMemory();
-                }
-                
-                const clearDOMReferences = function() {
-                    ['click', 'mousedown', 'touchstart', 'scroll'].forEach(eventType => {
-                        document.removeEventListener(eventType, null, true);
-                        window.removeEventListener(eventType, null, true);
-                    });
-                };
-                
-                try {
-                    clearDOMReferences();
-                } catch(e) {}
-                
-                if (window.gc) { window.gc(); }
-            })();
-            """
-            webView.evaluateJavaScript(clearScript, completionHandler: nil)
 
             // Only clear cache data to help with recovery
             let cacheOnlyDataTypes: Set<String> = [
@@ -519,11 +501,22 @@ struct ContentView: View {
                 DispatchQueue.main.async {
                     self.speechRecognizer.transcribedText = ""
                     self.isInsertingText = true
-                    Logger.shared.log("📤 Setting promptToInsert: '\(transcribedText)'")
-                    self.promptToInsert = transcribedText
-                    // No longer need to observe submit button click since we're not auto-submitting
-                    // Just wait for the text insertion to complete
-                    self.observeTextInsertion()
+                    Logger.shared.log("📤 Inserting transcribed text via coordinator: '\(transcribedText)'")
+                    
+                    // Use coordinator to insert prompt
+                    Task {
+                        let result = await self.jsCoordinator.insertPrompt(transcribedText, editorType: .tiptap)
+                        
+                        switch result {
+                        case .success:
+                            Logger.shared.log("✅ Voice transcription inserted successfully")
+                            await self.observeTextInsertion()
+                        case .failure(let error):
+                            Logger.shared.log("❌ Failed to insert voice transcription: \(error.errorDescription ?? "")")
+                            self.isInsertingText = false
+                            self.isSubmittingSpeech = false
+                        }
+                    }
                 }
             }
         } else {
@@ -538,47 +531,19 @@ struct ContentView: View {
         }
     }
 
-    private func observeTextInsertion() {
-        var hasProcessedInsertion = false
-
-        let safetyTimeoutWorkItem = DispatchWorkItem {
-            Logger.shared.log("⚠️ Text insertion safety timeout reached")
-            self.finishSpeechInsertion()
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + safetyTimeoutDuration, execute: safetyTimeoutWorkItem)
-
-        let observerName = NSNotification.Name("PromptProcessed")
-        NotificationCenter.default.removeObserver(self, name: observerName, object: nil)
-
-        NotificationCenter.default.addObserver(
-            forName: observerName,
-            object: nil,
-            queue: .main) { _ in
-                guard !hasProcessedInsertion else { 
-                    Logger.shared.log("Text insertion already processed, ignoring")
-                    return 
-                }
-
-                Logger.shared.log("✅ Text insertion completed")
-                hasProcessedInsertion = true
-                safetyTimeoutWorkItem.cancel()
-
-                // Small delay to ensure UI updates
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    self.finishSpeechInsertion()
-                }
-        }
-
-        Logger.shared.log("Waiting for text insertion to complete...")
+    private func observeTextInsertion() async {
+        Logger.shared.log("⏳ Waiting for text insertion to complete...")
+        
+        // Wait for DOM to update
+        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+        
+        Logger.shared.log("✅ Text insertion completed")
+        finishSpeechInsertion()
     }
 
     private func finishSpeechInsertion() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("PromptProcessed"), object: nil)
-
         isSubmittingSpeech = false
         isInsertingText = false
-        promptToInsert = nil
     }
 
     // MARK: - Payment Handling
@@ -799,28 +764,21 @@ struct ContentView: View {
             (.init("LumoPromptReceived"), { notification in
                 if let prompt = notification.userInfo?["prompt"] as? String {
                     Logger.shared.log("📱 Widget prompt received: \(prompt)")
-                    self.promptReceivedFromWidget = true
                     
-                    // If WebView is ready, inject immediately (warm start)
-                    if self.webViewReady {
-                        Logger.shared.log("📱 WebView ready - injecting prompt immediately")
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            self.promptToInsert = prompt
+                    // Use coordinator - it automatically handles queueing if WebView not ready!
+                    Task {
+                        let result = await self.jsCoordinator.insertPrompt(prompt, editorType: .tiptap)
+                        
+                        switch result {
+                        case .success:
+                            Logger.shared.log("✅ Widget prompt inserted successfully")
+                        case .failure(let error):
+                            Logger.shared.log("❌ Failed to insert widget prompt: \(error.errorDescription ?? "")")
                         }
-                    } else {
-                        // Otherwise, queue it for when WebView becomes ready (cold start)
-                        Logger.shared.log("📱 WebView not ready - queuing prompt for later injection")
-                        self.pendingWidgetPrompt = prompt
                     }
                 }
             }),
 
-            (.init("WebViewPromptReceived"), { notification in
-                if let prompt = notification.userInfo?["prompt"] as? String {
-                    self.promptReceivedFromWidget = true
-                    self.promptToInsert = prompt
-                }
-            }),
 
             (.init("PromotionButtonClicked"), { _ in
                 self.fetchPlansAndShowPaymentSheet()
@@ -879,10 +837,6 @@ struct ContentView: View {
                 }
             }),
             
-            (.init("PromptProcessed"), { _ in
-                Logger.shared.log("📤 Clearing promptToInsert after processing")
-                self.promptToInsert = nil
-            })
         ]
 
         for (name, handler) in notificationObservers {
@@ -897,26 +851,7 @@ struct ContentView: View {
             queue: .main
         ) { _ in
             Logger.shared.log("📱 App became active")
-            
-            // Handle pending widget prompt when app becomes active
-            if self.webViewIsActive && self.promptReceivedFromWidget {
-                // If there's a pending prompt and WebView is ready now, inject it
-                if let pending = self.pendingWidgetPrompt, self.webViewReady {
-                    Logger.shared.log("📱 App active - injecting pending widget prompt")
-                    self.promptToInsert = nil
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.promptToInsert = pending
-                        self.pendingWidgetPrompt = nil
-                    }
-                }
-                // Or if there's already a prompt to insert, re-trigger it
-                else if let prompt = self.promptToInsert {
-                    self.promptToInsert = nil
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.promptToInsert = prompt
-                    }
-                }
-            }
+            // WebViewCoordinator automatically handles pending commands when ready
         }
     }
 

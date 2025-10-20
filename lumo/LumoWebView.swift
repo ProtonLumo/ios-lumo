@@ -102,7 +102,7 @@ class ThemeMessageHandler: NSObject, WKScriptMessageHandler {
 struct WebView: UIViewRepresentable {
     let url: URL
     @Binding var isReady: Bool
-    var promptToInsert: String?
+    @ObservedObject var jsCoordinator: WebViewCoordinator
     @Binding var action: WebViewAction?
     @Binding var canGoBack: Bool
     @Binding var currentURL: URL?
@@ -872,11 +872,10 @@ struct WebView: UIViewRepresentable {
             private func handleInsertPrompt(_ message: WKScriptMessage) {
                 if let body = message.body as? [String: Any],
                    let prompt = body["prompt"] as? String {
-                    NotificationCenter.default.post(
-                        name: Notification.Name("WebViewPromptReceived"),
-                        object: nil,
-                        userInfo: ["prompt": prompt]
-                    )
+                    // Use coordinator directly
+                    Task {
+                        await self.parent.jsCoordinator.insertPrompt(prompt, editorType: .tiptap)
+                    }
                 }
             }
             
@@ -1052,15 +1051,9 @@ struct WebView: UIViewRepresentable {
 
 
     func updateUIView(_ webView: WKWebView, context: Context) {
-        if let prompt = promptToInsert {
-            Logger.shared.log("🌐 Processing prompt insertion: \(prompt)")
-            self.insertPrompt(webView: webView, prompt: prompt)
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(
-                    name: NSNotification.Name("PromptProcessed"),
-                    object: nil
-                )
-            }
+        // Configure coordinator with WebView reference (if not already done)
+        if !jsCoordinator.isReady && isReady {
+            jsCoordinator.configure(with: webView)
         }
         
         if !isReady {
@@ -1146,25 +1139,6 @@ struct WebView: UIViewRepresentable {
         }
     }
 
-    private func insertPrompt(webView: WKWebView, prompt: String) {
-        Logger.shared.log("🌐 Inserting prompt with length: \(prompt.count)")
-        JSBridgeManager.shared.evaluateInsertSubmitClear(prompt: prompt, editorType: "tiptap", in: webView) { (result, error) in
-            if let error = error {
-                Logger.shared.log("❌ Prompt insertion failed: \(error)")
-            } else if let resultDict = result as? [String: Any],
-                      let success = resultDict["success"] as? Bool {
-                if success {
-                    let action = resultDict["action"] as? String ?? "unknown"
-                    Logger.shared.log("✅ Prompt insertion successful: \(action)")
-                } else {
-                    let reason = resultDict["reason"] as? String ?? "unknown"
-                    Logger.shared.log("❌ Prompt insertion failed: \(reason)")
-                }
-            } else {
-                Logger.shared.log("❌ Unexpected result format from prompt insertion")
-            }
-        }
-    }
 
     private func safeWebViewOperation(_ operation: (WKWebView) -> Void) {
         if let webView = webViewStore, webView.superview != nil {
