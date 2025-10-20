@@ -1,0 +1,68 @@
+import Foundation
+import UIKit
+
+/// Manages background task execution to allow generation to complete
+/// when the app moves to the background
+/// 
+/// Uses Apple's official `beginBackgroundTask` API which gives the app
+/// ~30 seconds to finish ongoing work when backgrounded.
+/// Reference: https://developer.apple.com/documentation/uikit/uiapplication/beginbackgroundtask(withname:expirationhandler:)
+class BackgroundTaskManager {
+    static let shared = BackgroundTaskManager()
+    
+    private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
+    private var isTaskRunning = false
+    private var taskStartTime: Date?
+    
+    private init() {}
+    
+    func beginBackgroundTask() {
+        guard backgroundTaskID == .invalid else {
+            Logger.shared.log("⚠️ Background task already running with ID: \(backgroundTaskID.rawValue)")
+            return
+        }
+        
+        Logger.shared.log("🔄 Starting background task for AI generation")
+        
+        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "LumoAIGeneration") { [weak self] in
+            Logger.shared.log("⚠️ Background task expiring after ~30 seconds - cleaning up")
+            self?.endBackgroundTask()
+        }
+        
+        if backgroundTaskID != .invalid {
+            isTaskRunning = true
+            taskStartTime = Date()
+            Logger.shared.log("✅ Background task started with ID: \(backgroundTaskID.rawValue)")
+            
+            let remaining = UIApplication.shared.backgroundTimeRemaining
+            if remaining != .infinity {
+                Logger.shared.log("⏱️ Background time granted: ~\(Int(remaining)) seconds")
+            }
+        } else {
+            Logger.shared.log("❌ Failed to start background task - iOS may have denied it")
+        }
+    }
+    
+    func endBackgroundTask() {
+        guard backgroundTaskID != .invalid else {
+            Logger.shared.log("⚠️ No background task to end")
+            return
+        }
+        
+        UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        backgroundTaskID = .invalid
+        isTaskRunning = false
+        taskStartTime = nil
+        
+        Logger.shared.log("✅ Background task ended successfully")
+    }
+    
+    var hasActiveBackgroundTask: Bool {
+        return isTaskRunning && backgroundTaskID != .invalid
+    }
+    
+    var remainingBackgroundTime: TimeInterval {
+        return UIApplication.shared.backgroundTimeRemaining
+    }
+}
+

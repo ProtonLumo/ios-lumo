@@ -66,6 +66,7 @@ struct ContentView: View {
     @State private var webViewReady = false
 
     @State private var promptReceivedFromWidget = false
+    @State private var pendingWidgetPrompt: String? = nil
     @State private var isInsertingText = false
     @State private var recordingDuration: TimeInterval = 0
     @State private var recordingTimer: Timer?
@@ -84,6 +85,7 @@ struct ContentView: View {
     @State private var showCurrentPlans = false
     @State private var currentPlansViewModel: CurrentPlansViewModel?
     @State private var isDarkMode = false
+    @State private var isGenerating = false
 
     // MARK: - Constants
     private let paymentSheetDelegate = PaymentSheetDelegate()
@@ -202,7 +204,18 @@ struct ContentView: View {
             handleURLChange(newURL)
         }
         .onChange(of: webViewReady) { isReady in
-            if isReady { showLoader = false }
+            if isReady { 
+                showLoader = false
+                
+                // If we have a pending widget prompt, inject it now that WebView is ready
+                if let pending = pendingWidgetPrompt {
+                    Logger.shared.log("📱 WebView is now ready - injecting pending widget prompt")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.promptToInsert = pending
+                        self.pendingWidgetPrompt = nil
+                    }
+                }
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: Notification.Name("StartVoiceEntryNotification"))) { _ in
             if !speechRecognizer.isRecording {
@@ -220,6 +233,26 @@ struct ContentView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
             updateThemeState()
+            // End background task when app becomes active
+            BackgroundTaskManager.shared.endBackgroundTask()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+            // Start background task when app goes to background
+            // This gives us ~30 seconds to finish any ongoing generation
+            Logger.shared.log("📱 App will resign active - starting background task to complete AI generation")
+            BackgroundTaskManager.shared.beginBackgroundTask()
+            
+            // Log remaining time for debugging
+            let remainingTime = BackgroundTaskManager.shared.remainingBackgroundTime
+            if remainingTime != .infinity {
+                Logger.shared.log("📱 Background time remaining: \(remainingTime) seconds")
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)) { _ in
+            Logger.shared.log("📱 App entered background")
+            if BackgroundTaskManager.shared.hasActiveBackgroundTask {
+                Logger.shared.log("✅ Background task is active - generation can continue")
+            }
         }
         .onChange(of: colorScheme) { newValue in
             Logger.shared.log("📱 ColorScheme changed to: \(newValue == .dark ? "dark" : "light")")
@@ -763,9 +796,19 @@ struct ContentView: View {
         let notificationObservers: [(name: Notification.Name, handler: (Notification) -> Void)] = [
             (.init("LumoPromptReceived"), { notification in
                 if let prompt = notification.userInfo?["prompt"] as? String {
+                    Logger.shared.log("📱 Widget prompt received: \(prompt)")
                     self.promptReceivedFromWidget = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                        self.promptToInsert = prompt
+                    
+                    // If WebView is ready, inject immediately (warm start)
+                    if self.webViewReady {
+                        Logger.shared.log("📱 WebView ready - injecting prompt immediately")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            self.promptToInsert = prompt
+                        }
+                    } else {
+                        // Otherwise, queue it for when WebView becomes ready (cold start)
+                        Logger.shared.log("📱 WebView not ready - queuing prompt for later injection")
+                        self.pendingWidgetPrompt = prompt
                     }
                 }
             }),
@@ -851,10 +894,23 @@ struct ContentView: View {
             object: nil,
             queue: .main
         ) { _ in
+            Logger.shared.log("📱 App became active")
+            
+            // Handle pending widget prompt when app becomes active
             if self.webViewIsActive && self.promptReceivedFromWidget {
-                if let prompt = self.promptToInsert {
+                // If there's a pending prompt and WebView is ready now, inject it
+                if let pending = self.pendingWidgetPrompt, self.webViewReady {
+                    Logger.shared.log("📱 App active - injecting pending widget prompt")
                     self.promptToInsert = nil
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.promptToInsert = pending
+                        self.pendingWidgetPrompt = nil
+                    }
+                }
+                // Or if there's already a prompt to insert, re-trigger it
+                else if let prompt = self.promptToInsert {
+                    self.promptToInsert = nil
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         self.promptToInsert = prompt
                     }
                 }
