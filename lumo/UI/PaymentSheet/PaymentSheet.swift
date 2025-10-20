@@ -4,10 +4,11 @@ import ProtonUIFoundations
 // MARK: - Skeleton Loading Views
 struct SkeletonPlanCard: View {
     @State private var isAnimating = false
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         RoundedRectangle(cornerRadius: 12)
-            .fill(Color.gray.opacity(0.2))
+            .fill(Color.gray.opacity(colorScheme == .dark ? 0.3 : 0.2))
             .frame(height: 80)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
@@ -15,7 +16,7 @@ struct SkeletonPlanCard: View {
                         LinearGradient(
                             gradient: Gradient(colors: [
                                 Color.clear,
-                                Color.white.opacity(0.6),
+                                (colorScheme == .dark ? Color.gray : Color.white).opacity(0.6),
                                 Color.clear
                             ]),
                             startPoint: .leading,
@@ -39,18 +40,19 @@ struct SkeletonPlanCard: View {
 
 struct SkeletonFeatureRow: View {
     @State private var isAnimating = false
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         HStack(spacing: 12) {
             // Icon placeholder
             Circle()
-                .fill(Color.gray.opacity(0.2))
+                .fill(Color.gray.opacity(colorScheme == .dark ? 0.3 : 0.2))
                 .frame(width: 20, height: 20)
             
             // Text placeholders
             VStack(alignment: .leading, spacing: 4) {
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.gray.opacity(0.2))
+                    .fill(Color.gray.opacity(colorScheme == .dark ? 0.3 : 0.2))
                     .frame(height: 12)
                     .frame(maxWidth: .infinity)
             }
@@ -60,11 +62,11 @@ struct SkeletonFeatureRow: View {
             // Status placeholders
             HStack(spacing: 20) {
                 Circle()
-                    .fill(Color.gray.opacity(0.2))
+                    .fill(Color.gray.opacity(colorScheme == .dark ? 0.3 : 0.2))
                     .frame(width: 12, height: 12)
                 
                 Circle()
-                    .fill(Color.gray.opacity(0.2))
+                    .fill(Color.gray.opacity(colorScheme == .dark ? 0.3 : 0.2))
                     .frame(width: 12, height: 12)
             }
         }
@@ -72,7 +74,7 @@ struct SkeletonFeatureRow: View {
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color.clear,
-                    Color.white.opacity(0.4),
+                    (colorScheme == .dark ? Color.gray : Color.white).opacity(0.4),
                     Color.clear
                 ]),
                 startPoint: .leading,
@@ -99,10 +101,11 @@ struct SkeletonText: View {
     let width: CGFloat
     let height: CGFloat
     @State private var isAnimating = false
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         RoundedRectangle(cornerRadius: 4)
-            .fill(Color.gray.opacity(0.2))
+            .fill(Color.gray.opacity(colorScheme == .dark ? 0.3 : 0.2))
             .frame(width: width, height: height)
             .overlay(
                 RoundedRectangle(cornerRadius: 4)
@@ -110,7 +113,7 @@ struct SkeletonText: View {
                         LinearGradient(
                             gradient: Gradient(colors: [
                                 Color.clear,
-                                Color.white.opacity(0.6),
+                                (colorScheme == .dark ? Color.gray : Color.white).opacity(0.6),
                                 Color.clear
                             ]),
                             startPoint: .leading,
@@ -134,10 +137,23 @@ struct SkeletonText: View {
 
 struct PaymentSheet: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var viewModel: PaymentSheetViewModel
     @State private var isLoading = false
 
     private let brandPurple: Color = Theme.color.iconAccent
+    
+    private var backgroundColor: Color {
+        colorScheme == .dark ? Color(hex: 0x16141c) : .white
+    }
+    
+    private var textColor: Color {
+        colorScheme == .dark ? .white : .black
+    }
+    
+    private var secondaryTextColor: Color {
+        colorScheme == .dark ? Color.gray.opacity(0.7) : Color(.systemGray)
+    }
 
     var body: some View {
         ScrollView {
@@ -147,7 +163,7 @@ struct PaymentSheet: View {
                 planOptionsSection
             }
         }
-        .background(Theme.color.white)
+        .background(backgroundColor)
         .alert(isPresented: $viewModel.showAlert) {
             Alert(
                 title: Text(viewModel.alertTitle),
@@ -196,7 +212,12 @@ struct PaymentSheet: View {
     private var headerSection: some View {
         ZStack(alignment: .top) {
             LinearGradient(
-                gradient: Gradient(colors: [
+                gradient: Gradient(colors: colorScheme == .dark ? [
+                    Color(hex: 0x1f1d28),
+                    Color(hex: 0x1f1d28),
+                    Color(hex: 0x1f1d28),
+                    Color(hex: 0x16141c)
+                ] : [
                     Color(hex: 0xF2EEFF),
                     Color(hex: 0xF2EEFF),
                     Color(hex: 0xF2EEFF),
@@ -211,7 +232,7 @@ struct PaymentSheet: View {
                     Spacer()
                     Button(action: { dismiss() }) {
                         Image(systemName: "xmark")
-                            .foregroundColor(.black)
+                            .foregroundColor(textColor)
                             .padding()
                     }
                 }
@@ -225,11 +246,11 @@ struct PaymentSheet: View {
                     Text(viewModel.hasNoPlansAvailable ? "Plans Not Available" : String(localized: "app.payment.elevateExperience"))
                             .font(.system(size: 24, weight: .bold))
                             .padding(.top, 16)
-                            .foregroundColor(.black)
+                            .foregroundColor(textColor)
                     Text(viewModel.hasNoPlansAvailable ? "Purchase of Lumo Plus is not yet possible. Please try again later." : String(localized: "app.payment.enjoyPremium"))
                             .font(.system(size: 16))
                             .multilineTextAlignment(.center)
-                            .foregroundColor(Color(.systemGray))
+                            .foregroundColor(secondaryTextColor)
                     
                 }
                 .padding(.horizontal, 20)
@@ -246,7 +267,7 @@ struct PaymentSheet: View {
                         HStack {
                             Spacer()
                             Rectangle()
-                                .fill(Color(hex: 0xF2EEFF))
+                                .fill(colorScheme == .dark ? Color(hex: 0x1f1d28) : Color(hex: 0xF2EEFF))
                                 .frame(width: 80)
                                 .cornerRadius(15)
                                 .padding(.trailing, 30)
