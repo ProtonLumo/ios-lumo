@@ -74,6 +74,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
     
     private func handleURL(_ url: URL) {
+        Logger.shared.log("🔗 handleURL called with: \(url.absoluteString)", category: "AppDelegate")
         
         guard url.scheme == "lumo" else { 
             Logger.shared.log("Invalid URL scheme: \(url.scheme ?? "nil")", category: "AppDelegate")
@@ -81,10 +82,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         }
         
         if let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+            Logger.shared.log("📋 URL components parsed successfully", category: "AppDelegate")
+            Logger.shared.log("📋 Query items: \(components.queryItems?.map { "\($0.name)=\($0.value ?? "nil")" }.joined(separator: ", ") ?? "none")", category: "AppDelegate")
             
             if let prompt = components.queryItems?.first(where: { $0.name == "prompt" })?.value {
+                Logger.shared.log("✅ Prompt extracted: '\(prompt)'", category: "AppDelegate")
                 DispatchQueue.main.async {
-                    Logger.shared.log("Broadcasting LumoPromptReceived notification", category: "AppDelegate")
+                    Logger.shared.log("📢 Broadcasting LumoPromptReceived notification with prompt", category: "AppDelegate")
                     NotificationCenter.default.post(
                         name: Notification.Name("LumoPromptReceived"),
                         object: nil,
@@ -92,10 +96,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                     )
                 }
             } else {
-                Logger.shared.log("No prompt found in URL", category: "AppDelegate")
+                Logger.shared.log("❌ No prompt found in URL query items", category: "AppDelegate")
+                // Log all query item names for debugging
+                if let items = components.queryItems {
+                    Logger.shared.log("Available query items: \(items.map { $0.name }.joined(separator: ", "))", category: "AppDelegate")
+                }
             }
         } else {
-            Logger.shared.log("Failed to parse URL components", category: "AppDelegate")
+            Logger.shared.log("❌ Failed to parse URL components from: \(url.absoluteString)", category: "AppDelegate")
         }
     }
 }

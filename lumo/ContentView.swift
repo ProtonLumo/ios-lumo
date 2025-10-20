@@ -242,10 +242,12 @@ struct ContentView: View {
             Logger.shared.log("📱 App will resign active - starting background task to complete AI generation")
             BackgroundTaskManager.shared.beginBackgroundTask()
             
-            // Log remaining time for debugging
+            // Log remaining time for debugging (safely handle infinity)
             let remainingTime = BackgroundTaskManager.shared.remainingBackgroundTime
-            if remainingTime != .infinity {
-                Logger.shared.log("📱 Background time remaining: \(remainingTime) seconds")
+            if remainingTime == .infinity {
+                Logger.shared.log("📱 Background time: unlimited (still in foreground)")
+            } else {
+                Logger.shared.log("📱 Background time remaining: \(String(format: "%.0f", remainingTime)) seconds")
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)) { _ in

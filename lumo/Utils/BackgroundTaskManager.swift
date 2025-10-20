@@ -34,9 +34,12 @@ class BackgroundTaskManager {
             taskStartTime = Date()
             Logger.shared.log("✅ Background task started with ID: \(backgroundTaskID.rawValue)")
             
+            // Log initial remaining time (safely handle infinity)
             let remaining = UIApplication.shared.backgroundTimeRemaining
-            if remaining != .infinity {
-                Logger.shared.log("⏱️ Background time granted: ~\(Int(remaining)) seconds")
+            if remaining == .infinity {
+                Logger.shared.log("⏱️ Background time: unlimited (app in foreground)")
+            } else {
+                Logger.shared.log("⏱️ Background time granted: ~\(String(format: "%.0f", remaining)) seconds")
             }
         } else {
             Logger.shared.log("❌ Failed to start background task - iOS may have denied it")

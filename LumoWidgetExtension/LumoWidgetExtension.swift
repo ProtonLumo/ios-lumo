@@ -85,15 +85,15 @@ struct TimePrompt: Identifiable {
     }
     
     var destination: String {
-        // Use a standard URL format without triple slash
-        let params = [
-            "id": id,
-            "source": "widget",
-            "label": label.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? label,
-            "prompt": prompt.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? prompt
-        ].map { key, value in "\(key)=\(value)" }.joined(separator: "&")
+        // Create a proper character set for URL query values
+        // We need to exclude &, =, and other special URL characters
+        var allowedCharacters = CharacterSet.urlQueryAllowed
+        allowedCharacters.remove(charactersIn: "!*'();:@&=+$,/?#[]")
         
-        let dest = "lumo://prompt?\(params)"
+        let encodedLabel = label.addingPercentEncoding(withAllowedCharacters: allowedCharacters) ?? label
+        let encodedPrompt = prompt.addingPercentEncoding(withAllowedCharacters: allowedCharacters) ?? prompt
+        
+        let dest = "lumo://prompt?id=\(id)&source=widget&label=\(encodedLabel)&prompt=\(encodedPrompt)"
         WidgetLogger.shared.log("Created widget URL: \(dest)")
         return dest
     }
@@ -112,26 +112,25 @@ struct PromptButtonView: View {
     var label: String
     var destination: String
     var icon: String
-    
-    let purpleColor = Color(hex: "#6D4AFF")
-    let orangeColor = Color(hex: "#FFAC2E")
+    var textColor: Color
+    var buttonBackgroundColor: Color
     
     var body: some View {
         Link(destination: URL(string: destination)!) {
             VStack(alignment: .center, spacing: 4) {
                 Image(systemName: icon)
                     .font(.system(size: 17, weight: .medium))
-                    .foregroundColor(purpleColor)
+                    .foregroundColor(textColor)
                     .frame(width: 32, height: 32)
                     .background(
                         Circle()
-                            .fill(purpleColor.opacity(0.1))
+                            .fill(buttonBackgroundColor)
                     )
                     .frame(maxWidth: .infinity, alignment: .center)
                 
                 Text(label)
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(purpleColor)
+                    .foregroundColor(textColor)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
@@ -218,13 +217,46 @@ struct ModernSpeechBubble: Shape {
 struct LumoWidgetView: View {
     var entry: LumoWidgetProvider.Entry
     @Environment(\.widgetFamily) var family
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.widgetRenderingMode) var widgetRenderingMode
     
     let purpleColor = Color(hex: "#6D4AFF")
+    let lightPurpleColor = Color(hex: "#8B6FFF") // Lighter purple for better visibility in dark mode
     let orangeColor = Color(hex: "#FFAC2E")
     
-    // Force light mode - always use white background
+    // Adaptive background color based on system appearance and rendering mode
     var backgroundColor: Color {
-        Color.white
+        if #available(iOSApplicationExtension 17.0, *), widgetRenderingMode == .vibrant {
+            // Use clear background for vibrant/tinted mode
+            return Color.clear
+        }
+        return colorScheme == .dark ? Color(hex: "#16141c") : Color.white
+    }
+    
+    // Adaptive text/icon colors - use widget accent color for vibrant mode
+    var textColor: Color {
+        if #available(iOSApplicationExtension 17.0, *), widgetRenderingMode == .vibrant {
+            return Color.primary
+        }
+        // In dark mode, use lighter purple for better contrast, in light mode use original purple
+        return colorScheme == .dark ? lightPurpleColor : purpleColor
+    }
+    
+    var bubbleBackgroundColor: Color {
+        if #available(iOSApplicationExtension 17.0, *), widgetRenderingMode == .vibrant {
+            return Color.primary.opacity(0.15)
+        }
+        // In dark mode, use lighter purple with higher opacity for visibility
+        // Closer to original #6D4AFF but brighter for dark backgrounds
+        return colorScheme == .dark ? lightPurpleColor.opacity(0.2) : purpleColor.opacity(0.1)
+    }
+    
+    var buttonBackgroundColor: Color {
+        if #available(iOSApplicationExtension 17.0, *), widgetRenderingMode == .vibrant {
+            return Color.primary.opacity(0.15)
+        }
+        // In dark mode, use lighter purple with higher opacity
+        return colorScheme == .dark ? lightPurpleColor.opacity(0.2) : purpleColor.opacity(0.1)
     }
     
     var body: some View {
@@ -282,12 +314,12 @@ struct LumoWidgetView: View {
                         
                         VStack(spacing: 10) {
                             ModernSpeechBubble()
-                                .fill(purpleColor.opacity(0.1))
+                                .fill(bubbleBackgroundColor)
                                 .frame(width: 210, height: 40)
                                 .overlay(
                                     Text(entry.searchHint)
                                         .font(.system(size: 13, weight: .bold))
-                                        .foregroundColor(purpleColor)
+                                        .foregroundColor(textColor)
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 8)
                                 )
@@ -298,7 +330,9 @@ struct LumoWidgetView: View {
                                     PromptButtonView(
                                         label: prompt.label,
                                         destination: prompt.destination,
-                                        icon: prompt.icon
+                                        icon: prompt.icon,
+                                        textColor: textColor,
+                                        buttonBackgroundColor: buttonBackgroundColor
                                     )
                                     .widgetURL(nil)
                                 }
@@ -416,12 +450,11 @@ struct LumoWidgetExtension: Widget {
         return StaticConfiguration(kind: kind, provider: LumoWidgetProvider()) { entry in
             if #available(iOS 17.0, *) {
                 LumoWidgetView(entry: entry)
-                    .environment(\.colorScheme, .light)
-                    .containerBackground(Color.white, for: .widget)
+                    .containerBackground(for: .widget) {
+                        Color.clear
+                    }
             } else {
                 LumoWidgetView(entry: entry)
-                    .environment(\.colorScheme, .light)
-                    .background(Color.white)
             }
         }
         .configurationDisplayName(String(localized: "widget.displayname"))
@@ -435,7 +468,7 @@ struct LumoWidgetExtension: Widget {
 struct LumoWidget_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            
+            // Medium - Light Mode
             LumoWidgetView(entry: LumoWidgetEntry(
                 date: Date(),
                 searchHint: "Need an afternoon boost?",
@@ -448,17 +481,53 @@ struct LumoWidget_Previews: PreviewProvider {
             .environment(\.colorScheme, .light)
             .previewDisplayName("Medium - Light Mode")
             
-            
+            // Medium - Dark Mode
             LumoWidgetView(entry: LumoWidgetEntry(
                 date: Date(),
                 searchHint: "Need an afternoon boost?",
                 prompts: [
+                    TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
+                    TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
                 ]
+            ))
+            .previewContext(WidgetPreviewContext(family: .systemMedium))
+            .environment(\.colorScheme, .dark)
+            .previewDisplayName("Medium - Dark Mode")
+            
+            // Medium - Tinted Mode (iOS 18)
+            if #available(iOS 18.0, *) {
+                LumoWidgetView(entry: LumoWidgetEntry(
+                    date: Date(),
+                    searchHint: "Need an afternoon boost?",
+                    prompts: [
+                        TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
+                        TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
+                    ]
+                ))
+                .previewContext(WidgetPreviewContext(family: .systemMedium))
+                .environment(\.widgetRenderingMode, .vibrant)
+                .previewDisplayName("Medium - Tinted Mode")
+            }
+            
+            // Small - Light Mode
+            LumoWidgetView(entry: LumoWidgetEntry(
+                date: Date(),
+                searchHint: "Need an afternoon boost?",
+                prompts: []
             ))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
             .environment(\.colorScheme, .light)
             .previewDisplayName("Small - Light Mode")
             
+            // Small - Dark Mode
+            LumoWidgetView(entry: LumoWidgetEntry(
+                date: Date(),
+                searchHint: "Need an afternoon boost?",
+                prompts: []
+            ))
+            .previewContext(WidgetPreviewContext(family: .systemSmall))
+            .environment(\.colorScheme, .dark)
+            .previewDisplayName("Small - Dark Mode")
         }
     }
 }
