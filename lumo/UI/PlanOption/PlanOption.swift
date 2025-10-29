@@ -5,45 +5,124 @@ struct PlanOption: View {
 
     @ObservedObject var model: PlanOptionViewModel
     @EnvironmentObject private var themeProvider: ThemeProvider
+    var isPromotionOffer: Bool = false
+    
     private let brandPurple: Color = Theme.color.iconAccent
+    private let brandOrange: Color = Color(hex: 0xFFAC2E)
+    private let promoYellow: Color = Color(red: 1.0, green: 0.8, blue: 0.0)
 
     var body: some View {
-        HStack {
-            Circle()
-                .stroke(model.isSelected ? brandPurple : (themeProvider.isDarkMode ? Color.gray.opacity(0.8) : Color.gray), lineWidth: 2)
-                .frame(width: 24, height: 24)
-                .overlay(
+        let isYearlyWithPromo = model.type == .year && isPromotionOffer
+        
+        ZStack(alignment: .topTrailing) {
+            // Main card content
+            VStack(spacing: 0) {
+                HStack(alignment: .top, spacing: 12) {
+                    // Radio button
                     Circle()
-                        .fill(model.isSelected ? brandPurple : Color.clear)
-                        .frame(width: 16, height: 16)
-                )
+                        .stroke(model.isSelected ? brandPurple : (themeProvider.isDarkMode ? Color.gray.opacity(0.8) : Color.gray), lineWidth: 2)
+                        .frame(width: 24, height: 24)
+                        .overlay(
+                            Circle()
+                                .fill(model.isSelected ? brandPurple : Color.clear)
+                                .frame(width: 16, height: 16)
+                        )
+                        .padding(.top, isYearlyWithPromo ? 2 : 0)
 
-            VStack(alignment: .leading) {
-                Text(model.title)
-                    .font(.headline)
-                    .foregroundColor(themeProvider.textColor)
-            }
-            Spacer()
-            VStack(alignment: .trailing) {
-                
-                if((model.discount ?? "") != "") {
-                    Text(model.price)
-                        .foregroundColor(brandPurple)
-                    Text(model.discount ?? "")
-                        .font(.subheadline)
-                        .foregroundColor(.green)
-                } else {
-                    Text(model.price)
-                        .foregroundColor(brandPurple)
+                    // Title and subtitle
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(spacing: 6) {
+                            Text(model.title)
+                                .font(.headline)
+                                .foregroundColor(themeProvider.textColor)
+                            
+                            // "Best Value" badge for yearly with promo
+                            if isYearlyWithPromo {
+                                Text(String(localized: "app.payment.bestValue"))
+                                    .font(.system(size: 10, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(brandOrange)
+                                    .cornerRadius(4)
+                            }
+                        }
+                        
+                        // Show subtitle (per month price)
+                        if !model.subTitle.isEmpty {
+                            Text(model.subTitle)
+                                .font(.system(size: 13))
+                                .foregroundColor(themeProvider.secondaryTextColor)
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    // Price section
+                    VStack(alignment: .trailing, spacing: 4) {
+                        if let discount = model.discount, !discount.isEmpty {
+                            Text(model.price)
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(brandPurple)
+                            
+                            Text(discount)
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(isYearlyWithPromo ? brandOrange : .green)
+                        } else {
+                            Text(model.price)
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(brandPurple)
+                        }
+                    }
                 }
-
+                .padding()
+                
+                // Black Friday urgency banner for yearly plan
+                if isYearlyWithPromo {
+                    HStack(spacing: 6) {
+                        Image(systemName: "clock.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(promoYellow)
+                        
+                        Text(String(localized: "app.payment.limitedTimeOffer"))
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(themeProvider.textColor)
+                        
+                        Spacer()
+                        
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 12))
+                            .foregroundColor(promoYellow)
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 10)
+                    .background(
+                        Rectangle()
+                            .fill(promoYellow.opacity(0.15))
+                    )
+                }
+            }
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(themeProvider.backgroundColor)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(
+                        isYearlyWithPromo && model.isSelected ? brandOrange :
+                        model.isSelected ? brandPurple : 
+                        (themeProvider.isDarkMode ? Color.gray.opacity(0.5) : Color.gray.opacity(0.3)),
+                        lineWidth: isYearlyWithPromo && model.isSelected ? 3 : 2
+                    )
+            )
+            
+            // Pulse animation for yearly promo
+            if isYearlyWithPromo && model.isSelected {
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(brandOrange.opacity(0.3), lineWidth: 6)
+                    .scaleEffect(1.02)
             }
         }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(model.isSelected ? brandPurple : (themeProvider.isDarkMode ? Color.gray.opacity(0.5) : Color.gray.opacity(0.3)), lineWidth: 2)
-        )
     }
 }
 

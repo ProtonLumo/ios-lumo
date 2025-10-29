@@ -43,6 +43,7 @@ class PaymentSheetViewModel: ObservableObject {
     @Published var isSuccess: Bool = false
     @Published var shouldDismiss: Bool = false
     @Published var isLoadingPlans: Bool = true
+    @Published var selectedPlanType: PlanType = .year
     
     // Transaction Progress Integration
     @Published var showTransactionProgress: Bool = false
@@ -55,11 +56,16 @@ class PaymentSheetViewModel: ObservableObject {
     var hasNoPlansAvailable: Bool {
         !isLoadingPlans && planOptions.isEmpty
     }
+    
+    // Computed property to check if yearly plan is selected
+    var isYearlyPlanSelected: Bool {
+        selectedPlanType == .year
+    }
 
     public weak var delegate: PaymentSheetViewModelDelegate?
 
     init(planComposer: PlansComposer, isPromotionOffer: Bool = false) {
-        self.isPromotionOffer = isPromotionOffer
+        self.isPromotionOffer = true
         self.planComposer = planComposer
 
         purchaseManager = PurchaseManager.shared
@@ -95,6 +101,11 @@ class PaymentSheetViewModel: ObservableObject {
     public func planOptionSelected(_ id: String) {
         _ = planOptions.map {
             _ = $0.id == id ? $0.setSelected(true) : $0.setSelected(false)
+        }
+        
+        // Update the selected plan type to trigger UI updates
+        if let selectedPlan = planOptions.first(where: { $0.id == id }) {
+            selectedPlanType = selectedPlan.type
         }
     }
 

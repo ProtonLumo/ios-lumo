@@ -256,11 +256,15 @@ struct PaymentSheet: View {
                         .frame(width: 160, height: 100)
                         .padding(.all, 8)
                     
-                    Text(viewModel.hasNoPlansAvailable ? "Plans Not Available" : String(localized: "app.payment.elevateExperience"))
+                    Text(viewModel.hasNoPlansAvailable ? 
+                         String(localized: "app.payment.noPlansAvailable") : 
+                         (viewModel.isPromotionOffer ? String(localized: "app.payment.dontMissSpecialDeal") : String(localized: "app.payment.elevateExperience")))
                             .font(.system(size: 24, weight: .bold))
                             .padding(.top, 16)
                             .foregroundColor(themeProvider.textColor)
-                    Text(viewModel.hasNoPlansAvailable ? "Purchase of Lumo Plus is not yet possible. Please try again later." : String(localized: "app.payment.enjoyPremium"))
+                    Text(viewModel.hasNoPlansAvailable ? 
+                         String(localized: "app.payment.noPlansMessage") : 
+                         (viewModel.isPromotionOffer ? String(localized: "app.payment.unlockPremiumDeal") : String(localized: "app.payment.enjoyPremium")))
                             .font(.system(size: 16))
                             .multilineTextAlignment(.center)
                             .foregroundColor(themeProvider.secondaryTextColor)
@@ -308,7 +312,7 @@ struct PaymentSheet: View {
                     }
                 } else if !viewModel.hasNoPlansAvailable {
                     ForEach(viewModel.planOptions, id: \.id) { model in
-                        PlanOption(model: model)
+                        PlanOption(model: model, isPromotionOffer: viewModel.isPromotionOffer)
                             .contentShape(Rectangle())
                             .onTapGesture {
                                 viewModel.planOptionSelected(model.id)
@@ -328,16 +332,33 @@ struct PaymentSheet: View {
                 Button(action: {
                     handlePurchase()
                 }) {
-                    
                     ZStack {
                         if viewModel.isLoadingPlans {
                             Text(String(localized: "app.payment.plans.loading"))
                                 .font(.system(size: 17, weight: .semibold))
                                 .opacity(0.7)
                         } else {
-                            Text(viewModel.planTitle.isEmpty ? String(localized: "app.payment.getPlus") : viewModel.planTitle)
-                                .font(.system(size: 17, weight: .semibold))
-                                .opacity(viewModel.isLoading ? 0 : 1)
+                            let showPromoButton = viewModel.isPromotionOffer && viewModel.isYearlyPlanSelected
+                            
+                            HStack(spacing: 8) {
+                                if showPromoButton {
+                                    Image(systemName: "bolt.fill")
+                                        .font(.system(size: 16, weight: .bold))
+                                }
+                                
+                                Text(showPromoButton ? 
+                                     String(localized: "app.payment.getOffer") : 
+                                     String(localized: "app.payment.getPlus")
+                                    ) 
+                                    .font(.system(size: 17, weight: .bold))
+                                
+                                if showPromoButton {
+                                    Image(systemName: "arrow.right")
+                                        .font(.system(size: 14, weight: .bold))
+                                }
+                            }
+                            .opacity(viewModel.isLoading ? 0 : 1)
+                            
                             if viewModel.isLoading {
                                 ProgressView()
                                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
@@ -345,13 +366,29 @@ struct PaymentSheet: View {
                         }
                     }
                 }
-                
-                .foregroundColor(.black)
+                .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(viewModel.isLoadingPlans || viewModel.hasNoPlansAvailable ? 
-                    (themeProvider.isDarkMode ? Color.gray.opacity(0.3) : Color.gray.opacity(0.5)) : brandOrange)
-                .cornerRadius(25)
+                .frame(height: 56)
+                .background(
+                    Group {
+                        let showPromoStyle = viewModel.isPromotionOffer && viewModel.isYearlyPlanSelected
+                        
+                        if viewModel.isLoadingPlans || viewModel.hasNoPlansAvailable {
+                            (themeProvider.isDarkMode ? Color.gray.opacity(0.3) : Color.gray.opacity(0.5))
+                        } else if showPromoStyle {
+                            // Orange gradient for promo - more vibrant
+                            LinearGradient(
+                                colors: [Color(hex: 0xFFAC2E), Color(hex: 0xFF8C00)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        } else {
+                            brandOrange
+                        }
+                    }
+                )
+                .cornerRadius(28)
+                .shadow(color: (viewModel.isPromotionOffer && viewModel.isYearlyPlanSelected) ? brandOrange.opacity(0.4) : Color.clear, radius: 8, x: 0, y: 4)
                 .padding(.horizontal)
                 .padding(.top, 10)
                 .disabled(viewModel.isLoading || viewModel.isLoadingPlans || viewModel.hasNoPlansAvailable)
@@ -379,7 +416,7 @@ struct PaymentSheet: View {
     }
     
     private func getHeaderImageName() -> String {
-        if !viewModel.isPromotionOffer {
+        if viewModel.isPromotionOffer {
             return themeProvider.isDarkMode ? "LumoOfferDark" : "LumoOffer"
         } else {
             
