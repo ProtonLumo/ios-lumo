@@ -4,10 +4,12 @@ import SwiftUI
 struct lumoApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var themeProvider = ThemeProvider.shared
     
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(themeProvider)
                 .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LumoPromptReceived"))) { notification in
                     if let prompt = notification.userInfo?["prompt"] as? String {
                         Logger.shared.log("App received prompt: \(prompt)", category: "AppDelegate")

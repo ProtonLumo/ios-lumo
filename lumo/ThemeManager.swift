@@ -84,7 +84,9 @@ class ThemeManager: NSObject {
         
         Logger.shared.log("📱 System theme mode update: isDark=\(isDark), newSystemMode=\(newSystemMode.rawValue), cachedSystemAppearance=\(cachedSystemAppearance.rawValue), currentTheme=\(currentTheme.rawValue), currentMode=\(currentMode.rawValue)")
         
-        if cachedSystemAppearance != newSystemMode {
+        let modeChanged = cachedSystemAppearance != newSystemMode
+        
+        if modeChanged {
             cachedSystemAppearance = newSystemMode
         }
         
@@ -94,6 +96,8 @@ class ThemeManager: NSObject {
             currentMode = cachedSystemAppearance
             updateWebViewInterfaceStyle()
             
+            // Post notification to update native UI components
+            Logger.shared.log("📱 Posting ThemeChangedFromWeb notification")
             NotificationCenter.default.post(
                 name: NSNotification.Name("ThemeChangedFromWeb"),
                 object: nil,
@@ -101,6 +105,19 @@ class ThemeManager: NSObject {
                     "theme": currentTheme.rawValue,
                     "mode": currentMode.rawValue,
                     "source": "system_update"
+                ]
+            )
+        } else if currentTheme == .system && modeChanged {
+            // Even if currentMode matches, post notification if system appearance actually changed
+            // This ensures PaymentSheet and other components update
+            Logger.shared.log("📱 System appearance changed, posting notification for UI update")
+            NotificationCenter.default.post(
+                name: NSNotification.Name("ThemeChangedFromWeb"),
+                object: nil,
+                userInfo: [
+                    "theme": currentTheme.rawValue,
+                    "mode": newSystemMode.rawValue,
+                    "source": "system_appearance_change"
                 ]
             )
         }

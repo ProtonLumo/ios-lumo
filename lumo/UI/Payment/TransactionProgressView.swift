@@ -5,7 +5,7 @@ import Lottie
 
 struct TransactionProgressView: View {
     @ObservedObject var viewModel: TransactionProgressViewModel
-    @Environment(\.colorScheme) private var colorScheme
+    @EnvironmentObject private var themeProvider: ThemeProvider
     
     // Callbacks for external control
     var onCompletion: (() -> Void)?
@@ -16,21 +16,9 @@ struct TransactionProgressView: View {
         self.viewModel = viewModel
     }
     
-    private var backgroundColor: Color {
-        colorScheme == .dark ? Color(hex: 0x16141c) : .white
-    }
-    
-    private var textColor: Color {
-        colorScheme == .dark ? .white : .black
-    }
-    
-    private var secondaryTextColor: Color {
-        colorScheme == .dark ? Color.gray.opacity(0.7) : .gray
-    }
-    
     var body: some View {
         ZStack {
-            backgroundColor
+            themeProvider.backgroundColor
                 .ignoresSafeArea()
             
             if viewModel.hasError {
@@ -55,12 +43,12 @@ struct TransactionProgressView: View {
                 Text(String(localized: "app.payment.verifying.title"))
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .foregroundColor(textColor)
+                    .foregroundColor(themeProvider.textColor)
                     .multilineTextAlignment(.center)
                 
                 Text(String(localized: "app.payment.verifying.subtitle"))
                     .font(.subheadline)
-                    .foregroundColor(secondaryTextColor)
+                    .foregroundColor(themeProvider.secondaryTextColor)
                     .multilineTextAlignment(.center)
             }
             
@@ -87,7 +75,7 @@ struct TransactionProgressView: View {
                         
                         Text(stepTitle)
                             .font(.body)
-                            .foregroundColor(viewModel.stepStates[index] ? textColor : secondaryTextColor)
+                            .foregroundColor(viewModel.stepStates[index] ? themeProvider.textColor : themeProvider.secondaryTextColor)
                             .transition(.opacity)
                     }
                     .animation(.easeInOut(duration: 0.3), value: viewModel.stepStates[index])
@@ -131,12 +119,12 @@ struct TransactionProgressView: View {
                 Text(String(localized: "app.payment.verifying.error.title"))
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .foregroundColor(textColor)
+                    .foregroundColor(themeProvider.textColor)
                     .multilineTextAlignment(.center)
                 
                 Text(viewModel.errorMessage.isEmpty ? String(localized: "app.payment.verifying.error.info") : viewModel.errorMessage)
                     .font(.subheadline)
-                    .foregroundColor(secondaryTextColor)
+                    .foregroundColor(themeProvider.secondaryTextColor)
                     .multilineTextAlignment(.center)
             }
             

@@ -30,6 +30,7 @@ release-publish-github:
     RELEASE_SYNC_FROM_BRANCH: "main"
   rules:
     - if: $CI_COMMIT_BRANCH == 'main'
+      when: manual
 
 ##
 ## ---- Translations

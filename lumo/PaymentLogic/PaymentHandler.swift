@@ -39,7 +39,7 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
     
     /// Public method to fetch plans and show payment sheet
     /// Can be called from JavaScript message handler or from native code
-    public func fetchAndShowPaymentSheet() {
+    public func fetchAndShowPaymentSheet(isPromotionOffer: Bool = false) {
         // Make sure we have a webView
         guard let webView = self.webView else {
             Logger.shared.log("WebView not available for payment handler")
@@ -59,7 +59,7 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
                     }
                     
                     Logger.shared.log("Plans received from WebView, showing payment sheet")
-                    self.showPaymentSheet(with: planData)
+                    self.showPaymentSheet(with: planData, isPromotionOffer: isPromotionOffer)
                     
                 case .failure(let error):
                     Logger.shared.log("Failed to fetch plans from WebView: \(error)")
@@ -74,7 +74,7 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
                         Logger.shared.log("Falling back to plans.json")
                         do {
                             let mockResponse = try Bundle.main.loadJsonDataToDic(from: "plans.json")
-                            self.showPaymentSheet(with: mockResponse)
+                            self.showPaymentSheet(with: mockResponse, isPromotionOffer: isPromotionOffer)
                         } catch {
                             Logger.shared.log("Failed to load fallback plans.json: \(error.localizedDescription)")
                             self.showGenericErrorAlert()
@@ -85,15 +85,23 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
         }
     }
     
-    private func showPaymentSheet(with planData: [String: Any]) {
+    private func showPaymentSheet(with planData: [String: Any], isPromotionOffer: Bool) {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             // Initialize PaymentSheet with the plans data
             let composer = PlansComposer(payload: planData)
-            let viewModel = PaymentSheetViewModel(planComposer: composer)
+            let viewModel = PaymentSheetViewModel(planComposer: composer, isPromotionOffer: isPromotionOffer)
             viewModel.delegate = self
+            
+            // Inject the ThemeProvider environment object
             let paymentSheet = PaymentSheet(viewModel: viewModel)
+                .environmentObject(ThemeProvider.shared)
+            
             let hostingController = UIHostingController(rootView: paymentSheet)
+            
+            // Make hosting controller background transparent so SwiftUI background shows through
+            hostingController.view.backgroundColor = .clear
             hostingController.modalPresentationStyle = .formSheet
+            
             windowScene.windows.first?.rootViewController?.present(hostingController, animated: true)
         }
     }

@@ -4,12 +4,13 @@ import ProtonUIFoundations
 struct PlanOption: View {
 
     @ObservedObject var model: PlanOptionViewModel
+    @EnvironmentObject private var themeProvider: ThemeProvider
     private let brandPurple: Color = Theme.color.iconAccent
 
     var body: some View {
         HStack {
             Circle()
-                .stroke(model.isSelected ? brandPurple : Color.gray, lineWidth: 2)
+                .stroke(model.isSelected ? brandPurple : (themeProvider.isDarkMode ? Color.gray.opacity(0.8) : Color.gray), lineWidth: 2)
                 .frame(width: 24, height: 24)
                 .overlay(
                     Circle()
@@ -20,7 +21,7 @@ struct PlanOption: View {
             VStack(alignment: .leading) {
                 Text(model.title)
                     .font(.headline)
-                    .foregroundColor(Theme.color.textNorm)
+                    .foregroundColor(themeProvider.textColor)
             }
             Spacer()
             VStack(alignment: .trailing) {
@@ -41,7 +42,7 @@ struct PlanOption: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(model.isSelected ? brandPurple : Color.gray.opacity(0.3), lineWidth: 2)
+                .stroke(model.isSelected ? brandPurple : (themeProvider.isDarkMode ? Color.gray.opacity(0.5) : Color.gray.opacity(0.3)), lineWidth: 2)
         )
     }
 }

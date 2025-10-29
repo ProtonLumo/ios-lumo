@@ -3,15 +3,11 @@ import ProtonUIFoundations
 
 struct FeatureRow: View {
     let model: FeatureRowModel
-    @Environment(\.colorScheme) private var colorScheme
+    @EnvironmentObject private var themeProvider: ThemeProvider
     
     private struct Constants {
         static var iconSize: CGFloat = 15
         static var valueColumnWidth: CGFloat = 75
-    }
-    
-    private var textColor: Color {
-        colorScheme == .dark ? .white : .black
     }
 
     var body: some View {
@@ -31,19 +27,13 @@ struct FeatureRow: View {
                 .font(.system(size: 14))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .lineLimit(1)
-                .foregroundColor(textColor)
-            
-            Text(model.free)
-                .font(.system(size: 14))
-                .frame(width: Constants.valueColumnWidth, alignment: .center)
-                .lineLimit(1)
-                .foregroundColor(textColor)
+                .foregroundColor(themeProvider.textColor)
             
             Text(model.plus)
                 .font(.system(size: 14))
                 .frame(width: Constants.valueColumnWidth, alignment: .center)
                 .lineLimit(1)
-                .foregroundColor(textColor)
+                .foregroundColor(themeProvider.textColor)
         }
         .padding(.horizontal, 32)
     }

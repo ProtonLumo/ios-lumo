@@ -850,7 +850,7 @@ struct WebView: UIViewRepresentable {
                     case "startVoiceEntry":
                         self.handleStartVoiceEntry()
                     case "promotionButtonClicked":
-                        self.handlePromotionButtonClicked()
+                        self.handlePromotionButtonClicked(message)
                     case "managePlanClicked":
                         self.handleManagePlanClicked()
                     case "getSubscriptionsResponseReceived":
@@ -932,8 +932,20 @@ struct WebView: UIViewRepresentable {
                 }
             }
             
-            private func handlePromotionButtonClicked() {
-                NotificationCenter.default.post(name: Notification.Name("PromotionButtonClicked"), object: nil)
+            private func handlePromotionButtonClicked(_ message: WKScriptMessage) {
+                var userInfo: [String: Any] = [:]
+                
+                if let body = message.body as? [String: Any],
+                   let buttonClass = body["buttonClass"] as? String {
+                    userInfo["buttonClass"] = buttonClass
+                    Logger.shared.log("📊 Promotion button clicked with class: \(buttonClass)")
+                }
+                
+                NotificationCenter.default.post(
+                    name: Notification.Name("PromotionButtonClicked"), 
+                    object: nil, 
+                    userInfo: userInfo
+                )
             }
             
             private func handleManagePlanClicked() {

@@ -57,6 +57,7 @@ class PaymentSheetDelegate: NSObject, PaymentSheetViewModelDelegate {
 struct ContentView: View {
     // MARK: - Environment
     @Environment(\.colorScheme) private var colorScheme
+    @EnvironmentObject private var themeProvider: ThemeProvider
     
     // MARK: - State Properties
     @StateObject private var speechRecognizer = SpeechRecognizer()
@@ -83,14 +84,21 @@ struct ContentView: View {
     @State private var showLoader = false
     @State private var showCurrentPlans = false
     @State private var currentPlansViewModel: CurrentPlansViewModel?
-    @State private var isDarkMode = false
     @State private var isGenerating = false
 
     // MARK: - Constants
     private let paymentSheetDelegate = PaymentSheetDelegate()
     private let brandPurple = Color(hex: 0x6D4AFF)
     private let recordingColor = Color(hex: 0xE67553)
-    private let darkModeBackgroundColor = Color(hex: 0x16141c)
+    
+    // Use ThemeProvider for consistent theme
+    private var isDarkMode: Bool {
+        themeProvider.isDarkMode
+    }
+    
+    private var darkModeBackgroundColor: Color {
+        Color(hex: 0x16141c)
+    }
     
     private let safetyTimeoutDuration: TimeInterval = 3.0
 
@@ -250,10 +258,16 @@ struct ContentView: View {
         .onChange(of: colorScheme) { newValue in
             // Only respond to colorScheme changes if we're on system theme
             let themeManager = ThemeManager.shared
-            Logger.shared.log("📱 Current theme is: \(themeManager.currentTheme.rawValue) (\(themeManager.currentTheme.rawValue == 0 ? "light" : themeManager.currentTheme.rawValue == 1 ? "dark" : "system"))")
+            Logger.shared.log("📱 System colorScheme changed to: \(newValue == .dark ? "dark" : "light")")
+            Logger.shared.log("📱 Current theme setting: \(themeManager.currentTheme.rawValue == 0 ? "light" : themeManager.currentTheme.rawValue == 1 ? "dark" : "system")")
+            
             if themeManager.currentTheme == .system {
-                Logger.shared.log("📱 Theme is .system, calling updateThemeState()")
-                updateThemeState()
+                Logger.shared.log("📱 Theme is .system, updating appearance with new value...")
+                // Pass the new colorScheme value directly to avoid timing issues
+                themeManager.updateSystemThemeMode(newValue == .dark)
+                themeProvider.updateTheme(systemColorScheme: newValue)
+            } else {
+                Logger.shared.log("📱 Theme is explicitly set, ignoring system change")
             }
         }
         .onAppear {
@@ -577,8 +591,8 @@ struct ContentView: View {
     }
 
     // MARK: - Plans Handling
-    private func fetchPlansAndShowPaymentSheet() {
-        paymentHandler?.fetchAndShowPaymentSheet()
+    private func fetchPlansAndShowPaymentSheet(isPromotionOffer: Bool = false) {
+        paymentHandler?.fetchAndShowPaymentSheet(isPromotionOffer: isPromotionOffer)
     }
 
     // MARK: - Payment and Plans Handling
@@ -622,31 +636,15 @@ struct ContentView: View {
     private func updateThemeState() {
         let themeManager = ThemeManager.shared
         
-        Logger.shared.log("📱 updateThemeState called: currentTheme=\(themeManager.currentTheme.rawValue), currentMode=\(themeManager.currentMode.rawValue), colorScheme=\(colorScheme == .dark ? "dark" : "light"), isDarkMode=\(isDarkMode)")
+        Logger.shared.log("📱 updateThemeState called: currentTheme=\(themeManager.currentTheme.rawValue), currentMode=\(themeManager.currentMode.rawValue), colorScheme=\(colorScheme == .dark ? "dark" : "light")")
         
-        // Only update system theme mode if we're actually on system theme
-        // This prevents unnecessary updates when theme is explicitly Light or Dark
+        // Update system theme mode to keep ThemeManager in sync
         if themeManager.currentTheme == .system {
             themeManager.updateSystemThemeMode(colorScheme == .dark)
         }
         
-        // Determine if we should be in dark mode
-        let shouldBeDark: Bool
-        
-        switch themeManager.currentTheme {
-        case .light:
-            shouldBeDark = false
-        case .dark:
-            shouldBeDark = true
-        case .system:
-            shouldBeDark = themeManager.currentMode == .dark
-        }
-        
-        if isDarkMode != shouldBeDark {
-            withAnimation(.easeInOut(duration: 0.3)) {
-                isDarkMode = shouldBeDark
-            }
-        }
+        // Update the centralized ThemeProvider - this will propagate to all views
+        themeProvider.updateTheme(systemColorScheme: colorScheme)
     }
 
     private func setupPromptObserver() {
@@ -669,8 +667,10 @@ struct ContentView: View {
             }),
 
 
-            (.init("PromotionButtonClicked"), { _ in
-                self.fetchPlansAndShowPaymentSheet()
+            (.init("PromotionButtonClicked"), { notification in
+                let buttonClass = notification.userInfo?["buttonClass"] as? String
+                let isPromotionOffer = buttonClass?.contains("lumo-bf2025-promotion") ?? false
+                self.fetchPlansAndShowPaymentSheet(isPromotionOffer: isPromotionOffer)
             }),
 
             (.init("ManagePlanClicked"), { _ in

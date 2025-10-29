@@ -3370,6 +3370,7 @@
       }
     },
     "app.payment.plus" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

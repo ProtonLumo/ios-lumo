@@ -48,6 +48,9 @@ class PaymentSheetViewModel: ObservableObject {
     @Published var showTransactionProgress: Bool = false
     @Published var transactionProgressViewModel = TransactionProgressViewModel()
     
+    // Promotion offer flag
+    let isPromotionOffer: Bool
+    
     // Computed property to check if no plans are available
     var hasNoPlansAvailable: Bool {
         !isLoadingPlans && planOptions.isEmpty
@@ -55,7 +58,8 @@ class PaymentSheetViewModel: ObservableObject {
 
     public weak var delegate: PaymentSheetViewModelDelegate?
 
-    init(planComposer: PlansComposer) {
+    init(planComposer: PlansComposer, isPromotionOffer: Bool = false) {
+        self.isPromotionOffer = isPromotionOffer
         self.planComposer = planComposer
 
         purchaseManager = PurchaseManager.shared
