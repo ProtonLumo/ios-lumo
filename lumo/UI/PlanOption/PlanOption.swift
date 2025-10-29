@@ -40,7 +40,7 @@ struct PlanOption: View {
                             if isYearlyWithPromo {
                                 Text(String(localized: "app.payment.bestValue"))
                                     .font(.system(size: 10, weight: .bold))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.black)
                                     .padding(.horizontal, 6)
                                     .padding(.vertical, 2)
                                     .background(brandOrange)
