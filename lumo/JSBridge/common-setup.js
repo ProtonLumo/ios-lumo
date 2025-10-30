@@ -32,8 +32,19 @@
         return removedCount > 0;
     }
     
+    function removeDropdownButton() {
+        const dropdownButton = document.querySelector('[data-testid="dropdown-button"]');
+        if (dropdownButton) {
+            dropdownButton.style.display = 'none';
+            console.log('Removed dropdown button from view');
+            return true;
+        }
+        return false;
+    }
+    
     // Run immediately
     modifySignupLinks();
+    removeDropdownButton();
     
     // Set up mutation observer to handle dynamically added links
     const observer = new MutationObserver(mutations => {
@@ -48,6 +59,7 @@
         if (shouldModifyLinks) {
             modifySignupLinks();
             removeUpgradeLinks();
+            removeDropdownButton();
         }
     });
     
