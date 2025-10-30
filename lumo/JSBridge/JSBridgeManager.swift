@@ -10,7 +10,7 @@ enum JSBridgeScript: String, CaseIterable {
     case voiceEntrySetup = "voice-entry-setup"
     case promotionButtonHandler = "promotion-button-handler"
     case managePlanHandler = "manage-plan-handler"
-    case hideYourPlan = "hide-your-plan"
+    case hideUpgradeLink = "hide-upgrade-link"  // Handles both #your-plan and upgrade links
     case upgradeLinkClassifier = "upgrade-link-classifier"
     case messageSubmissionListener = "message-submission-listener"
     case externalLinkHandler = "external-link-handler"

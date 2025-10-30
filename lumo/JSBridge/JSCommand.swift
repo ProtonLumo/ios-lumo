@@ -19,7 +19,6 @@ enum JSCommand {
     case setupThemeListener
     
     // MARK: - Navigation & UI
-    case hideYourPlan
     case checkElementExists(selector: String)
     case simulateGarbageCollection
     case clearHistory
@@ -169,9 +168,6 @@ enum JSCommand {
         case .setupThemeListener:
             return JSBridgeManager.shared.loadScript(.themeChangeListener) ?? ""
             
-        case .hideYourPlan:
-            return JSBridgeManager.shared.loadScript(.hideYourPlan) ?? ""
-            
         case .checkElementExists(let selector):
             let safeSelector = selector.jsEscaped
             return """
@@ -228,8 +224,6 @@ enum JSCommand {
             return "Update theme: \(theme)"
         case .setupThemeListener:
             return "Setup theme listener"
-        case .hideYourPlan:
-            return "Hide your plan"
         case .checkElementExists(let selector):
             return "Check element exists: \(selector)"
         case .simulateGarbageCollection:

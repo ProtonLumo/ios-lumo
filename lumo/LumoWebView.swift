@@ -481,11 +481,12 @@ struct WebView: UIViewRepresentable {
                     }
                 }
                 
-                JSBridgeManager.shared.evaluateScript(.hideYourPlan, in: webView) { (result, error) in
+                // Hide upgrade links and #your-plan section (combined script)
+                JSBridgeManager.shared.evaluateScript(.hideUpgradeLink, in: webView) { (result, error) in
                     if let error = error {
-                        Logger.shared.log("Error injecting hide #your-plan script: \(error)")
+                        Logger.shared.log("Error injecting account page modifier script: \(error)")
                     } else {
-                        Logger.shared.log("Successfully injected script to hide #your-plan section")
+                        Logger.shared.log("Successfully injected script to modify account page (hide #your-plan, upgrade links, and promo buttons)")
                     }
                 }
             

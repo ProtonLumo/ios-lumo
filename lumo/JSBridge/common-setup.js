@@ -12,6 +12,26 @@
         });
     }
     
+    function removeUpgradeLinks() {
+        const links = document.querySelectorAll('a');
+        let removedCount = 0;
+
+        links.forEach(link => {
+            const href = link.getAttribute('href')?.toLowerCase() || '';
+            const text = link.textContent?.toLowerCase() || '';
+            if (href.includes('upgrade') || text.includes('upgrade')) {
+                link.remove();
+                removedCount++;
+            }
+        });
+
+        if (removedCount > 0) {
+            console.log(`Removed ${'$'}{removedCount} upgrade link(s)`);
+        }
+
+        return removedCount > 0;
+    }
+    
     // Run immediately
     modifySignupLinks();
     
@@ -27,6 +47,7 @@
         
         if (shouldModifyLinks) {
             modifySignupLinks();
+            removeUpgradeLinks();
         }
     });
     
