@@ -428,7 +428,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Error"
+            "value" : "Errore"
           }
         },
         "nl" : {
@@ -437,22 +437,10 @@
             "value" : "Fout"
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Błąd"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Erro"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error"
           }
         },
         "tr" : {
@@ -1935,7 +1923,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bitte melde dich an oder erstelle ein Konto, um Lumo Plus zu kaufen."
+            "value" : "Bitte melde dich an oder erstelle ein Konto, um Lumo Plus kaufen zu können."
           }
         },
         "en" : {
@@ -1953,7 +1941,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inicia sesión o crea una cuenta para comprar Lumo Plus."
+            "value" : "Inicie sesión o cree una cuenta para comprar Lumo Plus."
           }
         },
         "fr" : {
@@ -1968,34 +1956,16 @@
             "value" : "Accedi o crea un account per acquistare Lumo Plus."
           }
         },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Log in of maak een account aan om Lumo Plus te kopen."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zaloguj się lub załóż konto, aby kupić Lumo Plus."
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inicie sessão ou crie uma conta para adquirir o Lumo Plus."
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Войдите в систему или создайте аккаунт, чтобы купить Lumo Plus."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo Plus satın almak için lütfen oturum açın veya bir hesap oluşturun."
+            "value" : "Lumo Plus satın almak için lütfen oturum ya da hesap açın."
           }
         }
       }
@@ -2030,7 +2000,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se requiere iniciar sesión"
+            "value" : "Inicio de sesión necesario"
           }
         },
         "fr" : {
@@ -2042,7 +2012,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Accesso richiesto"
+            "value" : "È richiesto l'accesso"
           }
         },
         "nl" : {
@@ -2051,28 +2021,16 @@
             "value" : "Inloggen vereist"
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wymagane logowanie"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inicio de sessão necessário"
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Требуется вход в аккаунт"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Oturum Açma Gerekli"
+            "value" : "Oturum açılması gerekli"
           }
         }
       }
@@ -2083,14 +2041,14 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Nejlepší cena"
+            "state" : "translated",
+            "value" : "Nejvýhodnější"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Bestpreis"
+            "state" : "translated",
+            "value" : "Bestes Angebot"
           }
         },
         "en" : {
@@ -2101,56 +2059,38 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Mejor precio"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Mejor precio"
+            "state" : "translated",
+            "value" : "Mejor Precio"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "MEILLEUR PRIX"
+            "state" : "translated",
+            "value" : "Meilleure offre"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "MIGLIOR PREZZO"
+            "state" : "translated",
+            "value" : "Offerta migliore"
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "BESTE PRIJS"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Najlepsza cena"
+            "state" : "translated",
+            "value" : "beste prijs-kwaliteitverhouding"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Melhor preço"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "учшая цена"
+            "state" : "translated",
+            "value" : "Melhor Valor"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "En iyi fiyat"
+            "state" : "translated",
+            "value" : "En iyi değer"
           }
         }
       }
@@ -2204,12 +2144,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geannuleerd"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anulowano"
           }
         },
         "pt-BR" : {
@@ -2283,12 +2217,6 @@
             "value" : "Geannuleerd • Vervallen %@"
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anulowano • Wygasa %@"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2316,13 +2244,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nenechte si ujít naši speciální nabídku"
+            "value" : "Nezmeškejte naši speciální nabídku"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verpassen Sie unser Sonderangebot nicht"
+            "value" : "Verpasse nicht unser Sonderangebot"
           }
         },
         "en" : {
@@ -2337,12 +2265,6 @@
             "value" : "No te pierdas nuestra oferta especial"
           }
         },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No te pierdas nuestra oferta especial"
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2352,7 +2274,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Non perdere la nostra offerta speciale"
+            "value" : "Non perdere la nostra offerta speciale."
           }
         },
         "nl" : {
@@ -2361,28 +2283,16 @@
             "value" : "Mis onze speciale aanbieding niet"
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nie przegap naszej specjalnej oferty"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não perca nossa oferta especial"
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Не пропустите наше специальное предложение"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Özel fırsatımızı kaçırmayın"
+            "value" : "Özel teklifimizi kaçırmayın"
           }
         }
       }
@@ -2742,12 +2652,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fout"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Błąd"
           }
         },
         "pt-BR" : {
@@ -3235,76 +3139,10 @@
     "app.payment.free" : {
       "extractionState" : "manual",
       "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zdarma"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kostenlos"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Free"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gratis"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gratis"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gratuit"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gratis"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gratis"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Darmowe"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gratuito"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Бесплатно"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ücretsiz"
           }
         }
       }
@@ -3316,13 +3154,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uplatnit nabídku na Černý pátek"
+            "value" : "Využijte nabídku Black Friday"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Black‑Friday‑Deal sichern"
+            "value" : "Nutze das Black Friday-Angebot"
           }
         },
         "en" : {
@@ -3334,55 +3172,37 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reclama la oferta Black Friday"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reclama la oferta Black Friday"
+            "value" : "Reclamar oferta del Black Friday"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Profitez de l’offre Black Friday"
+            "value" : "Profitez de l'offre Black Friday"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Approfitta dell’offerta Black Friday"
+            "value" : "Approfitta dell’offerta del Black Friday"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Black Friday‑deal claimen"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skorzystaj z oferty Black Friday"
+            "value" : "Claim de Black Friday aanbieding"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Resgatar oferta da Black Friday"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Получить скидку на Чёрную пятницу"
+            "value" : "Aproveite a oferta da Black Friday"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Black Friday fırsatını yakala"
+            "value" : "Muhteşem Cuma teklifini değerlendirin"
           }
         }
       }
@@ -3471,13 +3291,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Černý pátek – časově omezená nabídka"
+            "value" : "Časově omezená nabídka Black Friday"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Black‑Friday‑Angebot für begrenzte Zeit"
+            "value" : "Zeitlich befristetes Black-Friday-Angebot"
           }
         },
         "en" : {
@@ -3489,13 +3309,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Oferta Black Friday por tiempo limitado"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oferta Black Friday por tiempo limitado"
+            "value" : "Oferta por tiempo limitado del Black Friday"
           }
         },
         "fr" : {
@@ -3513,31 +3327,19 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beperkt Black Friday‑aanbod"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oferta Black Friday ograniczona czasowo"
+            "value" : "Tijdelijke Black Friday aanbieding"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Oferta da Black Friday por tempo limitado"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ограниченное по времени предложение на Черную пятницу"
+            "value" : "Oferta de Black Friday por tempo limitado"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sınırlı süreli Black Friday teklifi"
+            "value" : "Sınırlı süreli Muhteşem Cuma teklifi"
           }
         }
       }
@@ -3670,12 +3472,6 @@
             "value" : "/maand"
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "/miesiąc"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3703,13 +3499,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plány nejsou k dispozici"
+            "value" : "Tarify nejsou k dispozici"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pläne nicht verfügbar"
+            "value" : "Abonnements konnten nicht abgerufen werden"
           }
         },
         "en" : {
@@ -3721,19 +3517,19 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Planes no disponibles"
+            "value" : "Planes No Disponibles"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Planes no disponibles"
+            "value" : "Planes No Disponibles"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Offres indisponibles"
+            "value" : "Abonnements non disponibles"
           }
         },
         "it" : {
@@ -3745,31 +3541,19 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plannen niet beschikbaar"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plany niedostępne"
+            "value" : "Abonnementen niet beschikbaar"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Planos indisponíveis"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Планы недоступны"
+            "value" : "Planos não disponíveis"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Planlar mevcut değil"
+            "value" : "Henüz bir tarife yok"
           }
         }
       }
@@ -3781,13 +3565,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nákup Lumo Plus zatím není možný. Zkuste to později znovu."
+            "value" : "Nákup Lumo Plus zatím není možný. Zkuste to prosím znovu později."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der Kauf von Lumo Plus ist noch nicht möglich. Bitte später erneut versuchen."
+            "value" : "Der Kauf von Lumo Plus ist derzeit noch nicht möglich. Bitte versuchen Sie es später erneut."
           }
         },
         "en" : {
@@ -3799,55 +3583,31 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La compra de Lumo Plus todavía no es posible. Por favor, inténtalo de nuevo más tarde."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La compra de Lumo Plus aún no es posible. Inténtalo de nuevo más tarde."
+            "value" : "La compra de Lumo Plus aún no está disponible. Inténtelo de nuevo más tarde."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L’achat de Lumo Plus n’est pas encore possible. Réessayez plus tard."
+            "value" : "L'achat de Lumo Plus n'est pas encore possible. Veuillez réessayer plus tard."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L’acquisto di Lumo Plus non è ancora possibile. Riprova più tardi."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "De aankoop van Lumo Plus is nog niet mogelijk. Probeer het later opnieuw."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zakup Lumo Plus nie jest jeszcze możliwy. Spróbuj ponownie później."
+            "value" : "L’acquisto di Lumo Plus non è ancora disponibile. Riprova più tardi."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A compra do Lumo Plus ainda não é possível. Tente novamente mais tarde."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Приобретение Lumo Plus пока невозможно. Попробуйте позже."
+            "value" : "A compra do Lumo Plus ainda não é possível. Por favor, tente novamente mais tarde."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo Plus henüz satın alınamıyor. Lütfen daha sonra tekrar deneyin."
+            "value" : "Şimdilik Lumo Plus satın alınamıyor. Lütfen bir süre sonra yeniden deneyin."
           }
         }
       }
@@ -4008,73 +3768,7 @@
     "app.payment.plus" : {
       "extractionState" : "stale",
       "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plus"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plus"
-          }
-        },
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plus"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plus"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plus"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plus"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plus"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plus"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plus"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plus"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plus"
-          }
-        },
-        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plus"
@@ -4208,12 +3902,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opslaan "
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zapisz"
           }
         },
         "pt-BR" : {
@@ -4474,13 +4162,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odemkněte dnes všechny prémiové funkce v Lumo Plus za naši nejlepší cenu doposud.\n"
+            "value" : "Odemkněte si ještě dnes všechny prémiové funkce Lumo Plus za naši dosud nejlepší cenu."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Schalten Sie heute alle Premium‑Funktionen von Lumo Plus zum besten Preis überhaupt frei."
+            "value" : "Aktiviere noch heute alle Premium-Funktionen auf Lumo Plus zu unserem bisher besten Preis."
           }
         },
         "en" : {
@@ -4492,55 +4180,31 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desbloquea hoy todas las funciones premium en Lumo Plus con nuestro mejor precio hasta la fecha.\n"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desbloquea todas las funciones premium hoy en Lumo Plus con nuestro mejor precio hasta ahora."
+            "value" : "Desbloquea hoy mismo todas las funciones prémium de Lumo Plus con nuestro mejor precio hasta la fecha."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Débloquez toutes les fonctions premium aujourd’hui sur Lumo Plus au meilleur prix jamais proposé."
+            "value" : "Débloquez dès aujourd'hui toutes les fonctionnalités premium de Lumo Plus à son meilleur prix à ce jour."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sblocca tutte le funzionalità premium oggi su Lumo Plus al nostro miglior prezzo."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ontgrendel vandaag alle premiumfuncties op Lumo Plus tegen onze allerbeste prijs."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Odblokuj wszystkie funkcje premium już dziś w Lumo Plus w naszej najkorzystniejszej cenie."
+            "value" : "Sblocca oggi tutte le funzionalità premium di Lumo Plus al nostro prezzo migliore di sempre."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desbloqueie todos os recursos premium hoje no Lumo Plus com o nosso melhor preço até agora."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Откройте все премиум‑функции сегодня в Lumo Plus по нашему лучшему ценовому предложению."
+            "value" : "Desbloqueie todos os recursos premium hoje no Lumo Plus com nosso melhor preço."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bugün Lumo Plus’ta tüm premium özelliklerin kilidini açın – şimdiye kadarki en iyi fiyatla."
+            "value" : "Şimdiye kadar sunulmuş en iyi fiyat ile Lumo Plus alın ve tüm ücretli özelliklere erişin."
           }
         }
       }
@@ -15141,12 +14805,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stel Lumo een vraag"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zadaj pytanie Lumo"
           }
         },
         "pt-BR" : {
