@@ -89,10 +89,6 @@ struct PlanOption: View {
                             .foregroundColor(themeProvider.textColor)
                         
                         Spacer()
-                        
-                        Image(systemName: "sparkles")
-                            .font(.system(size: 12))
-                            .foregroundColor(promoYellow)
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 10)

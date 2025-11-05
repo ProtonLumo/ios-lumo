@@ -49,13 +49,18 @@
     function modifyAccountPage() {
         // Remove "Your plan" section
         removeIfExists('#your-plan', '#your-plan section');
-        
+        removeIfExists('#payment-methods', '#payment-methods section');
+        removeIfExists('#credits', '#credits section');
+        removeIfExists('#gift-code', '#gift-code section');
+        removeIfExists('#breaches', '#breaches section');
+        removeIfExists('#sentinel', '#sentinel section');
+                        
         // Remove Black Friday promo button
         removeIfExists('.button-promotion--bf-2025-free', 'Black Friday promo button');
         
         // Upgrade option on account header
         removeIfExists('.button-promotion.button-promotion--icon-gradient', 'Default upgrade button');
-        
+
         // Remove sidebar "Upgrade" entry
         removeSidebarUpgradeItem();
         removeUpgradeLinks();
@@ -73,6 +78,7 @@
         if (linkCount > 0) {
             console.log(`Lumo: Removed ${linkCount} standalone upgrade link(s)`);
         }
+
     }
     
     // Run immediately in case elements already exist

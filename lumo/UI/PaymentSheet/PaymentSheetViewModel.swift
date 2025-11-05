@@ -65,7 +65,7 @@ class PaymentSheetViewModel: ObservableObject {
     public weak var delegate: PaymentSheetViewModelDelegate?
 
     init(planComposer: PlansComposer, isPromotionOffer: Bool = false) {
-        self.isPromotionOffer = isPromotionOffer
+        self.isPromotionOffer = true
         self.planComposer = planComposer
 
         purchaseManager = PurchaseManager.shared

@@ -42,9 +42,31 @@
         return false;
     }
     
+    function removeUnwantedLinks() {
+        const links = document.querySelectorAll('a');
+        let removedCount = 0;
+        
+        links.forEach(link => {
+            const href = link.getAttribute('href') || '';
+            
+            // Check for business signup or proton.me/mail links
+            if (href.includes('lumo/signup/business') || href.includes('proton.me/mail')) {
+                link.remove();
+                removedCount++;
+            }
+        });
+        
+        if (removedCount > 0) {
+            console.log(`Removed ${removedCount} unwanted link(s) (business signup, proton.me/mail)`);
+        }
+        
+        return removedCount > 0;
+    }
+    
     // Run immediately
     modifySignupLinks();
     removeDropdownButton();
+    removeUnwantedLinks();
     
     // Set up mutation observer to handle dynamically added links
     const observer = new MutationObserver(mutations => {
@@ -60,6 +82,7 @@
             modifySignupLinks();
             removeUpgradeLinks();
             removeDropdownButton();
+            removeUnwantedLinks();
         }
     });
     

@@ -351,11 +351,6 @@ struct PaymentSheet: View {
                                      String(localized: "app.payment.getPlus")
                                     ) 
                                     .font(.system(size: 17, weight: .bold))
-                                
-                                if showPromoButton {
-                                    Image(systemName: "arrow.right")
-                                        .font(.system(size: 14, weight: .bold))
-                                }
                             }
                             .opacity(viewModel.isLoading ? 0 : 1)
                             

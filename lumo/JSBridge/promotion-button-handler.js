@@ -4,7 +4,7 @@
     document.addEventListener('click', function(event) {
         if (isProcessingClick) return;
         
-        const promotionButton = event.target.closest('.lumo-upgrade-trigger');
+        const promotionButton = event.target.closest('.lumo-upgrade-trigger, .lumo-bf2025-promotion, .button-promotion');
         if (!promotionButton) return;
         
         event.preventDefault();

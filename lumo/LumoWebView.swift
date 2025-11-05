@@ -448,8 +448,11 @@ struct WebView: UIViewRepresentable {
                !urlString.contains("?plan=") && !urlString.contains("&plan=") {
                 Logger.shared.log("🔄 FALLBACK: Detected signup page without plan parameter, redirecting...")
                 
-                let modifiedURLString = urlString.addingQueryParameter("plan", value: "free")
-                
+                let modifiedURLString = urlString
+                    .addingQueryParameter("plan", value: "free")
+                    .addingQueryParameter("theme", value: ThemeManager.shared.currentMode == .dark ? "dark" : "light")
+                    .addingQueryParameter("remember", value: "3")
+
                 Logger.shared.log("🔄 FALLBACK: Redirecting to: \(modifiedURLString)")
                 
                 if let modifiedURL = URL(string: modifiedURLString) {
@@ -487,6 +490,15 @@ struct WebView: UIViewRepresentable {
                         Logger.shared.log("Error injecting account page modifier script: \(error)")
                     } else {
                         Logger.shared.log("Successfully injected script to modify account page (hide #your-plan, upgrade links, and promo buttons)")
+                    }
+                }
+                
+                // Inject promotion button handler for account pages
+                JSBridgeManager.shared.evaluateScript(.promotionButtonHandler, in: webView) { (result, error) in
+                    if let error = error {
+                        Logger.shared.log("Error injecting promotion button handler on account page: \(error)")
+                    } else {
+                        Logger.shared.log("Successfully injected promotion button handler on account page")
                     }
                 }
             
