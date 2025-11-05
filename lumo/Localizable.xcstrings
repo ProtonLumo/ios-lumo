@@ -2063,6 +2063,12 @@
             "value" : "Mejor Precio"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejor valoración"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2263,6 +2269,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No te pierdas nuestra oferta especial"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pierda nuestra oferta especial"
           }
         },
         "fr" : {
@@ -3175,6 +3187,12 @@
             "value" : "Reclamar oferta del Black Friday"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reclamar oferta de Black Friday"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3310,6 +3328,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oferta por tiempo limitado del Black Friday"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oferta de Black Friday por tiempo limitado"
           }
         },
         "fr" : {
@@ -3584,6 +3608,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La compra de Lumo Plus aún no está disponible. Inténtelo de nuevo más tarde."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La compra de Lumo Plus aún no está disponible. Intente de nuevo más tarde."
           }
         },
         "fr" : {
@@ -4181,6 +4211,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desbloquea hoy mismo todas las funciones prémium de Lumo Plus con nuestro mejor precio hasta la fecha."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquee hoy mismo todas las funciones premium de Lumo Plus con nuestro mejor precio hasta la fecha."
           }
         },
         "fr" : {
