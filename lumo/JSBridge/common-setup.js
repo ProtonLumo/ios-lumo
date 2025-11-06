@@ -42,6 +42,7 @@
         return false;
     }
     
+    
     function removeUnwantedLinks() {
         const links = document.querySelectorAll('a');
         let removedCount = 0;
@@ -83,6 +84,10 @@
             removeUpgradeLinks();
             removeDropdownButton();
             removeUnwantedLinks();
+            
+            if(window.LumoUtils) {
+                window.LumoUtils.removeIfExists('.button-for-icon.lumo-bf2025-promotion.button-promotion--icon-gradient.bf-2025-free', '')
+            }
         }
     });
     

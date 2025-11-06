@@ -224,9 +224,17 @@ struct LumoWidgetView: View {
     let lightPurpleColor = Color(hex: "#8B6FFF") // Lighter purple for better visibility in dark mode
     let orangeColor = Color(hex: "#FFAC2E")
     
+    // Check if we're in tinted/vibrant mode
+    var isTintedMode: Bool {
+        if #available(iOSApplicationExtension 17.0, *) {
+            return widgetRenderingMode != .fullColor
+        }
+        return false
+    }
+    
     // Adaptive background color based on system appearance and rendering mode
     var backgroundColor: Color {
-        if #available(iOSApplicationExtension 17.0, *), widgetRenderingMode == .vibrant {
+        if isTintedMode {
             // Use clear background for vibrant/tinted mode
             return Color.clear
         }
@@ -235,7 +243,7 @@ struct LumoWidgetView: View {
     
     // Adaptive text/icon colors - use widget accent color for vibrant mode
     var textColor: Color {
-        if #available(iOSApplicationExtension 17.0, *), widgetRenderingMode == .vibrant {
+        if isTintedMode {
             return Color.primary
         }
         // In dark mode, use lighter purple for better contrast, in light mode use original purple
@@ -243,7 +251,7 @@ struct LumoWidgetView: View {
     }
     
     var bubbleBackgroundColor: Color {
-        if #available(iOSApplicationExtension 17.0, *), widgetRenderingMode == .vibrant {
+        if isTintedMode {
             return Color.primary.opacity(0.15)
         }
         // In dark mode, use lighter purple with higher opacity for visibility
@@ -252,7 +260,7 @@ struct LumoWidgetView: View {
     }
     
     var buttonBackgroundColor: Color {
-        if #available(iOSApplicationExtension 17.0, *), widgetRenderingMode == .vibrant {
+        if isTintedMode {
             return Color.primary.opacity(0.15)
         }
         // In dark mode, use lighter purple with higher opacity
@@ -263,11 +271,24 @@ struct LumoWidgetView: View {
         if #available(iOSApplicationExtension 17.0, *) {
             contentView
                 .containerBackground(for: .widget) {
-                    Color.clear
+                    if isTintedMode {
+                        // Transparent background for tinted mode
+                        Color.clear
+                    } else {
+                        // Normal gradient background for other modes
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                backgroundColor,
+                                backgroundColor.opacity(0.95)
+                            ]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    }
                 }
                 .widgetURL(nil)
                 .onAppear {
-                    WidgetLogger.shared.log("Widget view appeared (iOS 17+)", isDebugOnly: true)
+                    WidgetLogger.shared.log("Widget view appeared (iOS 17+), rendering mode: \(String(describing: widgetRenderingMode))", isDebugOnly: true)
                 }
         } else {
             contentView
@@ -280,37 +301,42 @@ struct LumoWidgetView: View {
     }
     
     private var contentView: some View {
-        ZStack {
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    backgroundColor,
-                    backgroundColor.opacity(0.95)
-                ]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-            
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
                 if family == .systemSmall {
                     VStack {
                         Spacer()
-                        Image("LumoFront")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 100, height: 100)
-                            .foregroundColor(purpleColor)
+                        // Use LumoFront - it has light and dark variants
+//                        if isTintedMode {
+                            Image("LumoScratchingBW")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 100, height: 100)
+//                        } else {
+//                            Image("LumoFront")
+//                                .resizable()
+//                                .aspectRatio(contentMode: .fit)
+//                                .frame(width: 100, height: 100)
+//                        }
                         Spacer()
+                            
                     }
                 } else {
                     
                     HStack(spacing: 10) {
- 
-                        Image("LumoFront")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(height: 95)
-                            .padding(.leading, 10)
+                        
+//                        if isTintedMode {
+                            Image("LumoScratchingBW")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 100, height: 100)
+//                        } else {
+//                            // Use LumoFront - it has light and dark variants
+//                            Image("LumoFront")
+//                                .resizable()
+//                                .aspectRatio(contentMode: .fit)
+//                                .frame(height: 95)
+//                                .padding(.leading, 10)
+//                        }
                         
                         VStack(spacing: 10) {
                             ModernSpeechBubble()
@@ -345,7 +371,6 @@ struct LumoWidgetView: View {
                 }
             }
         }
-    }
 }
 
 
@@ -448,14 +473,7 @@ struct LumoWidgetExtension: Widget {
 
     var body: some WidgetConfiguration {
         return StaticConfiguration(kind: kind, provider: LumoWidgetProvider()) { entry in
-            if #available(iOS 17.0, *) {
-                LumoWidgetView(entry: entry)
-                    .containerBackground(for: .widget) {
-                        Color.clear
-                    }
-            } else {
-                LumoWidgetView(entry: entry)
-            }
+            LumoWidgetView(entry: entry)
         }
         .configurationDisplayName(String(localized: "widget.displayname"))
         .description(String(localized: "widget.description"))

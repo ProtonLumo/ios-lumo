@@ -13,6 +13,16 @@ window.LumoUtils = (function() {
         return viewport;
     }
     
+    function removeIfExists(selector, description) {
+        const elements = document.querySelectorAll(selector);
+        if (elements.length > 0) {
+            elements.forEach(el => el.remove());
+            console.log(`Lumo: Removed ${elements.length} ${description}`);
+            return true;
+        }
+        return false;
+    }
+    
     // Safe webkit message handler call
     function sendWebKitMessage(handlerName, data) {
         try {
@@ -97,6 +107,7 @@ window.LumoUtils = (function() {
         debounce: debounce,
         isElementVisible: isElementVisible,
         applyLayoutStabilization: applyLayoutStabilization,
-        restoreLayout: restoreLayout
+        restoreLayout: restoreLayout,
+        removeIfExists: removeIfExists
     };
 })(); 
