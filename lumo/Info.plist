@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>me.proton.lumo</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>lumo</string>
+			</array>
+		</dict>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+	</dict>
+	<key>WKAppBoundDomains</key>
+	<array>
+		<string>lumo.proton.me</string>
+		<string>lumo-api.proton.me</string>
+		<string>account.proton.me</string>
+		<string>account-api.proton.me</string>
+	</array>
+</dict>
+</plist>

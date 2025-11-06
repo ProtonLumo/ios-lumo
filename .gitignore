@@ -29,9 +29,6 @@ Temporary Items
 
 ### Xcode ###
 # Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
-*Info.plist
 ProtonPackages/proton_app_uniffi/
 
 ## Build generated
