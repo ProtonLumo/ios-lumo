@@ -342,7 +342,8 @@ struct WebView: UIViewRepresentable {
                 return true
             }
             
-            if urlString.contains("proton.me/legal") || 
+            if urlString.contains("proton.me/legal") ||
+                urlString.contains("proton.me/business") ||
                 urlString.contains("proton.me/about") {
                 return true
             }

@@ -12,6 +12,7 @@
         if (urlString.includes('proton.me/support') ||
             urlString.includes('proton.me/docs') ||
             urlString.includes('proton.me/legal') ||
+            urlString.includes('proton.me/business') ||
             urlString.includes('proton.me/terms') ||
             urlString.includes('proton.me/privacy')) {
             return true;
