@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "lumo-scratching.png",
+      "filename" : "tinted.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "lumo-scratching 1.png",
+      "filename" : "tinted 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "lumo-scratching 2.png",
+      "filename" : "tinted 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -35,7 +35,7 @@ private enum TimePeriod {
 }
 
 
-func getTimeSensitiveSuggestion(hour: Int) -> (hint: String, prompts: [TimePrompt]) {
+func getTimeSensitiveSuggestion(hour: Int, prompts: Int) -> (hint: String, prompts: [TimePrompt]) {
     WidgetLogger.shared.log("Getting suggestions for hour: \(hour)", isDebugOnly: true)
     
     if hour >= TimePeriod.earlyMorningStart && hour < TimePeriod.earlyMorningEnd {
@@ -50,7 +50,7 @@ func getTimeSensitiveSuggestion(hour: Int) -> (hint: String, prompts: [TimePromp
         
         return (
             hint: String(localized: "widget.hint.startDay"),
-            prompts: Array(earlyMorningPrompts.shuffled().prefix(2))
+            prompts: Array(earlyMorningPrompts.shuffled().prefix(prompts))
         )
     }
     
@@ -67,7 +67,7 @@ func getTimeSensitiveSuggestion(hour: Int) -> (hint: String, prompts: [TimePromp
         
         return (
             hint: String(localized: "widget.hint.morningProductivity"),
-            prompts: Array(morningProductivityPrompts.shuffled().prefix(2))
+            prompts: Array(morningProductivityPrompts.shuffled().prefix(prompts))
         )
     }
     
@@ -83,7 +83,7 @@ func getTimeSensitiveSuggestion(hour: Int) -> (hint: String, prompts: [TimePromp
         
         return (
             hint: String(localized: "widget.hint.lunchBreak"),
-            prompts: Array(lunchBreakPrompts.shuffled().prefix(2))
+            prompts: Array(lunchBreakPrompts.shuffled().prefix(prompts))
         )
     }
     
@@ -102,7 +102,7 @@ func getTimeSensitiveSuggestion(hour: Int) -> (hint: String, prompts: [TimePromp
         
         return (
             hint: String(localized: "widget.hint.afternoonBoost"),
-            prompts: Array(afternoonBoostPrompts.shuffled().prefix(2))
+            prompts: Array(afternoonBoostPrompts.shuffled().prefix(prompts))
         )
     }
     
@@ -119,7 +119,7 @@ func getTimeSensitiveSuggestion(hour: Int) -> (hint: String, prompts: [TimePromp
         
         return (
             hint: String(localized: "widget.hint.windingDown"),
-            prompts: Array(eveningWindDownPrompts.shuffled().prefix(2))
+            prompts: Array(eveningWindDownPrompts.shuffled().prefix(prompts))
         )
     }
     
@@ -134,7 +134,7 @@ func getTimeSensitiveSuggestion(hour: Int) -> (hint: String, prompts: [TimePromp
         
         return (
             hint: String(localized: "widget.hint.gettingReady"),
-            prompts: Array(nightTimePrompts.shuffled().prefix(2))
+            prompts: Array(nightTimePrompts.shuffled().prefix(prompts))
         )
     }
     
@@ -152,7 +152,7 @@ func getTimeSensitiveSuggestion(hour: Int) -> (hint: String, prompts: [TimePromp
         
         return (
             hint: String(localized: "widget.hint.troubleSleeping"),
-            prompts: Array(lateNightPrompts.shuffled().prefix(2))
+            prompts: Array(lateNightPrompts.shuffled().prefix(prompts))
         )
     }
 }

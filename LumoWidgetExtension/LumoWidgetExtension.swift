@@ -182,38 +182,6 @@ struct CompactPromptButtonView: View {
 }
 
 
-struct ModernSpeechBubble: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        
-        let cornerRadius: CGFloat = 16
-        let tipSize: CGFloat = 8 
-        
-        
-        let mainRect = CGRect(
-            x: rect.minX + tipSize,
-            y: rect.minY,
-            width: rect.width - tipSize,
-            height: rect.height
-        )
-        
-        let roundedRect = UIBezierPath(
-            roundedRect: mainRect,
-            cornerRadius: cornerRadius
-        )
-        
-        path.addPath(Path(roundedRect.cgPath))
-        
-        
-        path.move(to: CGPoint(x: rect.minX + tipSize, y: rect.midY - tipSize))
-        path.addLine(to: CGPoint(x: rect.minX, y: rect.midY))
-        path.addLine(to: CGPoint(x: rect.minX + tipSize, y: rect.midY + tipSize))
-        
-        return path
-    }
-}
-
-
 struct LumoWidgetView: View {
     var entry: LumoWidgetProvider.Entry
     @Environment(\.widgetFamily) var family
@@ -305,54 +273,48 @@ struct LumoWidgetView: View {
                 if family == .systemSmall {
                     VStack {
                         Spacer()
-                        // Use LumoFront - it has light and dark variants
-//                        if isTintedMode {
-                            Image("LumoScratchingBW")
+                        if isTintedMode {
+                            HStack(spacing: 10) {
+                                
+                                ForEach(entry.prompts.prefix(1), id: \.id) { prompt in
+                                    PromptButtonView(
+                                        label: prompt.label,
+                                        destination: prompt.destination,
+                                        icon: prompt.icon,
+                                        textColor: textColor,
+                                        buttonBackgroundColor: buttonBackgroundColor
+                                    )
+                                    .widgetURL(nil)
+                                }
+                            }
+                            
+                        } else {
+                            Image("LumoFront")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 100, height: 100)
-//                        } else {
-//                            Image("LumoFront")
-//                                .resizable()
-//                                .aspectRatio(contentMode: .fit)
-//                                .frame(width: 100, height: 100)
-//                        }
-                        Spacer()
                             
+                        }
+                        Spacer()
                     }
                 } else {
                     
                     HStack(spacing: 10) {
-                        
-//                        if isTintedMode {
-                            Image("LumoScratchingBW")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 100, height: 100)
-//                        } else {
-//                            // Use LumoFront - it has light and dark variants
-//                            Image("LumoFront")
-//                                .resizable()
-//                                .aspectRatio(contentMode: .fit)
-//                                .frame(height: 95)
-//                                .padding(.leading, 10)
-//                        }
-                        
+
                         VStack(spacing: 10) {
-                            ModernSpeechBubble()
-                                .fill(bubbleBackgroundColor)
-                                .frame(width: 210, height: 40)
-                                .overlay(
-                                    Text(entry.searchHint)
-                                        .font(.system(size: 13, weight: .bold))
-                                        .foregroundColor(textColor)
-                                        .padding(.horizontal, 12)
-                                        .padding(.vertical, 8)
-                                )
+                            
+                            HStack(spacing: 10) {
+                                Spacer()
+                                Text(entry.searchHint)
+                                    .font(.system(size: 13, weight: .bold))
+                                    .foregroundColor(textColor)
+                                    .padding(.horizontal, 12)
+                                Spacer()
+                            }
                             
                             HStack(spacing: 10) {
                                 
-                                ForEach(entry.prompts.prefix(2), id: \.id) { prompt in
+                                ForEach(entry.prompts.prefix(3), id: \.id) { prompt in
                                     PromptButtonView(
                                         label: prompt.label,
                                         destination: prompt.destination,
@@ -384,6 +346,8 @@ struct LumoWidgetProvider: TimelineProvider {
         static let evening = 18
         static let night = 22
     }
+    
+    let promptCount: Int = 3
 
     func placeholder(in context: Context) -> LumoWidgetEntry {
         let defaultPrompts = [
@@ -408,7 +372,7 @@ struct LumoWidgetProvider: TimelineProvider {
         let now = Date()
         let hour = calendar.component(.hour, from: now)
         
-        let currentSuggestion = getTimeSensitiveSuggestion(hour: hour)
+        let currentSuggestion = getTimeSensitiveSuggestion(hour: hour, prompts: promptCount)
         WidgetLogger.shared.log("Timeline updated with new suggestions", isDebugOnly: true)
         entries.append(LumoWidgetEntry(
             date: now,
@@ -420,7 +384,7 @@ struct LumoWidgetProvider: TimelineProvider {
         
         if let morningUpdate = calendar.date(bySettingHour: TimelineUpdateHour.morning, minute: 0, second: 0, of: now),
            morningUpdate > now {
-            let morningContent = getTimeSensitiveSuggestion(hour: TimelineUpdateHour.morning)
+            let morningContent = getTimeSensitiveSuggestion(hour: TimelineUpdateHour.morning, prompts: promptCount)
             entries.append(LumoWidgetEntry(
                 date: morningUpdate,
                 searchHint: morningContent.hint,
@@ -431,7 +395,7 @@ struct LumoWidgetProvider: TimelineProvider {
         
         if let lunchUpdate = calendar.date(bySettingHour: TimelineUpdateHour.lunch, minute: 0, second: 0, of: now),
            lunchUpdate > now {
-            let lunchContent = getTimeSensitiveSuggestion(hour: TimelineUpdateHour.lunch)
+            let lunchContent = getTimeSensitiveSuggestion(hour: TimelineUpdateHour.lunch, prompts: promptCount)
             entries.append(LumoWidgetEntry(
                 date: lunchUpdate,
                 searchHint: lunchContent.hint,
@@ -442,7 +406,7 @@ struct LumoWidgetProvider: TimelineProvider {
         
         if let eveningUpdate = calendar.date(bySettingHour: TimelineUpdateHour.evening, minute: 0, second: 0, of: now),
            eveningUpdate > now {
-            let eveningContent = getTimeSensitiveSuggestion(hour: TimelineUpdateHour.evening)
+            let eveningContent = getTimeSensitiveSuggestion(hour: TimelineUpdateHour.evening, prompts: promptCount)
             entries.append(LumoWidgetEntry(
                 date: eveningUpdate,
                 searchHint: eveningContent.hint,
@@ -452,7 +416,7 @@ struct LumoWidgetProvider: TimelineProvider {
         
         if let nightUpdate = calendar.date(bySettingHour: TimelineUpdateHour.night, minute: 0, second: 0, of: now),
            nightUpdate > now {
-            let nightContent = getTimeSensitiveSuggestion(hour: TimelineUpdateHour.night)
+            let nightContent = getTimeSensitiveSuggestion(hour: TimelineUpdateHour.night, prompts: promptCount)
             entries.append(LumoWidgetEntry(
                 date: nightUpdate,
                 searchHint: nightContent.hint,
@@ -492,6 +456,7 @@ struct LumoWidget_Previews: PreviewProvider {
                 searchHint: "Need an afternoon boost?",
                 prompts: [
                     TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
+                    TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
                     TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
                 ]
             ))
@@ -506,6 +471,7 @@ struct LumoWidget_Previews: PreviewProvider {
                 prompts: [
                     TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
                     TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
+                    TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
                 ]
             ))
             .previewContext(WidgetPreviewContext(family: .systemMedium))
@@ -518,6 +484,7 @@ struct LumoWidget_Previews: PreviewProvider {
                     date: Date(),
                     searchHint: "Need an afternoon boost?",
                     prompts: [
+                        TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
                         TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
                         TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
                     ]
