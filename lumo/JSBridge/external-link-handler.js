@@ -1,8 +1,6 @@
-// Intercept external links and window.open calls to open them in Safari
 (function() {
     'use strict';
     
-    // Function to check if URL should open externally
     function shouldOpenExternally(url) {
         if (!url) return false;
         
@@ -31,7 +29,6 @@
         return false;
     }
     
-    // Function to open URL in Safari via native bridge
     function openInSafari(url) {
         if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.openExternalURL) {
             window.webkit.messageHandlers.openExternalURL.postMessage({ url: url });
@@ -40,7 +37,7 @@
         return false;
     }
     
-    // 1. INTERCEPT window.open()
+    // INTERCEPT window.open()
     const originalWindowOpen = window.open;
     window.open = function(url, target, features) {
         if (shouldOpenExternally(url)) {
@@ -57,7 +54,7 @@
         return originalWindowOpen.apply(this, arguments);
     };
     
-    // 2. INTERCEPT window.location changes
+    // INTERCEPT window.location changes
     let isSettingLocation = false;
     Object.defineProperty(window, 'location', {
         get: function() {
@@ -76,11 +73,10 @@
         }
     });
     
-    // 3. INTERCEPT link clicks (for regular <a> tags)
+    // INTERCEPT link clicks (for regular <a> tags)
     document.addEventListener('click', function(e) {
         let target = e.target;
         
-        // Find the closest <a> tag
         while (target && target.tagName !== 'A') {
             target = target.parentElement;
         }
@@ -92,13 +88,12 @@
         const href = target.href;
         
         if (shouldOpenExternally(href)) {
-            // Prevent default navigation
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
             
             openInSafari(href);
         }
-    }, true); // Use capture phase to intercept before other handlers
+    }, true);
 })();
 

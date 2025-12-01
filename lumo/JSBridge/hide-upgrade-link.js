@@ -13,17 +13,29 @@
     }
     
     function removeSidebarUpgradeItem() {
-        // Match any link with "upgrade" in the href
-        const upgradeLinks = document.querySelectorAll('a.navigation-link[href*="upgrade"]');
+        // Match any link with "upgrade", "business", "/about" in the href, or exactly "https://proton.me" or "https://proton.me/"
+        const upgradeLinks = document.querySelectorAll('a.navigation-link[href*="upgrade"], a.navigation-link[href*="business"], a.navigation-link[href*="/about"]');
         let removed = false;
         upgradeLinks.forEach(link => {
             const li = link.closest('li.navigation-item');
             if (li) {
                 li.remove();
                 removed = true;
-                console.log('Lumo: Removed sidebar upgrade list item');
+                console.log('Lumo: Removed sidebar upgrade/business/about list item');
             }
         });
+        
+        // Handle exact proton.me homepage match separately
+        const protonHomeLinks = document.querySelectorAll('a.navigation-link[href="https://proton.me"]');
+        protonHomeLinks.forEach(link => {
+            const li = link.closest('li.navigation-item');
+            if (li) {
+                li.remove();
+                removed = true;
+                console.log('Lumo: Removed sidebar proton.me homepage list item');
+            }
+        });
+        
         return removed;
     }
     

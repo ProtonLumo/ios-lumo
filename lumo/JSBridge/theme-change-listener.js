@@ -2,9 +2,6 @@
     let observedButtons = new WeakSet();
 
     function extractThemeFromAriaLabel(ariaLabel) {
-        // "Use Light theme" -> "Light"
-        // "Use Dark theme" -> "Dark"
-        // "Use System theme" -> "System"
         const match = ariaLabel?.match(/Use (\w+) theme/i);
         return match ? match[1] : null;
     }
@@ -56,7 +53,6 @@
         }
     });
 
-    // Initial scan for existing buttons
     findAndObserveThemeButtons();
 
     bodyObserver.observe(document.body, {

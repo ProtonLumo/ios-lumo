@@ -78,7 +78,7 @@
             const href = link.getAttribute('href') || '';
             
             // Check for business signup or proton.me/mail links
-            if (href.includes('lumo/signup/business') || href.includes('proton.me/mail')) {
+            if (href.includes('/business') || href.includes('proton.me/mail')) {
                 link.remove();
                 removedCount++;
             }
@@ -95,6 +95,7 @@
     modifySignupLinks();
     removeDropdownButton();
     removeUnwantedLinks();
+    removeIfExists('header > ul > li.no-print');
     
     // Set up mutation observer to handle dynamically added links
     const observer = new MutationObserver(mutations => {
@@ -111,7 +112,7 @@
             removeUpgradeLinks();
             removeDropdownButton();
             removeUnwantedLinks();
-            
+            removeIfExists('header > div > ul > li.no-print');
             removeIfExists('.button-for-icon.lumo-bf2025-promotion.button-promotion--icon-gradient.bf-2025-free', '');
         }
     });

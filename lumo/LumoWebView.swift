@@ -6,6 +6,13 @@ import Darwin
 
 // Note: WKProcessPool was deprecated in iOS 15.0 - the system now manages process pools automatically
 
+/// Custom WKWebView subclass that removes the input accessory view (bar above keyboard)
+class LumoWebView: WKWebView {
+    override var inputAccessoryView: UIView? {
+        return nil  // Completely removes the bar above the keyboard
+    }
+}
+
 class PaymentBridgeCallbackHandler: NSObject, WKScriptMessageHandler {
     static var shared = PaymentBridgeCallbackHandler()
     
@@ -871,7 +878,7 @@ struct WebView: UIViewRepresentable {
         
         configuration.preferences = preferences
         
-        let webView = WKWebView(frame: .zero, configuration: configuration)
+        let webView = LumoWebView(frame: .zero, configuration: configuration)
         webView.customUserAgent = WKWebView.generateCustomUserAgent()
         webView.isInspectable = true
         let paymentHandler = PaymentHandler(webView: webView) { action in

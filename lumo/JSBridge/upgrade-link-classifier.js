@@ -1,9 +1,7 @@
 (function() {
     'use strict';
     
-    // Function to add lumo-upgrade-trigger class to upgrade links
     function classifyUpgradeLinks() {
-        // Find all anchor elements with href containing /lumo/upgrade
         const upgradeLinks = document.querySelectorAll('a[href*="/lumo/upgrade"]');
         
         upgradeLinks.forEach(link => {
@@ -15,10 +13,8 @@
         });
     }
     
-    // Run immediately on page load
     classifyUpgradeLinks();
     
-    // Watch for dynamically added links
     const observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             mutation.addedNodes.forEach(function(node) {
