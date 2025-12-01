@@ -14,21 +14,21 @@ struct LockdownModeWarningView: View {
                     .font(.system(size: 48))
                     .foregroundColor(Theme.color.textAccent)
                 
-                Text("Lockdown Mode is Active")
+                Text(String(localized: "app.lockdown.title"))
                     .font(.headline)
                     .foregroundColor(Theme.color.textNorm)
                 
-                Text("Conversation syncing is disabled due to Lockdown Mode restrictions.")
+                Text(String(localized: "app.lockdown.message"))
                     .font(.body)
                     .foregroundColor(Theme.color.textWeak)
                     .multilineTextAlignment(.center)
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Add this app to Lockdown Mode exceptions")
+                    Text(String(localized: "app.lockdown.exceptions.title"))
                         .font(.subheadline)
                         .foregroundColor(Theme.color.textNorm)
                     
-                    Text("Settings > Privacy & Security > Lockdown Mode")
+                    Text(String(localized: "app.lockdown.exceptions.path"))
                         .font(.caption)
                         .foregroundColor(Theme.color.textWeak)
                 }
@@ -43,7 +43,7 @@ struct LockdownModeWarningView: View {
                             UIApplication.shared.open(url)
                         }
                     }) {
-                        Text("Open Settings")
+                        Text(String(localized: "permission.settings.button"))
                             .font(.body.weight(.semibold))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -55,7 +55,7 @@ struct LockdownModeWarningView: View {
                     Button(action: {
                         onDismiss()
                     }) {
-                        Text("Not Now")
+                        Text(String(localized: "app.lockdown.dismiss"))
                             .font(.body)
                             .foregroundColor(Theme.color.textWeak)
                             .frame(maxWidth: .infinity)
