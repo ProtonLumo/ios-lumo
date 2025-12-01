@@ -2,8 +2,6 @@ import Foundation
 import WebKit
 
 enum JSBridgeScript: String, CaseIterable {
-    case utilities = "utilities"
-    
     case pageUtilities = "page-utilities"
     case initialSetup = "initial-setup"
     case commonSetup = "common-setup"

@@ -1,18 +1,48 @@
 (function() {
     'use strict';
     
+    // Utility functions (duplicated from utilities.js to remove dependency)
+    let stabilizationStyleElement = null;
+    
+    function applyLayoutStabilization() {
+        /**
+         * This is a hack to prevent layout shifts by targeting 
+         * the specific problematic CSS selector.
+         * These shifts were specifically caused after message submissions.
+         */
+        if (stabilizationStyleElement) {
+            // Remove existing stabilization first
+            restoreLayout();
+        }
+        
+        stabilizationStyleElement = document.createElement('style');
+        stabilizationStyleElement.id = 'lumo-layout-stabilization';
+        stabilizationStyleElement.textContent = `
+            html:not(.feature-scrollbars-off) * {
+                bottom: 0 !important;
+            }
+        `;
+        document.head.appendChild(stabilizationStyleElement);
+        console.log('✅ Layout stabilization applied');
+        return true;
+    }
+    
+    function restoreLayout() {
+        if (stabilizationStyleElement) {
+            document.head.removeChild(stabilizationStyleElement);
+            stabilizationStyleElement = null;
+            console.log('✅ Layout stabilization restored');
+            return true;
+        }
+        return false;
+    }
+    
     let isListenerSetup = false;
     let clickListener = null;
     let keydownListener = null;
     let submitListener = null;
     
     console.log('🔧 Message submission listener script starting...');
-    
-    // Check if LumoUtils is available
-    if (!window.LumoUtils) {
-        console.error('❌ LumoUtils not available - cannot setup message submission listener');
-        return;
-    }
     
     // Remove existing listeners to prevent duplicates
     function removeExistingListeners() {
@@ -52,10 +82,10 @@
         // Helper function to apply stabilization
         function applyStabilization(triggerEvent) {
             console.log(`🎯 ${triggerEvent} - applying layout stabilization`);
-            if (window.LumoUtils.applyLayoutStabilization()) {
+            if (applyLayoutStabilization()) {
                 // Restore layout after a delay
                 setTimeout(() => {
-                    window.LumoUtils.restoreLayout();
+                    restoreLayout();
                 }, 500);
             }
         }

@@ -140,7 +140,7 @@ struct WebView: UIViewRepresentable {
                 }
             }
             
-            // Add keyboard observers to disable scrolling when keyboard appears
+            // Add keyboard observers to handle scroll view state
             NotificationCenter.default.addObserver(
                 forName: UIResponder.keyboardWillShowNotification,
                 object: nil,
@@ -156,6 +156,14 @@ struct WebView: UIViewRepresentable {
             ) { [weak self] notification in
                 self?.handleKeyboardWillHide(notification)
             }
+            
+            NotificationCenter.default.addObserver(
+                forName: UIResponder.keyboardDidHideNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] notification in
+                self?.handleKeyboardDidHide(notification)
+            }
         }
         
         deinit {
@@ -165,6 +173,7 @@ struct WebView: UIViewRepresentable {
             
             NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
             NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
         }
         
         // MARK: - UIScrollViewDelegate
@@ -188,16 +197,45 @@ struct WebView: UIViewRepresentable {
         // MARK: - Keyboard Handling
         
         private func handleKeyboardWillShow(_ notification: Notification) {
-            Logger.shared.log("Keyboard will show - disabling WebView scrolling")
-            if let webView = parent.webViewStore {
-                webView.scrollView.isScrollEnabled = false
-            }
+            Logger.shared.log("Keyboard will show")
+            // Don't disable scrolling - let the webview handle it naturally
         }
         
         private func handleKeyboardWillHide(_ notification: Notification) {
-            Logger.shared.log("Keyboard will hide - re-enabling WebView scrolling")
-            if let webView = parent.webViewStore {
+            Logger.shared.log("Keyboard will hide")
+            // Prepare for keyboard dismissal
+        }
+        
+        private func handleKeyboardDidHide(_ notification: Notification) {
+            Logger.shared.log("Keyboard did hide - restoring scroll view state")
+            guard let webView = parent.webViewStore else { return }
+            
+            // Restore scroll view state after keyboard dismissal
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                
+                // Ensure scroll view delegate is still set
+                webView.scrollView.delegate = self
+                
+                // Reset content insets that may have been adjusted by keyboard
+                webView.scrollView.contentInset = .zero
+                webView.scrollView.scrollIndicatorInsets = .zero
+                
+                // Ensure scrolling is enabled
                 webView.scrollView.isScrollEnabled = true
+                
+                // Force layout update to ensure scroll view recalculates
+                webView.setNeedsLayout()
+                webView.layoutIfNeeded()
+                
+                // Small delay to ensure everything is settled, then verify scroll state
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    // Re-verify scroll view is properly configured
+                    webView.scrollView.isScrollEnabled = true
+                    webView.scrollView.bounces = false
+                    
+                    Logger.shared.log("Scroll view state restored after keyboard dismissal")
+                }
             }
         }
         
@@ -370,7 +408,18 @@ struct WebView: UIViewRepresentable {
         
         // Called when navigation fails
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-            Logger.shared.log("WebView failed to load: \(error)")
+            let nsError = error as NSError
+            let errorCode = nsError.code
+            let errorDomain = nsError.domain
+            let errorDescription = nsError.localizedDescription
+            let currentURL = webView.url?.absoluteString ?? "nil"
+            
+            Logger.shared.log("❌ WebView failed to load navigation")
+            Logger.shared.log("   Error domain: \(errorDomain)")
+            Logger.shared.log("   Error code: \(errorCode)")
+            Logger.shared.log("   Error description: \(errorDescription)")
+            Logger.shared.log("   Current URL: \(currentURL)")
+            Logger.shared.log("   Can go back: \(webView.canGoBack)")
             
             DispatchQueue.main.async {
                 self.parent.isReady = true
@@ -378,7 +427,6 @@ struct WebView: UIViewRepresentable {
                 self.parent.currentURL = webView.url
                 
                 // Check for network connectivity errors
-                let nsError = error as NSError
                 if nsError.domain == NSURLErrorDomain && 
                    (nsError.code == NSURLErrorNotConnectedToInternet || 
                     nsError.code == NSURLErrorNetworkConnectionLost ||
@@ -389,7 +437,7 @@ struct WebView: UIViewRepresentable {
             }
             
             // Attempt to recover from navigation errors
-            if (error as NSError).code == NSURLErrorCancelled {
+            if errorCode == NSURLErrorCancelled {
                 // This is often caused by rapid navigation attempts - usually safe to ignore
                 Logger.shared.log("Navigation was cancelled - likely a redirect or user action")
                 return
@@ -401,10 +449,10 @@ struct WebView: UIViewRepresentable {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     webView.goBack()
                 }
-            } else if webView.url == nil || webView.url?.absoluteString.isEmpty == true {
-                // If we're in a bad state with no URL, reload the main page
-                Logger.shared.log("Reloading main page to recover from error")
-                webView.loadLumoBase()
+            } else {
+                // Don't automatically redirect - let user see the error
+                Logger.shared.log("⚠️ Error occurred but staying on current page to preserve error state")
+                Logger.shared.log("   User can manually navigate if needed")
             }
         }
 
@@ -689,11 +737,7 @@ struct WebView: UIViewRepresentable {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
                     if !self.parent.isReady {
                         Logger.shared.log("⚠️ Navigation safety timeout reached for \(urlString)")
-                        if !urlString.contains("account.proton.me") {
-                            webView.loadLumoBase()
-                        } else {
-                            Logger.shared.log("Staying on account page after timeout to preserve user flow")
-                        }
+                        Logger.shared.log("   Staying on current page to preserve state - user can manually navigate if needed")
                         self.parent.isReady = true
                     }
                 }
@@ -702,12 +746,21 @@ struct WebView: UIViewRepresentable {
         
         // Add handler for navigation failures
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-            Logger.shared.log("WebView failed provisional navigation with error: \(error)")
+            let nsError = error as NSError
+            let errorCode = nsError.code
+            let errorDomain = nsError.domain
+            let errorDescription = nsError.localizedDescription
+            let attemptedURL = webView.url?.absoluteString ?? self.parent.currentURL?.absoluteString ?? "unknown"
+            
+            Logger.shared.log("❌ WebView failed provisional navigation")
+            Logger.shared.log("   Attempted URL: \(attemptedURL)")
+            Logger.shared.log("   Error domain: \(errorDomain)")
+            Logger.shared.log("   Error code: \(errorCode)")
+            Logger.shared.log("   Error description: \(errorDescription)")
             
             DispatchQueue.main.async {
                 self.parent.isReady = true
                 
-                let nsError = error as NSError
                 if nsError.domain == NSURLErrorDomain && 
                    (nsError.code == NSURLErrorNotConnectedToInternet || 
                     nsError.code == NSURLErrorNetworkConnectionLost ||
@@ -720,7 +773,10 @@ struct WebView: UIViewRepresentable {
         }
 
         func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-            Logger.shared.log("⚠️ WebContent process terminated - attempting recovery")
+            let currentURL = webView.url?.absoluteString ?? "nil"
+            Logger.shared.log("⚠️ WebContent process terminated")
+            Logger.shared.log("   Current URL: \(currentURL)")
+            Logger.shared.log("   Attempting recovery by reloading current page")
             
             DispatchQueue.main.async {
                 self.parent.isReady = true
@@ -731,12 +787,14 @@ struct WebView: UIViewRepresentable {
                 )
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    Logger.shared.log("Attempting to reload after WebKit process termination")
                     if let url = webView.url {
+                        Logger.shared.log("Reloading URL: \(url.absoluteString)")
                         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
                         webView.load(request)
                     } else {
-                        webView.loadLumoBase()
+                        Logger.shared.log("⚠️ No URL available - WebContent process terminated with no current page")
+                        Logger.shared.log("   User can manually navigate if needed")
+                        // Don't automatically redirect - let user see the error state
                     }
                 }
             }
@@ -992,10 +1050,6 @@ struct WebView: UIViewRepresentable {
         let themeHandler = ThemeMessageHandler.shared
         configuration.userContentController.add(themeHandler, name: "themeChanged")
         configuration.userContentController.add(themeHandler, name: "themeRead")
-
-        if let utilitiesScript = JSBridgeManager.shared.createUserScript(.utilities, injectionTime: .atDocumentStart, forMainFrameOnly: true) {
-            configuration.userContentController.addUserScript(utilitiesScript)
-        }
 
         if let voiceEntryScript = JSBridgeManager.shared.createUserScript(.voiceEntrySetup, injectionTime: .atDocumentEnd, forMainFrameOnly: false) {
             configuration.userContentController.addUserScript(voiceEntryScript)

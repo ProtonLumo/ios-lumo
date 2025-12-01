@@ -1,4 +1,31 @@
 (function() {
+    // Utility functions (duplicated from utilities.js to remove dependency)
+    function removeIfExists(selector, description) {
+        const elements = document.querySelectorAll(selector);
+        if (elements.length > 0) {
+            elements.forEach(el => el.remove());
+            console.log(`Lumo: Removed ${elements.length} ${description}`);
+            return true;
+        }
+        return false;
+    }
+    
+    function sendWebKitMessage(handlerName, data) {
+        try {
+            if (window.webkit && window.webkit.messageHandlers && 
+                window.webkit.messageHandlers[handlerName]) {
+                window.webkit.messageHandlers[handlerName].postMessage(data || {});
+                return true;
+            } else {
+                console.warn('WebKit message handler not found: ' + handlerName);
+                return false;
+            }
+        } catch (e) {
+            console.error('Error sending WebKit message to ' + handlerName + ':', e);
+            return false;
+        }
+    }
+    
     // Function to modify signup links
     function modifySignupLinks() {
         const links = document.querySelectorAll('a[href^="https://account.proton.me/lumo/signup"]');
@@ -85,9 +112,7 @@
             removeDropdownButton();
             removeUnwantedLinks();
             
-            if(window.LumoUtils) {
-                window.LumoUtils.removeIfExists('.button-for-icon.lumo-bf2025-promotion.button-promotion--icon-gradient.bf-2025-free', '')
-            }
+            removeIfExists('.button-for-icon.lumo-bf2025-promotion.button-promotion--icon-gradient.bf-2025-free', '');
         }
     });
     
@@ -97,20 +122,11 @@
         subtree: true 
     });
     
-    // Report back navigation state accurately using utility if available
-    if (window.LumoUtils) {
-        window.LumoUtils.sendWebKitMessage('navigationState', {
-            canGoBack: window.history.length > 1,
-            url: window.location.href
-        });
-    } else {
-        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.navigationState) {
-            window.webkit.messageHandlers.navigationState.postMessage({
-                canGoBack: window.history.length > 1,
-                url: window.location.href
-            });
-        }
-    }
+    // Report back navigation state accurately
+    sendWebKitMessage('navigationState', {
+        canGoBack: window.history.length > 1,
+        url: window.location.href
+    });
     
     return null;
 })(); 

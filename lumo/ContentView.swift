@@ -85,6 +85,7 @@ struct ContentView: View {
     @State private var showCurrentPlans = false
     @State private var currentPlansViewModel: CurrentPlansViewModel?
     @State private var isGenerating = false
+    @State private var showLockdownModeWarning = false
 
     // MARK: - Constants
     private let paymentSheetDelegate = PaymentSheetDelegate()
@@ -207,6 +208,13 @@ struct ContentView: View {
                     openAppSettings()
                 }
             )
+            
+            // Lockdown Mode warning overlay
+            if showLockdownModeWarning {
+                LockdownModeWarningView {
+                    showLockdownModeWarning = false
+                }
+            }
         }
         .onChange(of: currentWebViewURL) { newURL in
             handleURLChange(newURL)
@@ -280,6 +288,9 @@ struct ContentView: View {
             }
 
             setupNotificationObservers()
+            
+            // Check for Lockdown Mode on app load
+            checkLockdownMode()
         }
         .sheet(isPresented: $showCurrentPlans) {
             
@@ -966,6 +977,28 @@ struct ContentView: View {
             } else {
                 Logger.shared.log("Microphone permission still denied after app foreground")
             }
+        }
+    }
+    
+    private func checkLockdownMode() {
+        // Check from webView if available, otherwise use default check
+        let isLockdownModeEnabled: Bool
+        if let webView = webViewReference {
+            isLockdownModeEnabled = LockdownModeDetector.shared.isLockdownModeEnabled(webView: webView)
+        } else {
+            isLockdownModeEnabled = LockdownModeDetector.shared.isLockdownModeEnabled()
+        }
+        
+        if isLockdownModeEnabled {
+            Logger.shared.log("⚠️ Lockdown Mode is enabled - IndexedDB will not work in WebView")
+            DispatchQueue.main.async {
+                // Show warning after a brief delay to ensure UI is ready
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.showLockdownModeWarning = true
+                }
+            }
+        } else {
+            Logger.shared.log("✅ Lockdown Mode is not enabled")
         }
     }
 }

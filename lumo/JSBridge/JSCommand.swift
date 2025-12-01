@@ -55,9 +55,30 @@ enum JSCommand {
                 const prompt = '\(safeText)';
                 const editorType = '\(editorType.rawValue)';
                 
-                if (window.LumoUtils && window.LumoUtils.applyLayoutStabilization) {
-                    window.LumoUtils.applyLayoutStabilization();
+                // Layout stabilization functions (duplicated from utilities.js to remove dependency)
+                let stabilizationStyleElement = null;
+                
+                function applyLayoutStabilization() {
+                    if (stabilizationStyleElement) {
+                        restoreLayout();
+                    }
+                    stabilizationStyleElement = document.createElement('style');
+                    stabilizationStyleElement.id = 'lumo-layout-stabilization';
+                    stabilizationStyleElement.textContent = 'html:not(.feature-scrollbars-off) * { bottom: 0 !important; }';
+                    document.head.appendChild(stabilizationStyleElement);
+                    return true;
                 }
+                
+                function restoreLayout() {
+                    if (stabilizationStyleElement) {
+                        document.head.removeChild(stabilizationStyleElement);
+                        stabilizationStyleElement = null;
+                        return true;
+                    }
+                    return false;
+                }
+                
+                applyLayoutStabilization();
                 
                 let editor = null;
                 if (editorType === 'tiptap' || editorType === 'basic') {
@@ -76,9 +97,7 @@ enum JSCommand {
                     editor.dispatchEvent(new Event(eventType, { bubbles: true }));
                 });
                 
-                if (window.LumoUtils && window.LumoUtils.restoreLayout) {
-                    window.LumoUtils.restoreLayout();
-                }
+                restoreLayout();
                 
                 return { success: true, action: 'text_inserted' };
             })();

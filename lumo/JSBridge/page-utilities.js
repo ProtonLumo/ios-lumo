@@ -22,9 +22,7 @@
         
         // Force layout reflow
         forceLayout: function() {
-            if (window.LumoUtils) {
-                window.LumoUtils.forceLayout();
-            } else {
+            if (document.body) {
                 document.body.getBoundingClientRect();
             }
         }

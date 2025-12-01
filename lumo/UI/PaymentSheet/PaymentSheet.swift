@@ -249,7 +249,7 @@ struct PaymentSheet: View {
                     }
                 }
                 VStack(spacing: 8) {
-                    // Show promotion images when it's a promotion, regular upgrade icon otherwise
+                    
                     Image(getHeaderImageName())
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -258,13 +258,13 @@ struct PaymentSheet: View {
                     
                     Text(viewModel.hasNoPlansAvailable ? 
                          String(localized: "app.payment.noPlansAvailable") : 
-                         (viewModel.isPromotionOffer ? String(localized: "app.payment.dontMissSpecialDeal") : String(localized: "app.payment.elevateExperience")))
+                         (String(localized: "app.payment.elevateExperience")))
                             .font(.system(size: 24, weight: .bold))
                             .padding(.top, 16)
                             .foregroundColor(themeProvider.textColor)
                     Text(viewModel.hasNoPlansAvailable ? 
                          String(localized: "app.payment.noPlansMessage") : 
-                         (viewModel.isPromotionOffer ? String(localized: "app.payment.unlockPremiumDeal") : String(localized: "app.payment.enjoyPremium")))
+                         (String(localized: "app.payment.enjoyPremium")))
                             .font(.system(size: 16))
                             .multilineTextAlignment(.center)
                             .foregroundColor(themeProvider.secondaryTextColor)
@@ -312,7 +312,7 @@ struct PaymentSheet: View {
                     }
                 } else if !viewModel.hasNoPlansAvailable {
                     ForEach(viewModel.planOptions, id: \.id) { model in
-                        PlanOption(model: model, isPromotionOffer: viewModel.isPromotionOffer)
+                        PlanOption(model: model)
                             .contentShape(Rectangle())
                             .onTapGesture {
                                 viewModel.planOptionSelected(model.id)
@@ -338,18 +338,9 @@ struct PaymentSheet: View {
                                 .font(.system(size: 17, weight: .semibold))
                                 .opacity(0.7)
                         } else {
-                            let showPromoButton = viewModel.isPromotionOffer && viewModel.isYearlyPlanSelected
-                            
                             HStack(spacing: 8) {
-                                if showPromoButton {
-                                    Image(systemName: "bolt.fill")
-                                        .font(.system(size: 16, weight: .bold))
-                                }
                                 
-                                Text(showPromoButton ? 
-                                     String(localized: "app.payment.getOffer") : 
-                                     String(localized: "app.payment.getPlus")
-                                    ) 
+                                Text(String(localized: "app.payment.getPlus"))
                                     .font(.system(size: 17, weight: .bold))
                             }
                             .opacity(viewModel.isLoading ? 0 : 1)
@@ -366,24 +357,19 @@ struct PaymentSheet: View {
                 .frame(height: 56)
                 .background(
                     Group {
-                        let showPromoStyle = viewModel.isPromotionOffer && viewModel.isYearlyPlanSelected
-                        
                         if viewModel.isLoadingPlans || viewModel.hasNoPlansAvailable {
                             (themeProvider.isDarkMode ? Color.gray.opacity(0.3) : Color.gray.opacity(0.5))
-                        } else if showPromoStyle {
-                            // Orange gradient for promo - more vibrant
+                        } else {
                             LinearGradient(
                                 colors: [Color(hex: 0xFFAC2E), Color(hex: 0xFF8C00)],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
-                        } else {
-                            brandOrange
                         }
                     }
                 )
                 .cornerRadius(28)
-                .shadow(color: (viewModel.isPromotionOffer && viewModel.isYearlyPlanSelected) ? brandOrange.opacity(0.4) : Color.clear, radius: 8, x: 0, y: 4)
+                .shadow(color: brandOrange.opacity(0.4), radius: 8, x: 0, y: 4)
                 .padding(.horizontal)
                 .padding(.top, 10)
                 .disabled(viewModel.isLoading || viewModel.isLoadingPlans || viewModel.hasNoPlansAvailable)
@@ -411,12 +397,7 @@ struct PaymentSheet: View {
     }
     
     private func getHeaderImageName() -> String {
-        if viewModel.isPromotionOffer {
-            return themeProvider.isDarkMode ? "LumoOfferDark" : "LumoOffer"
-        } else {
-            
-            return "LumoUpgradeIcon"
-        }
+        return "LumoUpgradeIcon"
     }
 }
 

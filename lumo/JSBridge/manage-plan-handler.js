@@ -1,9 +1,3 @@
-// Load utilities first
-if (typeof setViewport === 'undefined') {
-    console.log('Utilities not loaded, loading now...');
-    // Utilities will be loaded by JSBridgeManager
-}
-
 (function() {
     function handleManagePlanClick(event) {
         event.preventDefault();

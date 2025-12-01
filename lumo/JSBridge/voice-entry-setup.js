@@ -1,6 +1,23 @@
 (function() {
     'use strict';
     
+    // Utility function (duplicated from utilities.js to remove dependency)
+    function sendWebKitMessage(handlerName, data) {
+        try {
+            if (window.webkit && window.webkit.messageHandlers && 
+                window.webkit.messageHandlers[handlerName]) {
+                window.webkit.messageHandlers[handlerName].postMessage(data || {});
+                return true;
+            } else {
+                console.warn('WebKit message handler not found: ' + handlerName);
+                return false;
+            }
+        } catch (e) {
+            console.error('Error sending WebKit message to ' + handlerName + ':', e);
+            return false;
+        }
+    }
+    
     let voiceEntrySetup = false;
     let clickHandlerActive = false;
     let currentUrl = location.href;
@@ -21,11 +38,7 @@
             clickHandlerActive = true;
             
             try {
-                if (window.LumoUtils) {
-                    window.LumoUtils.sendWebKitMessage('startVoiceEntry', {});
-                } else if (window.webkit?.messageHandlers?.startVoiceEntry) {
-                    window.webkit.messageHandlers.startVoiceEntry.postMessage({});
-                }
+                sendWebKitMessage('startVoiceEntry', {});
                 console.log('🎤 Voice entry triggered');
             } catch(err) {
                 console.error('Voice entry error:', err);

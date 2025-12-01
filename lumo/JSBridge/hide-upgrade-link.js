@@ -1,6 +1,17 @@
 (function() {
     'use strict';
     
+    // Utility function (duplicated from utilities.js to remove dependency)
+    function removeIfExists(selector, description) {
+        const elements = document.querySelectorAll(selector);
+        if (elements.length > 0) {
+            elements.forEach(el => el.remove());
+            console.log(`Lumo: Removed ${elements.length} ${description}`);
+            return true;
+        }
+        return false;
+    }
+    
     function removeSidebarUpgradeItem() {
         // Match any link with "upgrade" in the href
         const upgradeLinks = document.querySelectorAll('a.navigation-link[href*="upgrade"]');
@@ -38,20 +49,18 @@
     
     function modifyAccountPage() {
         // Remove "Your plan" section
-        if (window.LumoUtils) {
-            window.LumoUtils.removeIfExists('#your-plan', '#your-plan section');
-            window.LumoUtils.removeIfExists('#payment-methods', '#payment-methods section');
-            window.LumoUtils.removeIfExists('#credits', '#credits section');
-            window.LumoUtils.removeIfExists('#gift-code', '#gift-code section');
-            window.LumoUtils.removeIfExists('#breaches', '#breaches section');
-            window.LumoUtils.removeIfExists('#sentinel', '#sentinel section');
-            
-            // Remove Black Friday promo button
-            window.LumoUtils.removeIfExists('.button-promotion--bf-2025-free', 'Black Friday promo button');
-            
-            // Upgrade option on account header
-            window.LumoUtils.removeIfExists('.button-promotion.button-promotion--icon-gradient', 'Default upgrade button');
-        }
+        removeIfExists('#your-plan', '#your-plan section');
+        removeIfExists('#payment-methods', '#payment-methods section');
+        removeIfExists('#credits', '#credits section');
+        removeIfExists('#gift-code', '#gift-code section');
+        removeIfExists('#breaches', '#breaches section');
+        removeIfExists('#sentinel', '#sentinel section');
+        
+        // Remove Black Friday promo button
+        removeIfExists('.button-promotion--bf-2025-free', 'Black Friday promo button');
+        
+        // Upgrade option on account header
+        removeIfExists('.button-promotion.button-promotion--icon-gradient', 'Default upgrade button');
 
         // Remove sidebar "Upgrade" entry
         removeSidebarUpgradeItem();
