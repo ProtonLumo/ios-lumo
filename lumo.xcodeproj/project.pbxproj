@@ -12,7 +12,7 @@
 		96E796F32DCCF3E90003A094 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 96E796F22DCCF3E90003A094 /* Lottie */; };
 		96E80DD12DA8C642000194CB /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E80DB82DA8C613000194CB /* WidgetKit.framework */; };
 		96E80DD22DA8C642000194CB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E80DBA2DA8C613000194CB /* SwiftUI.framework */; };
-		96E80DDD2DA8C643000194CB /* LumoWidgetExtensionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 96E80DD02DA8C642000194CB /* LumoWidgetExtensionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		96E80DDD2DA8C643000194CB /* LumoWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 96E80DD02DA8C642000194CB /* LumoWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		96E80DE32DA8C7CF000194CB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E80DE22DA8C7CF000194CB /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,7 +33,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				96E80DDD2DA8C643000194CB /* LumoWidgetExtensionExtension.appex in Embed Foundation Extensions */,
+				96E80DDD2DA8C643000194CB /* LumoWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -44,24 +44,24 @@
 		96E80D9F2DA8C56B000194CB /* lumo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lumo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E80DB82DA8C613000194CB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		96E80DBA2DA8C613000194CB /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		96E80DD02DA8C642000194CB /* LumoWidgetExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LumoWidgetExtensionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E80DD02DA8C642000194CB /* LumoWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LumoWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E80DE22DA8C7CF000194CB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		962695102DFC634900ED39A3 /* Exceptions for "lumo" folder in "LumoWidgetExtensionExtension" target */ = {
+		962695102DFC634900ED39A3 /* Exceptions for "lumo" folder in "LumoWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Localizable.xcstrings,
 			);
-			target = 96E80DCF2DA8C642000194CB /* LumoWidgetExtensionExtension */;
+			target = 96E80DCF2DA8C642000194CB /* LumoWidgetExtension */;
 		};
-		96E80DDE2DA8C643000194CB /* Exceptions for "LumoWidgetExtension" folder in "LumoWidgetExtensionExtension" target */ = {
+		96E80DDE2DA8C643000194CB /* Exceptions for "LumoWidgetExtension" folder in "LumoWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 96E80DCF2DA8C642000194CB /* LumoWidgetExtensionExtension */;
+			target = 96E80DCF2DA8C642000194CB /* LumoWidgetExtension */;
 		};
 		96E80DF72DABEBC0000194CB /* Exceptions for "lumo" folder in "lumo" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -77,7 +77,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				96E80DF72DABEBC0000194CB /* Exceptions for "lumo" folder in "lumo" target */,
-				962695102DFC634900ED39A3 /* Exceptions for "lumo" folder in "LumoWidgetExtensionExtension" target */,
+				962695102DFC634900ED39A3 /* Exceptions for "lumo" folder in "LumoWidgetExtension" target */,
 			);
 			path = lumo;
 			sourceTree = "<group>";
@@ -85,7 +85,7 @@
 		96E80DD32DA8C642000194CB /* LumoWidgetExtension */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				96E80DDE2DA8C643000194CB /* Exceptions for "LumoWidgetExtension" folder in "LumoWidgetExtensionExtension" target */,
+				96E80DDE2DA8C643000194CB /* Exceptions for "LumoWidgetExtension" folder in "LumoWidgetExtension" target */,
 			);
 			path = LumoWidgetExtension;
 			sourceTree = "<group>";
@@ -130,7 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				96E80D9F2DA8C56B000194CB /* lumo.app */,
-				96E80DD02DA8C642000194CB /* LumoWidgetExtensionExtension.appex */,
+				96E80DD02DA8C642000194CB /* LumoWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -174,9 +174,9 @@
 			productReference = 96E80D9F2DA8C56B000194CB /* lumo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		96E80DCF2DA8C642000194CB /* LumoWidgetExtensionExtension */ = {
+		96E80DCF2DA8C642000194CB /* LumoWidgetExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 96E80DDF2DA8C643000194CB /* Build configuration list for PBXNativeTarget "LumoWidgetExtensionExtension" */;
+			buildConfigurationList = 96E80DDF2DA8C643000194CB /* Build configuration list for PBXNativeTarget "LumoWidgetExtension" */;
 			buildPhases = (
 				96E80DCC2DA8C642000194CB /* Sources */,
 				96E80DCD2DA8C642000194CB /* Frameworks */,
@@ -189,12 +189,12 @@
 			fileSystemSynchronizedGroups = (
 				96E80DD32DA8C642000194CB /* LumoWidgetExtension */,
 			);
-			name = LumoWidgetExtensionExtension;
+			name = LumoWidgetExtension;
 			packageProductDependencies = (
 				963FD38E2DF106740021FE14 /* Lottie */,
 			);
 			productName = LumoWidgetExtensionExtension;
-			productReference = 96E80DD02DA8C642000194CB /* LumoWidgetExtensionExtension.appex */;
+			productReference = 96E80DD02DA8C642000194CB /* LumoWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -245,7 +245,7 @@
 			projectRoot = "";
 			targets = (
 				96E80D9E2DA8C56B000194CB /* lumo */,
-				96E80DCF2DA8C642000194CB /* LumoWidgetExtensionExtension */,
+				96E80DCF2DA8C642000194CB /* LumoWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -287,7 +287,7 @@
 /* Begin PBXTargetDependency section */
 		96E80DDC2DA8C643000194CB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 96E80DCF2DA8C642000194CB /* LumoWidgetExtensionExtension */;
+			target = 96E80DCF2DA8C642000194CB /* LumoWidgetExtension */;
 			targetProxy = 96E80DDB2DA8C643000194CB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -559,7 +559,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		96E80DDF2DA8C643000194CB /* Build configuration list for PBXNativeTarget "LumoWidgetExtensionExtension" */ = {
+		96E80DDF2DA8C643000194CB /* Build configuration list for PBXNativeTarget "LumoWidgetExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E80DE02DA8C643000194CB /* Debug */,
