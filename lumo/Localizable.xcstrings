@@ -437,6 +437,12 @@
             "value" : "Fout"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Błąd"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1417,13 +1423,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Non ora"
+            "value" : "Non adesso"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nu niet"
+            "value" : "Niet Nu"
           }
         },
         "pl" : {
@@ -1436,12 +1442,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Agora não"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Не сейчас"
           }
         },
         "tr" : {
@@ -1458,13 +1458,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nastavení > Soukromí a zabezpečení > Režim uzamčení"
+            "value" : "Nastavení > Soukromí a zabezpečení > Režim blokování"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Einstellungen > Datenschutz & Sicherheit > Sperrmodus"
+            "value" : "Einstellungen ➜ Datenschutz und Sicherheit ➜ Sperrmodus"
           }
         },
         "en" : {
@@ -1476,55 +1476,43 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajustes > Privacidad y seguridad > Modo de bloqueo"
+            "value" : "Ajustes > Privacidad y Seguridad > Modo de Bloqueo"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajustes > Privacidad y seguridad > Modo de bloqueo"
+            "value" : "Ajustes > Privacidad y Seguridad > Modo de Bloqueo"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Réglages > Confidentialité et sécurité > Mode verrouillage"
+            "value" : "Paramètres > Confidentialité et Sécurité > Mode Verrouillage"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Impostazioni > Privacy e sicurezza > Modalità blocco"
+            "value" : "Impostazioni > Privacy e sicurezza > Modalità di blocco"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Instellingen > Privacy en beveiliging > Vergrendelingsmodus"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ustawienia > Prywatność i bezpieczeństwo > Tryb blokady"
+            "value" : "Instellingen > Privacy en Security > Lockdown Mode"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Configurações > Privacidade e segurança > Modo de bloqueio"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Настройки > Конфиденциальность и безопасность > Режим блокировки"
+            "value" : "Ajustes > Privacidade e Segurança > Modo de Isolamento"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ayarlar > Gizlilik ve Güvenlik > Kilit Modu"
+            "value" : "Ayarlar > Gizlilik ve güvenlik > Kilitleme kipi"
           }
         }
       }
@@ -1535,13 +1523,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Přidat tuto aplikaci do výjimek režimu uzamčení"
+            "value" : "Přidejte tuto aplikaci do výjimek Režimu blokování"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese App zu Sperrmodus-Ausnahmen hinzufügen"
+            "value" : "Diese App zu den Ausnahmen für den Sperrmodus hinzufügen"
           }
         },
         "en" : {
@@ -1553,55 +1541,43 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Agregar esta aplicación a las excepciones del modo de bloqueo"
+            "value" : "Añadir esta app a las excepciones del Modo de Bloqueo"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Agregar esta aplicación a las excepciones del modo de bloqueo"
+            "value" : "Añadir esta aplicación a las excepciones del Modo de Bloqueo"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajouter cette application aux exceptions du mode verrouillage"
+            "value" : "Ajouter cette application aux exceptions du mode Verrouillage"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aggiungi questa app alle eccezioni della modalità blocco"
+            "value" : "Aggiungi questa app alle eccezioni della Modalità di blocco"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voeg deze app toe aan uitzonderingen voor de vergrendelingsmodus"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dodaj tę aplikację do wyjątków trybu blokady"
+            "value" : "Voeg deze app toe aan Lockdown Mode uitzonderingen"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adicionar este aplicativo às exceções do modo de bloqueio"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Добавить это приложение в исключения режима блокировки"
+            "value" : "Adicionar esse aplicativo para as exceções no Modo de Isolamento"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu uygulamayı Kilit Modu istisnalarına ekle"
+            "value" : "Bu uygulama kilitleme kipine katılmasın"
           }
         }
       }
@@ -1612,13 +1588,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Synchronizace konverzací je zakázána kvůli omezením režimu uzamčení."
+            "value" : "Synchronizace konverzací je zakázána kvůli omezením Režimu blokování."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die Synchronisierung von Unterhaltungen ist aufgrund von Sperrmodus-Beschränkungen deaktiviert."
+            "value" : "Das Synchronisieren von Unterhaltungen ist aufgrund von Einschränkungen im Sperrmodus deaktiviert."
           }
         },
         "en" : {
@@ -1630,55 +1606,43 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La sincronización de conversaciones está deshabilitada debido a las restricciones del modo de bloqueo."
+            "value" : "La sincronización de conversaciones está desactivada debido a las restricciones del Modo de Bloqueo."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La sincronización de conversaciones está deshabilitada debido a las restricciones del modo de bloqueo."
+            "value" : "La sincronización de conversaciones está desactivada debido a las restricciones del Modo de Bloqueo."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La synchronisation des conversations est désactivée en raison des restrictions du mode verrouillage."
+            "value" : "La synchronisation des conversations est désactivée en raison des restrictions du mode Verrouillage."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La sincronizzazione delle conversazioni è disabilitata a causa delle restrizioni della modalità blocco."
+            "value" : "La sincronizzazione delle conversazioni è disattivata a causa delle restrizioni della Modalità di blocco."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Conversatiesynchronisatie is uitgeschakeld vanwege beperkingen van de vergrendelingsmodus."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Synchronizacja konwersacji jest wyłączona z powodu ograniczeń trybu blokady."
+            "value" : "Synchroniseren van conversaties is uitgeschakeld omwille van Lockdown Mode beperkingen."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A sincronização de conversas está desativada devido às restrições do modo de bloqueio."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Синхронизация разговоров отключена из-за ограничений режима блокировки."
+            "value" : "A sincronização de conversa está desativado devido às restrições do Modo de Isolamento"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kilit Modu kısıtlamaları nedeniyle konuşma senkronizasyonu devre dışı."
+            "value" : "Kilitleme kipi kısıtlamaları nedeniyle konuşma eşitleme kapatıldı."
           }
         }
       }
@@ -1689,7 +1653,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Režim uzamčení je aktivní"
+            "value" : "Režim blokování je aktivní"
           }
         },
         "de" : {
@@ -1707,55 +1671,43 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El modo de bloqueo está activo"
+            "value" : "Modo de bloqueo activado"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El modo de bloqueo está activo"
+            "value" : "Modo de bloqueo activado"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le mode verrouillage est actif"
+            "value" : "Le mode Verrouillage est actif"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La modalità blocco è attiva"
+            "value" : "Modalità di blocco attiva"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vergrendelingsmodus is actief"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tryb blokady jest aktywny"
+            "value" : "Lockdown Mode is Actief"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Modo de bloqueio está ativo"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Режим блокировки активен"
+            "value" : "O Modo de Isolamento está ativo"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kilit Modu Aktif"
+            "value" : "Kilitleme kipi açık"
           }
         }
       }
@@ -2341,6 +2293,12 @@
             "value" : "Accedi o crea un account per acquistare Lumo Plus."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log in of maak een account aan om Lumo Plus aan te kopen."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2475,7 +2433,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Melhor Valor"
+            "value" : "Melhor valor"
           }
         },
         "tr" : {
@@ -2535,6 +2493,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geannuleerd"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anulowano"
           }
         },
         "pt-BR" : {
@@ -4013,6 +3977,12 @@
             "value" : "L’acquisto di Lumo Plus non è ancora disponibile. Riprova più tardi."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De aankoop van Lumo Plus is nog niet mogelijk. Probeer later opnieuw."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4614,6 +4584,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sblocca oggi tutte le funzionalità premium di Lumo Plus al nostro prezzo migliore di sempre."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ontgrendel vandaag nog alle Lumo Plus premium features voor onze beste prijs tot nu toe."
           }
         },
         "pt-BR" : {
