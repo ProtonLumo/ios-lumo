@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "96E80D9E2DA8C56B000194CB"
-               BuildableName = "lumo.app"
-               BlueprintName = "lumo"
-               ReferencedContainer = "container:lumo.xcodeproj">
+               BuildableName = "LumoApp.app"
+               BlueprintName = "LumoApp"
+               ReferencedContainer = "container:Lumo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "96E80D9E2DA8C56B000194CB"
-            BuildableName = "lumo.app"
-            BlueprintName = "lumo"
-            ReferencedContainer = "container:lumo.xcodeproj">
+            BuildableName = "LumoApp.app"
+            BlueprintName = "LumoApp"
+            ReferencedContainer = "container:Lumo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "96E80D9E2DA8C56B000194CB"
-            BuildableName = "lumo.app"
-            BlueprintName = "lumo"
-            ReferencedContainer = "container:lumo.xcodeproj">
+            BuildableName = "LumoApp.app"
+            BlueprintName = "LumoApp"
+            ReferencedContainer = "container:Lumo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -41,7 +41,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		96E80D9F2DA8C56B000194CB /* lumo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lumo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E80D9F2DA8C56B000194CB /* LumoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LumoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E80DB82DA8C613000194CB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		96E80DBA2DA8C613000194CB /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		96E80DD02DA8C642000194CB /* LumoWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LumoWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,45 +49,199 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		962695102DFC634900ED39A3 /* Exceptions for "lumo" folder in "LumoWidgetExtension" target */ = {
+		4EC8C5802F0D4C18006F9BA9 /* Exceptions for "Modules" folder in "LumoApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Localizable.xcstrings,
+				App/Resources/Assets.xcassets,
+				App/Resources/LaunchScreen.storyboard,
+				App/Resources/Localizable.xcstrings,
+				"App/Resources/lumo-hero.json",
+				"App/Resources/lumo-loader.json",
+				App/Sources/Config.swift,
+				App/Sources/ContentView.swift,
+				App/Sources/DataModels/AvailablePlans.swift,
+				App/Sources/DataModels/ComposedPlan.swift,
+				App/Sources/DataModels/CreateSubscription.swift,
+				App/Sources/DataModels/CurrentSubscriptionResponse.swift,
+				App/Sources/DataModels/Decorations.swift,
+				App/Sources/DataModels/Entitlements.swift,
+				App/Sources/DataModels/NewToken.swift,
+				App/Sources/DataModels/PaymentToken.swift,
+				App/Sources/Helpers/DictionaryConvertible.swift,
+				App/Sources/Helpers/Extensions.swift,
+				App/Sources/Helpers/LumoPlans.storekit,
+				App/Sources/Helpers/plans.json,
+				App/Sources/Helpers/PlansComposer.swift,
+				App/Sources/Helpers/TestExtensions.swift,
+				"App/Sources/JSBridge/common-setup.js",
+				"App/Sources/JSBridge/external-link-handler.js",
+				"App/Sources/JSBridge/hide-upgrade-link.js",
+				"App/Sources/JSBridge/initial-setup.js",
+				App/Sources/JSBridge/JSBridgeManager.swift,
+				App/Sources/JSBridge/JSBridgeResult.swift,
+				App/Sources/JSBridge/JSCommand.swift,
+				"App/Sources/JSBridge/manage-plan-handler.js",
+				"App/Sources/JSBridge/message-submission-listener.js",
+				"App/Sources/JSBridge/page-utilities.js",
+				"App/Sources/JSBridge/payment-api.js",
+				"App/Sources/JSBridge/promotion-button-handler.js",
+				"App/Sources/JSBridge/theme-change-listener.js",
+				"App/Sources/JSBridge/theme-reader.js",
+				"App/Sources/JSBridge/upgrade-link-classifier.js",
+				"App/Sources/JSBridge/voice-entry-setup.js",
+				App/Sources/JSBridge/WebViewCoordinator.swift,
+				App/Sources/lumoApp.swift,
+				App/Sources/LumoWebView.swift,
+				App/Sources/PaymentLogic/AppleSubscriptionManager.swift,
+				App/Sources/PaymentLogic/PaymentBridge.swift,
+				App/Sources/PaymentLogic/PaymentHandler.swift,
+				App/Sources/PaymentLogic/PurchaseManager.swift,
+				App/Sources/PaymentLogic/StoreKitObserver.swift,
+				App/Sources/PaymentLogic/StoreKitReceiptManager.swift,
+				App/Sources/Protocols/ProductProtocol.swift,
+				App/Sources/Speech/SpeechRecognizer.swift,
+				App/Sources/ThemeManager.swift,
+				App/Sources/ThemeProvider.swift,
+				App/Sources/UI/CurrentPlans/CurrentPlansView.swift,
+				App/Sources/UI/CurrentPlans/CurrentPlansViewModel.swift,
+				"App/Sources/UI/CurrentPlans/Sub-views/CurrentPlansBodyView.swift",
+				"App/Sources/UI/CurrentPlans/Sub-views/ErrorView.swift",
+				"App/Sources/UI/CurrentPlans/Sub-views/FooterView.swift",
+				"App/Sources/UI/CurrentPlans/Sub-views/NoSubscriptionsView.swift",
+				"App/Sources/UI/CurrentPlans/Sub-views/SubscriptionLoadingView.swift",
+				App/Sources/UI/Errors/LockdownModeWarningView.swift,
+				App/Sources/UI/Errors/NetworkErrorView.swift,
+				App/Sources/UI/FeatureRow/FeatureRow.swift,
+				App/Sources/UI/FeatureRow/FeatureRowModel.swift,
+				App/Sources/UI/Helpers/PreviewData.swift,
+				App/Sources/UI/Loading/LoadingView.swift,
+				App/Sources/UI/Loading/LottieView.swift,
+				App/Sources/UI/Navigation/LumoNavigationBar.swift,
+				App/Sources/UI/Payment/TransactionProgressView.swift,
+				App/Sources/UI/Payment/TransactionProgressViewModel.swift,
+				App/Sources/UI/PaymentSheet/PaymentSheet.swift,
+				App/Sources/UI/PaymentSheet/PaymentSheetViewModel.swift,
+				App/Sources/UI/PlanOption/PlanOption.swift,
+				App/Sources/UI/PlanOption/PlanOptionViewModel.swift,
+				App/Sources/UI/PlanView/PlanView.swift,
+				App/Sources/UI/PlanView/PlanViewModel.swift,
+				"App/Sources/UI/PlanView/Sub-views/HeaderTitleView.swift",
+				"App/Sources/UI/PlanView/Sub-views/PlanDetailHeaderView.swift",
+				"App/Sources/UI/PlanView/Sub-views/PlanDetailView.swift",
+				"App/Sources/UI/PlanView/Sub-views/ProgressEntitlementView.swift",
+				App/Sources/UI/Speech/PermissionAlertView.swift,
+				App/Sources/UI/Speech/SpeechRecorderView.swift,
+				App/Sources/Utils/BackgroundTaskManager.swift,
+				App/Sources/Utils/ColorExtensions.swift,
+				App/Sources/Utils/LockdownModeDetector.swift,
+				App/Sources/Utils/Logger.swift,
+				App/Sources/Utils/PermissionManager.swift,
+				App/Sources/Utils/URLExtensions.swift,
+			);
+			target = 96E80D9E2DA8C56B000194CB /* LumoApp */;
+		};
+		4EC8C5812F0D4C18006F9BA9 /* Exceptions for "Modules" folder in "LumoWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				App/Resources/Assets.xcassets,
+				App/Resources/LaunchScreen.storyboard,
+				"App/Resources/lumo-hero.json",
+				"App/Resources/lumo-loader.json",
+				App/Sources/Config.swift,
+				App/Sources/ContentView.swift,
+				App/Sources/DataModels/AvailablePlans.swift,
+				App/Sources/DataModels/ComposedPlan.swift,
+				App/Sources/DataModels/CreateSubscription.swift,
+				App/Sources/DataModels/CurrentSubscriptionResponse.swift,
+				App/Sources/DataModels/Decorations.swift,
+				App/Sources/DataModels/Entitlements.swift,
+				App/Sources/DataModels/NewToken.swift,
+				App/Sources/DataModels/PaymentToken.swift,
+				App/Sources/Helpers/DictionaryConvertible.swift,
+				App/Sources/Helpers/Extensions.swift,
+				App/Sources/Helpers/LumoPlans.storekit,
+				App/Sources/Helpers/plans.json,
+				App/Sources/Helpers/PlansComposer.swift,
+				App/Sources/Helpers/TestExtensions.swift,
+				"App/Sources/JSBridge/common-setup.js",
+				"App/Sources/JSBridge/external-link-handler.js",
+				"App/Sources/JSBridge/hide-upgrade-link.js",
+				"App/Sources/JSBridge/initial-setup.js",
+				App/Sources/JSBridge/JSBridgeManager.swift,
+				App/Sources/JSBridge/JSBridgeResult.swift,
+				App/Sources/JSBridge/JSCommand.swift,
+				"App/Sources/JSBridge/manage-plan-handler.js",
+				"App/Sources/JSBridge/message-submission-listener.js",
+				"App/Sources/JSBridge/page-utilities.js",
+				"App/Sources/JSBridge/payment-api.js",
+				"App/Sources/JSBridge/promotion-button-handler.js",
+				"App/Sources/JSBridge/theme-change-listener.js",
+				"App/Sources/JSBridge/theme-reader.js",
+				"App/Sources/JSBridge/upgrade-link-classifier.js",
+				"App/Sources/JSBridge/voice-entry-setup.js",
+				App/Sources/JSBridge/WebViewCoordinator.swift,
+				App/Sources/lumoApp.swift,
+				App/Sources/LumoWebView.swift,
+				App/Sources/PaymentLogic/AppleSubscriptionManager.swift,
+				App/Sources/PaymentLogic/PaymentBridge.swift,
+				App/Sources/PaymentLogic/PaymentHandler.swift,
+				App/Sources/PaymentLogic/PurchaseManager.swift,
+				App/Sources/PaymentLogic/StoreKitObserver.swift,
+				App/Sources/PaymentLogic/StoreKitReceiptManager.swift,
+				App/Sources/Protocols/ProductProtocol.swift,
+				App/Sources/Speech/SpeechRecognizer.swift,
+				App/Sources/ThemeManager.swift,
+				App/Sources/ThemeProvider.swift,
+				App/Sources/UI/CurrentPlans/CurrentPlansView.swift,
+				App/Sources/UI/CurrentPlans/CurrentPlansViewModel.swift,
+				"App/Sources/UI/CurrentPlans/Sub-views/CurrentPlansBodyView.swift",
+				"App/Sources/UI/CurrentPlans/Sub-views/ErrorView.swift",
+				"App/Sources/UI/CurrentPlans/Sub-views/FooterView.swift",
+				"App/Sources/UI/CurrentPlans/Sub-views/NoSubscriptionsView.swift",
+				"App/Sources/UI/CurrentPlans/Sub-views/SubscriptionLoadingView.swift",
+				App/Sources/UI/Errors/LockdownModeWarningView.swift,
+				App/Sources/UI/Errors/NetworkErrorView.swift,
+				App/Sources/UI/FeatureRow/FeatureRow.swift,
+				App/Sources/UI/FeatureRow/FeatureRowModel.swift,
+				App/Sources/UI/Helpers/PreviewData.swift,
+				App/Sources/UI/Loading/LoadingView.swift,
+				App/Sources/UI/Loading/LottieView.swift,
+				App/Sources/UI/Navigation/LumoNavigationBar.swift,
+				App/Sources/UI/Payment/TransactionProgressView.swift,
+				App/Sources/UI/Payment/TransactionProgressViewModel.swift,
+				App/Sources/UI/PaymentSheet/PaymentSheet.swift,
+				App/Sources/UI/PaymentSheet/PaymentSheetViewModel.swift,
+				App/Sources/UI/PlanOption/PlanOption.swift,
+				App/Sources/UI/PlanOption/PlanOptionViewModel.swift,
+				App/Sources/UI/PlanView/PlanView.swift,
+				App/Sources/UI/PlanView/PlanViewModel.swift,
+				"App/Sources/UI/PlanView/Sub-views/HeaderTitleView.swift",
+				"App/Sources/UI/PlanView/Sub-views/PlanDetailHeaderView.swift",
+				"App/Sources/UI/PlanView/Sub-views/PlanDetailView.swift",
+				"App/Sources/UI/PlanView/Sub-views/ProgressEntitlementView.swift",
+				App/Sources/UI/Speech/PermissionAlertView.swift,
+				App/Sources/UI/Speech/SpeechRecorderView.swift,
+				App/Sources/Utils/BackgroundTaskManager.swift,
+				App/Sources/Utils/ColorExtensions.swift,
+				App/Sources/Utils/LockdownModeDetector.swift,
+				App/Sources/Utils/Logger.swift,
+				App/Sources/Utils/PermissionManager.swift,
+				App/Sources/Utils/URLExtensions.swift,
+				App/SupportingFiles/Info.plist,
+				WidgetExtension/SupportingFiles/Info.plist,
 			);
 			target = 96E80DCF2DA8C642000194CB /* LumoWidgetExtension */;
-		};
-		96E80DDE2DA8C643000194CB /* Exceptions for "LumoWidgetExtension" folder in "LumoWidgetExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 96E80DCF2DA8C642000194CB /* LumoWidgetExtension */;
-		};
-		96E80DF72DABEBC0000194CB /* Exceptions for "lumo" folder in "lumo" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 96E80D9E2DA8C56B000194CB /* lumo */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		96E80DA12DA8C56B000194CB /* lumo */ = {
+		4EC8C4B72F0D4BEC006F9BA9 /* Modules */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				96E80DF72DABEBC0000194CB /* Exceptions for "lumo" folder in "lumo" target */,
-				962695102DFC634900ED39A3 /* Exceptions for "lumo" folder in "LumoWidgetExtension" target */,
+				4EC8C5802F0D4C18006F9BA9 /* Exceptions for "Modules" folder in "LumoApp" target */,
+				4EC8C5812F0D4C18006F9BA9 /* Exceptions for "Modules" folder in "LumoWidgetExtension" target */,
 			);
-			path = lumo;
-			sourceTree = "<group>";
-		};
-		96E80DD32DA8C642000194CB /* LumoWidgetExtension */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				96E80DDE2DA8C643000194CB /* Exceptions for "LumoWidgetExtension" folder in "LumoWidgetExtension" target */,
-			);
-			path = LumoWidgetExtension;
+			path = Modules;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -119,8 +273,7 @@
 		96E80D962DA8C56B000194CB = {
 			isa = PBXGroup;
 			children = (
-				96E80DA12DA8C56B000194CB /* lumo */,
-				96E80DD32DA8C642000194CB /* LumoWidgetExtension */,
+				4EC8C4B72F0D4BEC006F9BA9 /* Modules */,
 				96E80DB72DA8C613000194CB /* Frameworks */,
 				96E80DA02DA8C56B000194CB /* Products */,
 			);
@@ -129,7 +282,7 @@
 		96E80DA02DA8C56B000194CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				96E80D9F2DA8C56B000194CB /* lumo.app */,
+				96E80D9F2DA8C56B000194CB /* LumoApp.app */,
 				96E80DD02DA8C642000194CB /* LumoWidgetExtension.appex */,
 			);
 			name = Products;
@@ -148,9 +301,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		96E80D9E2DA8C56B000194CB /* lumo */ = {
+		96E80D9E2DA8C56B000194CB /* LumoApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 96E80DAD2DA8C56C000194CB /* Build configuration list for PBXNativeTarget "lumo" */;
+			buildConfigurationList = 96E80DAD2DA8C56C000194CB /* Build configuration list for PBXNativeTarget "LumoApp" */;
 			buildPhases = (
 				96E80D9B2DA8C56B000194CB /* Sources */,
 				96E80D9C2DA8C56B000194CB /* Frameworks */,
@@ -162,16 +315,13 @@
 			dependencies = (
 				96E80DDC2DA8C643000194CB /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				96E80DA12DA8C56B000194CB /* lumo */,
-			);
-			name = lumo;
+			name = LumoApp;
 			packageProductDependencies = (
 				403C8A502DB7D7D800DC72F5 /* ProtonUIFoundations */,
 				96E796F22DCCF3E90003A094 /* Lottie */,
 			);
 			productName = lumo;
-			productReference = 96E80D9F2DA8C56B000194CB /* lumo.app */;
+			productReference = 96E80D9F2DA8C56B000194CB /* LumoApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 		96E80DCF2DA8C642000194CB /* LumoWidgetExtension */ = {
@@ -187,7 +337,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				96E80DD32DA8C642000194CB /* LumoWidgetExtension */,
+				4EC8C4B72F0D4BEC006F9BA9 /* Modules */,
 			);
 			name = LumoWidgetExtension;
 			packageProductDependencies = (
@@ -215,7 +365,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 96E80D9A2DA8C56B000194CB /* Build configuration list for PBXProject "lumo" */;
+			buildConfigurationList = 96E80D9A2DA8C56B000194CB /* Build configuration list for PBXProject "Lumo" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -244,7 +394,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				96E80D9E2DA8C56B000194CB /* lumo */,
+				96E80D9E2DA8C56B000194CB /* LumoApp */,
 				96E80DCF2DA8C642000194CB /* LumoWidgetExtension */,
 			);
 		};
@@ -421,10 +571,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 31;
-				DEVELOPMENT_ASSET_PATHS = "\"lumo/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = lumo/Info.plist;
+				INFOPLIST_FILE = Modules/App/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Lumo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Lumo needs microphone access to enable voice input for AI assistance.";
@@ -456,10 +605,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 31;
-				DEVELOPMENT_ASSET_PATHS = "\"lumo/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = lumo/Info.plist;
+				INFOPLIST_FILE = Modules/App/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Lumo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Lumo needs microphone access to enable voice input for AI assistance.";
@@ -492,7 +640,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LumoWidgetExtension/Info.plist;
+				INFOPLIST_FILE = Modules/WidgetExtension/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LumoWidgetExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -519,7 +667,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LumoWidgetExtension/Info.plist;
+				INFOPLIST_FILE = Modules/WidgetExtension/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LumoWidgetExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -541,7 +689,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		96E80D9A2DA8C56B000194CB /* Build configuration list for PBXProject "lumo" */ = {
+		96E80D9A2DA8C56B000194CB /* Build configuration list for PBXProject "Lumo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E80DAB2DA8C56C000194CB /* Debug */,
@@ -550,7 +698,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		96E80DAD2DA8C56C000194CB /* Build configuration list for PBXNativeTarget "lumo" */ = {
+		96E80DAD2DA8C56C000194CB /* Build configuration list for PBXNativeTarget "LumoApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E80DAE2DA8C56C000194CB /* Debug */,

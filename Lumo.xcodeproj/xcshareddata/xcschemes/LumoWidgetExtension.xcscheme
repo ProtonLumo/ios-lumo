@@ -19,7 +19,7 @@
                BlueprintIdentifier = "96E80DCF2DA8C642000194CB"
                BuildableName = "LumoWidgetExtension.appex"
                BlueprintName = "LumoWidgetExtension"
-               ReferencedContainer = "container:lumo.xcodeproj">
+               ReferencedContainer = "container:Lumo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -31,9 +31,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "96E80D9E2DA8C56B000194CB"
-               BuildableName = "lumo.app"
-               BlueprintName = "lumo"
-               ReferencedContainer = "container:lumo.xcodeproj">
+               BuildableName = "LumoApp.app"
+               BlueprintName = "LumoApp"
+               ReferencedContainer = "container:Lumo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -65,16 +65,16 @@
             BlueprintIdentifier = "96E80DCF2DA8C642000194CB"
             BuildableName = "LumoWidgetExtension.appex"
             BlueprintName = "LumoWidgetExtension"
-            ReferencedContainer = "container:lumo.xcodeproj">
+            ReferencedContainer = "container:Lumo.xcodeproj">
          </BuildableReference>
       </RemoteRunnable>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "96E80D9E2DA8C56B000194CB"
-            BuildableName = "lumo.app"
-            BlueprintName = "lumo"
-            ReferencedContainer = "container:lumo.xcodeproj">
+            BuildableName = "LumoApp.app"
+            BlueprintName = "LumoApp"
+            ReferencedContainer = "container:Lumo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <EnvironmentVariables>
@@ -108,9 +108,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "96E80D9E2DA8C56B000194CB"
-            BuildableName = "lumo.app"
-            BlueprintName = "lumo"
-            ReferencedContainer = "container:lumo.xcodeproj">
+            BuildableName = "LumoApp.app"
+            BlueprintName = "LumoApp"
+            ReferencedContainer = "container:Lumo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
