@@ -1,20 +1,20 @@
 import Foundation
 import StoreKit
 
-public struct ComposedPlan: Equatable, Hashable, Sendable {
-    public let plan: AvailablePlan
-    public let instance: PlanInstance
-    public let product: any ProductProtocol
+struct ComposedPlan: Equatable, Hashable, Sendable {
+    let plan: AvailablePlan
+    let instance: PlanInstance
+    let product: any ProductProtocol
 
     private static let minimumVisibleDiscount = 5
 
-    public init(plan: AvailablePlan, instance: PlanInstance, product: any ProductProtocol) {
+    init(plan: AvailablePlan, instance: PlanInstance, product: any ProductProtocol) {
         self.plan = plan
         self.instance = instance
         self.product = product
     }
 
-    public var pricePerMonth: Double {
+    var pricePerMonth: Double {
         switch instance.cycle {
         case 1, 12:
             return (NSDecimalNumber(decimal: product.price).doubleValue / Double(instance.cycle)) / 100
@@ -24,7 +24,7 @@ public struct ComposedPlan: Equatable, Hashable, Sendable {
         }
     }
 
-    public func discount(comparedTo plan: ComposedPlan) -> Int? {
+    func discount(comparedTo plan: ComposedPlan) -> Int? {
         let pricePerMonthCurrentPlan: Double = pricePerMonth
         let pricePerMonthComparedPlan: Double = plan.pricePerMonth
 
@@ -36,7 +36,7 @@ public struct ComposedPlan: Equatable, Hashable, Sendable {
         return discountInt >= Self.minimumVisibleDiscount ? discountInt : nil
     }
 
-    public func formattedPrice(amount: Double, currency: String) -> String {
+    func formattedPrice(amount: Double, currency: String) -> String {
         Decimal(amount / 100).formatted(.currency(code: currency).presentation(.narrow).rounded())
     }
 }

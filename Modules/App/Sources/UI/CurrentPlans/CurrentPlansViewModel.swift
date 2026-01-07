@@ -2,26 +2,19 @@ import Foundation
 import ProtonUIFoundations
 
 @MainActor
-public class CurrentPlansViewModel: ObservableObject {
+class CurrentPlansViewModel: ObservableObject {
     private struct Constants {
         static var bottomPadding: CGFloat {
             75
         }
     }
 
-    @Published var filteredPlans: [PlanViewModel] = []
-    @Published public var viewState: State = .idle
+    @Published var viewState: State = .idle
 
-    @Published var confirmationCompleted: Bool = false
-    @Published var updateCompleted: Bool = false
     @Published var showAlert: BannerState = .none
     @Published var currentPlans: [PlanViewModel] = []
 
-    public var hasAvailablePlans: Bool {
-        !availablePlansViewModels.isEmpty
-    }
-
-    public enum State {
+    enum State {
         case loading
         case dataLoaded
         case errorData
@@ -30,13 +23,13 @@ public class CurrentPlansViewModel: ObservableObject {
     }
 
     private var availablePlansViewModels: [PlanViewModel] = []
-    public var currentPlan: PlanViewModel?
+    var currentPlan: PlanViewModel?
 
-    public var bottomPadding: CGFloat {
+    var bottomPadding: CGFloat {
         Constants.bottomPadding
     }
 
-    public init(plansData: [CurrentSubscriptionResponse]) {
+    init(plansData: [CurrentSubscriptionResponse]) {
         self.generatePlanViewModels(plansData)
     }
 

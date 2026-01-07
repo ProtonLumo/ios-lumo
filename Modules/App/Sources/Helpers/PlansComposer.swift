@@ -1,9 +1,9 @@
 import Foundation
 import StoreKit
 
-public final class PlansComposer: @unchecked Sendable {
-    public var mostExpensivePlan: ComposedPlan?
-    public var uuidString: String = ""
+final class PlansComposer: @unchecked Sendable {
+    var mostExpensivePlan: ComposedPlan?
+    var uuidString: String = ""
 
     private var storeProducts: [Product] = []
     private var availablePlans: [AvailablePlan] = []

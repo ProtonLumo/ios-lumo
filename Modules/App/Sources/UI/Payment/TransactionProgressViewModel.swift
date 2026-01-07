@@ -57,10 +57,6 @@ class TransactionProgressViewModel: ObservableObject {
         onError?(message)
     }
 
-    func resetToPaymentScreen() {
-        resetToInitialState()
-    }
-
     // MARK: - Private Methods
 
     private func resetToInitialState() {

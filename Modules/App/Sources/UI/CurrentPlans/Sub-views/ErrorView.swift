@@ -2,8 +2,6 @@ import ProtonUIFoundations
 import SwiftUI
 
 struct ErrorView: View {
-    let buttonAction: @Sendable () -> Void
-
     var body: some View {
         ZStack {
             Color(Theme.color.backgroundNorm)
@@ -25,5 +23,5 @@ struct ErrorView: View {
 }
 
 #Preview {
-    ErrorView(buttonAction: {})
+    ErrorView()
 }

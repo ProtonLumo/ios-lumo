@@ -2,7 +2,6 @@ import Foundation
 
 struct FeatureRowModel: Hashable {
     let icon: String
-    let text: String
 
     private var components: [String] = []
 
@@ -24,7 +23,6 @@ struct FeatureRowModel: Hashable {
 
     init(icon: String, text: String) {
         self.icon = icon
-        self.text = text
         components = text.components(separatedBy: "::")
     }
 }
