@@ -28,7 +28,8 @@ struct PlanDetailHeaderView: View {
             HeaderTitleView(
                 title: title,
                 description: description,
-                decorations: decorationsURLs)
+                decorations: decorationsURLs
+            )
             Spacer()
             VStack(alignment: .trailing) {
                 Text(formattedPrice)

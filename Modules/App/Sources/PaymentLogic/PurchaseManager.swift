@@ -130,7 +130,8 @@ private extension PurchaseManager {
                         receipt: receipt,
                         transactionID: String(transaction.originalID)),
                     type: "apple-recurring"),
-                paymentMethodID: nil)
+                paymentMethodID: nil
+            )
 
             Logger.shared.log("Payment token generated successfully")
 
@@ -177,7 +178,8 @@ private extension PurchaseManager {
                         let newSub = try self.createNewSubscription(
                             composedPlan: composedPlan,
                             transaction: transaction,
-                            token: tokenValue)
+                            token: tokenValue
+                        )
 
                         // Send subscription request
                         self.sendSubscriptionRequest(subscription: newSub)
@@ -248,7 +250,8 @@ private extension PurchaseManager {
             paymentToken: token,
             cycle: composedPlan.instance.cycle,
             currency: transaction.currencyIdentifier,
-            plans: [planName: 1])
+            plans: [planName: 1]
+        )
         Logger.shared.log("New subscription payload created successfully")
 
         return newSub

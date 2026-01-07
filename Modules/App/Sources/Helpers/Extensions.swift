@@ -71,7 +71,7 @@ extension Sequence where Element == AvailablePlan {
 // MARK: - Product Extensions
 extension Product {
     public func currency() -> String {
-        self.priceFormatStyle.currencyCode
+        priceFormatStyle.currencyCode
     }
 }
 
@@ -86,7 +86,7 @@ extension String {
     }
 
     var trimmed: String {
-        self.trimmingCharacters(in: .whitespacesAndNewlines)
+        trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 

@@ -31,7 +31,8 @@ public struct AvailablePlan: Decodable, Hashable, Identifiable, Sendable {
             entitlements: [],
             decorations: [],
             id: "",
-            services: 0)
+            services: 0
+        )
     }
 }
 

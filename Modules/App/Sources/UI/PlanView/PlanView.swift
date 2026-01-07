@@ -28,7 +28,8 @@ struct PlanView: View {
                 description: viewModel.description,
                 formattedPrice: viewModel.formattedPrice,
                 formattedPeriod: viewModel.formattedPeriod,
-                decorationsURLs: nil)
+                decorationsURLs: nil
+            )
 
             if viewModel.isExpanded {
                 if viewModel.showProgressEntitlements {

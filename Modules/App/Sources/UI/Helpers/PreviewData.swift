@@ -45,7 +45,8 @@ public struct PreviewsData {
                 Entitlement.description(DescriptionEntitlement(type: "description", text: "5 users", iconName: "user")),
                 Entitlement.progress(ProgressEntitlement(type: "progress", text: "0.6 GB of 1 GB", min: 0, max: 10, current: 6)),
             ],
-            decorations: [])
+            decorations: []
+        )
 
         static let freePlan = CurrentSubscriptionResponse(
             id: "asd123qwd12d",

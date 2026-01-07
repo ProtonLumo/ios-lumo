@@ -235,7 +235,8 @@ struct PaymentSheet: View {
                             Color(hex: 0xF2EEFF),
                             Color(hex: 0xF2EEFF),
                             .white,
-                        ]),
+                        ]
+                ),
                 startPoint: UnitPoint(x: 0, y: 1),
                 endPoint: UnitPoint(x: 1, y: 0)
             )

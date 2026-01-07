@@ -27,5 +27,6 @@ struct FooterView: View {
 #Preview {
     FooterView(
         image: Theme.icon.infoCircle,
-        text: String(localized: "current.plans.manage.subscription.message"))
+        text: String(localized: "current.plans.manage.subscription.message")
+    )
 }

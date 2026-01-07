@@ -44,7 +44,8 @@ struct FeatureRow: View {
 #Preview {
     let model = FeatureRowModel(
         icon: "bubble.left",
-        text: "Daily chats::Limited::Unlimited")
+        text: "Daily chats::Limited::Unlimited"
+    )
 
     FeatureRow(model: model)
 }

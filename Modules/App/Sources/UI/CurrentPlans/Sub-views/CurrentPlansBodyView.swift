@@ -15,7 +15,8 @@ struct CurrentPlansBodyView: View {
 
                 FooterView(
                     image: Theme.icon.infoCircle,
-                    text: String(localized: "current.plans.manage.subscription.message"))
+                    text: String(localized: "current.plans.manage.subscription.message")
+                )
             }
             .padding(.horizontal, Theme.spacing.medium)
             .padding(.bottom, viewModel.bottomPadding)
