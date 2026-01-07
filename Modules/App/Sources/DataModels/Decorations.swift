@@ -1,6 +1,6 @@
 import Foundation
 
-public struct StarredDecoration: Decodable, Equatable, Hashable, Sendable {
+struct StarredDecoration: Decodable, Equatable, Hashable, Sendable {
     public let type: String
     public let iconName: String
 
@@ -10,13 +10,13 @@ public struct StarredDecoration: Decodable, Equatable, Hashable, Sendable {
     }
 }
 
-public struct BadgeDecoration: Decodable, Equatable, Hashable, Sendable {
-    public let type: String
-    public let text: String
-    public let anchor: String
-    public let planId: String?
+struct BadgeDecoration: Decodable, Equatable, Hashable, Sendable {
+    let type: String
+    let text: String
+    let anchor: String
+    let planId: String?
 
-    public init(type: String, text: String, anchor: String, planId: String?) {
+    init(type: String, text: String, anchor: String, planId: String?) {
         self.type = type
         self.text = text
         self.anchor = anchor
@@ -24,12 +24,12 @@ public struct BadgeDecoration: Decodable, Equatable, Hashable, Sendable {
     }
 }
 
-public enum DecorationType: String, Decodable, Equatable, Hashable, Sendable {
+enum DecorationType: String, Decodable, Equatable, Hashable, Sendable {
     case starred
     case badge
 }
 
-public enum Decoration: Decodable, Equatable, Hashable, Sendable {
+enum Decoration: Decodable, Equatable, Hashable, Sendable {
     case starred(StarredDecoration)
     case badge(BadgeDecoration)
 
@@ -37,7 +37,7 @@ public enum Decoration: Decodable, Equatable, Hashable, Sendable {
         case type
     }
 
-    public init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(DecorationType.self, forKey: .type)
 

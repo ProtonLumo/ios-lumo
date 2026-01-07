@@ -7,11 +7,10 @@ final class PlansComposer: @unchecked Sendable {
 
     private var storeProducts: [Product] = []
     private var availablePlans: [AvailablePlan] = []
-    private let queue = DispatchQueue(label: "paymentsV2.plansComposer.syncQueue")
 
     private let payload: [String: Any]
 
-    public init(payload: [String: Any]) {
+    init(payload: [String: Any]) {
         self.payload = payload
         do {
             try decodePayload()
@@ -30,18 +29,14 @@ final class PlansComposer: @unchecked Sendable {
         }
     }
 
-    public func fetchAvailablePlans() async throws -> [ComposedPlan] {
+    func fetchAvailablePlans() async throws -> [ComposedPlan] {
         storeProducts = try await getStoreProducts(availablePlans.identifiersForAppleInstances())
         let matchedPlans = availablePlans.modelsMatchingProducts(in: storeProducts)
         mostExpensivePlan = matchedPlans.sorted { $0.pricePerMonth > $1.pricePerMonth }.first
         return matchedPlans
     }
 
-    public func availableDiscount(comparedTo plan: ComposedPlan) -> Int? {
-        mostExpensivePlan.flatMap { plan.discount(comparedTo: $0) }
-    }
-
-    public func matchPlanToStoreProduct(_ productId: String) -> ComposedPlan? {
+    func matchPlanToStoreProduct(_ productId: String) -> ComposedPlan? {
         if storeProducts.isEmpty || availablePlans.isEmpty {
             debugPrint("no store products or available plans found, fetch them before calling this function")
             return nil
@@ -52,7 +47,7 @@ final class PlansComposer: @unchecked Sendable {
         return availablePlans.modelsMatchingProducts(in: products).first
     }
 
-    public func storeProductWithId(_ id: String) -> Product? {
+    func storeProductWithId(_ id: String) -> Product? {
         storeProducts.filter { $0.id == id }.first
     }
 

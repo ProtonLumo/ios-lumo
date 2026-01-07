@@ -1,25 +1,25 @@
 import Foundation
 
-public struct AvailablePlans: Decodable, Hashable, Sendable {
-    public let uid: String
-    public let uuid: String
-    public let plans: [AvailablePlan]
+struct AvailablePlans: Decodable, Hashable, Sendable {
+    let uid: String
+    let uuid: String
+    let plans: [AvailablePlan]
 }
 
-public struct AvailablePlan: Decodable, Hashable, Identifiable, Sendable {
-    public let description: String?
-    public let instances: [PlanInstance]
-    public let name: String?
-    public let state: Int
-    public let type: Int?
-    public let title: String
-    public let features: Int
-    public let entitlements: [Entitlement]
-    public let decorations: [Decoration]
-    public let id: String
-    public let services: Int
+struct AvailablePlan: Decodable, Hashable, Identifiable, Sendable {
+    let description: String?
+    let instances: [PlanInstance]
+    let name: String?
+    let state: Int
+    let type: Int?
+    let title: String
+    let features: Int
+    let entitlements: [Entitlement]
+    let decorations: [Decoration]
+    let id: String
+    let services: Int
 
-    public static func empty() -> Self {
+    static func empty() -> Self {
         AvailablePlan(
             description: nil,
             instances: [],
