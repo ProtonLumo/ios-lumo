@@ -322,7 +322,7 @@ struct ContentView: View {
 
     // MARK: - Back Navigation
     private func handleBackButtonPress() {
-        guard let currentURL = currentWebViewURL else {
+        guard currentWebViewURL != nil else {
             Logger.shared.log("No current URL available for back navigation")
             return
         }
