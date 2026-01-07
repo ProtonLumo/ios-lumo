@@ -1,0 +1,4 @@
+project: Lumo.xcodeproj
+schemes:
+- LumoApp
+- LumoWidgetExtension
