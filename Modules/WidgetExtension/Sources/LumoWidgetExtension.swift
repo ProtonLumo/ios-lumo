@@ -19,13 +19,6 @@ class WidgetLogger {
             print("Widget: \(message)")
         #endif
     }
-
-    func error(_ message: String) {
-        logger.error("\(message, privacy: .public)")
-        #if DEBUG
-            print("Widget Error: \(message)")
-        #endif
-    }
 }
 
 extension Color {
@@ -145,39 +138,6 @@ struct PromptButtonView: View {
     }
 }
 
-struct CompactPromptButtonView: View {
-    var label: String
-    var destination: String
-    var icon: String
-    var purpleColor: Color
-    var orangeColor: Color
-
-    var body: some View {
-        Link(destination: URL(string: destination) ?? URL(string: "lumo://home?source=widget_fallback")!) {
-            VStack(alignment: .center, spacing: 4) {
-                Image(systemName: icon)
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(purpleColor)
-                    .frame(width: 30, height: 30)
-                    .background(
-                        Circle()
-                            .fill(purpleColor.opacity(0.1))
-                    )
-
-                Text(label)
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(purpleColor)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(height: 28)
-            }
-            .frame(height: 70)
-        }
-        .buttonStyle(PlainButtonStyle())
-    }
-}
-
 struct LumoWidgetView: View {
     var entry: LumoWidgetProvider.Entry
     @Environment(\.widgetFamily) var family
@@ -186,7 +146,6 @@ struct LumoWidgetView: View {
 
     let purpleColor = Color(hex: "#6D4AFF")
     let lightPurpleColor = Color(hex: "#8B6FFF")  // Lighter purple for better visibility in dark mode
-    let orangeColor = Color(hex: "#FFAC2E")
 
     // Check if we're in tinted/vibrant mode
     var isTintedMode: Bool {
@@ -212,15 +171,6 @@ struct LumoWidgetView: View {
         }
         // In dark mode, use lighter purple for better contrast, in light mode use original purple
         return colorScheme == .dark ? lightPurpleColor : purpleColor
-    }
-
-    var bubbleBackgroundColor: Color {
-        if isTintedMode {
-            return Color.primary.opacity(0.15)
-        }
-        // In dark mode, use lighter purple with higher opacity for visibility
-        // Closer to original #6D4AFF but brighter for dark backgrounds
-        return colorScheme == .dark ? lightPurpleColor.opacity(0.2) : purpleColor.opacity(0.1)
     }
 
     var buttonBackgroundColor: Color {

@@ -29,8 +29,6 @@ private enum TimePeriod {
     static let eveningWindDownEnd = 20
     static let nightTimeStart = 20
     static let nightTimeEnd = 24
-    static let lateNightStart = 0
-    static let lateNightEnd = 5
 }
 
 func getTimeSensitiveSuggestion(hour: Int, prompts: Int) -> (hint: String, prompts: [TimePrompt]) {
