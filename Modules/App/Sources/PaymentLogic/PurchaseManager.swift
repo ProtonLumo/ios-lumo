@@ -128,7 +128,8 @@ private extension PurchaseManager {
                         bundleID: bundleIdentifier,
                         productID: transaction.productID,
                         receipt: receipt,
-                        transactionID: String(transaction.originalID)),
+                        transactionID: String(transaction.originalID)
+                    ),
                     type: "apple-recurring"),
                 paymentMethodID: nil
             )

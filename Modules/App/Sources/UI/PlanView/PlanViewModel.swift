@@ -71,7 +71,7 @@ public class PlanViewModel: ObservableObject, Identifiable {
     /// and the localized price and the purchase action are derived from the `Product`
 
     // MARK: Current plan
-    public init(currentPlan: CurrentSubscriptionResponse, isExpanded: Bool = false) {
+    init(currentPlan: CurrentSubscriptionResponse, isExpanded: Bool = false) {
         self.isExpanded = isExpanded
         self.currentSubscription = currentPlan
 
