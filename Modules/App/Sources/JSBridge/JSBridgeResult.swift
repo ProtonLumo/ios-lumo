@@ -5,22 +5,6 @@ enum JSBridgeResult {
     case success(Any?)
     case failure(JSBridgeError)
 
-    /// Extract successful value
-    var value: Any? {
-        if case .success(let value) = self {
-            return value
-        }
-        return nil
-    }
-
-    /// Extract error
-    var error: JSBridgeError? {
-        if case .failure(let error) = self {
-            return error
-        }
-        return nil
-    }
-
     /// Check if successful
     var isSuccess: Bool {
         if case .success = self {
@@ -62,18 +46,6 @@ enum JSBridgeError: Error, LocalizedError {
             return "Network error: \(error.localizedDescription)"
         case .unknownError(let error):
             return "Unknown error: \(error.localizedDescription)"
-        }
-    }
-
-    /// Whether this error is recoverable with retry
-    var isRecoverable: Bool {
-        switch self {
-        case .webViewNotReady, .timeout, .editorNotFound:
-            return true
-        case .scriptNotFound, .executionFailed, .invalidResponse, .paymentApiUnavailable:
-            return false
-        case .networkError, .unknownError:
-            return true
         }
     }
 }
