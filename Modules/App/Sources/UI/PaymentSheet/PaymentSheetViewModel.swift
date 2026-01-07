@@ -19,9 +19,6 @@ enum PlanType: String {
 
 public protocol PaymentSheetViewModelDelegate: AnyObject {
     func subscriptionRequest(payload: [String: Any])
-    func tokenRequest(payload: [String: Any])
-    func getPlansRequest()
-    func getSubscriptionsRequest()
 }
 
 @MainActor

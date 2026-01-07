@@ -37,21 +37,6 @@ class PaymentSheetDelegate: NSObject, PaymentSheetViewModelDelegate {
         Logger.shared.log("PaymentSheet delegate called with subscription payload: \(payload)")
         onSubscriptionRequest?(payload)
     }
-
-    func tokenRequest(payload: [String: Any]) {
-        Logger.shared.log("PaymentSheet delegate called with token payload: \(payload)")
-        onTokenRequest?(payload)
-    }
-
-    func getPlansRequest() {
-        Logger.shared.log("PaymentSheet delegate called to get plans")
-        onGetPlansRequest?()
-    }
-
-    func getSubscriptionsRequest() {
-        Logger.shared.log("PaymentSheet delegate called to get subscriptions")
-        onGetSubscriptionsRequest?()
-    }
 }
 
 struct ContentView: View {
@@ -84,13 +69,11 @@ struct ContentView: View {
     @State private var showLoader = false
     @State private var showCurrentPlans = false
     @State private var currentPlansViewModel: CurrentPlansViewModel?
-    @State private var isGenerating = false
     @State private var showLockdownModeWarning = false
 
     // MARK: - Constants
     private let paymentSheetDelegate = PaymentSheetDelegate()
     private let brandPurple = Color(hex: 0x6D4AFF)
-    private let recordingColor = Color(hex: 0xE67553)
 
     // Use ThemeProvider for consistent theme
     private var isDarkMode: Bool {
@@ -735,8 +718,8 @@ struct ContentView: View {
                         self.handlePaymentResponse(wrappedResponse)
 
                         // Update CurrentPlansViewModel if it's active
-                        if let viewModel = self.currentPlansViewModel {
-                            self.updateCurrentPlansViewModel(viewModel, with: response)
+                        if currentPlansViewModel != nil {
+                            updateCurrentPlansViewModel(with: response)
                         }
                     } else if let response = notification.object as? [String: Any] {
                         let wrappedResponse: [String: Any] = ["type": "subscriptions", "success": true, "data": response]
@@ -744,8 +727,8 @@ struct ContentView: View {
                         self.handlePaymentResponse(wrappedResponse)
 
                         // Update CurrentPlansViewModel if it's active
-                        if let viewModel = self.currentPlansViewModel {
-                            self.updateCurrentPlansViewModel(viewModel, with: response)
+                        if currentPlansViewModel != nil {
+                            updateCurrentPlansViewModel(with: response)
                         }
                     } else {
                         Logger.shared.log("📋 ERROR: No response data found in notification")
@@ -900,7 +883,7 @@ struct ContentView: View {
         }
     }
 
-    private func updateCurrentPlansViewModel(_ viewModel: CurrentPlansViewModel, with data: [String: Any]) {
+    private func updateCurrentPlansViewModel(with data: [String: Any]) {
         Logger.shared.log("Updating CurrentPlansViewModel with subscription data")
 
         // Convert the subscription data to CurrentSubscriptionResponse format
