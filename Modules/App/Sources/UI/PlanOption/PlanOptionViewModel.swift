@@ -8,11 +8,11 @@ class PlanOptionViewModel: ObservableObject, Identifiable {
     let price: String
     let discount: String?
     let type: PlanType
-    public let plan: ComposedPlan
+    let plan: ComposedPlan
 
     @Published var isSelected: Bool = false
 
-    public init(plan: ComposedPlan, discount: Double) {
+    init(plan: ComposedPlan, discount: Double) {
         self.plan = plan
 
         switch plan.instance.cycle {
@@ -49,7 +49,7 @@ class PlanOptionViewModel: ObservableObject, Identifiable {
         self.id = plan.product.id
     }
 
-    public func setSelected(_ value: Bool) {
+    func setSelected(_ value: Bool) {
         DispatchQueue.main.async {
             self.isSelected = value
         }

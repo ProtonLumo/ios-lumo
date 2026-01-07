@@ -105,48 +105,6 @@ struct SkeletonFeatureRow: View {
     }
 }
 
-struct SkeletonText: View {
-    let width: CGFloat
-    let height: CGFloat
-    @State private var isAnimating = false
-    @EnvironmentObject private var themeProvider: ThemeProvider
-
-    private var isDarkMode: Bool {
-        themeProvider.isDarkMode
-    }
-
-    var body: some View {
-        RoundedRectangle(cornerRadius: 4)
-            .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
-            .frame(width: width, height: height)
-            .overlay(
-                RoundedRectangle(cornerRadius: 4)
-                    .fill(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                Color.clear,
-                                (isDarkMode ? Color.gray : Color.white).opacity(0.6),
-                                Color.clear,
-                            ]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .rotationEffect(.degrees(30))
-                    .offset(x: isAnimating ? width + 50 : -(width + 50))
-                    .animation(
-                        Animation.linear(duration: 1.5)
-                            .repeatForever(autoreverses: false),
-                        value: isAnimating
-                    )
-                    .clipped()
-            )
-            .onAppear {
-                isAnimating = true
-            }
-    }
-}
-
 struct PaymentSheet: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var themeProvider: ThemeProvider

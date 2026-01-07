@@ -1,7 +1,7 @@
 import ProtonUIFoundations
 import SwiftUI
 
-public struct HeaderTitleView: View {
+struct HeaderTitleView: View {
     private struct Constants {
         static let decorationSize: CGFloat = 16
 
@@ -16,7 +16,7 @@ public struct HeaderTitleView: View {
     let description: String
     let decorations: [URL]?
 
-    public var body: some View {
+    var body: some View {
         VStack(alignment: .leading, spacing: Theme.spacing.standard) {
             HStack {
                 Text(title)
@@ -44,7 +44,3 @@ public struct HeaderTitleView: View {
         }
     }
 }
-
-// #Preview {
-//    HeaderTitleView()
-// }

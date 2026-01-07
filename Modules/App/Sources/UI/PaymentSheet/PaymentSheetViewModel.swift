@@ -8,7 +8,6 @@ import SwiftUI
 
 enum PaymentSheetError: LocalizedError {
     case errorCovertingPayload
-    case lumoPlanNotFound
     case multiplePlansSelected
     case impossibleToExtractUUID
 }
@@ -56,12 +55,7 @@ class PaymentSheetViewModel: ObservableObject {
         !isLoadingPlans && planOptions.isEmpty
     }
 
-    // Computed property to check if yearly plan is selected
-    var isYearlyPlanSelected: Bool {
-        selectedPlanType == .year
-    }
-
-    public weak var delegate: PaymentSheetViewModelDelegate?
+    weak var delegate: PaymentSheetViewModelDelegate?
 
     init(planComposer: PlansComposer, isPromotionOffer: Bool = false) {
         self.isPromotionOffer = false
