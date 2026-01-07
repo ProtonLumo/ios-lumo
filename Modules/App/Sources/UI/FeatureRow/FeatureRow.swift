@@ -1,10 +1,10 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 struct FeatureRow: View {
     let model: FeatureRowModel
     @EnvironmentObject private var themeProvider: ThemeProvider
-    
+
     private struct Constants {
         static var iconSize: CGFloat = 15
         static var valueColumnWidth: CGFloat = 75
@@ -12,8 +12,10 @@ struct FeatureRow: View {
 
     var body: some View {
         HStack {
-            PCAsyncImage(url: model.iconURL,
-                         placeholderImage: Theme.icon.checkmark) { image in
+            PCAsyncImage(
+                url: model.iconURL,
+                placeholderImage: Theme.icon.checkmark
+            ) { image in
                 image
                     .resizable()
                     .renderingMode(.template)
@@ -28,7 +30,7 @@ struct FeatureRow: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .lineLimit(1)
                 .foregroundColor(themeProvider.textColor)
-            
+
             Text(model.plus)
                 .font(.system(size: 14))
                 .frame(width: Constants.valueColumnWidth, alignment: .center)
@@ -40,9 +42,9 @@ struct FeatureRow: View {
 }
 
 #Preview {
-    let model = FeatureRowModel(icon: "bubble.left",
-                                text: "Daily chats::Limited::Unlimited")
+    let model = FeatureRowModel(
+        icon: "bubble.left",
+        text: "Daily chats::Limited::Unlimited")
 
     FeatureRow(model: model)
 }
-

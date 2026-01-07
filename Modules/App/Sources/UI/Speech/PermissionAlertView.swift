@@ -1,30 +1,30 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 struct PermissionAlertView: View {
     let permissionType: String
     let onSettings: () -> Void
     let onDismiss: () -> Void
-    
+
     var body: some View {
         VStack(spacing: 20) {
             // Icon
             Image(systemName: "mic.slash")
                 .font(.system(size: 48))
                 .foregroundColor(Theme.color.notificationError)
-            
+
             Text(String(localized: "permission.microphone.denied.title"))
                 .font(.title2)
                 .fontWeight(.semibold)
                 .foregroundColor(Theme.color.textNorm)
                 .multilineTextAlignment(.center)
-            
+
             Text(String(localized: "permission.microphone.denied.message"))
                 .font(.body)
                 .foregroundColor(Theme.color.textWeak)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 8)
-            
+
             // Buttons
             VStack(spacing: 12) {
                 // Go to Settings button
@@ -37,7 +37,7 @@ struct PermissionAlertView: View {
                         .background(Theme.color.brandNorm)
                         .cornerRadius(8)
                 }
-                
+
                 // Cancel button
                 Button(action: onDismiss) {
                     Text(String(localized: "permission.cancel.button"))
@@ -62,7 +62,7 @@ struct PermissionAlertOverlay: View {
     @Binding var isPresented: Bool
     let permissionType: String
     let onSettings: () -> Void
-    
+
     var body: some View {
         if isPresented {
             ZStack {
@@ -73,7 +73,7 @@ struct PermissionAlertOverlay: View {
                         // Allow dismissing by tapping background
                         isPresented = false
                     }
-                
+
                 // Alert content
                 PermissionAlertView(
                     permissionType: permissionType,
@@ -91,4 +91,4 @@ struct PermissionAlertOverlay: View {
             .zIndex(999)
         }
     }
-} 
+}

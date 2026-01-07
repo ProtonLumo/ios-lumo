@@ -2,7 +2,6 @@ import Foundation
 import StoreKit
 
 public struct ComposedPlan: Equatable, Hashable, Sendable {
-
     public let plan: AvailablePlan
     public let instance: PlanInstance
     public let product: any ProductProtocol
@@ -38,14 +37,13 @@ public struct ComposedPlan: Equatable, Hashable, Sendable {
     }
 
     public func formattedPrice(amount: Double, currency: String) -> String {
-        return Decimal(amount / 100).formatted(.currency(code: currency).presentation(.narrow).rounded())
+        Decimal(amount / 100).formatted(.currency(code: currency).presentation(.narrow).rounded())
     }
 }
 
 extension ComposedPlan {
     public static func == (lhs: ComposedPlan, rhs: ComposedPlan) -> Bool {
-        lhs.plan == rhs.plan &&
-        lhs.instance == rhs.instance
+        lhs.plan == rhs.plan && lhs.instance == rhs.instance
     }
 
     public func hash(into hasher: inout Hasher) {

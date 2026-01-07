@@ -7,15 +7,15 @@ struct FeatureRowModel: Hashable {
     private var components: [String] = []
 
     var title: String {
-        return components[0]
+        components[0]
     }
 
     var free: String {
-        return components[1]
+        components[1]
     }
 
     var plus: String {
-        return components[2]
+        components[2]
     }
 
     var iconURL: URL? {

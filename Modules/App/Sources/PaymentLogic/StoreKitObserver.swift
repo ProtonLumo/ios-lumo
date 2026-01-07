@@ -27,7 +27,6 @@ public enum StoreKitObserverError: Error {
 }
 
 public final class StoreKitObserver: StoreKitObserverProviding, @unchecked Sendable {
-
     public static let shared = StoreKitObserver()
     @Published public private(set) var isON: Bool = false
 
@@ -43,7 +42,6 @@ public final class StoreKitObserver: StoreKitObserverProviding, @unchecked Senda
 
     private func newTransactionListenerTask() -> Task<Void, Never> {
         Task(priority: .background) {
-
             for await unfinished in Transaction.unfinished {
                 switch unfinished {
                 case .verified(let transaction):
@@ -110,10 +108,10 @@ public final class StoreKitObserver: StoreKitObserverProviding, @unchecked Senda
     private func processTransaction(_ transaction: Transaction) async {
         do {
             guard let plan = plansComposer?.matchPlanToStoreProduct(transaction.productID),
-                    let appAccountToken = transaction.appAccountToken,
-                    try verifyTransactionUUIDs(appAccountToken: appAccountToken, transactionUUID: UUID(uuidString: plansComposer?.uuidString ?? "") ?? UUID()),
-                    let storeProduct = plansComposer?.storeProductWithId(transaction.productID) else {
-
+                let appAccountToken = transaction.appAccountToken,
+                try verifyTransactionUUIDs(appAccountToken: appAccountToken, transactionUUID: UUID(uuidString: plansComposer?.uuidString ?? "") ?? UUID()),
+                let storeProduct = plansComposer?.storeProductWithId(transaction.productID)
+            else {
                 throw StoreKitObserverError.impossibleToProcessTransaction
             }
 
@@ -124,7 +122,7 @@ public final class StoreKitObserver: StoreKitObserverProviding, @unchecked Senda
     }
 
     private func verifyTransactionUUIDs(appAccountToken: UUID, transactionUUID: UUID) throws -> Bool {
-        return appAccountToken == transactionUUID
+        appAccountToken == transactionUUID
     }
 
     // MARK: Public methods
@@ -179,20 +177,19 @@ extension StoreKitObserver: PurchaseManagerDelegate {
     public func applePaymentCompleted() {
         Logger.shared.log("applePaymentCompleted")
     }
-    
+
     public func tokenPostStarted() {
         Logger.shared.log("tokenPostStarted")
     }
-    
+
     public func subscriptionPostStarted() {
         Logger.shared.log("Payment")
     }
-    
-    
-    public func newSubscriptionPayload(payload: [String : Any]) {
+
+    public func newSubscriptionPayload(payload: [String: Any]) {
         Logger.shared.log("newSubscriptionPayload")
     }
-    
+
     public func paymentCompleted(success: Bool, message: String) {
         Logger.shared.log("Payment \(success ? "succeeded" : "failed"): \(message)", category: "Payment")
     }

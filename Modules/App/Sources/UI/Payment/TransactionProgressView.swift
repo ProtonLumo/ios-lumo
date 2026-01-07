@@ -1,26 +1,26 @@
-import SwiftUI
-import ProtonUIFoundations
-import UIKit
 import Lottie
+import ProtonUIFoundations
+import SwiftUI
+import UIKit
 
 struct TransactionProgressView: View {
     @ObservedObject var viewModel: TransactionProgressViewModel
     @EnvironmentObject private var themeProvider: ThemeProvider
-    
+
     // Callbacks for external control
     var onCompletion: (() -> Void)?
     var onError: (() -> Void)?
     var onBackToPayment: (() -> Void)?
-    
+
     init(viewModel: TransactionProgressViewModel) {
         self.viewModel = viewModel
     }
-    
+
     var body: some View {
         ZStack {
             themeProvider.backgroundColor
                 .ignoresSafeArea()
-            
+
             if viewModel.hasError {
                 errorView
             } else {
@@ -33,25 +33,25 @@ struct TransactionProgressView: View {
             viewModel.startPaymentProcess()
         }
     }
-    
+
     private var progressView: some View {
         VStack(spacing: 32) {
             LottieView(name: "lumo-hero")
                 .frame(width: 200, height: 150)
-            
+
             VStack(spacing: 16) {
                 Text(String(localized: "app.payment.verifying.title"))
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(themeProvider.textColor)
                     .multilineTextAlignment(.center)
-                
+
                 Text(String(localized: "app.payment.verifying.subtitle"))
                     .font(.subheadline)
                     .foregroundColor(themeProvider.secondaryTextColor)
                     .multilineTextAlignment(.center)
             }
-            
+
             // Progress steps
             VStack(alignment: .leading, spacing: 16) {
                 ForEach(Array(viewModel.progressSteps.enumerated()), id: \.offset) { index, stepTitle in
@@ -61,7 +61,7 @@ struct TransactionProgressView: View {
                             Circle()
                                 .fill(viewModel.stepStates[index] ? Theme.color.iconAccent : Color.gray.opacity(0.2))
                                 .frame(width: 24, height: 24)
-                            
+
                             if viewModel.stepStates[index] {
                                 Image(systemName: "checkmark")
                                     .foregroundColor(.white)
@@ -72,7 +72,7 @@ struct TransactionProgressView: View {
                                     .tint(.gray)
                             }
                         }
-                        
+
                         Text(stepTitle)
                             .font(.body)
                             .foregroundColor(viewModel.stepStates[index] ? themeProvider.textColor : themeProvider.secondaryTextColor)
@@ -82,7 +82,7 @@ struct TransactionProgressView: View {
                 }
             }
             .padding(.horizontal, 15)
-            
+
             // Completion button - shown when all steps are completed
             if viewModel.isCompleted {
                 Button(action: {
@@ -101,33 +101,33 @@ struct TransactionProgressView: View {
                 .transition(.opacity.combined(with: .move(edge: .bottom)))
                 .animation(.easeInOut(duration: 0.5).delay(0.3), value: viewModel.isCompleted)
             }
-            
+
             Spacer()
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 60)
     }
-    
+
     private var errorView: some View {
         VStack(spacing: 32) {
             // Error icon or animation
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 60))
                 .foregroundColor(.red)
-            
+
             VStack(spacing: 16) {
                 Text(String(localized: "app.payment.verifying.error.title"))
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(themeProvider.textColor)
                     .multilineTextAlignment(.center)
-                
+
                 Text(viewModel.errorMessage.isEmpty ? String(localized: "app.payment.verifying.error.info") : viewModel.errorMessage)
                     .font(.subheadline)
                     .foregroundColor(themeProvider.secondaryTextColor)
                     .multilineTextAlignment(.center)
             }
-            
+
             Button(action: {
                 print("TransactionProgressView: Back to Payment button pressed")
                 // Trigger the back to payment callback to return to payment screen
@@ -144,18 +144,18 @@ struct TransactionProgressView: View {
                     .cornerRadius(12)
             }
             .padding(.horizontal, 30)
-            
+
             Spacer()
         }
         .padding(.horizontal, 30)
         .padding(.vertical, 60)
     }
-    
+
     private func setupCallbacks() {
         viewModel.setCompletionHandler {
             onCompletion?()
         }
-        
+
         viewModel.setErrorHandler { errorMessage in
             // Error UI is handled by @Published hasError
             // But we also want to trigger the onError callback when the button is pressed
@@ -171,13 +171,13 @@ extension TransactionProgressView {
         view.onCompletion = handler
         return view
     }
-    
+
     func onError(_ handler: @escaping () -> Void) -> TransactionProgressView {
         var view = self
         view.onError = handler
         return view
     }
-    
+
     func onBackToPayment(_ handler: @escaping () -> Void) -> TransactionProgressView {
         var view = self
         view.onBackToPayment = handler
@@ -187,4 +187,4 @@ extension TransactionProgressView {
 
 #Preview {
     TransactionProgressView(viewModel: TransactionProgressViewModel())
-} 
+}

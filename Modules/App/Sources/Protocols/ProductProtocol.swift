@@ -33,7 +33,6 @@ public struct ProtonTransaction: ProtonTransactionProviding {
 extension Product: ProductProtocol {}
 
 extension Transaction {
-
     public func toProtonTransaction() -> ProtonTransaction {
         ProtonTransaction(
             id: id,

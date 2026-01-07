@@ -2,11 +2,9 @@ import ProtonUIFoundations
 import SwiftUI
 
 struct CurrentPlansBodyView: View {
-
     @ObservedObject var viewModel: CurrentPlansViewModel
 
     var body: some View {
-
         VStack {
             // MARK: Current plans
             ScrollView(showsIndicators: false) {
@@ -15,8 +13,9 @@ struct CurrentPlansBodyView: View {
                         .padding(.top, Theme.spacing.standard)
                 }
 
-                FooterView(image: Theme.icon.infoCircle,
-                           text: String(localized: "current.plans.manage.subscription.message"))
+                FooterView(
+                    image: Theme.icon.infoCircle,
+                    text: String(localized: "current.plans.manage.subscription.message"))
             }
             .padding(.horizontal, Theme.spacing.medium)
             .padding(.bottom, viewModel.bottomPadding)

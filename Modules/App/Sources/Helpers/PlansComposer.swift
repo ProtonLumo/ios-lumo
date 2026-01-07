@@ -2,7 +2,6 @@ import Foundation
 import StoreKit
 
 public final class PlansComposer: @unchecked Sendable {
-
     public var mostExpensivePlan: ComposedPlan?
     public var uuidString: String = ""
 
@@ -14,7 +13,7 @@ public final class PlansComposer: @unchecked Sendable {
 
     public init(payload: [String: Any]) {
         self.payload = payload
-        do{
+        do {
             try decodePayload()
         } catch {
             Logger.shared.log("Failed to decode Proton plans: \(payload)")
@@ -22,7 +21,6 @@ public final class PlansComposer: @unchecked Sendable {
     }
 
     private func getStoreProducts(_ plans: [String]) async throws -> [Product] {
-
         do {
             storeProducts = try await Product.products(for: plans)
             return storeProducts

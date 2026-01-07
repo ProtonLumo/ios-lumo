@@ -1,7 +1,6 @@
 import Foundation
 
 public struct DescriptionEntitlement: Decodable, Equatable, Hashable, Sendable {
-
     public let type: String
     public let text: String
     public let iconName: String
@@ -16,7 +15,6 @@ public struct DescriptionEntitlement: Decodable, Equatable, Hashable, Sendable {
 }
 
 public struct ProgressEntitlement: Decodable, Equatable, Hashable, Sendable {
-
     public let type: String
     public let text: String
     public let min: Int
@@ -40,7 +38,6 @@ public enum EntitlementType: String, Decodable, Equatable, Sendable {
 }
 
 public enum Entitlement: Decodable, Equatable, Hashable, Sendable {
-
     case progress(ProgressEntitlement)
     case description(DescriptionEntitlement)
 
@@ -49,7 +46,6 @@ public enum Entitlement: Decodable, Equatable, Hashable, Sendable {
     }
 
     public init(from decoder: Decoder) throws {
-
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(EntitlementType.self, forKey: .type)
 

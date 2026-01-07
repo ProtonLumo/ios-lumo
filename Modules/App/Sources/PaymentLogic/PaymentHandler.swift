@@ -1,6 +1,6 @@
 import Foundation
-import WebKit
 import SwiftUI
+import WebKit
 
 public enum PaymentHandlerActionType {
     case createSubscription
@@ -15,7 +15,6 @@ public struct PaymentHandlerActions {
 }
 
 class PaymentHandler: NSObject, WKScriptMessageHandler {
-
     private var completion: (PaymentHandlerActions) -> Void
     private weak var webView: WKWebView?
 
@@ -31,12 +30,12 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
                 Logger.shared.log("PaymentHandler received unexpected message body: \(message.body)")
                 return
             }
-            
+
             // Trigger the payment flow
             fetchAndShowPaymentSheet()
         }
     }
-    
+
     /// Public method to fetch plans and show payment sheet
     /// Can be called from JavaScript message handler or from native code
     public func fetchAndShowPaymentSheet(isPromotionOffer: Bool = false) {
@@ -45,9 +44,9 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
             Logger.shared.log("WebView not available for payment handler")
             return
         }
-        
+
         Logger.shared.log("Fetching plans from WebView...")
-        
+
         // Fetch plans from WebView using the shared instance
         PaymentBridge.shared.getPlansFromWebView(webView: webView) { result in
             DispatchQueue.main.async {
@@ -57,13 +56,13 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
                         Logger.shared.log("No plan data received from WebView")
                         return
                     }
-                    
+
                     Logger.shared.log("Plans received from WebView, showing payment sheet")
                     self.showPaymentSheet(with: planData, isPromotionOffer: isPromotionOffer)
-                    
+
                 case .failure(let error):
                     Logger.shared.log("Failed to fetch plans from WebView: \(error)")
-                    
+
                     // Check if this is an authentication error
                     let errorMessage = error.localizedDescription
                     if errorMessage.contains("UID must be set") {
@@ -84,57 +83,59 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
             }
         }
     }
-    
+
     private func showPaymentSheet(with planData: [String: Any], isPromotionOffer: Bool) {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             // Initialize PaymentSheet with the plans data
             let composer = PlansComposer(payload: planData)
             let viewModel = PaymentSheetViewModel(planComposer: composer, isPromotionOffer: isPromotionOffer)
             viewModel.delegate = self
-            
+
             // Inject the ThemeProvider environment object
             let paymentSheet = PaymentSheet(viewModel: viewModel)
                 .environmentObject(ThemeProvider.shared)
-            
+
             let hostingController = UIHostingController(rootView: paymentSheet)
-            
+
             // Make hosting controller background transparent so SwiftUI background shows through
             hostingController.view.backgroundColor = .clear
             hostingController.modalPresentationStyle = .formSheet
-            
+
             windowScene.windows.first?.rootViewController?.present(hostingController, animated: true)
         }
     }
-    
+
     private func showAuthenticationRequiredAlert() {
         DispatchQueue.main.async {
             if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let rootViewController = windowScene.windows.first?.rootViewController {
+                let rootViewController = windowScene.windows.first?.rootViewController
+            {
                 let alert = UIAlertController(
                     title: String(localized: "app.payment.authRequired.title"),
                     message: String(localized: "app.payment.authRequired.message"),
                     preferredStyle: .alert
                 )
-                
+
                 alert.addAction(UIAlertAction(title: String(localized: "app.general.ok"), style: .default))
-                
+
                 rootViewController.present(alert, animated: true)
             }
         }
     }
-    
+
     private func showGenericErrorAlert() {
         DispatchQueue.main.async {
             if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let rootViewController = windowScene.windows.first?.rootViewController {
+                let rootViewController = windowScene.windows.first?.rootViewController
+            {
                 let alert = UIAlertController(
                     title: String(localized: "app.general.error"),
                     message: String(localized: "app.payment.error.generic"),
                     preferredStyle: .alert
                 )
-                
+
                 alert.addAction(UIAlertAction(title: String(localized: "app.general.ok"), style: .default))
-                
+
                 rootViewController.present(alert, animated: true)
             }
         }
@@ -142,23 +143,22 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
 }
 
 extension PaymentHandler: PaymentSheetViewModelDelegate {
-
     func subscriptionRequest(payload: [String: Any]) {
         let action = PaymentHandlerActions(type: .createSubscription, payload: payload)
         completion(action)
     }
-    
+
     func tokenRequest(payload: [String: Any]) {
         let action = PaymentHandlerActions(type: .createToken, payload: payload)
         completion(action)
     }
-    
+
     func getPlansRequest() {
         // Use an empty payload for requests that don't need data
         let action = PaymentHandlerActions(type: .getPlans, payload: [:])
         completion(action)
     }
-    
+
     func getSubscriptionsRequest() {
         // Use an empty payload for requests that don't need data
         let action = PaymentHandlerActions(type: .getSubscriptions, payload: [:])

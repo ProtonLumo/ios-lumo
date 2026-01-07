@@ -1,6 +1,4 @@
-
 public struct CreateSubscription: Codable, DictionaryConvertible {
-
     public let amount: Int?
     public let paymentMethodID: String?
     public let payments: [String]?
@@ -15,18 +13,20 @@ public struct CreateSubscription: Codable, DictionaryConvertible {
     public let couponCode: String?
     public let giftCode: String?
 
-    init(amount: Int? = nil,
-         paymentMethodID: String? = nil,
-         payments: [String]? = nil,
-         paymentToken: String?,
-         cycle: Int,
-         currency: String?,
-         currencyID: Int? = nil,
-         plans: [String : Int]?,
-         planIDs: [Int]? = nil,
-         codes: [String]? = nil,
-         couponCode: String? = nil,
-         giftCode: String? = nil) {
+    init(
+        amount: Int? = nil,
+        paymentMethodID: String? = nil,
+        payments: [String]? = nil,
+        paymentToken: String?,
+        cycle: Int,
+        currency: String?,
+        currencyID: Int? = nil,
+        plans: [String: Int]?,
+        planIDs: [Int]? = nil,
+        codes: [String]? = nil,
+        couponCode: String? = nil,
+        giftCode: String? = nil
+    ) {
         self.amount = amount
         self.paymentMethodID = paymentMethodID
         self.payments = payments

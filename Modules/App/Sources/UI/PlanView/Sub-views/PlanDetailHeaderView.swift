@@ -1,8 +1,7 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 struct PlanDetailHeaderView: View {
-
     @Binding var isExpanded: Bool
 
     let title: String
@@ -12,7 +11,6 @@ struct PlanDetailHeaderView: View {
     let decorationsURLs: [URL]?
 
     private struct Constants {
-
         static let buttonTopPadding: CGFloat = 10
         static let chevronSize: CGFloat = 20
         static let imageTouchArea: CGFloat = 5
@@ -21,15 +19,16 @@ struct PlanDetailHeaderView: View {
         static let periodTextFont: Font = .caption
 
         static func imageRotationAngle(isExpanded: Bool) -> Double {
-            return isExpanded ? 180 : 0
+            isExpanded ? 180 : 0
         }
     }
 
     var body: some View {
         HStack(alignment: .top) {
-            HeaderTitleView(title: title,
-                            description: description,
-                            decorations: decorationsURLs)
+            HeaderTitleView(
+                title: title,
+                description: description,
+                decorations: decorationsURLs)
             Spacer()
             VStack(alignment: .trailing) {
                 Text(formattedPrice)

@@ -10,7 +10,6 @@ public protocol StoreKitReceiptManagerProviding {
 }
 
 public final class StoreKitReceiptManager: StoreKitReceiptManagerProviding {
-
     public static func fetchPurchaseReceipt() throws -> String {
         guard let url = Bundle.main.appStoreReceiptURL, let data = try? Data(contentsOf: url) else {
             Logger.shared.log("StoreKit error: impossible to get receipt data")

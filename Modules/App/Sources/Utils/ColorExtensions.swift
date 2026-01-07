@@ -10,4 +10,4 @@ extension Color {
             opacity: alpha
         )
     }
-} 
+}
