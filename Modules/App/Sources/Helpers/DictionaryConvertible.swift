@@ -5,7 +5,6 @@ protocol DictionaryConvertible {
 }
 
 extension DictionaryConvertible {
-
     func toDictionary() -> [String: Any] {
         let reflect = Mirror(reflecting: self)
         let children = reflect.children
@@ -17,12 +16,11 @@ extension DictionaryConvertible {
         var dictionary: [String: Any] = [:]
         for element in elements {
             if let key = element.label?.capitalizedFirst {
-
-                if let _ = element.value as? [AnyHashable] {
+                if element.value as? [AnyHashable] != nil {
                     dictionary[key] = element.value
                 }
 
-                if let _ = element.value as? AnyHashable {
+                if element.value as? AnyHashable != nil {
                     dictionary[key] = element.value
                 }
 
@@ -40,4 +38,3 @@ extension DictionaryConvertible {
         return dictionary
     }
 }
-

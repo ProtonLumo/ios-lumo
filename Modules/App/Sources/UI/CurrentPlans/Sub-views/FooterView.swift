@@ -1,8 +1,7 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 struct FooterView: View {
-
     let image: Image
     let text: String
 
@@ -26,6 +25,8 @@ struct FooterView: View {
 }
 
 #Preview {
-    FooterView(image: Theme.icon.infoCircle,
-               text: String(localized: "current.plans.manage.subscription.message"))
+    FooterView(
+        image: Theme.icon.infoCircle,
+        text: String(localized: "current.plans.manage.subscription.message")
+    )
 }

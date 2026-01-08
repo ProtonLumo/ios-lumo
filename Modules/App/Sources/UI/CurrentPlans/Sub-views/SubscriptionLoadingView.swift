@@ -1,8 +1,7 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 struct SubscriptionLoadingView: View {
-
     let loadingMessage: String
 
     var body: some View {

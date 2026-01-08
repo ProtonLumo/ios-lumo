@@ -1,8 +1,7 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 struct PlanDetailView: View {
-
     private struct Constants {
         static let iconSize: CGFloat = 15
         static let buttonTopPadding: CGFloat = 10
@@ -17,8 +16,10 @@ struct PlanDetailView: View {
         VStack(alignment: .leading, spacing: Theme.spacing.standard) {
             ForEach(viewModel.descriptionEntitlements, id: \.self) { entitlement in
                 HStack(alignment: .top) {
-                    PCAsyncImage(url: viewModel.iconURLforEntitlement(entitlement),
-                                 placeholderImage: Theme.icon.checkmark) { image in
+                    PCAsyncImage(
+                        url: viewModel.iconURLforEntitlement(entitlement),
+                        placeholderImage: Theme.icon.checkmark
+                    ) { image in
                         image
                             .resizable()
                             .renderingMode(.template)

@@ -1,17 +1,15 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 // MARK: - Skeleton Loading Views
 struct SkeletonPlanCard: View {
     @State private var isAnimating = false
     @EnvironmentObject private var themeProvider: ThemeProvider
-    
+
     private var isDarkMode: Bool {
         themeProvider.isDarkMode
     }
-    
-    
-    
+
     var body: some View {
         RoundedRectangle(cornerRadius: 12)
             .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
@@ -23,7 +21,7 @@ struct SkeletonPlanCard: View {
                             gradient: Gradient(colors: [
                                 Color.clear,
                                 (isDarkMode ? Color.gray : Color.white).opacity(0.6),
-                                Color.clear
+                                Color.clear,
                             ]),
                             startPoint: .leading,
                             endPoint: .trailing
@@ -47,18 +45,18 @@ struct SkeletonPlanCard: View {
 struct SkeletonFeatureRow: View {
     @State private var isAnimating = false
     @EnvironmentObject private var themeProvider: ThemeProvider
-    
+
     private var isDarkMode: Bool {
         themeProvider.isDarkMode
     }
-    
+
     var body: some View {
         HStack(spacing: 12) {
             // Icon placeholder
             Circle()
                 .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
                 .frame(width: 20, height: 20)
-            
+
             // Text placeholders
             VStack(alignment: .leading, spacing: 4) {
                 RoundedRectangle(cornerRadius: 4)
@@ -66,15 +64,15 @@ struct SkeletonFeatureRow: View {
                     .frame(height: 12)
                     .frame(maxWidth: .infinity)
             }
-            
+
             Spacer()
-            
+
             // Status placeholders
             HStack(spacing: 20) {
                 Circle()
                     .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
                     .frame(width: 12, height: 12)
-                
+
                 Circle()
                     .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
                     .frame(width: 12, height: 12)
@@ -85,7 +83,7 @@ struct SkeletonFeatureRow: View {
                 gradient: Gradient(colors: [
                     Color.clear,
                     (isDarkMode ? Color.gray : Color.white).opacity(0.4),
-                    Color.clear
+                    Color.clear,
                 ]),
                 startPoint: .leading,
                 endPoint: .trailing
@@ -112,11 +110,11 @@ struct SkeletonText: View {
     let height: CGFloat
     @State private var isAnimating = false
     @EnvironmentObject private var themeProvider: ThemeProvider
-    
+
     private var isDarkMode: Bool {
         themeProvider.isDarkMode
     }
-    
+
     var body: some View {
         RoundedRectangle(cornerRadius: 4)
             .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
@@ -128,7 +126,7 @@ struct SkeletonText: View {
                             gradient: Gradient(colors: [
                                 Color.clear,
                                 (isDarkMode ? Color.gray : Color.white).opacity(0.6),
-                                Color.clear
+                                Color.clear,
                             ]),
                             startPoint: .leading,
                             endPoint: .trailing
@@ -164,7 +162,7 @@ struct PaymentSheet: View {
             // Use themeProvider properties directly so SwiftUI observes changes
             themeProvider.backgroundColor
                 .ignoresSafeArea(.all, edges: .all)
-            
+
             ScrollView {
                 VStack(spacing: 0) {
                     headerSection
@@ -224,17 +222,21 @@ struct PaymentSheet: View {
     private var headerSection: some View {
         ZStack(alignment: .top) {
             LinearGradient(
-                gradient: Gradient(colors: themeProvider.isDarkMode ? [
-                    Color(hex: 0x1f1d28),
-                    Color(hex: 0x1f1d28),
-                    Color(hex: 0x1f1d28),
-                    Color(hex: 0x16141c)
-                ] : [
-                    Color(hex: 0xF2EEFF),
-                    Color(hex: 0xF2EEFF),
-                    Color(hex: 0xF2EEFF),
-                    .white
-                ]),
+                gradient: Gradient(
+                    colors: themeProvider.isDarkMode
+                        ? [
+                            Color(hex: 0x1f1d28),
+                            Color(hex: 0x1f1d28),
+                            Color(hex: 0x1f1d28),
+                            Color(hex: 0x16141c),
+                        ]
+                        : [
+                            Color(hex: 0xF2EEFF),
+                            Color(hex: 0xF2EEFF),
+                            Color(hex: 0xF2EEFF),
+                            .white,
+                        ]
+                ),
                 startPoint: UnitPoint(x: 0, y: 1),
                 endPoint: UnitPoint(x: 1, y: 0)
             )
@@ -249,26 +251,20 @@ struct PaymentSheet: View {
                     }
                 }
                 VStack(spacing: 8) {
-                    
                     Image(getHeaderImageName())
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 160, height: 100)
                         .padding(.all, 8)
-                    
-                    Text(viewModel.hasNoPlansAvailable ? 
-                         String(localized: "app.payment.noPlansAvailable") : 
-                         (String(localized: "app.payment.elevateExperience")))
-                            .font(.system(size: 24, weight: .bold))
-                            .padding(.top, 16)
-                            .foregroundColor(themeProvider.textColor)
-                    Text(viewModel.hasNoPlansAvailable ? 
-                         String(localized: "app.payment.noPlansMessage") : 
-                         (String(localized: "app.payment.enjoyPremium")))
-                            .font(.system(size: 16))
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(themeProvider.secondaryTextColor)
-                    
+
+                    Text(viewModel.hasNoPlansAvailable ? String(localized: "app.payment.noPlansAvailable") : (String(localized: "app.payment.elevateExperience")))
+                        .font(.system(size: 24, weight: .bold))
+                        .padding(.top, 16)
+                        .foregroundColor(themeProvider.textColor)
+                    Text(viewModel.hasNoPlansAvailable ? String(localized: "app.payment.noPlansMessage") : (String(localized: "app.payment.enjoyPremium")))
+                        .font(.system(size: 16))
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(themeProvider.secondaryTextColor)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 6)
@@ -281,7 +277,6 @@ struct PaymentSheet: View {
             if !viewModel.hasNoPlansAvailable {
                 ZStack {
                     VStack(spacing: 4) {
-                        
                         VStack(spacing: 4) {
                             if viewModel.isLoadingPlans {
                                 ForEach(0..<3, id: \.self) { _ in
@@ -327,7 +322,7 @@ struct PaymentSheet: View {
                     .foregroundStyle(themeProvider.secondaryTextColor)
                     .padding(.top, 5)
             }
-            
+
             if !viewModel.hasNoPlansAvailable {
                 Button(action: {
                     handlePurchase()
@@ -339,12 +334,11 @@ struct PaymentSheet: View {
                                 .opacity(0.7)
                         } else {
                             HStack(spacing: 8) {
-                                
                                 Text(String(localized: "app.payment.getPlus"))
                                     .font(.system(size: 17, weight: .bold))
                             }
                             .opacity(viewModel.isLoading ? 0 : 1)
-                            
+
                             if viewModel.isLoading {
                                 ProgressView()
                                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
@@ -374,7 +368,7 @@ struct PaymentSheet: View {
                 .padding(.top, 10)
                 .disabled(viewModel.isLoading || viewModel.isLoadingPlans || viewModel.hasNoPlansAvailable)
             }
-            
+
             Button(viewModel.hasNoPlansAvailable ? "Close" : String(format: String(localized: "app.payment.useFree"), viewModel.planTitle)) {
                 dismiss()
             }
@@ -395,9 +389,9 @@ struct PaymentSheet: View {
             }
         }
     }
-    
+
     private func getHeaderImageName() -> String {
-        return "LumoUpgradeIcon"
+        "LumoUpgradeIcon"
     }
 }
 
@@ -406,7 +400,7 @@ struct PaymentSheet: View {
         let mockResponse = try Bundle.main.loadJsonDataToDic(from: "plans.json")
         let composer = PlansComposer(payload: mockResponse)
         let viewModel = PaymentSheetViewModel(planComposer: composer)
-        
+
         return PaymentSheet(viewModel: viewModel)
     } catch {
         return PaymentSheet(viewModel: PaymentSheetViewModel(planComposer: PlansComposer(payload: [:])))

@@ -1,8 +1,7 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 public struct CurrentPlansView: View {
-
     @ObservedObject var viewModel: CurrentPlansViewModel
     @Environment(\.presentationMode) var presentationMode
     @StateObject private var appleSubscriptionManager = AppleSubscriptionManager.shared
@@ -22,7 +21,6 @@ public struct CurrentPlansView: View {
 
             VStack {
                 //MARK: Modal presentation close button
-                
                 HStack {
                     // Refresh button for Apple subscription status
                     Button {
@@ -34,9 +32,9 @@ public struct CurrentPlansView: View {
                     }
                     .disabled(appleSubscriptionManager.isLoading)
                     .padding(Theme.spacing.extraLarge)
-                    
+
                     Spacer()
-                    
+
                     Button {
                         presentationMode.wrappedValue.dismiss()
                     } label: {
@@ -45,8 +43,7 @@ public struct CurrentPlansView: View {
                     }
                     .padding(Theme.spacing.extraLarge)
                 }
-                
-                
+
                 VStack {
                     Image("LumoUpgradeIcon")
                         .resizable()
@@ -55,8 +52,7 @@ public struct CurrentPlansView: View {
                         .padding(.bottom, 8)
                         .padding(.top, -30)
                 }
-                    
-                
+
                 Text(String(localized: "current.plans.title"))
                     .font(.system(size: Constants.titleTextSize))
                     .fontWeight(Constants.titleFontWeight)
@@ -74,11 +70,11 @@ public struct CurrentPlansView: View {
 
                 switch viewModel.viewState {
                 case .dataLoaded:
-                   CurrentPlansBodyView(viewModel: viewModel)
+                    CurrentPlansBodyView(viewModel: viewModel)
                 case .loading:
                     SubscriptionLoadingView(loadingMessage: String(localized: "current.plans.loading.message"))
                 case .errorData, .idle:
-                   ErrorView(buttonAction: {})
+                    ErrorView(buttonAction: {})
                 case .noData:
                     NoSubscriptionsView()
                 }
@@ -89,17 +85,16 @@ public struct CurrentPlansView: View {
 }
 
 #if DEBUG
-#Preview {
-    // Current plan
-    let currentPlan = PlanViewModel(currentPlan: PreviewsData.currentSub)
+    #Preview {
+        // Current plan
+        let currentPlan = PlanViewModel(currentPlan: PreviewsData.currentSub)
 
-    let viewModel = CurrentPlansViewModel(plansData: [PreviewsData.currentSub, PreviewsData.currentSub])
-    viewModel.showBanner()
-    viewModel.setCurrentPlans([currentPlan, currentPlan])
+        let viewModel = CurrentPlansViewModel(plansData: [PreviewsData.currentSub, PreviewsData.currentSub])
+        viewModel.showBanner()
+        viewModel.setCurrentPlans([currentPlan, currentPlan])
 
-    //viewModel.setViewState(.errorData)
+        //viewModel.setViewState(.errorData)
 
-    return CurrentPlansView(viewModel: viewModel)
-}
+        return CurrentPlansView(viewModel: viewModel)
+    }
 #endif
-

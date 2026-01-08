@@ -1,8 +1,7 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 struct ProgressEntitlementView: View {
-
     let currentValue: Int
     let maxValue: Int
     let text: String
@@ -55,4 +54,3 @@ struct ProgressEntitlementView: View {
         }
     }
 }
-

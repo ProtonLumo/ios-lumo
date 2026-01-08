@@ -1,4 +1,3 @@
-
 public struct Token: Codable, DictionaryConvertible {
     public let amount: Int
     public let currency: String

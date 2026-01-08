@@ -17,7 +17,7 @@ enum PurchaseManagerError: Error {
 public protocol PurchaseManagerDelegate: AnyObject {
     func newSubscriptionPayload(payload: [String: Any])
     func paymentCompleted(success: Bool, message: String)
-    
+
     // Progress tracking methods
     func applePaymentCompleted()
     func tokenPostStarted()
@@ -25,7 +25,6 @@ public protocol PurchaseManagerDelegate: AnyObject {
 }
 
 class PurchaseManager: NSObject {
-    
     // Make PurchaseManager a singleton
     static let shared = PurchaseManager()
 
@@ -34,7 +33,7 @@ class PurchaseManager: NSObject {
     private var refresh: SKReceiptRefreshRequest?
     public weak var delegate: PurchaseManagerDelegate?
     private weak var webView: WKWebView?
-    
+
     // Store the composed plan for later use after token request
     private var pendingComposedPlan: ComposedPlan?
     private var pendingTransaction: ProtonTransactionProviding?
@@ -72,7 +71,7 @@ class PurchaseManager: NSObject {
                 refresh?.start()
             }
             Logger.shared.log("Receipt refresh completed")
-            
+
             Logger.shared.log("Transaction from Apple: \(transaction)")
 
             let protonTransaction = transaction.toProtonTransaction()
@@ -85,7 +84,7 @@ class PurchaseManager: NSObject {
             try generateValidationTokenFromStoreKitReceipt(protonTransaction, composedPlan: plan)
             Logger.shared.log("Transaction processing complete, adding to in-progress transactions")
             StoreKitObserver.shared.addTransactionInProgress(transaction.id)
-            
+
         case .pending:
             Logger.shared.log("Transaction is pending")
         case .userCancelled:
@@ -99,72 +98,75 @@ class PurchaseManager: NSObject {
 }
 
 private extension PurchaseManager {
-
     private func generateValidationTokenFromStoreKitReceipt(_ transaction: ProtonTransactionProviding, composedPlan: ComposedPlan) throws {
         Logger.shared.log("Generating validation token from StoreKit receipt")
 
         do {
-        let receipt = try StoreKitReceiptManager.fetchPurchaseReceipt()
+            let receipt = try StoreKitReceiptManager.fetchPurchaseReceipt()
             Logger.shared.log("Successfully fetched purchase receipt")
 
-        guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+            guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
                 Logger.shared.log("Error: Bundle identifier not found")
-            throw PurchaseManagerError.unableToGetBundleIdentifier
-        }
+                throw PurchaseManagerError.unableToGetBundleIdentifier
+            }
 
-            Logger.shared.log("Transaction info: \(transaction)");
+            Logger.shared.log("Transaction info: \(transaction)")
 
-        guard let amount = transaction.price, let currency = transaction.currencyIdentifier else {
+            guard let amount = transaction.price, let currency = transaction.currencyIdentifier else {
                 Logger.shared.log("Error: Could not get amount and currency from transaction")
-            throw PurchaseManagerError.unableToGetTransactionAmountOrCurrency
-        }
+                throw PurchaseManagerError.unableToGetTransactionAmountOrCurrency
+            }
 
-        let formattedAmount = NSDecimalNumber(decimal: amount * 100).intValue
+            let formattedAmount = NSDecimalNumber(decimal: amount * 100).intValue
             Logger.shared.log("Payment amount: \(formattedAmount) \(currency)")
-            
-        let newToken = Token(amount: formattedAmount,
-                             currency: currency,
-                             payment: PaymentReceipt(details: ReceiptDetails(bundleID: bundleIdentifier,
-                                                                             productID: transaction.productID,
-                                                                             receipt: receipt,
-                                                                                 transactionID: String(transaction.originalID)),
-                                                     type: "apple-recurring"),
-                             paymentMethodID: nil)
+
+            let newToken = Token(
+                amount: formattedAmount,
+                currency: currency,
+                payment: PaymentReceipt(
+                    details: ReceiptDetails(
+                        bundleID: bundleIdentifier,
+                        productID: transaction.productID,
+                        receipt: receipt,
+                        transactionID: String(transaction.originalID)),
+                    type: "apple-recurring"),
+                paymentMethodID: nil
+            )
 
             Logger.shared.log("Payment token generated successfully")
-            
+
             // Store the plan and transaction for use after token request
             self.pendingComposedPlan = composedPlan
             self.pendingTransaction = transaction
-            
+
             // Send token to WebView
             guard let webView = self.webView else {
                 Logger.shared.log("Error: WebView not available for token request")
                 delegate?.paymentCompleted(success: false, message: "WebView not available for payment")
                 return
             }
-            
+
             let tokenPayload = newToken.toDictionary()
-            
+
             // ✅ Step 2: Token Post Started
             Logger.shared.log("Notifying delegate: Token post started")
             delegate?.tokenPostStarted()
-            
+
             PaymentBridge.shared.sendPaymentTokenToWebView(webView: webView, payload: tokenPayload) { [weak self] result in
                 guard let self = self else { return }
-                
+
                 switch result {
                 case .success(let response):
                     Logger.shared.log("Token request successful")
-                    
+
                     guard let data = response.data, let tokenValue = data["Token"] as? String else {
                         Logger.shared.log("Error: Token not found in response data")
                         self.delegate?.paymentCompleted(success: false, message: "Invalid token response")
                         return
                     }
-                    
+
                     Logger.shared.log("Token received: \(tokenValue)")
-                    
+
                     do {
                         // Create subscription with the token
                         guard let composedPlan = self.pendingComposedPlan, let transaction = self.pendingTransaction else {
@@ -172,10 +174,12 @@ private extension PurchaseManager {
                             self.delegate?.paymentCompleted(success: false, message: "Internal payment error")
                             return
                         }
-                        
-                        let newSub = try self.createNewSubscription(composedPlan: composedPlan, 
-                                                               transaction: transaction, 
-                                                               token: tokenValue)
+
+                        let newSub = try self.createNewSubscription(
+                            composedPlan: composedPlan,
+                            transaction: transaction,
+                            token: tokenValue
+                        )
 
                         // Send subscription request
                         self.sendSubscriptionRequest(subscription: newSub)
@@ -183,7 +187,7 @@ private extension PurchaseManager {
                         Logger.shared.log("Error creating subscription: \(error)")
                         self.delegate?.paymentCompleted(success: false, message: "Failed to create subscription")
                     }
-                    
+
                 case .failure(let error):
                     Logger.shared.log("Token request failed: \(error)")
                     self.delegate?.paymentCompleted(success: false, message: "Token request failed: \(error.localizedDescription)")
@@ -195,32 +199,32 @@ private extension PurchaseManager {
             throw error
         }
     }
-    
+
     private func sendSubscriptionRequest(subscription: CreateSubscription) {
         Logger.shared.log("Sending subscription request")
-        
+
         guard let webView = self.webView else {
             Logger.shared.log("Error: WebView not available for subscription request")
             delegate?.paymentCompleted(success: false, message: "WebView not available for payment")
             return
         }
-        
+
         let subscriptionPayload = subscription.toDictionary()
-        
+
         // ✅ Step 3: Subscription Post Started
         Logger.shared.log("Notifying delegate: Subscription post started")
         delegate?.subscriptionPostStarted()
-        
+
         PaymentBridge.shared.sendSubscriptionToWebView(webView: webView, payload: subscriptionPayload) { [weak self] result in
             guard let self = self else { return }
-            
+
             switch result {
             case .success(let response):
                 Logger.shared.log("Subscription request successful: \(response.data ?? [:])")
                 self.delegate?.newSubscriptionPayload(payload: subscriptionPayload)
                 // ✅ Step 4: All completed - handled in paymentCompleted with success: true
                 self.delegate?.paymentCompleted(success: true, message: "Payment successful! You now have Lumo Plus.")
-                
+
             case .failure(let error):
                 Logger.shared.log("Subscription request failed: \(error)")
                 self.delegate?.paymentCompleted(success: false, message: "Subscription failed: \(error.localizedDescription)")
@@ -228,9 +232,11 @@ private extension PurchaseManager {
         }
     }
 
-    private func createNewSubscription(composedPlan: ComposedPlan, 
-                                       transaction: ProtonTransactionProviding,
-                                       token: String) throws -> CreateSubscription {
+    private func createNewSubscription(
+        composedPlan: ComposedPlan,
+        transaction: ProtonTransactionProviding,
+        token: String
+    ) throws -> CreateSubscription {
         Logger.shared.log("Creating new subscription for plan: \(composedPlan.plan.title)")
 
         guard let planName = composedPlan.plan.name else {
@@ -240,10 +246,12 @@ private extension PurchaseManager {
 
         Logger.shared.log("Plan name: \(planName), cycle: \(composedPlan.instance.cycle), currency: \(transaction.currencyIdentifier ?? "Unknown")")
 
-        let newSub = CreateSubscription(paymentToken: token,
-                                        cycle: composedPlan.instance.cycle,
-                                        currency: transaction.currencyIdentifier,
-                                        plans: [planName: 1])
+        let newSub = CreateSubscription(
+            paymentToken: token,
+            cycle: composedPlan.instance.cycle,
+            currency: transaction.currencyIdentifier,
+            plans: [planName: 1]
+        )
         Logger.shared.log("New subscription payload created successfully")
 
         return newSub
@@ -251,7 +259,6 @@ private extension PurchaseManager {
 }
 
 extension PurchaseManager: SKRequestDelegate {
-
     public func requestDidFinish(_ request: SKRequest) {
         cancelActiveRequest(request)
         Logger.shared.log("Apple transaction completed", category: "Payment")
@@ -270,4 +277,3 @@ extension PurchaseManager: SKRequestDelegate {
         refresh = nil
     }
 }
-

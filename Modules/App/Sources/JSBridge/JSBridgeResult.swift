@@ -4,7 +4,7 @@ import Foundation
 enum JSBridgeResult {
     case success(Any?)
     case failure(JSBridgeError)
-    
+
     /// Extract successful value
     var value: Any? {
         if case .success(let value) = self {
@@ -12,7 +12,7 @@ enum JSBridgeResult {
         }
         return nil
     }
-    
+
     /// Extract error
     var error: JSBridgeError? {
         if case .failure(let error) = self {
@@ -20,7 +20,7 @@ enum JSBridgeResult {
         }
         return nil
     }
-    
+
     /// Check if successful
     var isSuccess: Bool {
         if case .success = self {
@@ -41,7 +41,7 @@ enum JSBridgeError: Error, LocalizedError {
     case paymentApiUnavailable
     case networkError(Error)
     case unknownError(Error)
-    
+
     var errorDescription: String? {
         switch self {
         case .webViewNotReady:
@@ -64,7 +64,7 @@ enum JSBridgeError: Error, LocalizedError {
             return "Unknown error: \(error.localizedDescription)"
         }
     }
-    
+
     /// Whether this error is recoverable with retry
     var isRecoverable: Bool {
         switch self {
@@ -86,7 +86,7 @@ struct JSResponse: Codable {
     let action: String?
     let theme: String?
     let exists: Bool?
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         success = try container.decode(Bool.self, forKey: .success)
@@ -96,7 +96,7 @@ struct JSResponse: Codable {
         theme = try container.decodeIfPresent(String.self, forKey: .theme)
         exists = try container.decodeIfPresent(Bool.self, forKey: .exists)
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case success, data, reason, action, theme, exists
     }
@@ -105,14 +105,14 @@ struct JSResponse: Codable {
 /// Type-erased Codable wrapper for Any
 struct AnyCodable: Codable {
     let value: Any
-    
+
     init(_ value: Any) {
         self.value = value
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        
+
         if let bool = try? container.decode(Bool.self) {
             value = bool
         } else if let int = try? container.decode(Int.self) {
@@ -129,10 +129,10 @@ struct AnyCodable: Codable {
             value = NSNull()
         }
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        
+
         switch value {
         case let bool as Bool:
             try container.encode(bool)
@@ -151,4 +151,3 @@ struct AnyCodable: Codable {
         }
     }
 }
-

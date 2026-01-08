@@ -1,8 +1,7 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 struct ErrorView: View {
-
     let buttonAction: @Sendable () -> Void
 
     var body: some View {

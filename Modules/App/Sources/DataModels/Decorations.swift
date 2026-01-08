@@ -1,7 +1,6 @@
 import Foundation
 
 public struct StarredDecoration: Decodable, Equatable, Hashable, Sendable {
-
     public let type: String
     public let iconName: String
 
@@ -12,7 +11,6 @@ public struct StarredDecoration: Decodable, Equatable, Hashable, Sendable {
 }
 
 public struct BadgeDecoration: Decodable, Equatable, Hashable, Sendable {
-
     public let type: String
     public let text: String
     public let anchor: String
@@ -27,13 +25,11 @@ public struct BadgeDecoration: Decodable, Equatable, Hashable, Sendable {
 }
 
 public enum DecorationType: String, Decodable, Equatable, Hashable, Sendable {
-
     case starred
     case badge
 }
 
 public enum Decoration: Decodable, Equatable, Hashable, Sendable {
-
     case starred(StarredDecoration)
     case badge(BadgeDecoration)
 
@@ -42,7 +38,6 @@ public enum Decoration: Decodable, Equatable, Hashable, Sendable {
     }
 
     public init(from decoder: Decoder) throws {
-
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(DecorationType.self, forKey: .type)
 

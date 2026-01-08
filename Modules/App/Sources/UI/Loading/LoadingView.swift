@@ -1,17 +1,17 @@
-import SwiftUI
-import ProtonUIFoundations
-import UIKit
 import Lottie
+import ProtonUIFoundations
+import SwiftUI
+import UIKit
 
 struct LoadingView: View {
     let isDarkMode: Bool
-    
+
     // State to track the current message index
     @State private var currentMessageIndex = 0
-    
+
     // Timer to rotate messages
     @State private var messageTimer: Timer? = nil
-    
+
     // Cat-themed loading messages
     private let loadingMessages = [
         String(localized: "app.loading.attention"),
@@ -26,44 +26,42 @@ struct LoadingView: View {
         String(localized: "app.loading.sharpening"),
         String(localized: "app.loading.stretching"),
     ]
-    
+
     private var backgroundColor: Color {
-        return isDarkMode ? Color(hex: 0x16141c) : Color.white
+        isDarkMode ? Color(hex: 0x16141c) : Color.white
     }
-    
+
     private var textColor: Color {
-        return isDarkMode ? Color.white : Color.black
+        isDarkMode ? Color.white : Color.black
     }
-    
+
     var body: some View {
         ZStack {
             backgroundColor
                 .ignoresSafeArea()
-                       
-            
+
             VStack(spacing: 20) {
-                
                 LottieView(name: "lumo-loader")
-                        .frame(width: 180, height: 180)
-                
+                    .frame(width: 180, height: 180)
+
                 // Message with fade transition
                 Text(loadingMessages[currentMessageIndex])
                     .font(.footnote)
                     .foregroundColor(textColor)
                     .multilineTextAlignment(.center)
-                    .frame(height: 40) // Fixed height to prevent layout shifts
+                    .frame(height: 40)  // Fixed height to prevent layout shifts
                     .transition(.opacity)
-                    .id("loadingMessage\(currentMessageIndex)") // Force view recreation on change
+                    .id("loadingMessage\(currentMessageIndex)")  // Force view recreation on change
                     .animation(.easeInOut(duration: 0.5), value: currentMessageIndex)
             }
             .padding(.horizontal, 30)
         }
         .transition(.opacity.animation(.easeInOut(duration: 0.2)))
-        .zIndex(100) // Keep high z-index to stay on top
+        .zIndex(100)  // Keep high z-index to stay on top
         .onAppear {
             // Start with a random message
             currentMessageIndex = Int.random(in: 0..<loadingMessages.count)
-            
+
             // Set up timer to change messages every 3.5 seconds
             messageTimer = Timer.scheduledTimer(withTimeInterval: 3.5, repeats: true) { _ in
                 withAnimation {
@@ -72,7 +70,7 @@ struct LoadingView: View {
                     repeat {
                         newIndex = Int.random(in: 0..<loadingMessages.count)
                     } while newIndex == currentMessageIndex && loadingMessages.count > 1
-                    
+
                     currentMessageIndex = newIndex
                 }
             }

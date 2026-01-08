@@ -1,36 +1,32 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 struct NetworkErrorView: View {
     var onRetry: () -> Void
     var isProcessTermination: Bool = false
-    
+
     var body: some View {
         ZStack {
             Color.white
                 .ignoresSafeArea()
-            
+
             VStack(spacing: 24) {
                 Image(systemName: isProcessTermination ? "exclamationmark.triangle" : "wifi.slash")
                     .font(.system(size: 60))
                     .foregroundColor(Theme.color.notificationError)
-                
-                Text(String(localized: isProcessTermination ? 
-                           "app.error.process.title" : 
-                           "app.error.network.title"))
+
+                Text(String(localized: isProcessTermination ? "app.error.process.title" : "app.error.network.title"))
                     .font(.title3)
                     .fontWeight(.semibold)
                     .foregroundColor(Theme.color.notificationError)
                     .multilineTextAlignment(.center)
-                
-                Text(String(localized: isProcessTermination ? 
-                           "app.error.process.message" : 
-                           "app.error.network.message"))
+
+                Text(String(localized: isProcessTermination ? "app.error.process.message" : "app.error.network.message"))
                     .font(.body)
                     .foregroundColor(Theme.color.textWeak)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
-                
+
                 Button(action: onRetry) {
                     Text(String(localized: "app.error.retry"))
                         .font(.system(size: 16, weight: .semibold))
@@ -47,4 +43,4 @@ struct NetworkErrorView: View {
         .transition(.opacity.animation(.easeInOut(duration: 0.3)))
         .zIndex(200)
     }
-} 
+}

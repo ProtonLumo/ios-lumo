@@ -1,5 +1,5 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 struct PlanView: View {
     @ObservedObject public var viewModel: PlanViewModel
@@ -22,16 +22,16 @@ struct PlanView: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: Theme.spacing.large) {
-
-            PlanDetailHeaderView(isExpanded: $viewModel.isExpanded,
-                                 title: viewModel.title,
-                                 description: viewModel.description,
-                                 formattedPrice: viewModel.formattedPrice,
-                                 formattedPeriod: viewModel.formattedPeriod,
-                                 decorationsURLs: nil)
+            PlanDetailHeaderView(
+                isExpanded: $viewModel.isExpanded,
+                title: viewModel.title,
+                description: viewModel.description,
+                formattedPrice: viewModel.formattedPrice,
+                formattedPeriod: viewModel.formattedPeriod,
+                decorationsURLs: nil
+            )
 
             if viewModel.isExpanded {
-
                 if viewModel.showProgressEntitlements {
                     ForEach(viewModel.progressEntitlements, id: \.self) { progress in
                         ProgressEntitlementView(currentValue: progress.current, maxValue: progress.max, text: progress.text)
@@ -46,11 +46,11 @@ struct PlanView: View {
                     Text(renewFooter)
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                
+
                 // Apple subscription management
                 if viewModel.showManageSubscriptionButton {
                     Divider()
-                    
+
                     VStack(alignment: .leading, spacing: Theme.spacing.medium) {
                         // Cancellation status indicator
                         if let statusText = viewModel.subscriptionStatusText {
@@ -64,7 +64,7 @@ struct PlanView: View {
                                 Spacer()
                             }
                         }
-                        
+
                         // Manage subscription button
                         Button(action: {
                             viewModel.openAppleSubscriptionManagement()
@@ -72,7 +72,7 @@ struct PlanView: View {
                             HStack {
                                 Image(systemName: "gear")
                                     .font(.system(size: 14, weight: .medium))
-                                
+
                                 Text(String(localized: "app.payment.managesubscription"))
                                     .font(.system(size: 14, weight: .medium))
                                 Spacer()
@@ -107,13 +107,11 @@ struct PlanView: View {
 }
 
 #if DEBUG
-#Preview {
-    
-    let viewModel = PlanViewModel(currentPlan: PreviewsData.currentSub)
-    let viewModel3 = PlanViewModel(currentPlan: PreviewsData.freePlan)
+    #Preview {
+        let viewModel = PlanViewModel(currentPlan: PreviewsData.currentSub)
+        let viewModel3 = PlanViewModel(currentPlan: PreviewsData.freePlan)
 
-    return PlanView(viewModel: viewModel)
-        .padding(12)
-}
+        return PlanView(viewModel: viewModel)
+            .padding(12)
+    }
 #endif
-

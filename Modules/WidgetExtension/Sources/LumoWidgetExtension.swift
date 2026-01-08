@@ -1,47 +1,48 @@
-import WidgetKit
-import SwiftUI
 import Intents
+import SwiftUI
+import WidgetKit
 import os.log
-
 
 class WidgetLogger {
     static let shared = WidgetLogger()
     private let logger: Logger
-    
+
     private init() {
         logger = Logger(subsystem: "me.proton.lumo", category: "WidgetInteraction")
     }
-    
+
     func log(_ message: String, isDebugOnly: Bool = false) {
         if !isDebugOnly {
             logger.log("\(message, privacy: .public)")
         }
         #if DEBUG
-        print("Widget: \(message)")
+            print("Widget: \(message)")
         #endif
     }
-    
+
     func error(_ message: String) {
         logger.error("\(message, privacy: .public)")
         #if DEBUG
-        print("Widget Error: \(message)")
+            print("Widget Error: \(message)")
         #endif
     }
 }
-
 
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
         Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
+        let a: UInt64
+        let r: UInt64
+        let g: UInt64
+        let b: UInt64
         switch hex.count {
-        case 3: 
+        case 3:
             (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: 
+        case 6:
             (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: 
+        case 8:
             (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
         default:
             (a, r, g, b) = (1, 1, 1, 0)
@@ -56,12 +57,11 @@ extension Color {
     }
 }
 
-
 struct LumoWidgetEntry: TimelineEntry {
     let date: Date
     let searchHint: String
     var prompts: [TimePrompt] = []
-    
+
     init(date: Date, searchHint: String, prompts: [TimePrompt] = []) {
         self.date = date
         self.searchHint = searchHint
@@ -69,35 +69,34 @@ struct LumoWidgetEntry: TimelineEntry {
     }
 }
 
-
 struct TimePrompt: Identifiable {
     let labelKey: String
     let promptKey: String
     let id: String
     let icon: String
-    
+
     var label: String {
         String(localized: LocalizedStringResource(stringLiteral: labelKey))
     }
-    
+
     var prompt: String {
         String(localized: LocalizedStringResource(stringLiteral: promptKey))
     }
-    
+
     var destination: String {
         // Create a proper character set for URL query values
         // We need to exclude &, =, and other special URL characters
         var allowedCharacters = CharacterSet.urlQueryAllowed
         allowedCharacters.remove(charactersIn: "!*'();:@&=+$,/?#[]")
-        
+
         let encodedLabel = label.addingPercentEncoding(withAllowedCharacters: allowedCharacters) ?? label
         let encodedPrompt = prompt.addingPercentEncoding(withAllowedCharacters: allowedCharacters) ?? prompt
-        
+
         let dest = "lumo://prompt?id=\(id)&source=widget&label=\(encodedLabel)&prompt=\(encodedPrompt)"
         WidgetLogger.shared.log("Created widget URL: \(dest)")
         return dest
     }
-    
+
     init(labelKey: String, promptKey: String, id: String, icon: String) {
         self.labelKey = labelKey
         self.promptKey = promptKey
@@ -107,14 +106,13 @@ struct TimePrompt: Identifiable {
     }
 }
 
-
 struct PromptButtonView: View {
     var label: String
     var destination: String
     var icon: String
     var textColor: Color
     var buttonBackgroundColor: Color
-    
+
     var body: some View {
         Link(destination: URL(string: destination)!) {
             VStack(alignment: .center, spacing: 4) {
@@ -127,7 +125,7 @@ struct PromptButtonView: View {
                             .fill(buttonBackgroundColor)
                     )
                     .frame(maxWidth: .infinity, alignment: .center)
-                
+
                 Text(label)
                     .font(.system(size: 13, weight: .medium))
                     .foregroundColor(textColor)
@@ -147,14 +145,13 @@ struct PromptButtonView: View {
     }
 }
 
-
 struct CompactPromptButtonView: View {
     var label: String
     var destination: String
     var icon: String
     var purpleColor: Color
     var orangeColor: Color
-    
+
     var body: some View {
         Link(destination: URL(string: destination) ?? URL(string: "lumo://home?source=widget_fallback")!) {
             VStack(alignment: .center, spacing: 4) {
@@ -166,7 +163,7 @@ struct CompactPromptButtonView: View {
                         Circle()
                             .fill(purpleColor.opacity(0.1))
                     )
-                
+
                 Text(label)
                     .font(.system(size: 12, weight: .medium))
                     .foregroundColor(purpleColor)
@@ -181,17 +178,16 @@ struct CompactPromptButtonView: View {
     }
 }
 
-
 struct LumoWidgetView: View {
     var entry: LumoWidgetProvider.Entry
     @Environment(\.widgetFamily) var family
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.widgetRenderingMode) var widgetRenderingMode
-    
+
     let purpleColor = Color(hex: "#6D4AFF")
-    let lightPurpleColor = Color(hex: "#8B6FFF") // Lighter purple for better visibility in dark mode
+    let lightPurpleColor = Color(hex: "#8B6FFF")  // Lighter purple for better visibility in dark mode
     let orangeColor = Color(hex: "#FFAC2E")
-    
+
     // Check if we're in tinted/vibrant mode
     var isTintedMode: Bool {
         if #available(iOSApplicationExtension 17.0, *) {
@@ -199,7 +195,7 @@ struct LumoWidgetView: View {
         }
         return false
     }
-    
+
     // Adaptive background color based on system appearance and rendering mode
     var backgroundColor: Color {
         if isTintedMode {
@@ -208,7 +204,7 @@ struct LumoWidgetView: View {
         }
         return colorScheme == .dark ? Color(hex: "#16141c") : Color.white
     }
-    
+
     // Adaptive text/icon colors - use widget accent color for vibrant mode
     var textColor: Color {
         if isTintedMode {
@@ -217,7 +213,7 @@ struct LumoWidgetView: View {
         // In dark mode, use lighter purple for better contrast, in light mode use original purple
         return colorScheme == .dark ? lightPurpleColor : purpleColor
     }
-    
+
     var bubbleBackgroundColor: Color {
         if isTintedMode {
             return Color.primary.opacity(0.15)
@@ -226,7 +222,7 @@ struct LumoWidgetView: View {
         // Closer to original #6D4AFF but brighter for dark backgrounds
         return colorScheme == .dark ? lightPurpleColor.opacity(0.2) : purpleColor.opacity(0.1)
     }
-    
+
     var buttonBackgroundColor: Color {
         if isTintedMode {
             return Color.primary.opacity(0.15)
@@ -234,7 +230,7 @@ struct LumoWidgetView: View {
         // In dark mode, use lighter purple with higher opacity
         return colorScheme == .dark ? lightPurpleColor.opacity(0.2) : purpleColor.opacity(0.1)
     }
-    
+
     var body: some View {
         if #available(iOSApplicationExtension 17.0, *) {
             contentView
@@ -247,7 +243,7 @@ struct LumoWidgetView: View {
                         LinearGradient(
                             gradient: Gradient(colors: [
                                 backgroundColor,
-                                backgroundColor.opacity(0.95)
+                                backgroundColor.opacity(0.95),
                             ]),
                             startPoint: .top,
                             endPoint: .bottom
@@ -267,78 +263,69 @@ struct LumoWidgetView: View {
                 }
         }
     }
-    
+
     private var contentView: some View {
         VStack(spacing: 0) {
-                if family == .systemSmall {
-                    VStack {
-                        Spacer()
-                        if isTintedMode {
-                            HStack(spacing: 10) {
-                                
-                                ForEach(entry.prompts.prefix(1), id: \.id) { prompt in
-                                    PromptButtonView(
-                                        label: prompt.label,
-                                        destination: prompt.destination,
-                                        icon: prompt.icon,
-                                        textColor: textColor,
-                                        buttonBackgroundColor: buttonBackgroundColor
-                                    )
-                                    .widgetURL(nil)
-                                }
+            if family == .systemSmall {
+                VStack {
+                    Spacer()
+                    if isTintedMode {
+                        HStack(spacing: 10) {
+                            ForEach(entry.prompts.prefix(1), id: \.id) { prompt in
+                                PromptButtonView(
+                                    label: prompt.label,
+                                    destination: prompt.destination,
+                                    icon: prompt.icon,
+                                    textColor: textColor,
+                                    buttonBackgroundColor: buttonBackgroundColor
+                                )
+                                .widgetURL(nil)
                             }
-                            
-                        } else {
-                            Image("LumoFront")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 100, height: 100)
-                            
                         }
-                        Spacer()
+                    } else {
+                        Image("LumoFront")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 100, height: 100)
                     }
-                } else {
-                    
-                    HStack(spacing: 10) {
-
-                        VStack(spacing: 10) {
-                            
-                            HStack(spacing: 10) {
-                                Spacer()
-                                Text(entry.searchHint)
-                                    .font(.system(size: 13, weight: .bold))
-                                    .foregroundColor(textColor)
-                                    .padding(.horizontal, 12)
-                                Spacer()
-                            }
-                            
-                            HStack(spacing: 10) {
-                                
-                                ForEach(entry.prompts.prefix(3), id: \.id) { prompt in
-                                    PromptButtonView(
-                                        label: prompt.label,
-                                        destination: prompt.destination,
-                                        icon: prompt.icon,
-                                        textColor: textColor,
-                                        buttonBackgroundColor: buttonBackgroundColor
-                                    )
-                                    .widgetURL(nil)
-                                }
-                            }
-                            .padding(.horizontal, 10)
-                        }
-                    
-                    
-                    }.padding(.top, 3)
+                    Spacer()
                 }
+            } else {
+                HStack(spacing: 10) {
+                    VStack(spacing: 10) {
+                        HStack(spacing: 10) {
+                            Spacer()
+                            Text(entry.searchHint)
+                                .font(.system(size: 13, weight: .bold))
+                                .foregroundColor(textColor)
+                                .padding(.horizontal, 12)
+                            Spacer()
+                        }
+
+                        HStack(spacing: 10) {
+                            ForEach(entry.prompts.prefix(3), id: \.id) { prompt in
+                                PromptButtonView(
+                                    label: prompt.label,
+                                    destination: prompt.destination,
+                                    icon: prompt.icon,
+                                    textColor: textColor,
+                                    buttonBackgroundColor: buttonBackgroundColor
+                                )
+                                .widgetURL(nil)
+                            }
+                        }
+                        .padding(.horizontal, 10)
+                    }
+                }
+                .padding(.top, 3)
             }
         }
+    }
 }
-
 
 struct LumoWidgetProvider: TimelineProvider {
     typealias Entry = LumoWidgetEntry
-    
+
     // Timeline update hours for better readability
     private enum TimelineUpdateHour {
         static let morning = 7
@@ -346,97 +333,101 @@ struct LumoWidgetProvider: TimelineProvider {
         static let evening = 18
         static let night = 22
     }
-    
+
     let promptCount: Int = 3
 
     func placeholder(in context: Context) -> LumoWidgetEntry {
         let defaultPrompts = [
             TimePrompt(labelKey: "widget.prompt.scamSpotting", promptKey: "widget.prompt.scamSpotting.full", id: "scam", icon: "questionmark.shield"),
-            TimePrompt(labelKey: "widget.prompt.physicsExplained", promptKey: "widget.prompt.physicsExplained.full", id: "physics", icon: "atom")
+            TimePrompt(labelKey: "widget.prompt.physicsExplained", promptKey: "widget.prompt.physicsExplained.full", id: "physics", icon: "atom"),
         ]
         return LumoWidgetEntry(date: Date(), searchHint: String(localized: "widget.searchHint.default"), prompts: defaultPrompts)
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (LumoWidgetEntry) -> ()) {
+    func getSnapshot(in context: Context, completion: @escaping (LumoWidgetEntry) -> Void) {
         let defaultPrompts = [
             TimePrompt(labelKey: "widget.prompt.scamSpotting", promptKey: "widget.prompt.scamSpotting.full", id: "scam", icon: "questionmark.shield"),
-            TimePrompt(labelKey: "widget.prompt.physicsExplained", promptKey: "widget.prompt.physicsExplained.full", id: "physics", icon: "atom")
+            TimePrompt(labelKey: "widget.prompt.physicsExplained", promptKey: "widget.prompt.physicsExplained.full", id: "physics", icon: "atom"),
         ]
         let entry = LumoWidgetEntry(date: Date(), searchHint: String(localized: "widget.searchHint.default"), prompts: defaultPrompts)
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<LumoWidgetEntry>) -> ()) {
+    func getTimeline(in context: Context, completion: @escaping (Timeline<LumoWidgetEntry>) -> Void) {
         var entries: [LumoWidgetEntry] = []
         let calendar = Calendar.current
         let now = Date()
         let hour = calendar.component(.hour, from: now)
-        
+
         let currentSuggestion = getTimeSensitiveSuggestion(hour: hour, prompts: promptCount)
         WidgetLogger.shared.log("Timeline updated with new suggestions", isDebugOnly: true)
-        entries.append(LumoWidgetEntry(
-            date: now,
-            searchHint: currentSuggestion.hint,
-            prompts: currentSuggestion.prompts
-        ))
-        
-        
-        
+        entries.append(
+            LumoWidgetEntry(
+                date: now,
+                searchHint: currentSuggestion.hint,
+                prompts: currentSuggestion.prompts
+            ))
+
         if let morningUpdate = calendar.date(bySettingHour: TimelineUpdateHour.morning, minute: 0, second: 0, of: now),
-           morningUpdate > now {
+            morningUpdate > now
+        {
             let morningContent = getTimeSensitiveSuggestion(hour: TimelineUpdateHour.morning, prompts: promptCount)
-            entries.append(LumoWidgetEntry(
-                date: morningUpdate,
-                searchHint: morningContent.hint,
-                prompts: morningContent.prompts
-            ))
+            entries.append(
+                LumoWidgetEntry(
+                    date: morningUpdate,
+                    searchHint: morningContent.hint,
+                    prompts: morningContent.prompts
+                ))
         }
-        
-        
+
         if let lunchUpdate = calendar.date(bySettingHour: TimelineUpdateHour.lunch, minute: 0, second: 0, of: now),
-           lunchUpdate > now {
+            lunchUpdate > now
+        {
             let lunchContent = getTimeSensitiveSuggestion(hour: TimelineUpdateHour.lunch, prompts: promptCount)
-            entries.append(LumoWidgetEntry(
-                date: lunchUpdate,
-                searchHint: lunchContent.hint,
-                prompts: lunchContent.prompts
-            ))
+            entries.append(
+                LumoWidgetEntry(
+                    date: lunchUpdate,
+                    searchHint: lunchContent.hint,
+                    prompts: lunchContent.prompts
+                ))
         }
-        
-        
+
         if let eveningUpdate = calendar.date(bySettingHour: TimelineUpdateHour.evening, minute: 0, second: 0, of: now),
-           eveningUpdate > now {
+            eveningUpdate > now
+        {
             let eveningContent = getTimeSensitiveSuggestion(hour: TimelineUpdateHour.evening, prompts: promptCount)
-            entries.append(LumoWidgetEntry(
-                date: eveningUpdate,
-                searchHint: eveningContent.hint,
-                prompts: eveningContent.prompts
-            ))
+            entries.append(
+                LumoWidgetEntry(
+                    date: eveningUpdate,
+                    searchHint: eveningContent.hint,
+                    prompts: eveningContent.prompts
+                ))
         }
-        
+
         if let nightUpdate = calendar.date(bySettingHour: TimelineUpdateHour.night, minute: 0, second: 0, of: now),
-           nightUpdate > now {
+            nightUpdate > now
+        {
             let nightContent = getTimeSensitiveSuggestion(hour: TimelineUpdateHour.night, prompts: promptCount)
-            entries.append(LumoWidgetEntry(
-                date: nightUpdate,
-                searchHint: nightContent.hint,
-                prompts: nightContent.prompts
-            ))
+            entries.append(
+                LumoWidgetEntry(
+                    date: nightUpdate,
+                    searchHint: nightContent.hint,
+                    prompts: nightContent.prompts
+                ))
         }
-        
+
         entries.sort { $0.date < $1.date }
-        
+
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
 }
 
-
 struct LumoWidgetExtension: Widget {
     let kind: String = "LumoWidgetExtension"
 
     var body: some WidgetConfiguration {
-        return StaticConfiguration(kind: kind, provider: LumoWidgetProvider()) { entry in
+        StaticConfiguration(kind: kind, provider: LumoWidgetProvider()) { entry in
             LumoWidgetView(entry: entry)
         }
         .configurationDisplayName(String(localized: "widget.displayname"))
@@ -446,41 +437,12 @@ struct LumoWidgetExtension: Widget {
     }
 }
 
-
 struct LumoWidget_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             // Medium - Light Mode
-            LumoWidgetView(entry: LumoWidgetEntry(
-                date: Date(),
-                searchHint: "Need an afternoon boost?",
-                prompts: [
-                    TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
-                    TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
-                    TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
-                ]
-            ))
-            .previewContext(WidgetPreviewContext(family: .systemMedium))
-            .environment(\.colorScheme, .light)
-            .previewDisplayName("Medium - Light Mode")
-            
-            // Medium - Dark Mode
-            LumoWidgetView(entry: LumoWidgetEntry(
-                date: Date(),
-                searchHint: "Need an afternoon boost?",
-                prompts: [
-                    TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
-                    TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
-                    TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
-                ]
-            ))
-            .previewContext(WidgetPreviewContext(family: .systemMedium))
-            .environment(\.colorScheme, .dark)
-            .previewDisplayName("Medium - Dark Mode")
-            
-            // Medium - Tinted Mode (iOS 18)
-            if #available(iOS 18.0, *) {
-                LumoWidgetView(entry: LumoWidgetEntry(
+            LumoWidgetView(
+                entry: LumoWidgetEntry(
                     date: Date(),
                     searchHint: "Need an afternoon boost?",
                     prompts: [
@@ -488,28 +450,66 @@ struct LumoWidget_Previews: PreviewProvider {
                         TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
                         TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
                     ]
-                ))
+                )
+            )
+            .previewContext(WidgetPreviewContext(family: .systemMedium))
+            .environment(\.colorScheme, .light)
+            .previewDisplayName("Medium - Light Mode")
+
+            // Medium - Dark Mode
+            LumoWidgetView(
+                entry: LumoWidgetEntry(
+                    date: Date(),
+                    searchHint: "Need an afternoon boost?",
+                    prompts: [
+                        TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
+                        TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
+                        TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
+                    ]
+                )
+            )
+            .previewContext(WidgetPreviewContext(family: .systemMedium))
+            .environment(\.colorScheme, .dark)
+            .previewDisplayName("Medium - Dark Mode")
+
+            // Medium - Tinted Mode (iOS 18)
+            if #available(iOS 18.0, *) {
+                LumoWidgetView(
+                    entry: LumoWidgetEntry(
+                        date: Date(),
+                        searchHint: "Need an afternoon boost?",
+                        prompts: [
+                            TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
+                            TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
+                            TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
+                        ]
+                    )
+                )
                 .previewContext(WidgetPreviewContext(family: .systemMedium))
                 .environment(\.widgetRenderingMode, .vibrant)
                 .previewDisplayName("Medium - Tinted Mode")
             }
-            
+
             // Small - Light Mode
-            LumoWidgetView(entry: LumoWidgetEntry(
-                date: Date(),
-                searchHint: "Need an afternoon boost?",
-                prompts: []
-            ))
+            LumoWidgetView(
+                entry: LumoWidgetEntry(
+                    date: Date(),
+                    searchHint: "Need an afternoon boost?",
+                    prompts: []
+                )
+            )
             .previewContext(WidgetPreviewContext(family: .systemSmall))
             .environment(\.colorScheme, .light)
             .previewDisplayName("Small - Light Mode")
-            
+
             // Small - Dark Mode
-            LumoWidgetView(entry: LumoWidgetEntry(
-                date: Date(),
-                searchHint: "Need an afternoon boost?",
-                prompts: []
-            ))
+            LumoWidgetView(
+                entry: LumoWidgetEntry(
+                    date: Date(),
+                    searchHint: "Need an afternoon boost?",
+                    prompts: []
+                )
+            )
             .previewContext(WidgetPreviewContext(family: .systemSmall))
             .environment(\.colorScheme, .dark)
             .previewDisplayName("Small - Dark Mode")

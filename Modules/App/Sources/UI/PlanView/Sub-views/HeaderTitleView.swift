@@ -1,8 +1,7 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 public struct HeaderTitleView: View {
-
     private struct Constants {
         static let decorationSize: CGFloat = 16
 

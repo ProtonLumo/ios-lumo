@@ -1,8 +1,7 @@
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 struct NoSubscriptionsView: View {
-
     var body: some View {
         ZStack {
             Color(Theme.color.backgroundNorm)

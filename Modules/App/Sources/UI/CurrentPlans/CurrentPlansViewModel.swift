@@ -1,13 +1,11 @@
-
 import Foundation
 import ProtonUIFoundations
 
 @MainActor
 public class CurrentPlansViewModel: ObservableObject {
-
     private struct Constants {
         static var bottomPadding: CGFloat {
-            return 75
+            75
         }
     }
 
@@ -18,7 +16,6 @@ public class CurrentPlansViewModel: ObservableObject {
     @Published var updateCompleted: Bool = false
     @Published var showAlert: BannerState = .none
     @Published var currentPlans: [PlanViewModel] = []
-
 
     public var hasAvailablePlans: Bool {
         !availablePlansViewModels.isEmpty
@@ -36,9 +33,8 @@ public class CurrentPlansViewModel: ObservableObject {
     public var currentPlan: PlanViewModel?
 
     public var bottomPadding: CGFloat {
-        return Constants.bottomPadding
+        Constants.bottomPadding
     }
-
 
     public init(plansData: [CurrentSubscriptionResponse]) {
         self.generatePlanViewModels(plansData)
@@ -60,29 +56,29 @@ public class CurrentPlansViewModel: ObservableObject {
 }
 
 extension CurrentPlansViewModel {
-#if DEBUG
-    func addPlanViewModels(_ plans: [PlanViewModel]) {
-        availablePlansViewModels = plans
-    }
-
-    func setCurrentPlans(_ currentPlans: [PlanViewModel]) {
-        self.currentPlans = currentPlans
-        self.viewState = .dataLoaded
-        print(currentPlans.count)
-    }
-
-    func showBanner() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-            guard let self else { return }
-            self.showAlert = .error(content: PCBannerContent(message: "Something went wrong!!"))
+    #if DEBUG
+        func addPlanViewModels(_ plans: [PlanViewModel]) {
+            availablePlansViewModels = plans
         }
-    }
 
-    func setViewState(_ state: State) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-            guard let self else { return }
-            self.viewState = state
+        func setCurrentPlans(_ currentPlans: [PlanViewModel]) {
+            self.currentPlans = currentPlans
+            self.viewState = .dataLoaded
+            print(currentPlans.count)
         }
-    }
-#endif
+
+        func showBanner() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+                guard let self else { return }
+                self.showAlert = .error(content: PCBannerContent(message: "Something went wrong!!"))
+            }
+        }
+
+        func setViewState(_ state: State) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+                guard let self else { return }
+                self.viewState = state
+            }
+        }
+    #endif
 }

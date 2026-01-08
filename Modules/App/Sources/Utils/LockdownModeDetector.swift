@@ -5,9 +5,9 @@ import WebKit
 /// Uses the official WKWebPagePreferences.isLockdownModeEnabled API (iOS 16.0+)
 class LockdownModeDetector {
     static let shared = LockdownModeDetector()
-    
+
     private init() {}
-    
+
     func isLockdownModeEnabled(webView: WKWebView? = nil) -> Bool {
         if #available(iOS 16.0, *) {
             if let webView = webView {

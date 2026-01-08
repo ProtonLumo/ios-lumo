@@ -1,6 +1,4 @@
-
 public struct CurrentSubscriptionResponse: Decodable, Hashable, Identifiable, Sendable {
-
     public let id: String?
     public let name: String?
     public let title: String
@@ -22,26 +20,28 @@ public struct CurrentSubscriptionResponse: Decodable, Hashable, Identifiable, Se
     public let entitlements: [Entitlement]
     public let decorations: [Decoration]
 
-    public init(id: String?,
-                name: String?,
-                title: String,
-                description: String,
-                cycle: Int?,
-                cycleDescription: String?,
-                currency: String?,
-                amount: Int?,
-                offer: String?,
-                periodStart: Int?,
-                periodEnd: Int?,
-                createTime: Int?,
-                couponCode: String?,
-                discount: Int?,
-                renewDiscount: Int?,
-                renewAmount: Int?,
-                renew: Int?,
-                external: Int?,
-                entitlements: [Entitlement],
-                decorations: [Decoration]) {
+    public init(
+        id: String?,
+        name: String?,
+        title: String,
+        description: String,
+        cycle: Int?,
+        cycleDescription: String?,
+        currency: String?,
+        amount: Int?,
+        offer: String?,
+        periodStart: Int?,
+        periodEnd: Int?,
+        createTime: Int?,
+        couponCode: String?,
+        discount: Int?,
+        renewDiscount: Int?,
+        renewAmount: Int?,
+        renew: Int?,
+        external: Int?,
+        entitlements: [Entitlement],
+        decorations: [Decoration]
+    ) {
         self.id = id
         self.name = name
         self.title = title

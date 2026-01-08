@@ -8,9 +8,7 @@ enum BundleError: Error {
 }
 
 extension Bundle {
-
     func decode<T: Decodable>(_ type: T.Type, from file: String) throws -> T {
-
         guard let url = Bundle.main.url(forResource: file, withExtension: nil) else {
             throw BundleError.fileNotFound("Failed to locate \(file) in bundle.")
         }
@@ -30,7 +28,6 @@ extension Bundle {
     }
 
     func loadJsonDataToDic(from file: String) throws -> [String: Any] {
-
         guard let url = Bundle.main.url(forResource: file, withExtension: nil) else {
             throw BundleError.fileNotFound("Failed to locate \(file) in bundle.")
         }
@@ -50,7 +47,6 @@ extension Bundle {
     }
 
     func loadJsonData(from file: String) throws -> Any {
-
         guard let url = Bundle.main.url(forResource: file, withExtension: nil) else {
             throw BundleError.fileNotFound("Failed to locate \(file) in bundle.")
         }

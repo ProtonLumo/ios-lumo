@@ -3,7 +3,7 @@ import SwiftUI
 struct RoundedCorners: Shape {
     var radius: CGFloat
     var corners: UIRectCorner
-    
+
     func path(in rect: CGRect) -> Path {
         let path = UIBezierPath(
             roundedRect: rect,
@@ -21,7 +21,7 @@ struct SpeechRecorderView: View {
     let stopRecording: (Bool) -> Void
     let formatDuration: (TimeInterval) -> String
     let brandPurple: Color
-    
+
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
@@ -29,10 +29,10 @@ struct SpeechRecorderView: View {
                 RoundedCorners(radius: 20, corners: [.topLeft, .topRight])
                     .fill(brandPurple)
                     .frame(height: 110)
-                
+
                 VStack {
                     Spacer().frame(height: 10)
-                    
+
                     // Privacy indicator
                     HStack(alignment: .center) {
                         Spacer()
@@ -52,9 +52,9 @@ struct SpeechRecorderView: View {
                         }
                         Spacer()
                     }
-                    
+
                     Spacer().frame(height: 4)
-                    
+
                     HStack(spacing: 15) {
                         Button(action: {
                             stopRecording(false)
@@ -70,7 +70,7 @@ struct SpeechRecorderView: View {
                         }
                         .padding(.leading, 5)
                         .disabled(isSubmitting)
-                        
+
                         // Waveform visualization
                         HStack(spacing: 2) {
                             ForEach(0..<30, id: \.self) { index in
@@ -80,26 +80,26 @@ struct SpeechRecorderView: View {
                             }
                         }
                         .padding(.top, 10)
-                        
+
                         Text(formatDuration(recordingDuration))
                             .foregroundColor(.white)
                             .font(.system(size: 14, weight: .semibold))
                             .frame(width: 45, alignment: .center)
-                        
+
                         Button(action: {
                             let buttonPressTime = Date()
                             Logger.shared.log("Submit button pressed")
-                            
+
                             DispatchQueue.main.async {
                                 withAnimation(Animation.easeIn(duration: 0.1)) {
                                     isSubmitting = true
                                 }
-                                
+
                                 Logger.shared.log("Submit state set to true: \(Date().timeIntervalSince(buttonPressTime) * 1000)ms after press")
-                                
+
                                 DispatchQueue.main.async {
                                     stopRecording(true)
-                                    
+
                                     Logger.shared.log("stopRecording called: \(Date().timeIntervalSince(buttonPressTime) * 1000)ms after press")
                                 }
                             }
@@ -116,7 +116,7 @@ struct SpeechRecorderView: View {
                                                     .frame(width: 40, height: 40)
                                                     .scaleEffect(isSubmitting ? 1.2 : 1.0)
                                                     .animation(Animation.easeInOut(duration: 0.7).repeatForever(autoreverses: true), value: isSubmitting)
-                                                
+
                                                 ProgressView()
                                                     .progressViewStyle(CircularProgressViewStyle())
                                                     .tint(brandPurple)
@@ -144,7 +144,7 @@ struct SpeechRecorderView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            
+
             Rectangle()
                 .fill(brandPurple)
                 .frame(height: UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 34)
