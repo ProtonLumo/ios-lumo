@@ -2,7 +2,6 @@ import ProtonUIFoundations
 import SwiftUI
 
 struct PermissionAlertView: View {
-    let permissionType: String
     let onSettings: () -> Void
     let onDismiss: () -> Void
 
@@ -76,7 +75,6 @@ struct PermissionAlertOverlay: View {
 
                 // Alert content
                 PermissionAlertView(
-                    permissionType: permissionType,
                     onSettings: {
                         onSettings()
                         isPresented = false

@@ -152,24 +152,24 @@ struct WebView: UIViewRepresentable {
                 forName: UIResponder.keyboardWillShowNotification,
                 object: nil,
                 queue: .main
-            ) { [weak self] notification in
-                self?.handleKeyboardWillShow(notification)
+            ) { [weak self] _ in
+                self?.handleKeyboardWillShow()
             }
 
             NotificationCenter.default.addObserver(
                 forName: UIResponder.keyboardWillHideNotification,
                 object: nil,
                 queue: .main
-            ) { [weak self] notification in
-                self?.handleKeyboardWillHide(notification)
+            ) { [weak self] _ in
+                self?.handleKeyboardWillHide()
             }
 
             NotificationCenter.default.addObserver(
                 forName: UIResponder.keyboardDidHideNotification,
                 object: nil,
                 queue: .main
-            ) { [weak self] notification in
-                self?.handleKeyboardDidHide(notification)
+            ) { [weak self] _ in
+                self?.handleKeyboardDidHide()
             }
         }
 
@@ -203,17 +203,17 @@ struct WebView: UIViewRepresentable {
 
         // MARK: - Keyboard Handling
 
-        private func handleKeyboardWillShow(_ notification: Notification) {
+        private func handleKeyboardWillShow() {
             Logger.shared.log("Keyboard will show")
             // Don't disable scrolling - let the webview handle it naturally
         }
 
-        private func handleKeyboardWillHide(_ notification: Notification) {
+        private func handleKeyboardWillHide() {
             Logger.shared.log("Keyboard will hide")
             // Prepare for keyboard dismissal
         }
 
-        private func handleKeyboardDidHide(_ notification: Notification) {
+        private func handleKeyboardDidHide() {
             Logger.shared.log("Keyboard did hide - restoring scroll view state")
             guard let webView = parent.webViewStore else { return }
 
@@ -1271,14 +1271,6 @@ struct WebView: UIViewRepresentable {
     private func resetAction() {
         DispatchQueue.main.async {
             self.action = nil
-        }
-    }
-
-    private func safeWebViewOperation(_ operation: (WKWebView) -> Void) {
-        if let webView = webViewStore, webView.superview != nil {
-            operation(webView)
-        } else {
-            Logger.shared.log("WebView reference is nil or WebView has been removed from view hierarchy")
         }
     }
 }

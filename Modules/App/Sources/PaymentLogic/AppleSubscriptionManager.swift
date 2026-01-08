@@ -3,7 +3,7 @@ import StoreKit
 import UIKit
 
 @MainActor
-public class AppleSubscriptionManager: ObservableObject {
+class AppleSubscriptionManager: ObservableObject {
     public static let shared = AppleSubscriptionManager()
 
     @Published public private(set) var subscriptionStatuses: [String: Product.SubscriptionInfo.Status] = [:]
@@ -22,12 +22,12 @@ public class AppleSubscriptionManager: ObservableObject {
     // MARK: - Public Methods
 
     /// Check if a subscription is an Apple subscription based on external field
-    public func isAppleSubscription(_ subscription: CurrentSubscriptionResponse) -> Bool {
+    func isAppleSubscription(_ subscription: CurrentSubscriptionResponse) -> Bool {
         subscription.external == 1
     }
 
     /// Check if we have an Apple subscription that matches any of our app's products
-    public func hasMatchingAppleSubscription(for subscription: CurrentSubscriptionResponse) -> Bool {
+    func hasMatchingAppleSubscription(for subscription: CurrentSubscriptionResponse) -> Bool {
         // First check: server explicitly marks this as Apple subscription
         if isAppleSubscription(subscription) {
             // If server says it's Apple subscription, trust it even if we don't have local StoreKit data yet
@@ -49,7 +49,7 @@ public class AppleSubscriptionManager: ObservableObject {
     }
 
     /// Get the Apple product ID for a subscription if it exists in our tracked subscriptions
-    public func getAppleProductId(for subscription: CurrentSubscriptionResponse) -> String? {
+    func getAppleProductId(for subscription: CurrentSubscriptionResponse) -> String? {
         guard isAppleSubscription(subscription) else { return nil }
 
         // Return the first product ID that matches our app prefix
@@ -61,12 +61,12 @@ public class AppleSubscriptionManager: ObservableObject {
     }
 
     /// Get the Apple subscription status for a given product ID
-    public func getSubscriptionStatus(for productId: String) -> Product.SubscriptionInfo.Status? {
+    func getSubscriptionStatus(for productId: String) -> Product.SubscriptionInfo.Status? {
         subscriptionStatuses[productId]
     }
 
     /// Check if a subscription is cancelled on Apple's side
-    public func isSubscriptionCancelled(for productId: String) -> Bool {
+    func isSubscriptionCancelled(for productId: String) -> Bool {
         guard let status = subscriptionStatuses[productId] else { return false }
 
         switch status.state {
@@ -88,7 +88,7 @@ public class AppleSubscriptionManager: ObservableObject {
     }
 
     /// Get cancellation date if subscription is cancelled
-    public func getCancellationDate(for productId: String) -> Date? {
+    func getCancellationDate(for productId: String) -> Date? {
         guard let status = subscriptionStatuses[productId] else { return nil }
 
         switch status.state {
@@ -121,12 +121,12 @@ public class AppleSubscriptionManager: ObservableObject {
     }
 
     /// Check if there are any active Apple subscriptions
-    public func hasActiveAppleSubscriptions() -> Bool {
+    func hasActiveAppleSubscriptions() -> Bool {
         !subscriptionStatuses.isEmpty
     }
 
     /// Open Apple's subscription management screen
-    public func openSubscriptionManagement() {
+    func openSubscriptionManagement() {
         Task {
             // Check if we're in a sandbox environment
             let isSandbox = await checkIfSandboxEnvironment()

@@ -12,7 +12,6 @@ class BackgroundTaskManager {
 
     private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
     private var isTaskRunning = false
-    private var taskStartTime: Date?
 
     private init() {}
 
@@ -31,7 +30,6 @@ class BackgroundTaskManager {
 
         if backgroundTaskID != .invalid {
             isTaskRunning = true
-            taskStartTime = Date()
             Logger.shared.log("✅ Background task started with ID: \(backgroundTaskID.rawValue)")
 
             // Log initial remaining time (safely handle infinity)
@@ -55,16 +53,11 @@ class BackgroundTaskManager {
         UIApplication.shared.endBackgroundTask(backgroundTaskID)
         backgroundTaskID = .invalid
         isTaskRunning = false
-        taskStartTime = nil
 
         Logger.shared.log("✅ Background task ended successfully")
     }
 
     var hasActiveBackgroundTask: Bool {
         isTaskRunning && backgroundTaskID != .invalid
-    }
-
-    var remainingBackgroundTime: TimeInterval {
-        UIApplication.shared.backgroundTimeRemaining
     }
 }

@@ -250,7 +250,7 @@ class SpeechRecognizer: ObservableObject {
         let bufferSize: AVAudioFrameCount = 4096
         let recordingFormat = inputNode.outputFormat(forBus: 0)
 
-        startAudioLevelMonitoring(inputNode: inputNode)
+        startAudioLevelMonitoring()
 
         inputNode.installTap(onBus: 0, bufferSize: bufferSize, format: recordingFormat) { [weak self] buffer, _ in
             self?.recognitionRequest?.append(buffer)
@@ -271,7 +271,7 @@ class SpeechRecognizer: ObservableObject {
         }
     }
 
-    private func startAudioLevelMonitoring(inputNode: AVAudioNode) {
+    private func startAudioLevelMonitoring() {
         DispatchQueue.main.async {
             self.audioLevels = Array(repeating: 0.1, count: 30)
         }

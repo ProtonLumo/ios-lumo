@@ -141,7 +141,7 @@ class WebViewCoordinator: ObservableObject {
                     }
 
                     // Parse result
-                    let bridgeResult = self.parseResult(result, for: command)
+                    let bridgeResult = self.parseResult(result)
 
                     if case .success = bridgeResult {
                         Logger.shared.log("✅ JS Success for \(command.description)")
@@ -156,7 +156,7 @@ class WebViewCoordinator: ObservableObject {
         }
     }
 
-    private func parseResult(_ result: Any?, for command: JSCommand) -> JSBridgeResult {
+    private func parseResult(_ result: Any?) -> JSBridgeResult {
         // Handle void returns (like simulateGarbageCollection)
         guard let result = result else {
             return .success(nil)
@@ -228,10 +228,4 @@ class WebViewCoordinator: ObservableObject {
         pendingCommands.removeAll()
         webView = nil
     }
-}
-
-// MARK: - Global Convenience
-extension WebViewCoordinator {
-    /// Shared instance for global access (use with caution)
-    static let shared = WebViewCoordinator()
 }

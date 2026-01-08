@@ -4,7 +4,6 @@ import SwiftUI
 struct PlanDetailView: View {
     private struct Constants {
         static let iconSize: CGFloat = 15
-        static let buttonTopPadding: CGFloat = 10
         static let entitlementTextVerticalOffset: CGFloat = -3
         static let entitlementTextSize: CGFloat = 14
         static let entitlementFontWeight: Font.Weight = .regular

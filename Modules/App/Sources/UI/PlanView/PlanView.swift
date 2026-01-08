@@ -2,9 +2,9 @@ import ProtonUIFoundations
 import SwiftUI
 
 struct PlanView: View {
-    @ObservedObject public var viewModel: PlanViewModel
+    @ObservedObject var viewModel: PlanViewModel
 
-    public init(viewModel: PlanViewModel) {
+    init(viewModel: PlanViewModel) {
         self.viewModel = viewModel
     }
 
@@ -20,7 +20,7 @@ struct PlanView: View {
         }
     }
 
-    public var body: some View {
+    var body: some View {
         VStack(alignment: .leading, spacing: Theme.spacing.large) {
             PlanDetailHeaderView(
                 isExpanded: $viewModel.isExpanded,

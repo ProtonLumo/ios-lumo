@@ -1,19 +1,5 @@
 import SwiftUI
 
-struct RoundedCorners: Shape {
-    var radius: CGFloat
-    var corners: UIRectCorner
-
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
-    }
-}
-
 struct SpeechRecorderView: View {
     @ObservedObject var speechRecognizer: SpeechRecognizer
     @Binding var recordingDuration: TimeInterval
@@ -26,10 +12,6 @@ struct SpeechRecorderView: View {
         VStack(spacing: 0) {
             Spacer()
             ZStack {
-                RoundedCorners(radius: 20, corners: [.topLeft, .topRight])
-                    .fill(brandPurple)
-                    .frame(height: 110)
-
                 VStack {
                     Spacer().frame(height: 10)
 
@@ -143,15 +125,29 @@ struct SpeechRecorderView: View {
                     }
                 }
             }
-            .frame(maxWidth: .infinity)
-
-            Rectangle()
-                .fill(brandPurple)
-                .frame(height: UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 34)
+            .frame(maxWidth: .infinity, minHeight: 110)
+            .background {
+                RoundedCorners(radius: 20, corners: [.topLeft, .topRight])
+                    .fill(brandPurple)
+                    .ignoresSafeArea(edges: .bottom)
+            }
         }
         .transition(.move(edge: .bottom))
         .animation(.easeInOut(duration: 0.3), value: speechRecognizer.isRecording)
         .zIndex(90)
-        .edgesIgnoringSafeArea(.bottom)
+    }
+}
+
+private struct RoundedCorners: Shape {
+    let radius: CGFloat
+    let corners: UIRectCorner
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
     }
 }

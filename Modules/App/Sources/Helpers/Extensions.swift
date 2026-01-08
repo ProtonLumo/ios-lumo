@@ -32,16 +32,16 @@ public extension JSONDecoder.KeyDecodingStrategy {
 }
 
 // MARK: - CodingKey Implementation
-public struct AnyKey: CodingKey {
-    public let stringValue: String
-    public let intValue: Int?
+struct AnyKey: CodingKey {
+    let stringValue: String
+    let intValue: Int?
 
-    public init?(stringValue: String) {
+    init?(stringValue: String) {
         self.stringValue = stringValue
         self.intValue = nil
     }
 
-    public init?(intValue: Int) {
+    init?(intValue: Int) {
         self.stringValue = String(intValue)
         self.intValue = intValue
     }
@@ -83,10 +83,6 @@ extension String {
         let firstLetter = self.prefix(1).capitalized
         let remainingLetters = self.dropFirst()
         return firstLetter + remainingLetters
-    }
-
-    var trimmed: String {
-        trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 

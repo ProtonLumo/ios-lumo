@@ -3,16 +3,14 @@ import StoreKit
 
 /// Protocol that matches Apple's Product interface so that we don't depend on
 /// the actual Product struct
-public protocol ProductProtocol: Hashable, Sendable {
-    var displayName: String { get }
-    var description: String { get }
+protocol ProductProtocol: Hashable, Sendable {
     var displayPrice: String { get }
     var price: Decimal { get }
     var id: String { get }
     func currency() -> String
 }
 
-public protocol ProtonTransactionProviding: Sendable {
+protocol ProtonTransactionProviding: Sendable {
     var id: UInt64 { get }
     var originalID: UInt64 { get }
     var productID: String { get }
@@ -21,7 +19,7 @@ public protocol ProtonTransactionProviding: Sendable {
     var currencyIdentifier: String? { get }
 }
 
-public struct ProtonTransaction: ProtonTransactionProviding {
+struct ProtonTransaction: ProtonTransactionProviding {
     public var id: UInt64
     public var originalID: UInt64
     public var productID: String
@@ -33,13 +31,14 @@ public struct ProtonTransaction: ProtonTransactionProviding {
 extension Product: ProductProtocol {}
 
 extension Transaction {
-    public func toProtonTransaction() -> ProtonTransaction {
+    func toProtonTransaction() -> ProtonTransaction {
         ProtonTransaction(
             id: id,
             originalID: originalID,
             productID: productID,
             price: price,
             userTransactionUUID: appAccountToken,
-            currencyIdentifier: currency?.identifier)
+            currencyIdentifier: currency?.identifier
+        )
     }
 }

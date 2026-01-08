@@ -62,31 +62,6 @@ class JSBridgeManager {
         )
     }
 
-    func createParameterizedScript(
-        _ script: JSBridgeScript,
-        parameters: [String: String],
-        injectionTime: WKUserScriptInjectionTime = .atDocumentEnd,
-        forMainFrameOnly: Bool = true
-    ) -> WKUserScript? {
-        guard script.requiresParameters else {
-            Logger.shared.log("❌ Script \(script.rawValue) is not a parameterized script")
-            return nil
-        }
-
-        guard let scriptContent = loadScript(script) else {
-            Logger.shared.log("❌ Failed to load script: \(script.rawValue)")
-            return nil
-        }
-
-        let source = substituteParameters(in: scriptContent, parameters: parameters)
-
-        return WKUserScript(
-            source: source,
-            injectionTime: injectionTime,
-            forMainFrameOnly: forMainFrameOnly
-        )
-    }
-
     func evaluateScript(
         _ script: JSBridgeScript,
         in webView: WKWebView,
@@ -121,21 +96,6 @@ class JSBridgeManager {
 
         let source = substituteParameters(in: scriptContent, parameters: parameters)
         webView.evaluateJavaScript(source, completionHandler: completion)
-    }
-
-    // MARK: - Convenience Methods
-    func createPaymentApiScript(
-        operation: String,
-        data: String? = nil,
-        injectionTime: WKUserScriptInjectionTime = .atDocumentEnd
-    ) -> WKUserScript? {
-        var parameters = ["OPERATION": operation]
-        parameters["DATA"] = data ?? ""
-
-        return createParameterizedScript(
-            .paymentApi,
-            parameters: parameters,
-            injectionTime: injectionTime)
     }
 
     func evaluatePaymentApi(

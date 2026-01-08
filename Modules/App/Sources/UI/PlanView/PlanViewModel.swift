@@ -62,12 +62,6 @@ public class PlanViewModel: ObservableObject, Identifiable {
         return nil
     }
 
-    /// plan Decorations
-    private let decorations: [Decoration]
-
-    /// the StoreKit product to purchase
-    private let product: (any ProductProtocol)?
-
     /// Current subscription data for Apple subscription checking
     private let currentSubscription: CurrentSubscriptionResponse?
 
@@ -77,7 +71,7 @@ public class PlanViewModel: ObservableObject, Identifiable {
     /// and the localized price and the purchase action are derived from the `Product`
 
     // MARK: Current plan
-    public init(currentPlan: CurrentSubscriptionResponse, isExpanded: Bool = false) {
+    init(currentPlan: CurrentSubscriptionResponse, isExpanded: Bool = false) {
         self.isExpanded = isExpanded
         self.currentSubscription = currentPlan
 
@@ -106,8 +100,6 @@ public class PlanViewModel: ObservableObject, Identifiable {
         // Initial pricing setup - will be updated for Apple subscriptions
         self.formattedPrice = ProtonUIFoundations.Formatter.formatCurrency(amount: currentPlan.amount, currency: currentPlan.currency)
         self.formattedPeriod = currentPlan.cycleDescription ?? ""
-        self.decorations = currentPlan.decorations
-        self.product = nil
 
         // Check if this is an Apple subscription
         self.isAppleSubscription = AppleSubscriptionManager.shared.hasMatchingAppleSubscription(for: currentPlan)

@@ -18,16 +18,6 @@ extension String {
 }
 
 extension URL {
-    /// Adds a query parameter to a URL
-    /// - Parameters:
-    ///   - parameter: The parameter name
-    ///   - value: The parameter value
-    /// - Returns: New URL with the parameter added, or nil if the resulting string is invalid
-    func addingQueryParameter(_ parameter: String, value: String) -> URL? {
-        let modifiedString = self.absoluteString.addingQueryParameter(parameter, value: value)
-        return URL(string: modifiedString)
-    }
-
     /// Creates a URL for the main Lumo base URL
     static var lumoBase: URL? {
         URL(string: Config.LUMO_BASE_URL)

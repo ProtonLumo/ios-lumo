@@ -1,7 +1,7 @@
 import ProtonUIFoundations
 import SwiftUI
 
-public struct CurrentPlansView: View {
+struct CurrentPlansView: View {
     @ObservedObject var viewModel: CurrentPlansViewModel
     @Environment(\.presentationMode) var presentationMode
     @StateObject private var appleSubscriptionManager = AppleSubscriptionManager.shared
@@ -14,7 +14,7 @@ public struct CurrentPlansView: View {
         static let descriptionFontWeight: Font.Weight = .regular
     }
 
-    public var body: some View {
+    var body: some View {
         ZStack {
             Color(Theme.color.backgroundNorm)
                 .ignoresSafeArea()
@@ -74,7 +74,7 @@ public struct CurrentPlansView: View {
                 case .loading:
                     SubscriptionLoadingView(loadingMessage: String(localized: "current.plans.loading.message"))
                 case .errorData, .idle:
-                    ErrorView(buttonAction: {})
+                    ErrorView()
                 case .noData:
                     NoSubscriptionsView()
                 }
