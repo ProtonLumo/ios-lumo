@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Light 512x512.png",
+      "filename" : "app_icon_light-1024x1024.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "lumo-dark.png",
+      "filename" : "app_icon_dark-1024x1024.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -25,7 +25,7 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "lumo-dark 1.png",
+      "filename" : "app_icon_tinted-1024x1024.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
