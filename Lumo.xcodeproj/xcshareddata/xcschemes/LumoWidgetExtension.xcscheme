@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1630"
+   LastUpgradeVersion = "2620"
    wasCreatedForAppExtension = "YES"
    version = "2.0">
    <BuildAction
@@ -16,10 +16,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "96E80DB52DA8C613000194CB"
-               BuildableName = "LumoExtensionWidgetExtension.appex"
-               BlueprintName = "LumoExtensionWidgetExtension"
-               ReferencedContainer = "container:lumo.xcodeproj">
+               BlueprintIdentifier = "96E80DCF2DA8C642000194CB"
+               BuildableName = "LumoWidgetExtension.appex"
+               BlueprintName = "LumoWidgetExtension"
+               ReferencedContainer = "container:Lumo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -31,9 +31,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "96E80D9E2DA8C56B000194CB"
-               BuildableName = "lumo.app"
-               BlueprintName = "lumo"
-               ReferencedContainer = "container:lumo.xcodeproj">
+               BuildableName = "LumoApp.app"
+               BlueprintName = "LumoApp"
+               ReferencedContainer = "container:Lumo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -57,16 +57,26 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.springboard">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "96E80DCF2DA8C642000194CB"
+            BuildableName = "LumoWidgetExtension.appex"
+            BlueprintName = "LumoWidgetExtension"
+            ReferencedContainer = "container:Lumo.xcodeproj">
+         </BuildableReference>
+      </RemoteRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "96E80D9E2DA8C56B000194CB"
-            BuildableName = "lumo.app"
-            BlueprintName = "lumo"
-            ReferencedContainer = "container:lumo.xcodeproj">
+            BuildableName = "LumoApp.app"
+            BlueprintName = "LumoApp"
+            ReferencedContainer = "container:Lumo.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCWidgetKind"
@@ -98,9 +108,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "96E80D9E2DA8C56B000194CB"
-            BuildableName = "lumo.app"
-            BlueprintName = "lumo"
-            ReferencedContainer = "container:lumo.xcodeproj">
+            BuildableName = "LumoApp.app"
+            BlueprintName = "LumoApp"
+            ReferencedContainer = "container:Lumo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
