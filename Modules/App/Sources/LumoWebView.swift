@@ -389,6 +389,10 @@ struct WebView: UIViewRepresentable {
                 return true
             }
 
+            if Config.isLocalDevelopment, let host = url.host, host == "localhost" || host.hasSuffix(".localhost") {
+                return false
+            }
+
             let allowedDomains = [
                 Config.LUMO_BASE_URL,
                 Config.LUMO_API_BASE_URL,

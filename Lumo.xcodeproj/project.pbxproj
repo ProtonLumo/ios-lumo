@@ -532,7 +532,7 @@
 				CURRENT_PROJECT_VERSION = 31;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Modules/App/SupportingFiles/Info.plist;
+				INFOPLIST_FILE = "Modules/App/SupportingFiles/Info-Local.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Lumo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Lumo needs microphone access to enable voice input for AI assistance.";
