@@ -27,11 +27,11 @@
 		<string>account.proton.me</string>
 		<string>account-api.proton.me</string>
 	</array>
-	<key>ACCOUNT_API_BASE_URL</key>
+    <key>ACCOUNT_API_BASE_URL</key>
     <string>$(ACCOUNT_API_BASE_URL)</string>
-	<key>ACCOUNT_BASE_URL</key>
+    <key>ACCOUNT_BASE_URL</key>
     <string>$(ACCOUNT_BASE_URL)</string>
-	<key>LUMO_API_BASE_URL</key>
+    <key>LUMO_API_BASE_URL</key>
     <string>$(LUMO_API_BASE_URL)</string>
     <key>LUMO_BASE_URL</key>
     <string>$(LUMO_BASE_URL)</string>
