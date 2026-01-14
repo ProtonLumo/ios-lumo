@@ -389,7 +389,7 @@ struct WebView: UIViewRepresentable {
                 return true
             }
 
-            if Config.isLocalDevelopment, let host = url.host, host == "localhost" || host.hasSuffix(".localhost") {
+            if Config.isLocalDevelopment {
                 return false
             }
 
@@ -851,8 +851,7 @@ struct WebView: UIViewRepresentable {
         }
 
         configuration.websiteDataStore = dataStore
-        // Note: No need to set processPool - iOS 15.0+ manages this automatically
-        configuration.limitsNavigationsToAppBoundDomains = true
+        configuration.limitsNavigationsToAppBoundDomains = !Config.isLocalDevelopment
 
         let preferences = WKPreferences()
         preferences.javaScriptCanOpenWindowsAutomatically = false
