@@ -7,24 +7,46 @@
 
 ## Setup Steps (One-time per machine)
 
-### 1. Install mkcert and generate CA certificate
+### 1. Install mkcert
 
 ```bash
 brew install mkcert
-mkcert -install
 ```
 
-This creates a root CA at `/Users/<username>/Library/Application Support/mkcert/rootCA.pem`
+### 2. Start the web server (automatically generates certificates)
 
-### 2. Install certificate in iOS Simulator
+When you run `yarn start-all` for the first time, it automatically generates SSL certificates if they don't exist:
+
+```bash
+cd ~/dev/proton/web/clients
+yarn start-all --applications "proton-lumo" --api proton.black --no-error-logs
+```
+
+This will:
+- Generate SSL certificates for `*.proton.dev` (saved in `utilities/local-sso/`)
+- Install mkcert root CA in macOS system keychain
+- Configure `/etc/hosts` for local development domains
+- Start HAProxy and the development server
+
+The root CA is created at `/Users/<username>/Library/Application Support/mkcert/rootCA.pem`
+
+**Note:** Certificates are generated only once. Subsequent runs of `yarn start-all` will reuse existing certificates.
+
+### 3. Install root CA in iOS Simulator
 
 ```bash
 xcrun simctl keychain booted add-root-cert "/Users/$(whoami)/Library/Application Support/mkcert/rootCA.pem"
 ```
 
-**Note:** Re-run this command after creating/resetting a simulator.
+**Note:**
+- Re-run this command after creating/resetting a simulator
+- If you regenerate the root CA (with `mkcert -install` or `./generate-certificate.sh`), you must reset the simulator keychain and add the new certificate:
+  ```bash
+  xcrun simctl keychain booted reset
+  xcrun simctl keychain booted add-root-cert "/Users/$(whoami)/Library/Application Support/mkcert/rootCA.pem"
+  ```
 
-### 3. Build and run
+### 4. Build and run
 
 In Xcode:
 1. Select **LumoApp-Local** scheme
@@ -38,7 +60,8 @@ In Xcode:
 3. HAProxy (port 443) proxies requests:
    - Frontend → local webpack dev server
    - API → production backend (`lumo.proton.black`)
-4. mkcert certificate is trusted by iOS Simulator
+4. HAProxy serves the SSL certificate for `*.proton.dev` (signed by mkcert root CA)
+5. iOS Simulator trusts the certificate because the root CA is installed in its keychain
 
 ## Configuration
 
