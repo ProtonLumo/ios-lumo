@@ -245,6 +245,7 @@
 				App/Sources/Utils/Logger.swift,
 				App/Sources/Utils/PermissionManager.swift,
 				App/Sources/Utils/URLExtensions.swift,
+				"App/SupportingFiles/Info-Local.plist",
 				App/SupportingFiles/Info.plist,
 				App/Tests/Sources/ConfigTests.swift,
 				WidgetExtension/SupportingFiles/Info.plist,
