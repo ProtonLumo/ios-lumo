@@ -168,25 +168,94 @@ graph TB
 ## Development
 
 ### Prerequisites
-- Xcode 15.0+
-- iOS 17.0+
-- Swift 5.9+
+- macOS with Xcode 26.0+
+- iOS 16.6+
+- Swift 6.0+
 
 ### Setup
 1. Clone the repository
-2. Open `lumo.xcodeproj` in Xcode
+2. Open `Lumo.xcodeproj` in Xcode
 3. Configure your development team
-4. Build and run
+4. Select the **LumoApp** scheme (production)
+5. Build and run
 
-### Configuration
-Update `Config.swift` with your service endpoints:
-```swift
-enum Config {
-    static let ACCOUNT_BASE_URL = "https://account.proton.me"
-    static let LUMO_BASE_URL = "https://lumo.proton.me"
-    // ... other endpoints
-}
+### Available Schemes
+- **LumoApp** - Production build pointing to `lumo.proton.me`
+- **LumoApp-Local** - Local development build pointing to `lumo.proton.dev` (requires local web client setup)
+
+### Local Development Setup (lumo.proton.dev)
+
+For developing against a local web client, use the **LumoApp-Local** scheme.
+
+#### Prerequisites
+- Access to `proton/web/clients` repository with local-sso configured and running
+
+#### One-time Setup per Machine
+
+**1. Install mkcert**
+
+```bash
+brew install mkcert
 ```
+
+**2. Start the web server (automatically generates certificates)**
+
+When you run `yarn start-all` for the first time, it automatically generates SSL certificates if they don't exist:
+
+```bash
+cd <path-to-proton-web-clients>
+yarn start-all --applications "proton-lumo" --api proton.black --no-error-logs
+```
+
+This will:
+- Generate SSL certificates for `*.proton.dev` (saved in `utilities/local-sso/`)
+- Install mkcert root CA in macOS system keychain
+- Configure `/etc/hosts` for local development domains
+- Start HAProxy and the development server
+
+The root CA is created at `/Users/<username>/Library/Application Support/mkcert/rootCA.pem`
+
+**Note:** Certificates are generated only once. Subsequent runs of `yarn start-all` will reuse existing certificates.
+
+**3. Install root CA in iOS Simulator**
+
+```bash
+xcrun simctl keychain booted add-root-cert "/Users/$(whoami)/Library/Application Support/mkcert/rootCA.pem"
+```
+
+**Note:**
+- Re-run this command after creating/resetting a simulator
+- If you regenerate the root CA (with `mkcert -install` or `./generate-certificate.sh`), you must reset the simulator keychain and add the new certificate:
+  ```bash
+  xcrun simctl keychain booted reset
+  xcrun simctl keychain booted add-root-cert "/Users/$(whoami)/Library/Application Support/mkcert/rootCA.pem"
+  ```
+
+**4. Build and run**
+
+In Xcode:
+1. Select **LumoApp-Local** scheme
+2. Clean Build (Cmd+Shift+K)
+3. Run on Simulator (Cmd+R)
+
+#### How Local Development Works
+
+1. iOS app connects to `https://lumo.proton.dev`
+2. `/etc/hosts` resolves to `127.0.0.1` (configured in `proton/web/clients`)
+3. HAProxy (port 443) proxies requests:
+   - Frontend → local webpack dev server
+   - API → production backend (`lumo.proton.black`)
+4. HAProxy serves the SSL certificate for `*.proton.dev` (signed by mkcert root CA)
+5. iOS Simulator trusts the certificate because the root CA is installed in its keychain
+
+#### Configuration Files
+- **Xcconfigs/Debug-Local.xcconfig**: URLs set to `https://lumo.proton.dev` for local development
+- **Xcconfigs/Debug.xcconfig** and **Release.xcconfig**: URLs set to production endpoints
+- **Info-Local.plist**: Used by **LumoApp-Local** scheme (includes localhost networking exceptions)
+- **Info.plist**: Used by **LumoApp** scheme (production configuration)
+- **Config.swift**: Reads configuration values from Info.plist/Info-Local.plist (populated from xcconfig files)
+
+URL configuration is managed through xcconfig files, which populate Info.plist values at build time. The **LumoApp-Local** scheme uses `Info-Local.plist` + `Debug-Local.xcconfig`, while **LumoApp** uses `Info.plist` + standard configurations.
 
 ## License
 The code and data files in this distribution are licensed under the terms of the GNU General Public License as 
