@@ -2527,7 +2527,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zrušeno • Vypršelo %@"
+            "value" : "Zrušeno • Vyprší %@"
           }
         },
         "de" : {
@@ -2563,7 +2563,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Annullato • Scade il %@"
+            "value" : "Disdetto • Scade il %@"
           }
         },
         "nl" : {
@@ -2578,16 +2578,10 @@
             "value" : "Cancelado • Expira em %@"
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Отменено • Истекает %@"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "İptal edildi. Geçerlilik süresi: %@"
+            "value" : "İptal edildi. Geçerlilik sonu: %@"
           }
         }
       }
@@ -3500,10 +3494,46 @@
     "app.payment.free" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Free"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gratuit"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gratis"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ücretsiz"
           }
         }
       }
@@ -3986,7 +4016,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A compra do Lumo Plus ainda não é possível. Por favor, tente novamente mais tarde."
+            "value" : "A compra do Lumo Plus ainda não é possível. Tente novamente mais tarde."
           }
         },
         "tr" : {
@@ -4153,7 +4183,43 @@
     "app.payment.plus" : {
       "extractionState" : "stale",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plus"
