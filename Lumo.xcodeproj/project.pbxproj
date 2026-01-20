@@ -49,7 +49,7 @@
 
 /* Begin PBXFileReference section */
 		4E060BCC2F113A5C00B45D1B /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
-		4E060BCD2F113A5C00B45D1B /* Debug-Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Debug-Local.xcconfig"; sourceTree = "<group>"; };
+		4E060BCD2F113A5C00B45D1B /* Debug-Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Debug-Dev.xcconfig"; sourceTree = "<group>"; };
 		4E060BCE2F113A5C00B45D1B /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		4E060E3B2F128BC100B45D1B /* LumoAppUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LumoAppUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E80D9F2DA8C56B000194CB /* LumoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LumoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -245,7 +245,7 @@
 				App/Sources/Utils/Logger.swift,
 				App/Sources/Utils/PermissionManager.swift,
 				App/Sources/Utils/URLExtensions.swift,
-				"App/SupportingFiles/Info-Local.plist",
+				"App/SupportingFiles/Info-Dev.plist",
 				App/SupportingFiles/Info.plist,
 				App/Tests/Sources/ConfigTests.swift,
 				WidgetExtension/SupportingFiles/Info.plist,
@@ -302,7 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				4E060BCC2F113A5C00B45D1B /* Debug.xcconfig */,
-				4E060BCD2F113A5C00B45D1B /* Debug-Local.xcconfig */,
+				4E060BCD2F113A5C00B45D1B /* Debug-Dev.xcconfig */,
 				4E060BCE2F113A5C00B45D1B /* Release.xcconfig */,
 			);
 			path = Xcconfigs;
@@ -527,9 +527,9 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		4E060BD22F113B6F00B45D1B /* Debug-Local */ = {
+		4E060BD22F113B6F00B45D1B /* Debug-Dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E060BCD2F113A5C00B45D1B /* Debug-Local.xcconfig */;
+			baseConfigurationReference = 4E060BCD2F113A5C00B45D1B /* Debug-Dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -590,11 +590,11 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
-			name = "Debug-Local";
+			name = "Debug-Dev";
 		};
-		4E060BD32F113B6F00B45D1B /* Debug-Local */ = {
+		4E060BD32F113B6F00B45D1B /* Debug-Dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E060BCD2F113A5C00B45D1B /* Debug-Local.xcconfig */;
+			baseConfigurationReference = 4E060BCD2F113A5C00B45D1B /* Debug-Dev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -602,7 +602,7 @@
 				CURRENT_PROJECT_VERSION = 31;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Modules/App/SupportingFiles/Info-Local.plist";
+				INFOPLIST_FILE = "Modules/App/SupportingFiles/Info-Dev.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Lumo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Lumo needs microphone access to enable voice input for AI assistance.";
@@ -625,11 +625,11 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Debug-Local";
+			name = "Debug-Dev";
 		};
-		4E060BD42F113B6F00B45D1B /* Debug-Local */ = {
+		4E060BD42F113B6F00B45D1B /* Debug-Dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E060BCD2F113A5C00B45D1B /* Debug-Local.xcconfig */;
+			baseConfigurationReference = 4E060BCD2F113A5C00B45D1B /* Debug-Dev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -653,7 +653,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Debug-Local";
+			name = "Debug-Dev";
 		};
 		4E060E422F128BC100B45D1B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -677,7 +677,7 @@
 			};
 			name = Debug;
 		};
-		4E060E432F128BC100B45D1B /* Debug-Local */ = {
+		4E060E432F128BC100B45D1B /* Debug-Dev */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -697,7 +697,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LumoApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LumoApp";
 			};
-			name = "Debug-Local";
+			name = "Debug-Dev";
 		};
 		4E060E442F128BC100B45D1B /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -977,7 +977,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4E060E422F128BC100B45D1B /* Debug */,
-				4E060E432F128BC100B45D1B /* Debug-Local */,
+				4E060E432F128BC100B45D1B /* Debug-Dev */,
 				4E060E442F128BC100B45D1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -987,7 +987,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E80DAB2DA8C56C000194CB /* Debug */,
-				4E060BD22F113B6F00B45D1B /* Debug-Local */,
+				4E060BD22F113B6F00B45D1B /* Debug-Dev */,
 				96E80DAC2DA8C56C000194CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -997,7 +997,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E80DAE2DA8C56C000194CB /* Debug */,
-				4E060BD32F113B6F00B45D1B /* Debug-Local */,
+				4E060BD32F113B6F00B45D1B /* Debug-Dev */,
 				96E80DAF2DA8C56C000194CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1007,7 +1007,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E80DE02DA8C643000194CB /* Debug */,
-				4E060BD42F113B6F00B45D1B /* Debug-Local */,
+				4E060BD42F113B6F00B45D1B /* Debug-Dev */,
 				96E80DE12DA8C643000194CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

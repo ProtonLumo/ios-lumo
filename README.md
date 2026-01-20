@@ -181,11 +181,11 @@ graph TB
 
 ### Available Schemes
 - **LumoApp** - Production build pointing to `lumo.proton.me`
-- **LumoApp-Local** - Local development build pointing to `lumo.proton.dev` (requires local web client setup)
+- **LumoApp-Dev** - Development build pointing to `lumo.proton.dev` (requires local web client setup)
 
 ### Local Development Setup (lumo.proton.dev)
 
-For developing against a local web client, use the **LumoApp-Local** scheme.
+For developing against a local web client, use the **LumoApp-Dev** scheme.
 
 #### Prerequisites
 - Access to `proton/web/clients` repository with local-sso configured and running
@@ -234,7 +234,7 @@ xcrun simctl keychain booted add-root-cert "/Users/$(whoami)/Library/Application
 **4. Build and run**
 
 In Xcode:
-1. Select **LumoApp-Local** scheme
+1. Select **LumoApp-Dev** scheme
 2. Clean Build (Cmd+Shift+K)
 3. Run on Simulator (Cmd+R)
 
@@ -249,13 +249,13 @@ In Xcode:
 5. iOS Simulator trusts the certificate because the root CA is installed in its keychain
 
 #### Configuration Files
-- **Xcconfigs/Debug-Local.xcconfig**: URLs set to `https://lumo.proton.dev` for local development
+- **Xcconfigs/Debug-Dev.xcconfig**: URLs set to `https://lumo.proton.dev` for local development
 - **Xcconfigs/Debug.xcconfig** and **Release.xcconfig**: URLs set to production endpoints
-- **Info-Local.plist**: Used by **LumoApp-Local** scheme (includes localhost networking exceptions)
+- **Info-Dev.plist**: Used by **LumoApp-Dev** scheme (includes localhost networking exceptions)
 - **Info.plist**: Used by **LumoApp** scheme (production configuration)
-- **Config.swift**: Reads configuration values from Info.plist/Info-Local.plist (populated from xcconfig files)
+- **Config.swift**: Reads configuration values from Info.plist/Info-Dev.plist (populated from xcconfig files)
 
-URL configuration is managed through xcconfig files, which populate Info.plist values at build time. The **LumoApp-Local** scheme uses `Info-Local.plist` + `Debug-Local.xcconfig`, while **LumoApp** uses `Info.plist` + standard configurations.
+URL configuration is managed through xcconfig files, which populate Info.plist values at build time. The **LumoApp-Dev** scheme uses `Info-Dev.plist` + `Debug-Dev.xcconfig`, while **LumoApp** uses `Info.plist` + standard configurations.
 
 ## License
 The code and data files in this distribution are licensed under the terms of the GNU General Public License as 
