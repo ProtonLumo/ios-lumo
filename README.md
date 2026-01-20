@@ -189,22 +189,19 @@ For developing against a local web client, use the **LumoApp-Dev** scheme.
 
 #### Prerequisites
 - Access to `proton/web/clients` repository with local-sso configured and running
+- HAProxy: `brew install haproxy`
+- Bash 5.x+: `brew install bash`
+- mkcert: `brew install mkcert`
 
 #### One-time Setup per Machine
 
-**1. Install mkcert**
-
-```bash
-brew install mkcert
-```
-
-**2. Start the web server (automatically generates certificates)**
+**1. Start the web server (automatically generates certificates)**
 
 When you run `yarn start-all` for the first time, it automatically generates SSL certificates if they don't exist:
 
 ```bash
 cd <path-to-proton-web-clients>
-yarn start-all --applications "proton-lumo" --api proton.black --no-error-logs
+yarn start-all --applications "proton-account proton-lumo" --api proton.black --no-error-logs
 ```
 
 This will:
@@ -231,7 +228,7 @@ If `which bash` shows `/bin/bash`, fix your PATH order to prioritize Homebrew.
 
 **Note:** Certificates are generated only once. Subsequent runs of `yarn start-all` will reuse existing certificates.
 
-**3. Install root CA in iOS Simulator**
+**2. Install root CA in iOS Simulator**
 
 ```bash
 xcrun simctl keychain booted add-root-cert "/Users/$(whoami)/Library/Application Support/mkcert/rootCA.pem"
@@ -245,7 +242,7 @@ xcrun simctl keychain booted add-root-cert "/Users/$(whoami)/Library/Application
   xcrun simctl keychain booted add-root-cert "/Users/$(whoami)/Library/Application Support/mkcert/rootCA.pem"
   ```
 
-**4. Build and run**
+**3. Build and run**
 
 In Xcode:
 1. Select **LumoApp-Dev** scheme
