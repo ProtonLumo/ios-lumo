@@ -215,6 +215,20 @@ This will:
 
 The root CA is created at `/Users/<username>/Library/Application Support/mkcert/rootCA.pem`
 
+**⚠️ IMPORTANT: Check your bash version before running yarn**
+
+System bash (3.2) may cause the dev server to resolve to the latest master version instead of your local environment. Use Homebrew bash (5.x):
+
+```bash
+which bash
+# /opt/homebrew/bin/bash
+
+bash --version
+# GNU bash, version 5.x or higher
+```
+
+If `which bash` shows `/bin/bash`, fix your PATH order to prioritize Homebrew.
+
 **Note:** Certificates are generated only once. Subsequent runs of `yarn start-all` will reuse existing certificates.
 
 **3. Install root CA in iOS Simulator**
