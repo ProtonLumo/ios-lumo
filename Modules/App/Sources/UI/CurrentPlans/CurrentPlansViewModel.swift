@@ -10,8 +10,6 @@ class CurrentPlansViewModel: ObservableObject {
     }
 
     @Published var viewState: State = .idle
-
-    @Published var showAlert: BannerState = .none
     @Published var currentPlans: [PlanViewModel] = []
 
     enum State {
@@ -58,13 +56,6 @@ extension CurrentPlansViewModel {
             self.currentPlans = currentPlans
             self.viewState = .dataLoaded
             print(currentPlans.count)
-        }
-
-        func showBanner() {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-                guard let self else { return }
-                self.showAlert = .error(content: PCBannerContent(message: "Something went wrong!!"))
-            }
         }
 
         func setViewState(_ state: State) {

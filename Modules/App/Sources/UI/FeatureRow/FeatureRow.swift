@@ -12,16 +12,10 @@ struct FeatureRow: View {
 
     var body: some View {
         HStack {
-            PCAsyncImage(
+            FallbackAsyncImage(
                 url: model.iconURL,
-                placeholderImage: Theme.icon.checkmark
-            ) { image in
-                image
-                    .resizable()
-                    .renderingMode(.template)
-            } placeholder: {
-                ProgressView()
-            }
+                fallbackImage: Theme.icon.checkmark
+            )
             .foregroundColor(Theme.color.iconAccent)
             .frame(width: Constants.iconSize, height: Constants.iconSize)
 

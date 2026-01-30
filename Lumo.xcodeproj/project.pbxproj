@@ -131,6 +131,7 @@
 				App/Sources/UI/Errors/NetworkErrorView.swift,
 				App/Sources/UI/FeatureRow/FeatureRow.swift,
 				App/Sources/UI/FeatureRow/FeatureRowModel.swift,
+				App/Sources/UI/Helpers/FallbackAsyncImage.swift,
 				App/Sources/UI/Helpers/PreviewData.swift,
 				App/Sources/UI/Loading/LoadingView.swift,
 				App/Sources/UI/Loading/LottieView.swift,
@@ -221,6 +222,7 @@
 				App/Sources/UI/Errors/NetworkErrorView.swift,
 				App/Sources/UI/FeatureRow/FeatureRow.swift,
 				App/Sources/UI/FeatureRow/FeatureRowModel.swift,
+				App/Sources/UI/Helpers/FallbackAsyncImage.swift,
 				App/Sources/UI/Helpers/PreviewData.swift,
 				App/Sources/UI/Loading/LoadingView.swift,
 				App/Sources/UI/Loading/LottieView.swift,
@@ -1011,8 +1013,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@gitlab.protontech.ch:apple/shared/ProtonUIFoundations.git";
 			requirement = {
-				branch = develop;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.4;
 			};
 		};
 		96E796F12DCCF1A80003A094 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {

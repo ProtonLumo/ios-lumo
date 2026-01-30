@@ -79,7 +79,6 @@ struct CurrentPlansView: View {
                     NoSubscriptionsView()
                 }
             }
-            .bannerDisplayable(bannerState: $viewModel.showAlert, configuration: .default())
         }
     }
 }
@@ -90,7 +89,6 @@ struct CurrentPlansView: View {
         let currentPlan = PlanViewModel(currentPlan: PreviewsData.currentSub)
 
         let viewModel = CurrentPlansViewModel(plansData: [PreviewsData.currentSub, PreviewsData.currentSub])
-        viewModel.showBanner()
         viewModel.setCurrentPlans([currentPlan, currentPlan])
 
         //viewModel.setViewState(.errorData)

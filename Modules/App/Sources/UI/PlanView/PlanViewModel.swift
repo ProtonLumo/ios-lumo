@@ -98,7 +98,7 @@ public class PlanViewModel: ObservableObject, Identifiable {
         self.progressEntitlements = progressEntitlements
 
         // Initial pricing setup - will be updated for Apple subscriptions
-        self.formattedPrice = ProtonUIFoundations.Formatter.formatCurrency(amount: currentPlan.amount, currency: currentPlan.currency)
+        self.formattedPrice = Formatter.formatCurrency(amount: currentPlan.amount, currency: currentPlan.currency)
         self.formattedPeriod = currentPlan.cycleDescription ?? ""
 
         // Check if this is an Apple subscription
@@ -152,7 +152,7 @@ public class PlanViewModel: ObservableObject, Identifiable {
                         // Update pricing to show actual StoreKit price the user paid
                         self.formattedPrice = storeKitProduct.displayPrice
                         Logger.shared.log(
-                            "Updated Apple subscription pricing to StoreKit price: \(storeKitProduct.displayPrice) (was server price: \(ProtonUIFoundations.Formatter.formatCurrency(amount: subscription.amount, currency: subscription.currency)))"
+                            "Updated Apple subscription pricing to StoreKit price: \(storeKitProduct.displayPrice) (was server price: \(Formatter.formatCurrency(amount: subscription.amount, currency: subscription.currency)))"
                         )
                     }
                 } else {
