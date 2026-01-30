@@ -1,0 +1,6 @@
+ACCOUNT_API_BASE_URL = https:/$()/account-api.proton.me
+ACCOUNT_BASE_URL = https:/$()/account.proton.me
+LUMO_API_BASE_URL = https:/$()/lumo-api.proton.me
+LUMO_BASE_URL = https:/$()/lumo.proton.me
+
+ENABLE_LOCALHOST = NO

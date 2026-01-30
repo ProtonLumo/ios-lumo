@@ -18,7 +18,21 @@
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
-		<false/>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
+		</dict>
 	</dict>
 	<key>WKAppBoundDomains</key>
 	<array>
@@ -27,15 +41,15 @@
 		<string>account.proton.me</string>
 		<string>account-api.proton.me</string>
 	</array>
-    <key>ACCOUNT_API_BASE_URL</key>
-    <string>$(ACCOUNT_API_BASE_URL)</string>
-    <key>ACCOUNT_BASE_URL</key>
-    <string>$(ACCOUNT_BASE_URL)</string>
-    <key>LUMO_API_BASE_URL</key>
-    <string>$(LUMO_API_BASE_URL)</string>
-    <key>LUMO_BASE_URL</key>
-    <string>$(LUMO_BASE_URL)</string>
-    <key>ENABLE_LOCALHOST</key>
-    <string>$(ENABLE_LOCALHOST)</string>
+	<key>ACCOUNT_API_BASE_URL</key>
+	<string>$(ACCOUNT_API_BASE_URL)</string>
+	<key>ACCOUNT_BASE_URL</key>
+	<string>$(ACCOUNT_BASE_URL)</string>
+	<key>LUMO_API_BASE_URL</key>
+	<string>$(LUMO_API_BASE_URL)</string>
+	<key>LUMO_BASE_URL</key>
+	<string>$(LUMO_BASE_URL)</string>
+	<key>ENABLE_LOCALHOST</key>
+	<string>$(ENABLE_LOCALHOST)</string>
 </dict>
 </plist>

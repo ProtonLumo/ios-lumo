@@ -389,6 +389,10 @@ struct WebView: UIViewRepresentable {
                 return true
             }
 
+            if Config.isLocalDevelopment {
+                return false
+            }
+
             let allowedDomains = [
                 Config.LUMO_BASE_URL,
                 Config.LUMO_API_BASE_URL,
@@ -847,8 +851,7 @@ struct WebView: UIViewRepresentable {
         }
 
         configuration.websiteDataStore = dataStore
-        // Note: No need to set processPool - iOS 15.0+ manages this automatically
-        configuration.limitsNavigationsToAppBoundDomains = true
+        configuration.limitsNavigationsToAppBoundDomains = !Config.isLocalDevelopment
 
         let preferences = WKPreferences()
         preferences.javaScriptCanOpenWindowsAutomatically = false
