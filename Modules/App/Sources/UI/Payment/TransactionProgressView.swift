@@ -36,7 +36,8 @@ struct TransactionProgressView: View {
 
     private var progressView: some View {
         VStack(spacing: 32) {
-            LottieView(name: "lumo-hero")
+            LottieView(animation: animation)
+                .playbackInLoopMode()
                 .frame(width: 200, height: 150)
 
             VStack(spacing: 16) {
@@ -161,6 +162,13 @@ struct TransactionProgressView: View {
             // But we also want to trigger the onError callback when the button is pressed
             onError?()
         }
+    }
+
+    private var animation: LottieAnimation {
+        let darkItem = LottieAnimations.LumoCat.dark
+        let lightItem = LottieAnimations.LumoCat.light
+
+        return themeProvider.systemColorScheme == .dark ? darkItem : lightItem
     }
 }
 
