@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FallbackAsyncImage: View {
     let url: URL?
-    let fallbackImage: UIImage?
+    let fallbackImage: Image?
 
     var body: some View {
         AsyncImage(
@@ -17,7 +17,7 @@ struct FallbackAsyncImage: View {
                         .renderingMode(.template)
                 case .failure:
                     if let fallbackImage {
-                        Image(uiImage: fallbackImage)
+                        fallbackImage
                             .resizable()
                             .renderingMode(.template)
                     } else {
