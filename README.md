@@ -169,15 +169,30 @@ graph TB
 
 ### Prerequisites
 - macOS with Xcode 26.0+
-- iOS 16.6+
+- iOS 17.6+
 - Swift 6.0+
+- [Tuist](https://tuist.dev) 4.0+
+
+#### Installing Tuist
+The easiest way to install Tuist is using [mise](https://mise.jdx.dev/):
+
+```bash
+# Install mise
+curl https://mise.run | sh
+
+# Install Tuist
+mise install tuist
+```
 
 ### Setup
 1. Clone the repository
-2. Open `Lumo.xcodeproj` in Xcode
-3. Configure your development team
-4. Select the **LumoApp** scheme (production)
-5. Build and run
+2. Install dependencies: `tuist install`
+3. Generate workspace: `tuist generate`
+4. Open `Lumo.xcworkspace` in Xcode (not `.xcodeproj`)
+5. Select the **LumoApp** scheme (production)
+6. Build and run
+
+> **Note:** This project uses Tuist. Always open `Lumo.xcworkspace`, not `Lumo.xcodeproj`. After modifying `Project.swift` or `Package.swift`, run `tuist generate` to regenerate the workspace.
 
 ### Available Schemes
 - **LumoApp** - Production build pointing to `lumo.proton.me`
