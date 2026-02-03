@@ -25,13 +25,10 @@ struct HeaderTitleView: View {
                     .foregroundColor(Theme.color.textAccent)
                 if let decorationsUrl = decorations {
                     ForEach(decorationsUrl, id: \.self) { decoration in
-                        PCAsyncImage(url: decoration, placeholderImage: nil) { image in
-                            image
-                                .resizable()
-                                .renderingMode(.template)
-                        } placeholder: {
-                            ProgressView()
-                        }
+                        FallbackAsyncImage(
+                            url: decoration,
+                            fallbackImage: nil
+                        )
                         .foregroundColor(Theme.color.iconAccent)
                         .frame(width: Constants.decorationSize, height: Constants.decorationSize)
                     }

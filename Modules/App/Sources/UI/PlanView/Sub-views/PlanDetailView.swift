@@ -15,16 +15,10 @@ struct PlanDetailView: View {
         VStack(alignment: .leading, spacing: Theme.spacing.standard) {
             ForEach(viewModel.descriptionEntitlements, id: \.self) { entitlement in
                 HStack(alignment: .top) {
-                    PCAsyncImage(
+                    FallbackAsyncImage(
                         url: viewModel.iconURLforEntitlement(entitlement),
-                        placeholderImage: Theme.icon.checkmark
-                    ) { image in
-                        image
-                            .resizable()
-                            .renderingMode(.template)
-                    } placeholder: {
-                        ProgressView()
-                    }
+                        fallbackImage: Theme.icon.checkmark
+                    )
                     .foregroundColor(Theme.color.iconAccent)
                     .frame(width: Constants.iconSize, height: Constants.iconSize)
                     Text(entitlement.text)
@@ -37,7 +31,3 @@ struct PlanDetailView: View {
         }
     }
 }
-
-// #Preview {
-//    PlanDetailView()
-// }
