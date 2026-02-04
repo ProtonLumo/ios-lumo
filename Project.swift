@@ -46,7 +46,10 @@ let project = Project(
             infoPlist: .file(path: "Modules/App/SupportingFiles/Info.plist"),
             sources: ["Modules/App/Sources/**"],
             resources: [
-                "Modules/App/Resources/**"
+                "Modules/App/Resources/**",
+                "Modules/App/Sources/JSBridge/*.js",
+                "Modules/App/Sources/Helpers/LumoPlans.storekit",
+                "Modules/App/Sources/Helpers/plans.json",
             ],
             entitlements: "Modules/App/SupportingFiles/lumo.entitlements",
             dependencies: [
@@ -75,6 +78,9 @@ let project = Project(
             additionalFiles: [
                 "Modules/App/SupportingFiles/Info.plist",
                 "Modules/App/SupportingFiles/Info-Dev.plist",
+                .glob(pattern: "Modules/App/Sources/JSBridge/*.js"),
+                "Modules/App/Sources/Helpers/LumoPlans.storekit",
+                "Modules/App/Sources/Helpers/plans.json",
             ]
         ),
         .target(
