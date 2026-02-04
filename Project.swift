@@ -2,7 +2,7 @@ import ProjectDescription
 
 // MARK: - Version Configuration
 
-let marketingVersion = "1.2.5"
+let marketingVersion = "1.2.6"
 let currentProjectVersion = "31"
 let developmentTeam = "2SB5Z68H26"
 
