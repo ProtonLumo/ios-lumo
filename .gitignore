@@ -77,3 +77,13 @@ xcodegen
 
 # Testmo
 testmo-resources.json
+
+# Tuist
+Tuist/.build
+.tuist
+*.xcodeproj
+*.xcodeproj.backup
+*.xcworkspace
+Derived/
+.build/
+!*.xcworkspace/xcshareddata/swiftpm/Package.resolved
