@@ -89,7 +89,7 @@ let project = Project(
                 "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
                 "NSExtension": [
                     "NSExtensionPointIdentifier": "com.apple.widgetkit-extension"
-                ]
+                ],
             ]),
             sources: ["Modules/WidgetExtension/Sources/**"],
             resources: [
@@ -123,7 +123,18 @@ let project = Project(
             name: "LumoApp",
             shared: true,
             buildAction: .buildAction(
-                targets: [.target("LumoApp")]
+                targets: [.target("LumoApp")],
+                preActions: [
+                    .executionAction(
+                        scriptText: """
+                            if [ $ACTION == "build" ]; then
+                              cd "$SRCROOT"
+                              xcrun swift-format format -r Modules -i
+                            fi
+                            """,
+                        target: .target("LumoApp")
+                    )
+                ]
             ),
             testAction: .targets(
                 [.testableTarget(target: .target("LumoAppUnitTests"))],
@@ -138,7 +149,18 @@ let project = Project(
             name: "LumoApp-Dev",
             shared: true,
             buildAction: .buildAction(
-                targets: [.target("LumoApp")]
+                targets: [.target("LumoApp")],
+                preActions: [
+                    .executionAction(
+                        scriptText: """
+                            if [ $ACTION == "build" ]; then
+                              cd "$SRCROOT"
+                              xcrun swift-format format -r Modules -i
+                            fi
+                            """,
+                        target: .target("LumoApp")
+                    )
+                ]
             ),
             testAction: .targets(
                 [.testableTarget(target: .target("LumoAppUnitTests"))],
