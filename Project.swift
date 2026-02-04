@@ -21,6 +21,7 @@ let project = Project(
             // Localization - prefer string catalogs
             "LOCALIZATION_PREFERS_STRING_CATALOGS": true,
             "STRING_CATALOG_GENERATE_SYMBOLS": true,
+            "SWIFT_EMIT_LOC_STRINGS": true,
 
             // Performance - Metal fast math optimization
             "MTL_FAST_MATH": true,
