@@ -188,11 +188,15 @@ mise install tuist
 1. Clone the repository
 2. Install dependencies: `tuist install`
 3. Generate workspace: `tuist generate`
-4. Open `Lumo.xcworkspace` in Xcode (not `.xcodeproj`)
+4. Open the project in Xcode:
+   - **`Lumo.xcodeproj`** - For regular development (recommended for most cases)
+   - **`Lumo.xcworkspace`** - Only if you need to browse/edit dependency source code (Lottie, ProtonUIFoundations, etc.)
 5. Select the **LumoApp** scheme (production)
 6. Build and run
 
-> **Note:** This project uses Tuist. Always open `Lumo.xcworkspace`, not `Lumo.xcodeproj`. After modifying `Project.swift` or `Package.swift`, run `tuist generate` to regenerate the workspace.
+> **Note:** After modifying `Project.swift` or `Package.swift`, run `tuist generate` to regenerate the workspace.
+>
+> **Workspace vs Project:** Both work for building and running the app. The workspace includes dependency projects (Lottie, ProtonUIFoundations, swift-collections, swiftui-introspect) for direct source code access, while the project file resolves dependencies automatically. Use the workspace only when you need to debug or modify dependency code.
 
 ### Available Schemes
 - **LumoApp** - Production build pointing to `lumo.proton.me`
