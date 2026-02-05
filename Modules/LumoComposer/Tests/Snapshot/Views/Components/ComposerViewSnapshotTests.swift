@@ -4,7 +4,6 @@ import Testing
 
 @testable import LumoComposer
 
-@MainActor
 struct ComposerViewSnapshotTests {
     struct TestCase {
         let initialText: String
@@ -121,6 +120,7 @@ struct ComposerViewSnapshotTests {
     ]
 
     @Test(arguments: idleEmptyComposer + shortPrompt + longPrompt + readyToSend + sending)
+    @MainActor
     func composerView(testCase: TestCase) {
         assertSnapshotsOnEdgeDevices(of: sut(testCase: testCase), testName: testCase.testName)
     }

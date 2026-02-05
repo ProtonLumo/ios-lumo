@@ -1,3 +1,4 @@
+import CoreFoundation
 import Lottie
 
 public enum LottieAnimations {

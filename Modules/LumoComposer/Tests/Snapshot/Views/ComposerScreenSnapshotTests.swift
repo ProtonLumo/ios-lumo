@@ -4,9 +4,9 @@ import Testing
 
 @testable import LumoComposer
 
-@MainActor
 struct ComposerScreenSnapshotTests {
     @Test
+    @MainActor
     func composerScreen() {
         let sut = ComposerScreen(isSnapshotMode: true)
 
