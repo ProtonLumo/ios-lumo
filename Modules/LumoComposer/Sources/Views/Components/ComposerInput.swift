@@ -1,7 +1,6 @@
 import LumoDesignSystem
 import SwiftUI
 
-/// Multi-line text input with placeholder
 struct ComposerInput: View {
     @Binding var text: String
     let isGhostModeEnabled: Bool

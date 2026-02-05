@@ -1,7 +1,6 @@
 import SnapshotTesting
 import SwiftUI
 import Testing
-import XCTest
 
 @testable import LumoComposer
 
@@ -103,7 +102,7 @@ struct ComposerViewSnapshotTests {
         ),
     ]
 
-    /// Sending
+    /// Sending state
     static let sending: [TestCase] = [
         TestCase(
             initialText: "",
@@ -138,82 +137,6 @@ struct ComposerViewSnapshotTests {
                 actionButton: testCase.actionButton,
                 action: { _ in }
             )
-        }
-    }
-}
-
-private func assertSnapshotsOnEdgeDevices(
-    of view: some View,
-    named name: String? = nil,
-    record recording: Bool = false,
-    timeout: TimeInterval = 5,
-    file: StaticString = #file,
-    testName: String = #function,
-    line: UInt = #line
-) {
-    assertSnapshots(
-        matching: UIHostingController(rootView: view),
-        on: [("SE", .iPhoneSe), ("13 Pro Max", .iPhone13ProMax)],
-        named: name,
-        record: recording,
-        timeout: timeout,
-        file: file,
-        testName: testName,
-        line: line
-    )
-}
-
-private func assertSnapshots(
-    matching controller: @autoclosure () throws -> UIViewController,
-    on configurations: [(String, ViewImageConfig)],
-    styles: [UIUserInterfaceStyle] = [.light, .dark],
-    named name: String? = nil,
-    record recording: Bool = false,
-    timeout: TimeInterval = 5,
-    file: StaticString = #file,
-    testName: String = #function,
-    line: UInt = #line
-) {
-    configurations.forEach { (configurationName, configuration) in
-        let name = [name, configurationName].compactMap { $0 }.joined(separator: "_")
-
-        try? styles.forEach { style in
-            let controller = try controller()
-            controller.overrideUserInterfaceStyle = style
-
-            assertSnapshot(
-                of: controller,
-                as: .image(on: configuration),
-                named: suffixedName(name: name, withStyle: style),
-                record: recording,
-                timeout: timeout,
-                file: file,
-                testName: testName,
-                line: line
-            )
-        }
-    }
-}
-
-//// MARK: - Private
-
-private func suffixedName(name: String?, withStyle style: UIUserInterfaceStyle) -> String? {
-    [name, style.humanReadable]
-        .compactMap { $0 }
-        .joined(separator: "_")
-}
-
-private extension UIUserInterfaceStyle {
-    var humanReadable: String {
-        switch self {
-        case .dark:
-            return "dark"
-        case .light:
-            return "light"
-        case .unspecified:
-            return "unspecified"
-        @unknown default:
-            return "unknown"
         }
     }
 }

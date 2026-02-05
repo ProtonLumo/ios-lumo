@@ -13,4 +13,9 @@ extension LottieView {
     public func playbackInLoopMode() -> Self {
         playbackMode(.playing(.fromProgress(0, toProgress: 1, loopMode: .loop)))
     }
+
+    /// For snapshot tests - pauses animation at a specific frame
+    public func snapshotMode(at progress: AnimationProgressTime = 0.5) -> Self {
+        playbackMode(.paused(at: .progress(progress)))
+    }
 }
