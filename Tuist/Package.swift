@@ -24,5 +24,6 @@ let package = Package(
     dependencies: [
         .package(url: "git@gitlab.protontech.ch:apple/shared/ProtonUIFoundations.git", from: "1.4.4"),
         .package(url: "https://github.com/airbnb/lottie-ios.git", from: "4.5.2"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.18.9"),
     ]
 )

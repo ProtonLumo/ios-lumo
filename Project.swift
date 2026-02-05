@@ -62,6 +62,7 @@ let project = Project(
                 .external(name: "ProtonUIFoundations"),
                 .external(name: "Lottie"),
                 .target(name: "LumoWidgetExtension"),
+                .target(name: "LumoComposer"),
                 .target(name: "LumoDesignSystem"),
             ],
             settings: .settings(
@@ -120,6 +121,20 @@ let project = Project(
             )
         ),
         .target(
+            name: "LumoComposer",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "me.proton.lumo.LumoComposer",
+            deploymentTargets: .iOS("17.6"),
+            sources: ["Modules/LumoComposer/Sources/**"],
+            resources: [
+                "Modules/LumoComposer/Resources/**"
+            ],
+            dependencies: [
+                .target(name: "LumoDesignSystem")
+            ]
+        ),
+        .target(
             name: "LumoDesignSystem",
             destinations: .iOS,
             product: .framework,
@@ -141,6 +156,18 @@ let project = Project(
                 .target(name: "LumoApp")
             ]
         ),
+        .target(
+            name: "LumoComposerTests",
+            destinations: .iOS,
+            product: .unitTests,
+            bundleId: "me.proton.lumo.LumoComposerTests",
+            deploymentTargets: .iOS("17.6"),
+            sources: ["Modules/LumoComposer/Tests/**"],
+            dependencies: [
+                .target(name: "LumoComposer"),
+                .external(name: "SnapshotTesting"),
+            ]
+        ),
     ],
     schemes: [
         .scheme(
@@ -148,7 +175,10 @@ let project = Project(
             shared: true,
             buildAction: .swiftFormat(target: .target("LumoApp")),
             testAction: .targets(
-                [.testableTarget(target: .target("LumoAppUnitTests"))],
+                [
+                    .testableTarget(target: .target("LumoAppUnitTests")),
+                    .testableTarget(target: .target("LumoComposerTests")),
+                ],
                 configuration: "Debug"
             ),
             runAction: .runAction(configuration: "Debug"),
@@ -161,7 +191,10 @@ let project = Project(
             shared: true,
             buildAction: .swiftFormat(target: .target("LumoApp")),
             testAction: .targets(
-                [.testableTarget(target: .target("LumoAppUnitTests"))],
+                [
+                    .testableTarget(target: .target("LumoAppUnitTests")),
+                    .testableTarget(target: .target("LumoComposerTests")),
+                ],
                 configuration: "Debug-Dev"
             ),
             runAction: .runAction(configuration: "Debug-Dev"),
