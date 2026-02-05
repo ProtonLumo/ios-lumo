@@ -63,14 +63,16 @@ struct ComposerView: View {
     private var sendButton: some View {
         ComposerActionButton(
             action: { action(.sendTapped) },
-            icon: DS.Icon.arrowRight
+            icon: DS.Icon.arrowRight,
+            isGhostModeEnabled: isGhostModeEnabled
         )
     }
 
     private var stopButton: some View {
         ComposerActionButton(
             action: { action(.stopTapped) },
-            icon: DS.Icon.stop
+            icon: DS.Icon.stop,
+            isGhostModeEnabled: isGhostModeEnabled
         )
     }
 }
