@@ -1,5 +1,4 @@
 import ProjectDescription
-import ProjectDescriptionHelpers
 
 // MARK: - Version Configuration
 
@@ -143,7 +142,10 @@ let project = Project(
             sources: ["Modules/LumoDesignSystem/Sources/**"],
             resources: [
                 "Modules/LumoDesignSystem/Resources/**"
-            ]
+            ],
+            dependencies: [
+                .external(name: "Lottie")
+            ],
         ),
         .target(
             name: "LumoAppUnitTests",
@@ -173,7 +175,7 @@ let project = Project(
         .scheme(
             name: "LumoApp",
             shared: true,
-            buildAction: .swiftFormat(target: .target("LumoApp")),
+            buildAction: .buildAction(targets: [.target("LumoApp")]),
             testAction: .targets(
                 [
                     .testableTarget(target: .target("LumoAppUnitTests")),
@@ -189,7 +191,7 @@ let project = Project(
         .scheme(
             name: "LumoApp-Dev",
             shared: true,
-            buildAction: .swiftFormat(target: .target("LumoApp")),
+            buildAction: .buildAction(targets: [.target("LumoApp")]),
             testAction: .targets(
                 [
                     .testableTarget(target: .target("LumoAppUnitTests")),
