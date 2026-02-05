@@ -1,4 +1,5 @@
 import ProjectDescription
+import ProjectDescriptionHelpers
 
 // MARK: - Version Configuration
 
@@ -145,7 +146,7 @@ let project = Project(
         .scheme(
             name: "LumoApp",
             shared: true,
-            buildAction: swiftFormatBuildAction,
+            buildAction: .swiftFormat(target: .target("LumoApp")),
             testAction: .targets(
                 [.testableTarget(target: .target("LumoAppUnitTests"))],
                 configuration: "Debug"
@@ -158,7 +159,7 @@ let project = Project(
         .scheme(
             name: "LumoApp-Dev",
             shared: true,
-            buildAction: swiftFormatBuildAction,
+            buildAction: .swiftFormat(target: .target("LumoApp")),
             testAction: .targets(
                 [.testableTarget(target: .target("LumoAppUnitTests"))],
                 configuration: "Debug-Dev"
@@ -178,20 +179,3 @@ let project = Project(
         ),
     ]
 )
-
-var swiftFormatBuildAction: BuildAction {
-    .buildAction(
-        targets: [.target("LumoApp")],
-        preActions: [
-            .executionAction(
-                scriptText: """
-                    if [ $ACTION == "build" ]; then
-                      cd "$SRCROOT"
-                      xcrun swift-format format -r Modules -i
-                    fi
-                    """,
-                target: .target("LumoApp")
-            )
-        ]
-    )
-}
