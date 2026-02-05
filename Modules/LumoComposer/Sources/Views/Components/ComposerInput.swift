@@ -10,7 +10,7 @@ struct ComposerInput: View {
     var body: some View {
         ZStack(alignment: .topLeading) {
             if text.isEmpty {
-                Text(L10n.inputPlaceholder)
+                Text(L10n.Composer.placeholder)
                     .font(.body)
                     .foregroundStyle(isGhostModeEnabled ? DS.Color.Text.hintDark : DS.Color.Text.hint)
                     .allowsHitTesting(false)
