@@ -1,4 +1,5 @@
 import Lottie
+import LumoDesignSystem
 import ProtonUIFoundations
 import SwiftUI
 import UIKit
