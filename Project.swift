@@ -6,6 +6,13 @@ let marketingVersion = "1.2.6"
 let currentProjectVersion = "31"
 let developmentTeam = "2SB5Z68H26"
 
+// MARK: - Shared Settings
+
+let moduleVerifierSettings: SettingsDictionary = [
+    "ENABLE_MODULE_VERIFIER": true,
+    "ENABLE_MODULE_VERIFIER_SUPPORTED_LANGUAGES": true,
+]
+
 // MARK: - Project
 
 let project = Project(
@@ -131,7 +138,8 @@ let project = Project(
             ],
             dependencies: [
                 .target(name: "LumoDesignSystem")
-            ]
+            ],
+            settings: .settings(base: moduleVerifierSettings)
         ),
         .target(
             name: "LumoDesignSystem",
@@ -146,6 +154,7 @@ let project = Project(
             dependencies: [
                 .external(name: "Lottie")
             ],
+            settings: .settings(base: moduleVerifierSettings)
         ),
         .target(
             name: "LumoAppUnitTests",
