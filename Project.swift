@@ -57,6 +57,7 @@ let project = Project(
                 .external(name: "ProtonUIFoundations"),
                 .external(name: "Lottie"),
                 .target(name: "LumoWidgetExtension"),
+                .target(name: "LumoDesignSystem"),
             ],
             settings: .settings(
                 base: [
@@ -112,6 +113,17 @@ let project = Project(
                     "CURRENT_PROJECT_VERSION": .string(currentProjectVersion),
                 ]
             )
+        ),
+        .target(
+            name: "LumoDesignSystem",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "me.proton.lumo.LumoDesignSystem",
+            deploymentTargets: .iOS("17.6"),
+            sources: ["Modules/LumoDesignSystem/Sources/**"],
+            resources: [
+                "Modules/LumoDesignSystem/Resources/**"
+            ]
         ),
         .target(
             name: "LumoAppUnitTests",
