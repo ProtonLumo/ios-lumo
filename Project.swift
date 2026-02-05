@@ -167,8 +167,15 @@ let project = Project(
             sources: ["Modules/LumoComposer/Tests/**"],
             dependencies: [
                 .target(name: "LumoComposer"),
+                .target(name: "LumoApp"),
                 .external(name: "SnapshotTesting"),
-            ]
+            ],
+            settings: .settings(
+                base: [
+                    "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/LumoApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LumoApp",
+                    "BUNDLE_LOADER": "$(TEST_HOST)",
+                ]
+            )
         ),
     ],
     schemes: [
