@@ -18,6 +18,10 @@ let project = Project(
             // Security - script sandboxing (important for Xcode 15+)
             "ENABLE_USER_SCRIPT_SANDBOXING": true,
 
+            // Module verification - validate clang modules
+            "ENABLE_MODULE_VERIFIER": true,
+            "ENABLE_MODULE_VERIFIER_SUPPORTED_LANGUAGES": true,
+
             // Localization - prefer string catalogs
             "LOCALIZATION_PREFERS_STRING_CATALOGS": true,
             "STRING_CATALOG_GENERATE_SYMBOLS": true,
