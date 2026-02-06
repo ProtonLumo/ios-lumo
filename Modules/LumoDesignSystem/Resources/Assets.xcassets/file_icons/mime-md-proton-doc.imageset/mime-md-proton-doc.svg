@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <defs>
+    <mask id="mime-md-proton-doc-mask" width="24" height="24" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type: luminance">
+      <path fill="#fff" d="M24 0H0v24h24V0Z" />
+    </mask>
+    <clipPath id="mime-md-proton-doc-clip-path">
+      <path fill="#fff" d="M0 0h24v24H0z" />
+    </clipPath>
+    <radialGradient id="mime-md-proton-doc-gradient" cx="0" cy="0" r="1" gradientTransform="rotate(-53.15 27.95 16.055) scale(28.3206)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6D4AFF" />
+      <stop offset="1" stop-color="#34B8EE" />
+    </radialGradient>
+  </defs>
+  <mask id="mime-md-proton-doc-mask" width="24" height="24" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type: luminance">
+    <path fill="#fff" d="M24 0H0v24h24V0Z" />
+  </mask>
+  <g mask="url(#mime-md-proton-doc-mask)">
+    <path fill="url(#mime-md-proton-doc-gradient)" d="M20 0H4a4 4 0 0 0-4 4v16a4 4 0 0 0 4 4h16a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4Z" />
+    <path fill="#85D4F5" d="M18 0h-6v6h6V0Z" />
+    <path fill="#D6F1FC" d="M18 0h2a4 4 0 0 1 4 4v2h-6V0Z" />
+    <path fill="#85D4F5" d="M24 6h-6v6h6V6Z" />
+    <path fill="#fff" fill-rule="evenodd" d="M13 19a1 1 0 0 1-1 1H5a1 1 0 1 1 0-2h7a1 1 0 0 1 1 1ZM10 15a1 1 0 0 1-1 1H5a1 1 0 1 1 0-2h4a1 1 0 0 1 1 1Z" clip-rule="evenodd" />
+  </g>
+  <radialGradient id="mime-md-proton-doc-gradient" cx="0" cy="0" r="1" gradientTransform="rotate(-53.15 27.95 16.055) scale(28.3206)" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#6D4AFF" />
+    <stop offset="1" stop-color="#34B8EE" />
+  </radialGradient>
+  <clipPath id="mime-md-proton-doc-clip-path">
+    <path fill="#fff" d="M0 0h24v24H0z" />
+  </clipPath>
+</svg>

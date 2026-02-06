@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <defs>
+    <radialGradient id="mime-md-proton-sheet-gradient" cx="0" cy="0" r="1" gradientTransform="rotate(-53.15 27.95 16.055) scale(28.3206)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1B854C" />
+      <stop offset="1" stop-color="#26DA79" />
+    </radialGradient>
+    <clipPath id="mime-md-proton-sheet-clip-path">
+      <path fill="#fff" d="M0 0h24v24H0z" />
+    </clipPath>
+  </defs>
+  <path fill="url(#mime-md-proton-sheet-gradient)" d="M0 4a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4Z" />
+  <path fill="#fff" d="M7.824 9.408c.557 0 1.008.451 1.008 1.008v4.56h5.136a1.009 1.009 0 0 1 0 2.016H8.832v1.968a1.008 1.008 0 0 1-2.016 0v-1.968H4.464a1.008 1.008 0 0 1 0-2.016h2.352v-4.56c0-.557.452-1.008 1.008-1.008Z" />
+  <path fill="#fff" fill-opacity=".5" d="M12 0h6v6h-6V0Z" />
+  <path fill="#fff" fill-opacity=".8" d="M18 0h2a4 4 0 0 1 4 4v2h-6V0Z" />
+  <path fill="#fff" fill-opacity=".5" d="M18 6h6v6h-6V6Z" />
+  <radialGradient id="mime-md-proton-sheet-gradient" cx="0" cy="0" r="1" gradientTransform="rotate(-53.15 27.95 16.055) scale(28.3206)" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#1B854C" />
+    <stop offset="1" stop-color="#26DA79" />
+  </radialGradient>
+  <clipPath id="mime-md-proton-sheet-clip-path">
+    <path fill="#fff" d="M0 0h24v24H0z" />
+  </clipPath>
+</svg>
