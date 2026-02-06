@@ -5,10 +5,10 @@ import Testing
 @testable import LumoComposer
 
 struct ComposerScreenSnapshotTests {
-    @Test
     @MainActor
+    @Test(.lottiePaused(at: 0.2))
     func composerScreen() {
-        let sut = ComposerScreen(isSnapshotMode: true)
+        let sut = ComposerScreen()
 
         assertSnapshotsOnEdgeDevices(of: sut, drawHierarchyInKeyWindow: true)
     }

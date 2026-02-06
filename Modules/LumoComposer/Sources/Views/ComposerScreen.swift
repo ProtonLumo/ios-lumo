@@ -5,12 +5,6 @@ import SwiftUI
 public struct ComposerScreen: View {
     @Environment(\.colorScheme) var colorScheme
 
-    private let isSnapshotMode: Bool
-
-    public init(isSnapshotMode: Bool = false) {
-        self.isSnapshotMode = isSnapshotMode
-    }
-
     // MARK: - View
 
     public var body: some View {
@@ -39,30 +33,34 @@ public struct ComposerScreen: View {
     private func logoPlaceholder() -> some View {
         HStack(spacing: .zero) {
             DS.Icon.lumoLogo.swiftUIImage
+                .foregroundStyle(DS.Color.Text.norm)
                 .padding(.top, DS.Spacing.large)
                 .padding(.leading, 58)
-                .foregroundStyle(DS.Color.Text.norm)
             Spacer()
         }
     }
 
     private func catPlaceholder() -> some View {
         VStack(spacing: -DS.Spacing.standard) {
-            Group {
-                if isSnapshotMode {
-                    LottieView(animation: animation)
-                        .snapshotMode(at: 0.2)
-                } else {
-                    LottieView(animation: animation)
-                        .playbackInLoopMode()
-                }
-            }
-            .frame(width: 220, height: 201)
+            lottieView()
             ComposerWelcomeText()
         }
     }
 
     // MARK: - Private
+
+    private func lottieView() -> some View {
+        Group {
+            if let progress = LottieEnvironment.pausedAt {
+                LottieView(animation: animation)
+                    .snapshotMode(at: progress)
+            } else {
+                LottieView(animation: animation)
+                    .playbackInLoopMode()
+            }
+        }
+        .frame(width: 220, height: 201)
+    }
 
     private var animation: LottieAnimation {
         let darkItem = LottieAnimations.LumoCat.dark
