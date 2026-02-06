@@ -8,6 +8,8 @@ struct ComposerView: View {
         case filePickerTapped
         case webSearchTapped
         case microphoneTapped
+        case attachmentTapped(id: String)
+        case removeAttachmentTapped(id: String)
     }
 
     enum ActionButtonState {
@@ -31,8 +33,8 @@ struct ComposerView: View {
                     accentColor: accentColor,
                     backgroundColor: backgroundColor,
                     borderColor: isGhostModeEnabled ? DS.Color.Border.weakDark : DS.Color.Border.weak,
-                    // FIXME: propagate action with attachementID
-                    onTrashTapped: {}
+                    onAttachmentTapped: { id in action(.attachmentTapped(id: id)) },
+                    onTrashTapped: { id in action(.removeAttachmentTapped(id: id)) }
                 )
             }
 
@@ -111,11 +113,11 @@ struct ComposerView: View {
             ComposerView(
                 text: .constant(""),
                 files: [
-                    .init(name: "Report.pdf", type: .pdf),
-                    .init(name: "Data.xls", type: .xls),
-                    .init(name: "Slides.ppt", type: .ppt),
-                    .init(name: "Image.jpg", type: .image),
-                    .init(name: "Video.mp4", type: .video),
+                    .init(id: "1", name: "Report.pdf", type: .pdf),
+                    .init(id: "2", name: "Data.xls", type: .xls),
+                    .init(id: "3", name: "Slides.ppt", type: .ppt),
+                    .init(id: "4", name: "Image.jpg", type: .image),
+                    .init(id: "5", name: "Video.mp4", type: .video),
                 ],
                 isGhostModeEnabled: false,
                 isWebSearchEnabled: true,
@@ -141,11 +143,11 @@ struct ComposerView: View {
             ComposerView(
                 text: .constant("Tell me a long story"),
                 files: [
-                    .init(name: "Report.pdf", type: .pdf),
-                    .init(name: "Data.xls", type: .xls),
-                    .init(name: "Slides.ppt", type: .ppt),
-                    .init(name: "Image.jpg", type: .image),
-                    .init(name: "Video.mp4", type: .video),
+                    .init(id: "1", name: "Report.pdf", type: .pdf),
+                    .init(id: "2", name: "Data.xls", type: .xls),
+                    .init(id: "3", name: "Slides.ppt", type: .ppt),
+                    .init(id: "4", name: "Image.jpg", type: .image),
+                    .init(id: "5", name: "Video.mp4", type: .video),
                 ],
                 isGhostModeEnabled: true,
                 isWebSearchEnabled: true,
