@@ -24,6 +24,7 @@ public struct ComposerScreen: View {
                 TermsAndPrivacyText()
                 ComposerView(
                     text: .constant(""),
+                    files: [],
                     isGhostModeEnabled: false,
                     isWebSearchEnabled: false,
                     actionButton: .none,
