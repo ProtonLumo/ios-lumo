@@ -4,62 +4,73 @@ import Testing
 @testable import LumoApp
 
 struct PlanOptionViewModelTests {
-    @Test
-    func yearlyPlan() {
-        let yearlyPlan = ComposedPlan.testData(
-            id: "<yearly_id_1>",
-            cycle: 12,
-            pricePerMonth: 119.99,
-            displayPrice: "$119.88"
-        )
-        let discountAmount: Decimal = 3589.0
-        let sut = PlanOptionViewModel(plan: yearlyPlan, discount: discountAmount)
-
-        #expect(sut.id == yearlyPlan.product.id)
-        #expect(sut.title == String(localized: "app.payment.duration.yearly"))
-        #expect(sut.subtitle == "$9.00/month")
-        #expect(sut.displayPrice == yearlyPlan.product.displayPrice)
-        #expect(sut.discount == "Save $35.89")
-        #expect(sut.type == .year)
-        #expect(sut.isSelected == true)
+    struct Expected {
+        let title: String
+        let subtitle: String
+        let discount: String?
+        let type: PlanType
+        let isSelected: Bool
     }
 
-    @Test
-    func monthlyPlan() {
-        let monthlyPlan = ComposedPlan.testData(
-            id: "<monthly_id_2>",
-            cycle: 1,
-            pricePerMonth: 12.99,
-            displayPrice: "$12.99"
-        )
-        let sut = PlanOptionViewModel(plan: monthlyPlan, discount: 0)
-
-        #expect(sut.id == monthlyPlan.product.id)
-        #expect(sut.title == String(localized: "app.payment.duration.monthly"))
-        #expect(sut.subtitle == "$12.00/month")
-        #expect(sut.displayPrice == monthlyPlan.product.displayPrice)
-        #expect(sut.discount == nil)
-        #expect(sut.type == .month)
-        #expect(sut.isSelected == false)
+    struct TestCase {
+        let given: (plan: ComposedPlan, discountAmount: Decimal)
+        let expected: Expected
     }
 
-    @Test
-    func invalidPlan() {
-        let invalid = ComposedPlan.testData(
-            id: "<error>",
-            cycle: 0,
-            pricePerMonth: 10,
-            displayPrice: "$100"
+    @Test(arguments: [
+        TestCase(
+            given: (
+                plan: .testData(id: "<id_1>", cycle: 12, price: 119.99, displayPrice: "$119.88"),
+                discountAmount: 3589
+            ),
+            expected: .init(
+                title: String(localized: "app.payment.duration.yearly"),
+                subtitle: "$9.00/month",
+                discount: "Save $35.89",
+                type: .year,
+                isSelected: true
+            )
+        ),
+        TestCase(
+            given: (
+                plan: .testData(id: "<id_2>", cycle: 1, price: 12.99, displayPrice: "$12.99"),
+                discountAmount: 0
+            ),
+            expected: .init(
+                title: String(localized: "app.payment.duration.monthly"),
+                subtitle: "$12.00/month",
+                discount: nil,
+                type: .month,
+                isSelected: false
+            )
+        ),
+        TestCase(
+            given: (
+                plan: .testData(id: "<id_3>", cycle: 0, price: 10, displayPrice: "$100"),
+                discountAmount: 0
+            ),
+            expected: .init(
+                title: String(localized: "app.payment.error"),
+                subtitle: String(localized: "app.payment.error"),
+                discount: nil,
+                type: .month,
+                isSelected: false
+            )
+        ),
+    ])
+    func planHasCorrectDisplayData(testCase: TestCase) {
+        let sut = PlanOptionViewModel(
+            plan: testCase.given.plan,
+            discount: testCase.given.discountAmount
         )
-        let sut = PlanOptionViewModel(plan: invalid, discount: 0)
 
-        #expect(sut.id == invalid.product.id)
-        #expect(sut.title == String(localized: "app.payment.error"))
-        #expect(sut.subtitle == String(localized: "app.payment.error"))
-        #expect(sut.displayPrice == invalid.product.displayPrice)
-        #expect(sut.discount == nil)
-        #expect(sut.type == .month)
-        #expect(sut.isSelected == false)
+        #expect(sut.id == testCase.given.plan.product.id)
+        #expect(sut.title == testCase.expected.title)
+        #expect(sut.subtitle == testCase.expected.subtitle)
+        #expect(sut.displayPrice == testCase.given.plan.product.displayPrice)
+        #expect(sut.discount == testCase.expected.discount)
+        #expect(sut.type == testCase.expected.type)
+        #expect(sut.isSelected == testCase.expected.isSelected)
     }
 }
 
@@ -78,7 +89,7 @@ fileprivate extension ComposedPlan {
     static func testData(
         id: String = "test_plan",
         cycle: Int,
-        pricePerMonth: Decimal,
+        price: Decimal,
         currency: String = "USD",
         displayPrice: String = "$119.88"
     ) -> ComposedPlan {
@@ -128,8 +139,8 @@ fileprivate extension ComposedPlan {
             ),
             product: ProductStub(
                 id: id,
-                price: pricePerMonth,
-                displayPrice: "\(pricePerMonth)",
+                price: price,
+                displayPrice: displayPrice,
                 stubbedCurrency: currency
             )
         )
