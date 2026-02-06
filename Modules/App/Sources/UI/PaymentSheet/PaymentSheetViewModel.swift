@@ -215,7 +215,7 @@ class PaymentSheetViewModel: ObservableObject {
         }
     }
 
-    private func calculateSavingValue() -> Double {
+    private func calculateSavingValue() -> Decimal {
         guard let monthlyPlan = lumoPlans.filter({ $0.instance.cycle == 1 }).first, let yearlyPlan = lumoPlans.filter({ $0.instance.cycle == 12 }).first else {
             Logger.shared.log("Unable to calculate plans saving value")
             return 0
@@ -223,7 +223,7 @@ class PaymentSheetViewModel: ObservableObject {
 
         let monthPlanYearly = monthlyPlan.product.price * 12
         let saving = monthPlanYearly - yearlyPlan.product.price
-        return NSDecimalNumber(decimal: saving * 100).doubleValue
+        return NSDecimalNumber(decimal: saving * 100).decimalValue
     }
 
     private func extractPlanOptions() {

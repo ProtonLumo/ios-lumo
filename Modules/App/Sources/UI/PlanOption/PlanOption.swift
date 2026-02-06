@@ -47,8 +47,8 @@ struct PlanOption: View {
                             }
                         }
 
-                        if !model.subTitle.isEmpty {
-                            Text(model.subTitle)
+                        if !model.subtitle.isEmpty {
+                            Text(model.subtitle)
                                 .font(.system(size: 13))
                                 .foregroundColor(themeProvider.secondaryTextColor)
                         }
@@ -59,7 +59,7 @@ struct PlanOption: View {
                     // Price section
                     VStack(alignment: .trailing, spacing: 4) {
                         if let discount = model.discount, !discount.isEmpty {
-                            Text(model.price)
+                            Text(model.displayPrice)
                                 .font(.system(size: 18, weight: .bold))
                                 .foregroundColor(brandPurple)
 
@@ -67,7 +67,7 @@ struct PlanOption: View {
                                 .font(.system(size: 14, weight: .semibold))
                                 .foregroundColor(isYearly ? brandOrange : .green)
                         } else {
-                            Text(model.price)
+                            Text(model.displayPrice)
                                 .font(.system(size: 18, weight: .bold))
                                 .foregroundColor(brandPurple)
                         }

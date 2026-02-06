@@ -12,13 +12,13 @@ struct PlanOptionViewModelTests {
             pricePerMonth: 119.99,
             displayPrice: "$119.88"
         )
-        let discountAmount: Double = 3589.0
+        let discountAmount: Decimal = 3589.0
         let sut = PlanOptionViewModel(plan: yearlyPlan, discount: discountAmount)
 
         #expect(sut.id == yearlyPlan.product.id)
         #expect(sut.title == String(localized: "app.payment.duration.yearly"))
-        #expect(sut.subTitle == "$9.00/month")
-        #expect(sut.price == yearlyPlan.product.displayPrice)
+        #expect(sut.subtitle == "$9.00/month")
+        #expect(sut.displayPrice == yearlyPlan.product.displayPrice)
         #expect(sut.discount == "Save $35.89")
         #expect(sut.type == .year)
         #expect(sut.isSelected == true)
@@ -36,8 +36,8 @@ struct PlanOptionViewModelTests {
 
         #expect(sut.id == monthlyPlan.product.id)
         #expect(sut.title == String(localized: "app.payment.duration.monthly"))
-        #expect(sut.subTitle == "$12.00/month")
-        #expect(sut.price == monthlyPlan.product.displayPrice)
+        #expect(sut.subtitle == "$12.00/month")
+        #expect(sut.displayPrice == monthlyPlan.product.displayPrice)
         #expect(sut.discount == nil)
         #expect(sut.type == .month)
         #expect(sut.isSelected == false)
@@ -55,8 +55,8 @@ struct PlanOptionViewModelTests {
 
         #expect(sut.id == invalid.product.id)
         #expect(sut.title == String(localized: "app.payment.error"))
-        #expect(sut.subTitle == String(localized: "app.payment.error"))
-        #expect(sut.price == invalid.product.displayPrice)
+        #expect(sut.subtitle == String(localized: "app.payment.error"))
+        #expect(sut.displayPrice == invalid.product.displayPrice)
         #expect(sut.discount == nil)
         #expect(sut.type == .month)
         #expect(sut.isSelected == false)
