@@ -3,7 +3,9 @@ import SwiftUI
 
 struct ComposerInput: View {
     @Binding var text: String
-    let isGhostModeEnabled: Bool
+    let placeholderColor: Color
+    let textColor: Color
+    let backgroundColor: Color
     @FocusState private var isFocused: Bool
 
     var body: some View {
@@ -11,15 +13,17 @@ struct ComposerInput: View {
             if text.isEmpty {
                 Text(L10n.Composer.placeholder)
                     .font(.body)
-                    .foregroundStyle(isGhostModeEnabled ? DS.Color.Text.hintDark : DS.Color.Text.hint)
+                    .foregroundStyle(placeholderColor)
                     .allowsHitTesting(false)
             }
 
             TextField(String(""), text: $text, axis: .vertical)
-                .foregroundStyle(isGhostModeEnabled ? DS.Color.Text.normDarkOnly : DS.Color.Text.norm)
+                .foregroundStyle(textColor)
                 .focused($isFocused)
                 .lineLimit(1...10)
                 .tint(DS.Color.primary)
         }
+        .background(backgroundColor)
+        .padding(.vertical, DS.Spacing.large)
     }
 }

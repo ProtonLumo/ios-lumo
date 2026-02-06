@@ -28,16 +28,21 @@ struct ComposerView: View {
             if !files.isEmpty {
                 ComposerAttachmentsView(
                     files: files,
-                    isGhostModeEnabled: isGhostModeEnabled,
+                    accentColor: accentColor,
+                    backgroundColor: backgroundColor,
+                    borderColor: isGhostModeEnabled ? DS.Color.Border.weakDark : DS.Color.Border.weak,
                     // FIXME: propagate action with attachementID
                     onTrashTapped: {}
                 )
             }
 
             HStack(alignment: .center, spacing: DS.Spacing.small) {
-                ComposerInput(text: $text, isGhostModeEnabled: isGhostModeEnabled)
-                    .background(isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak)
-                    .padding(.vertical, DS.Spacing.large)
+                ComposerInput(
+                    text: $text,
+                    placeholderColor: isGhostModeEnabled ? DS.Color.Text.hintDark : DS.Color.Text.hint,
+                    textColor: isGhostModeEnabled ? DS.Color.Text.normDarkOnly : DS.Color.Text.norm,
+                    backgroundColor: backgroundColor
+                )
 
                 switch actionButton {
                 case .none:
@@ -52,11 +57,11 @@ struct ComposerView: View {
             .padding(.horizontal, DS.Spacing.mediumLight)
             .background {
                 RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                    .fill(isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak)
+                    .fill(backgroundColor)
             }
 
             ComposerToolbar(
-                isGhostModeEnabled: isGhostModeEnabled,
+                iconColor: accentColor,
                 isWebSearchEnabled: isWebSearchEnabled,
                 onPaperclipTap: { action(.filePickerTapped) },
                 onGlobeTap: { action(.webSearchTapped) },
@@ -74,7 +79,7 @@ struct ComposerView: View {
         ComposerActionButton(
             action: { action(.sendTapped) },
             icon: DS.Icon.icArrowRight.swiftUIImage,
-            isGhostModeEnabled: isGhostModeEnabled
+            iconColor: actionButtonIconColor
         )
     }
 
@@ -82,8 +87,20 @@ struct ComposerView: View {
         ComposerActionButton(
             action: { action(.stopTapped) },
             icon: DS.Icon.icStop.swiftUIImage,
-            isGhostModeEnabled: isGhostModeEnabled
+            iconColor: actionButtonIconColor
         )
+    }
+
+    private var accentColor: Color {
+        isGhostModeEnabled ? DS.Color.Text.weakDark : DS.Color.Text.weak
+    }
+
+    private var actionButtonIconColor: Color {
+        isGhostModeEnabled ? DS.Color.Background.normDarkOnly : DS.Color.Background.norm
+    }
+
+    private var backgroundColor: Color {
+        isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak
     }
 }
 

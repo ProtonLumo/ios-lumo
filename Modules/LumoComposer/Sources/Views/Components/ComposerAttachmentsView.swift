@@ -3,7 +3,10 @@ import SwiftUI
 
 struct ComposerAttachmentsView: View {
     let files: [File]
-    let isGhostModeEnabled: Bool
+    /// Used for text and icon colors
+    let accentColor: Color
+    let backgroundColor: Color
+    let borderColor: Color
     let onTrashTapped: () -> Void
 
     var body: some View {
@@ -20,21 +23,22 @@ struct ComposerAttachmentsView: View {
                             Text(file.type.rawValue)
                                 .font(.caption)
                         }
-                        .foregroundStyle(isGhostModeEnabled ? DS.Color.Text.weakDark : DS.Color.Text.weak)
+                        .foregroundStyle(accentColor)
                         .frame(maxWidth: 95)
                         Button(
                             action: onTrashTapped,
                             label: {
                                 DS.Icon.icTrash.swiftUIImage
-                                    .foregroundStyle(isGhostModeEnabled ? DS.Color.Text.weakDark : DS.Color.Text.weak)
+                                    .frame(width: 24, height: 24)
+                                    .foregroundStyle(accentColor)
                             }
                         )
                     }
                     .padding(.all, DS.Spacing.medium)
                     .background {
                         RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                            .fill(isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak)
-                            .strokeBorder(isGhostModeEnabled ? DS.Color.Border.weakDark : DS.Color.Border.weak, lineWidth: 1)
+                            .fill(backgroundColor)
+                            .strokeBorder(borderColor, lineWidth: 1)
                     }
                 }
             }
@@ -55,7 +59,9 @@ struct ComposerAttachmentsView: View {
                 .init(name: "Image.jpg", type: .image),
                 .init(name: "Video.mp4", type: .video),
             ],
-            isGhostModeEnabled: false,
+            accentColor: DS.Color.Text.weak,
+            backgroundColor: DS.Color.Background.weak,
+            borderColor: DS.Color.Border.weak,
             onTrashTapped: {}
         )
     }

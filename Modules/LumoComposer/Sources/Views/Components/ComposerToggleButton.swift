@@ -3,15 +3,15 @@ import SwiftUI
 
 struct ComposerToggleButton: View {
     let icon: Image
+    let iconColor: Color
     let isOn: Bool
-    let isGhostModeEnabled: Bool
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             icon
                 .font(.system(size: 20))
-                .foregroundStyle(isGhostModeEnabled ? DS.Color.Text.weakDark : DS.Color.Text.weak)
+                .foregroundStyle(iconColor)
                 .frame(width: 36, height: 36)
                 .background {
                     RoundedRectangle(cornerRadius: DS.Radius.medium)
