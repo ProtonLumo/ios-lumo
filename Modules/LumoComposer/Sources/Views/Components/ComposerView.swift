@@ -26,7 +26,12 @@ struct ComposerView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.standard) {
             if !files.isEmpty {
-                ComposerAttachmentsView(files: files, isGhostModeEnabled: isGhostModeEnabled)
+                ComposerAttachmentsView(
+                    files: files,
+                    isGhostModeEnabled: isGhostModeEnabled,
+                    // FIXME: propagate action with attachementID
+                    onTrashTapped: {}
+                )
             }
 
             HStack(alignment: .center, spacing: DS.Spacing.small) {

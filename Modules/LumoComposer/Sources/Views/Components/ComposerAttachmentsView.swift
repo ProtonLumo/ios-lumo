@@ -4,6 +4,7 @@ import SwiftUI
 struct ComposerAttachmentsView: View {
     let files: [File]
     let isGhostModeEnabled: Bool
+    let onTrashTapped: () -> Void
 
     var body: some View {
         ScrollView(.horizontal) {
@@ -21,9 +22,15 @@ struct ComposerAttachmentsView: View {
                         }
                         .foregroundStyle(isGhostModeEnabled ? DS.Color.Text.weakDark : DS.Color.Text.weak)
                         .frame(maxWidth: 95)
+                        Button(
+                            action: onTrashTapped,
+                            label: {
+                                DS.Icon.icTrash.swiftUIImage
+                                    .foregroundStyle(isGhostModeEnabled ? DS.Color.Text.weakDark : DS.Color.Text.weak)
+                            }
+                        )
                     }
-                    .padding([.leading, .top, .bottom], DS.Spacing.medium)
-                    .padding([.trailing], DS.Spacing.jumbo)
+                    .padding(.all, DS.Spacing.medium)
                     .background {
                         RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
                             .fill(isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak)
@@ -37,3 +44,19 @@ struct ComposerAttachmentsView: View {
         .scrollIndicators(.hidden)
     }
 }
+
+#if DEBUG
+    #Preview {
+        ComposerAttachmentsView(
+            files: [
+                .init(name: "Report.pdf", type: .pdf),
+                .init(name: "Data.xls", type: .xls),
+                .init(name: "Slides.ppt", type: .ppt),
+                .init(name: "Image.jpg", type: .image),
+                .init(name: "Video.mp4", type: .video),
+            ],
+            isGhostModeEnabled: false,
+            onTrashTapped: {}
+        )
+    }
+#endif
