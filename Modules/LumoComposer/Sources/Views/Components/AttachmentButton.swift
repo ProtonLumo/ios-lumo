@@ -1,4 +1,5 @@
 import LumoDesignSystem
+import LumoUI
 import SwiftUI
 
 struct AttachmentButton: View {
@@ -17,7 +18,7 @@ struct AttachmentButton: View {
                 HStack(spacing: DS.Spacing.mediumLight) {
                     file.type
                         .image
-                        .frame(width: 24, height: 24)
+                        .square(size: 24)
                     VStack(alignment: .leading, spacing: .zero) {
                         Text(file.name)
                             .font(.caption.weight(.semibold))
@@ -31,7 +32,7 @@ struct AttachmentButton: View {
                         label: {
                             DS.Icon.icTrash.swiftUIImage
                                 .foregroundStyle(accentColor)
-                                .frame(width: 24, height: 24)
+                                .square(size: 24)
                         }
                     )
                 }

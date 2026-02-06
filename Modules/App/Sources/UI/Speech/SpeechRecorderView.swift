@@ -1,3 +1,4 @@
+import LumoUI
 import SwiftUI
 
 struct SpeechRecorderView: View {
@@ -43,7 +44,7 @@ struct SpeechRecorderView: View {
                         }) {
                             Circle()
                                 .fill(brandPurple.opacity(0.7))
-                                .frame(width: 50, height: 50)
+                                .square(size: 50)
                                 .overlay(
                                     Image(systemName: "xmark")
                                         .font(.system(size: 18, weight: .bold))

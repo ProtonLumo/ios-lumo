@@ -1,4 +1,5 @@
 import LumoDesignSystem
+import LumoUI
 import SwiftUI
 
 struct ComposerActionButton: View {
@@ -12,7 +13,7 @@ struct ComposerActionButton: View {
             label: {
                 icon
                     .foregroundStyle(iconColor)
-                    .frame(width: 36, height: 36)
+                    .square(size: 36)
                     .background {
                         Circle()
                             .fill(DS.Color.primary)

@@ -1,5 +1,6 @@
 import Lottie
 import LumoDesignSystem
+import LumoUI
 import ProtonUIFoundations
 import SwiftUI
 import UIKit
@@ -62,7 +63,7 @@ struct TransactionProgressView: View {
                         ZStack {
                             Circle()
                                 .fill(viewModel.stepStates[index] ? Theme.color.iconAccent : Color.gray.opacity(0.2))
-                                .frame(width: 24, height: 24)
+                                .square(size: 24)
 
                             if viewModel.stepStates[index] {
                                 Image(systemName: "checkmark")

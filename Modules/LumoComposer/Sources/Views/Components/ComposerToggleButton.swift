@@ -1,4 +1,5 @@
 import LumoDesignSystem
+import LumoUI
 import SwiftUI
 
 struct ComposerToggleButton: View {
@@ -12,7 +13,7 @@ struct ComposerToggleButton: View {
             icon
                 .font(.system(size: 20))
                 .foregroundStyle(iconColor)
-                .frame(width: 36, height: 36)
+                .square(size: 36)
                 .background {
                     RoundedRectangle(cornerRadius: DS.Radius.medium)
                         .fill(isOn ? DS.Color.Interaction.defaultHover : Color.clear)

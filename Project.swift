@@ -70,6 +70,7 @@ let project = Project(
                 .target(name: "LumoWidgetExtension"),
                 .target(name: "LumoComposer"),
                 .target(name: "LumoDesignSystem"),
+                .target(name: "LumoUI"),
             ],
             settings: .settings(
                 base: [
@@ -116,7 +117,8 @@ let project = Project(
                 "Modules/WidgetExtension/Resources/**"
             ],
             dependencies: [
-                .external(name: "Lottie")
+                .external(name: "Lottie"),
+                .target(name: "LumoUI"),
             ],
             settings: .settings(
                 base: [
@@ -137,7 +139,8 @@ let project = Project(
                 "Modules/LumoComposer/Resources/**"
             ],
             dependencies: [
-                .target(name: "LumoDesignSystem")
+                .target(name: "LumoDesignSystem"),
+                .target(name: "LumoUI"),
             ],
             settings: .settings(base: moduleVerifierSettings)
         ),
@@ -154,6 +157,15 @@ let project = Project(
             dependencies: [
                 .external(name: "Lottie")
             ],
+            settings: .settings(base: moduleVerifierSettings)
+        ),
+        .target(
+            name: "LumoUI",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "me.proton.lumo.LumoUI",
+            deploymentTargets: .iOS("17.6"),
+            sources: ["Modules/LumoUI/Sources/**"],
             settings: .settings(base: moduleVerifierSettings)
         ),
         .target(

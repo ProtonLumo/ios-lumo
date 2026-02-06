@@ -1,3 +1,4 @@
+import LumoUI
 import ProtonUIFoundations
 import SwiftUI
 
@@ -30,7 +31,7 @@ struct HeaderTitleView: View {
                             fallbackImage: nil
                         )
                         .foregroundColor(Theme.color.iconAccent)
-                        .frame(width: Constants.decorationSize, height: Constants.decorationSize)
+                        .square(size: Constants.decorationSize)
                     }
                 }
             }
