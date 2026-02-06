@@ -37,7 +37,7 @@ public struct ComposerScreen: View {
 
     private func logoPlaceholder() -> some View {
         HStack(spacing: .zero) {
-            Image(DS.Icon.lumoLogo)
+            DS.Icon.lumoLogo.swiftUIImage
                 .padding(.top, DS.Spacing.large)
                 .padding(.leading, 58)
                 .foregroundStyle(DS.Color.Text.norm)
