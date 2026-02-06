@@ -35,10 +35,6 @@ struct ComposedPlan: Equatable, Hashable, Sendable {
         let discountInt = min(Int(discountDouble.rounded()), 99)
         return discountInt >= Self.minimumVisibleDiscount ? discountInt : nil
     }
-
-    func formattedPrice(amount: Double, currency: String) -> String {
-        Decimal(amount / 100).formatted(.currency(code: currency).presentation(.narrow).rounded())
-    }
 }
 
 extension ComposedPlan {

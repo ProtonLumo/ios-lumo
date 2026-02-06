@@ -4,49 +4,53 @@ import ProtonUIFoundations
 class PlanOptionViewModel: ObservableObject, Identifiable {
     let id: String
     let title: String
-    let subTitle: String
-    let price: String
+    let subtitle: String
+    let displayPrice: String
     let discount: String?
     let type: PlanType
     let plan: ComposedPlan
 
     @Published var isSelected: Bool = false
 
-    init(plan: ComposedPlan, discount: Double) {
+    init(plan: ComposedPlan, discount: Decimal) {
+        self.id = plan.product.id
+        self.displayPrice = plan.product.displayPrice
         self.plan = plan
+
+        let title: String
+        let subtitle: String
+        let formattedDiscount: String?
+        let type: PlanType
+        let isPlanSelected: Bool
 
         switch plan.instance.cycle {
         case 12:
-            self.title = String(localized: "app.payment.duration.yearly")
-            self.type = .year
-            let monthlyPriceFromStoreKit = plan.pricePerMonth
-            self.subTitle =
-                Decimal(Int(monthlyPriceFromStoreKit * 100)).formatted(.currency(code: plan.product.currency()).presentation(.narrow).rounded()) + String(localized: "app.payment.month.suffix")
-            self.discount =
-                String(localized: "app.payment.save.prefix")
-                + plan.formattedPrice(
-                    amount: discount,
-                    currency: plan.product.currency())
-            self.isSelected = true
+            title = String(localized: "app.payment.duration.yearly")
+            type = .year
+            subtitle = plan.formattedMonthlyPrice
+            let value: Decimal = discount / 100.0
+            let discount = value.formattedPrice(currencyCode: plan.product.currency())
+            formattedDiscount = [String(localized: "app.payment.save.prefix"), discount].joined()
+            isPlanSelected = true
         case 1:
-            self.title = String(localized: "app.payment.duration.monthly")
-            self.type = .month
-            let monthlyPriceFromStoreKit = plan.pricePerMonth
-
-            self.subTitle =
-                Decimal(Int(monthlyPriceFromStoreKit * 100)).formatted(.currency(code: plan.product.currency()).presentation(.narrow).rounded()) + String(localized: "app.payment.month.suffix")
-            self.discount = nil
-            self.isSelected = false
+            title = String(localized: "app.payment.duration.monthly")
+            subtitle = plan.formattedMonthlyPrice
+            formattedDiscount = nil
+            type = .month
+            isPlanSelected = false
         default:
-            self.title = String(localized: "app.payment.error")
-            self.subTitle = String(localized: "app.payment.error")
-            self.type = .month
-            self.discount = nil
-            self.isSelected = false
+            title = String(localized: "app.payment.error")
+            subtitle = String(localized: "app.payment.error")
+            type = .month
+            formattedDiscount = nil
+            isPlanSelected = false
         }
-        self.price = plan.product.displayPrice
 
-        self.id = plan.product.id
+        self.title = title
+        self.subtitle = subtitle
+        self.discount = formattedDiscount
+        self.type = type
+        self.isSelected = isPlanSelected
     }
 
     func setSelected(_ value: Bool) {
@@ -56,8 +60,17 @@ class PlanOptionViewModel: ObservableObject, Identifiable {
     }
 }
 
+fileprivate extension ComposedPlan {
+    var formattedMonthlyPrice: String {
+        let monthlyPrice = Decimal(pricePerMonth * 100)
+        let formattedPrice = monthlyPrice.formattedPrice(currencyCode: product.currency())
+
+        return [formattedPrice, String(localized: "app.payment.month.suffix")].joined()
+    }
+}
+
 extension PlanOptionViewModel: Equatable {
     static func == (lhs: PlanOptionViewModel, rhs: PlanOptionViewModel) -> Bool {
-        lhs.title == rhs.title && lhs.subTitle == rhs.subTitle && lhs.price == rhs.plan.product.displayPrice && lhs.discount == rhs.discount && lhs.type == rhs.type
+        lhs.title == rhs.title && lhs.subtitle == rhs.subtitle && lhs.displayPrice == rhs.plan.product.displayPrice && lhs.discount == rhs.discount && lhs.type == rhs.type
     }
 }
