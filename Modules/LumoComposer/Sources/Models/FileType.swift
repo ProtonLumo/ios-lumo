@@ -1,7 +1,7 @@
 import LumoDesignSystem
 import SwiftUI
 
-enum FileType: String {
+enum FileType: String, Equatable {
     case album = "Album"
     case attachments = "Attachments"
     case calendar = "Calendar"
