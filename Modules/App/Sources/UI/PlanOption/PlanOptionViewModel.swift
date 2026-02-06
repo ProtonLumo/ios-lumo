@@ -62,7 +62,7 @@ class PlanOptionViewModel: ObservableObject, Identifiable {
 
 fileprivate extension ComposedPlan {
     var formattedMonthlyPrice: String {
-        let monthlyPrice = Decimal(Int(pricePerMonth * 100))
+        let monthlyPrice = Decimal(pricePerMonth * 100)
         let formattedPrice = monthlyPrice.formattedPrice(currencyCode: product.currency())
 
         return [formattedPrice, String(localized: "app.payment.month.suffix")].joined()

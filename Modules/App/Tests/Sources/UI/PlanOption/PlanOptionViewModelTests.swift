@@ -25,7 +25,7 @@ struct PlanOptionViewModelTests {
             ),
             expected: .init(
                 title: String(localized: "app.payment.duration.yearly"),
-                subtitle: "$9.00/month",
+                subtitle: "$10.00/month",
                 discount: "Save $35.89",
                 type: .year,
                 isSelected: true
@@ -38,7 +38,7 @@ struct PlanOptionViewModelTests {
             ),
             expected: .init(
                 title: String(localized: "app.payment.duration.monthly"),
-                subtitle: "$12.00/month",
+                subtitle: "$12.99/month",
                 discount: nil,
                 type: .month,
                 isSelected: false
