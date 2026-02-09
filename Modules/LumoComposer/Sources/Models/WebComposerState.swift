@@ -29,8 +29,8 @@ extension WebComposerState {
             mode: .idle,
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
-            isVisible: false,
-            showTermsAndPrivacy: false,
+            isVisible: true,
+            showTermsAndPrivacy: true,
             attachedFiles: []
         )
     }
