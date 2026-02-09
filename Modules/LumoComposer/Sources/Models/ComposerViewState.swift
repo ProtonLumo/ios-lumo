@@ -31,7 +31,7 @@ struct ComposerViewState: Equatable {
             return .none
         }
 
-        if isProcessing || webState.mode == .working {
+        guard !isProcessing, webState.mode == .idle else {
             return .stop
         }
 
