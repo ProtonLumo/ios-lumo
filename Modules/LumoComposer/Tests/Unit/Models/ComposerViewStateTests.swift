@@ -13,6 +13,7 @@ struct ComposerViewStateTests {
                 == ComposerViewState(
                     currentText: "",
                     isProcessing: false,
+                    isWebViewReady: false,
                     webState: .init(
                         mode: .idle,
                         isGhostModeEnabled: false,
@@ -39,6 +40,8 @@ struct ComposerViewStateTests {
             TestCase(given: .testData(currentText: "\n\n   \n  \n", isProcessing: false, mode: .idle), expected: .none),
             TestCase(given: .testData(currentText: " ", isProcessing: false, mode: .idle), expected: .none),
             TestCase(given: .testData(currentText: "\t", isProcessing: false, mode: .idle), expected: .none),
+            TestCase(given: .testData(currentText: "What is AI?", isProcessing: false, isWebViewReady: false, mode: .idle), expected: .none),
+            TestCase(given: .testData(currentText: "", isProcessing: true, isWebViewReady: false, mode: .idle), expected: .none),
 
             TestCase(given: .testData(currentText: "What is AI?", isProcessing: false, mode: .idle), expected: .send),
             TestCase(given: .testData(currentText: "  Hello  \n", isProcessing: false, mode: .idle), expected: .send),
@@ -60,11 +63,13 @@ private extension ComposerViewState {
     static func testData(
         currentText: String,
         isProcessing: Bool,
+        isWebViewReady: Bool = true,
         mode: WebComposerState.Mode
     ) -> Self {
         ComposerViewState(
             currentText: currentText,
             isProcessing: isProcessing,
+            isWebViewReady: isWebViewReady,
             webState: WebComposerState(
                 mode: mode,
                 isGhostModeEnabled: false,

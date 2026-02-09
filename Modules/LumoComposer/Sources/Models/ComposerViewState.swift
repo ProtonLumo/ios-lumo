@@ -12,6 +12,8 @@ struct ComposerViewState: Equatable {
     /// Reset to `false` when web state returns to `.idle`.
     /// This provides instant feedback by showing stop button during network delay.
     var isProcessing: Bool
+    /// Whether the WebView has loaded and is ready for interaction
+    var isWebViewReady: Bool
     /// State synchronized from WebView
     var webState: WebComposerState
 
@@ -25,6 +27,10 @@ struct ComposerViewState: Equatable {
     /// The button shows `.stop` immediately when user taps send (via `isProcessing`),
     /// providing instant feedback before web confirms the state change.
     var actionButton: ComposerView.ActionButtonState {
+        guard isWebViewReady else {
+            return .none
+        }
+
         if isProcessing || webState.mode == .working {
             return .stop
         }
@@ -40,6 +46,11 @@ struct ComposerViewState: Equatable {
 
 extension ComposerViewState {
     static var initial: Self {
-        .init(currentText: "", isProcessing: false, webState: .initial)
+        .init(
+            currentText: "",
+            isProcessing: false,
+            isWebViewReady: false,
+            webState: .initial
+        )
     }
 }
