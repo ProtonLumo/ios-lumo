@@ -1,12 +1,13 @@
+import LumoCore
 import WebKit
 
 enum WebComposerBridgeError: Error, Equatable {
     case webViewNotAttached
-    case evaluatingJSFailed(WebComposerBridge.JavaScript)
+    case evaluatingJSFailed(WebComposerBridge.Command)
 }
 
 final class WebComposerBridge: WebComposerAttaching, WebComposerBridging {
-    enum JavaScript: Equatable {
+    enum Command: Equatable {
         case sendPrompt(String)
         case stopResponse
         case openFilePicker
@@ -19,7 +20,7 @@ final class WebComposerBridge: WebComposerAttaching, WebComposerBridging {
 
             switch self {
             case .sendPrompt(let prompt):
-                return "window.nativeComposerApi?.sendPrompt('\(id)', \(prompt));"
+                return "window.nativeComposerApi?.sendPrompt('\(id)', '\(prompt)');"
             case .stopResponse:
                 return "window.nativeComposerApi?.abortPrompt('\(id)');"
             case .openFilePicker:
@@ -45,10 +46,7 @@ final class WebComposerBridge: WebComposerAttaching, WebComposerBridging {
     // MARK: - WebComposerBridging
 
     func sendPrompt(_ text: String) async throws(WebComposerBridgeError) {
-        // FIXME: Pass escaped text to .sendPrompt case
-        let escapedText = text
-
-        try await executeJavaScript(.sendPrompt(escapedText))
+        try await executeJavaScript(.sendPrompt(text.jsEscaped))
     }
 
     func stopResponse() async throws(WebComposerBridgeError) {
@@ -77,19 +75,19 @@ final class WebComposerBridge: WebComposerAttaching, WebComposerBridging {
 
     // MARK: - Private
 
-    private func executeJavaScript(_ javaScript: JavaScript) async throws(WebComposerBridgeError) {
+    private func executeJavaScript(_ command: Command) async throws(WebComposerBridgeError) {
         guard let webView else {
             throw .webViewNotAttached
         }
 
         do {
             let _ = try await webView.evaluateJavaScript(
-                javaScript.rawString,
+                command.rawString,
                 in: .none,
                 contentWorld: .page
             )
         } catch {
-            throw .evaluatingJSFailed(javaScript)
+            throw .evaluatingJSFailed(command)
         }
     }
 }

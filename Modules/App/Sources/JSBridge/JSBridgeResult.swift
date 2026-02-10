@@ -1,4 +1,5 @@
 import Foundation
+import LumoCore
 
 /// Result type for JavaScript execution
 enum JSBridgeResult {
