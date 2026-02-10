@@ -3,7 +3,7 @@ import Testing
 
 @testable import LumoComposer
 
-struct LottieTestingTrait: TestTrait, TestScoping {
+struct LottieEnvironmentTrait: TestTrait, TestScoping {
     let pausedAt: AnimationProgressTime
 
     func provideScope(
@@ -15,7 +15,7 @@ struct LottieTestingTrait: TestTrait, TestScoping {
     }
 }
 
-extension Trait where Self == LottieTestingTrait {
+extension Trait where Self == LottieEnvironmentTrait {
     static func lottiePaused(at progress: AnimationProgressTime) -> Self {
         .init(pausedAt: progress)
     }
