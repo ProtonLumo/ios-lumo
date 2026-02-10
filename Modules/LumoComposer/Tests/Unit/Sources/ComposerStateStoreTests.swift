@@ -25,7 +25,7 @@ final class ComposerStateStoreTests {
         let effect = await sut.handle(action: .taskStarted)
         #expect(effect == .none)
 
-        simulateDidReceiveStateChange(state: [
+        simulateHandleStateChange(state: [
             "lumoMode": "Working",
             "isGhostModeEnabled": false,
             "isWebSearchEnabled": false,
@@ -48,7 +48,7 @@ final class ComposerStateStoreTests {
         let effect = await sut.handle(action: .onDisappear)
         #expect(effect == .none)
 
-        simulateDidReceiveStateChange(state: [
+        simulateHandleStateChange(state: [
             "lumoMode": "Working",
             "isGhostModeEnabled": false,
             "isWebSearchEnabled": false,
@@ -121,7 +121,7 @@ final class ComposerStateStoreTests {
             window.nativeComposerApi?.sendPrompt('212A909D-2D5C-4891-8717-685D27C6A4EE', 'How to make proper neapolitan pizza?');
             """
 
-        simulateDidReceiveStateChange(state: [
+        simulateHandleStateChange(state: [
             "lumoMode": "Working",
             "isGhostModeEnabled": false,
             "isWebSearchEnabled": false,
@@ -140,7 +140,7 @@ final class ComposerStateStoreTests {
                 )
         )
 
-        simulateDidReceiveStateChange(state: [
+        simulateHandleStateChange(state: [
             "lumoMode": "Idle",
             "isGhostModeEnabled": false,
             "isWebSearchEnabled": false,
@@ -530,7 +530,7 @@ final class ComposerStateStoreTests {
         let effect = await sut.handle(action: .taskStarted)
         #expect(effect == .none)
 
-        simulateDidReceiveStateChange(state: [
+        simulateHandleStateChange(state: [
             "lumoMode": "Working",
             "isGhostModeEnabled": true,
             "isWebSearchEnabled": true,
@@ -577,7 +577,7 @@ final class ComposerStateStoreTests {
             .store(in: &cancellables)
     }
 
-    private func simulateDidReceiveStateChange(state: [String: Any]) {
+    private func simulateHandleStateChange(state: [String: Any]) {
         webBridge.handleStateChange(state: state)
     }
 }

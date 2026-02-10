@@ -20,12 +20,13 @@ struct ComposerViewState: Equatable, Copying {
     /// Action button state for ComposerView
     ///
     /// This drives the UI for the main action button:
-    /// - `.none`: No button shown (idle + empty text + not processing)
-    /// - `.send`: Send button shown (idle + has text + not processing)
-    /// - `.stop`: Stop button shown (processing OR working)
+    /// - `.none` - No button shown
+    /// - `.send` - Send button shown
+    /// - `.stop` - Stop button shown
     ///
-    /// The button shows `.stop` immediately when user taps send (via `isProcessing`),
-    /// providing instant feedback before web confirms the state change.
+    /// **Instant feedback:**
+    /// Button switches to `.stop` immediately when user taps send (via `isProcessing`),
+    /// providing instant UI feedback before the web application confirms state change.
     var actionButton: ComposerView.ActionButtonState {
         guard isWebViewReady else {
             return .none

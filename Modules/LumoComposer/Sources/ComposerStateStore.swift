@@ -74,27 +74,18 @@ final class ComposerStateStore: ObservableObject {
             }
 
         case .stopResponseTapped:
-            do {
+            return await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.stopResponse()
-                return .none
-            } catch {
-                return .error(error)
             }
 
         case .openFilePickerTapped:
-            do {
+            return await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.openFilePicker()
-                return .none
-            } catch {
-                return .error(error)
             }
 
         case .toggleWebSearchTapped:
-            do {
+            return await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.toggleWebSearch()
-                return .none
-            } catch {
-                return .error(error)
             }
 
         case .startRecordingTapped:
@@ -102,20 +93,25 @@ final class ComposerStateStore: ObservableObject {
             return .none
 
         case .previewAttachmentTapped(let id):
-            do {
+            return await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.previewAttachment(id: id)
-                return .none
-            } catch {
-                return .error(error)
             }
 
         case .removeAttachmentTapped(let id):
-            do {
+            return await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.removeAttachment(id: id)
-                return .none
-            } catch {
-                return .error(error)
             }
+        }
+    }
+
+    // MARK: - Private
+
+    private func execute(_ command: () async throws(WebComposerBridgeError) -> Void) async -> Effect {
+        do {
+            try await command()
+            return .none
+        } catch {
+            return .error(error)
         }
     }
 }
