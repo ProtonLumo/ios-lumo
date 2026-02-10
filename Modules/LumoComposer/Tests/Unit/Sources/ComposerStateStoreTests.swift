@@ -29,26 +29,19 @@ final class ComposerStateStoreTests {
     func sendPromptAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
         var stateChanges: [ComposerViewState] = []
 
-        var cancellables: Set<AnyCancellable> = []
-
-        sut.$state
-            .sink { state in stateChanges.append(state) }
-            .store(in: &cancellables)
+        observeStateChanges { state in
+            stateChanges.append(state)
+        }
 
         _ = await sut.handle(action: .textChanged(to: "Tell me something about AI"))
 
         let effect = await sut.handle(action: .sendPromptTapped)
 
-        let updatedState =
-            initialState
-            .copy(\.currentText, to: "")
-            .copy(\.isProcessing, to: true)
-
         #expect(
             stateChanges == [
                 initialState,
                 initialState.copy(\.currentText, to: "Tell me something about AI"),
-                updatedState,
+                initialState.copy(\.isProcessing, to: true),
                 initialState.copy(\.currentText, to: "Tell me something about AI"),
             ]
         )
@@ -59,9 +52,9 @@ final class ComposerStateStoreTests {
     func sendPromptAction_WhenWebViewIsAttached_UpdatesStateCorrectly() async {
         var stateChanges: [ComposerViewState] = []
 
-        sut.$state
-            .sink { state in stateChanges.append(state) }
-            .store(in: &cancellables)
+        observeStateChanges { state in
+            stateChanges.append(state)
+        }
 
         webBridge.attach(to: webViewSpy)
 
@@ -70,11 +63,6 @@ final class ComposerStateStoreTests {
         _ = await sut.handle(action: .textChanged(to: "How to make proper neapolitan pizza?"))
 
         let effect = await sut.handle(action: .sendPromptTapped)
-
-        let updatedState =
-            initialState
-            .copy(\.currentText, to: "")
-            .copy(\.isProcessing, to: true)
 
         let javascript = """
             window.nativeComposerApi?.sendPrompt('212A909D-2D5C-4891-8717-685D27C6A4EE', How to make proper neapolitan pizza?);
@@ -94,7 +82,7 @@ final class ComposerStateStoreTests {
             stateChanges == [
                 initialState,
                 initialState.copy(\.currentText, to: "How to make proper neapolitan pizza?"),
-                updatedState,
+                initialState.copy(\.isProcessing, to: true),
                 initialState,
             ]
         )
@@ -105,9 +93,9 @@ final class ComposerStateStoreTests {
     func sendPromptAction_WhenWebViewIsAttachedButJavaScriptEvaluationFails_ItReturnsError() async {
         var stateChanges: [ComposerViewState] = []
 
-        sut.$state
-            .sink { state in stateChanges.append(state) }
-            .store(in: &cancellables)
+        observeStateChanges { state in
+            stateChanges.append(state)
+        }
 
         webBridge.attach(to: webViewSpy)
 
@@ -119,19 +107,22 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.handle(action: .sendPromptTapped)
 
-        let updatedState =
-            initialState
-            .copy(\.currentText, to: "")
-            .copy(\.isProcessing, to: true)
-
         #expect(
             stateChanges == [
                 initialState,
                 initialState.copy(\.currentText, to: "Tell me a story"),
-                updatedState,
+                initialState.copy(\.isProcessing, to: true),
                 initialState.copy(\.currentText, to: "Tell me a story"),
             ]
         )
         #expect(effect == .error(.evaluatingJSFailed(.sendPrompt("Tell me a story"))))
+    }
+
+    // MARK: - Private
+
+    private func observeStateChanges(_ stateChange: @escaping (ComposerViewState) -> Void) {
+        sut.$state
+            .sink { state in stateChange(state) }
+            .store(in: &cancellables)
     }
 }
