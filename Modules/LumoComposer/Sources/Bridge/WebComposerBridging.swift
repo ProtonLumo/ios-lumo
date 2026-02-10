@@ -1,6 +1,9 @@
 import WebKit
 
-/// Protocol for communication with WebView
+/// Protocol for sending commands to the WebView's JavaScript layer.
+///
+/// Handles outbound communication from Swift to the web application.
+/// Complements `WebComposerStateReceiving` which handles inbound communication (JavaScript → Swift).
 protocol WebComposerBridging {
     /// Send a prompt to Lumo
     /// - Parameter text: The prompt text to send
