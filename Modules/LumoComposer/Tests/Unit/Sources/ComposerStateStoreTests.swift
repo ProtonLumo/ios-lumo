@@ -65,7 +65,7 @@ final class ComposerStateStoreTests {
         let effect = await sut.handle(action: .sendPromptTapped)
 
         let javascript = """
-            window.nativeComposerApi?.sendPrompt('212A909D-2D5C-4891-8717-685D27C6A4EE', How to make proper neapolitan pizza?);
+            window.nativeComposerApi?.sendPrompt('212A909D-2D5C-4891-8717-685D27C6A4EE', 'How to make proper neapolitan pizza?');
             """
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
@@ -132,49 +132,49 @@ final class ComposerStateStoreTests {
             // Test 1: Double quotes
             TextEscapingTestCase(
                 input: "Say \"hello\" to me",
-                expectedOutput: "'Say \\\"hello\\\" to me'",
+                expectedOutput: "Say \\\"hello\\\" to me",
                 comment: "Double quotes should be escaped as \\\" in JavaScript string"
             ),
             // Test 2: Single quotes (must be escaped in single-quoted strings)
             TextEscapingTestCase(
                 input: "It's a nice day",
-                expectedOutput: "'It\\'s a nice day'",
+                expectedOutput: "It\\'s a nice day",
                 comment: "Single quotes should be escaped as \\' inside single-quoted strings"
             ),
             // Test 3: Newlines
             TextEscapingTestCase(
                 input: "Line 1\nLine 2\nLine 3",
-                expectedOutput: "'Line 1\\nLine 2\\nLine 3'",
+                expectedOutput: "Line 1\\nLine 2\\nLine 3",
                 comment: "Newlines should be escaped as \\n in JavaScript string"
             ),
             // Test 4: Backslashes
             TextEscapingTestCase(
                 input: "Path: C:\\Users\\test",
-                expectedOutput: "'Path: C:\\\\Users\\\\test'",
+                expectedOutput: "Path: C:\\\\Users\\\\test",
                 comment: "Backslashes should be escaped as \\\\ in JavaScript string"
             ),
             // Test 5: Carriage returns
             TextEscapingTestCase(
                 input: "Line 1\r\nLine 2",
-                expectedOutput: "'Line 1\\r\\nLine 2'",
+                expectedOutput: "Line 1\\r\\nLine 2",
                 comment: "Carriage returns should be escaped as \\r in JavaScript string"
             ),
             // Test 6: All special characters combined
             TextEscapingTestCase(
                 input: "Say \"hello\"\nIt's nice\nPath: C:\\test",
-                expectedOutput: "'Say \\\"hello\\\"\\nIt\\'s nice\\nPath: C:\\\\test'",
+                expectedOutput: "Say \\\"hello\\\"\\nIt\\'s nice\\nPath: C:\\\\test",
                 comment: "All special characters should be properly escaped when combined"
             ),
             // Test 7: Code injection attempt (SECURITY)
             TextEscapingTestCase(
                 input: "\"); alert('hacked'); (\"",
-                expectedOutput: "'\\\"); alert(\\'hacked\\'); (\\\"'",
+                expectedOutput: "\\\"); alert(\\'hacked\\'); (\\\"",
                 comment: "Injection attempts should be safely escaped to prevent code execution"
             ),
             // Test 8: Unicode Line and Paragraph Separators (JavaScript edge case)
             TextEscapingTestCase(
                 input: "Line 1\u{2028}Line 2\u{2029}Line 3",
-                expectedOutput: "'Line 1\\u2028Line 2\\u2029Line 3'",
+                expectedOutput: "Line 1\\u2028Line 2\\u2029Line 3",
                 comment: "Unicode line/paragraph separators (U+2028, U+2029) must be escaped to prevent breaking JavaScript"
             ),
         ]
@@ -185,13 +185,13 @@ final class ComposerStateStoreTests {
         _ = await sut.handle(action: .textChanged(to: testCase.input))
         let effect = await sut.handle(action: .sendPromptTapped)
 
-        let javascript = "window.nativeComposerApi.sendPrompt('\(UUID.testData.uuidString)', \(testCase.expectedOutput));"
+        let javaScript = "window.nativeComposerApi?.sendPrompt('\(UUID.testData.uuidString)', '\(testCase.expectedOutput)');"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
             webViewSpy.evaluateJavaScriptCalls.last
                 == .init(
-                    javaScript: javascript,
+                    javaScript: javaScript,
                     frame: .none,
                     contentWorld: .page
                 ),
