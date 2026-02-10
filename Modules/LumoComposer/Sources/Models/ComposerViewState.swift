@@ -3,7 +3,7 @@ import Foundation
 /// View-level state that drives the composer UI
 ///
 /// This combines the synchronized `WebComposerState` from WebView with local UI state.
-struct ComposerViewState: Equatable {
+struct ComposerViewState: Equatable, Copying {
     /// Current text in composer input (local UI state, not synced with web)
     var currentText: String
     /// Local processing state for optimistic UI updates

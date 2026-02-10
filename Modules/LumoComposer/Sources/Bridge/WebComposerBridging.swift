@@ -1,17 +1,19 @@
 import WebKit
 
-/// Protocol for communication with WebView
-protocol WebComposerBridging {
+protocol WebComposerAttaching {
     /// Set up communication with the WebView
     ///
     /// Must be called before using other bridge methods.
     ///
     /// - Parameter webView: The WKWebView to communicate with
-    func attach(to webView: WKWebView)
+    func attach(to webView: WebViewProtocol)
+}
 
+/// Protocol for communication with WebView
+protocol WebComposerBridging {
     /// Send a prompt to Lumo
     /// - Parameter text: The prompt text to send
-    func sendPrompt(_ text: String) async throws
+    func sendPrompt(_ text: String) async throws(WebComposerBridgeError)
 
     /// Stop the current response generation
     func stopResponse() async throws
