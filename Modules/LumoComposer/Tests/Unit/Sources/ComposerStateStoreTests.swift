@@ -120,38 +120,66 @@ final class ComposerStateStoreTests {
 
     // MARK: - .sendPrompt action - Text Escaping
 
-    @Test(.stubbedUUID(.testData))
-    func sendPromptAction_WithDoubleQuotes_EscapesTextCorrectly() async {
-        webBridge.attach(to: webViewSpy)
-
-        _ = await sut.handle(action: .textChanged(to: "Say \"hello\" to me"))
-
-        let effect = await sut.handle(action: .sendPromptTapped)
-
-        // Expected: the text should be JSON-escaped and wrapped in quotes
-        let javascript = "window.nativeComposerApi.sendPrompt('\(UUID.testData.uuidString)', \"Say \\\"hello\\\" to me\");"
-
-        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
-        #expect(
-            webViewSpy.evaluateJavaScriptCalls.last
-                == .init(
-                    javaScript: javascript,
-                    frame: .none,
-                    contentWorld: .page
-                )
-        )
-        #expect(effect == .none)
+    struct TextEscapingTestCase {
+        let input: String
+        let expectedOutput: String
+        let comment: Comment
     }
 
-    @Test(.stubbedUUID(.testData))
-    func sendPromptAction_WithSingleQuotes_EscapesTextCorrectly() async {
+    @Test(
+        .stubbedUUID(.testData),
+        arguments: [
+            // Test 1: Double quotes
+            TextEscapingTestCase(
+                input: "Say \"hello\" to me",
+                expectedOutput: "'Say \\\"hello\\\" to me'",
+                comment: "Double quotes should be escaped as \\\" in JavaScript string"
+            ),
+            // Test 2: Single quotes (must be escaped in single-quoted strings)
+            TextEscapingTestCase(
+                input: "It's a nice day",
+                expectedOutput: "'It\\'s a nice day'",
+                comment: "Single quotes should be escaped as \\' inside single-quoted strings"
+            ),
+            // Test 3: Newlines
+            TextEscapingTestCase(
+                input: "Line 1\nLine 2\nLine 3",
+                expectedOutput: "'Line 1\\nLine 2\\nLine 3'",
+                comment: "Newlines should be escaped as \\n in JavaScript string"
+            ),
+            // Test 4: Backslashes
+            TextEscapingTestCase(
+                input: "Path: C:\\Users\\test",
+                expectedOutput: "'Path: C:\\\\Users\\\\test'",
+                comment: "Backslashes should be escaped as \\\\ in JavaScript string"
+            ),
+            // Test 5: Carriage returns
+            TextEscapingTestCase(
+                input: "Line 1\r\nLine 2",
+                expectedOutput: "'Line 1\\r\\nLine 2'",
+                comment: "Carriage returns should be escaped as \\r in JavaScript string"
+            ),
+            // Test 6: All special characters combined
+            TextEscapingTestCase(
+                input: "Say \"hello\"\nIt's nice\nPath: C:\\test",
+                expectedOutput: "'Say \\\"hello\\\"\\nIt\\'s nice\\nPath: C:\\\\test'",
+                comment: "All special characters should be properly escaped when combined"
+            ),
+            // Test 7: Code injection attempt (SECURITY)
+            TextEscapingTestCase(
+                input: "\"); alert('hacked'); (\"",
+                expectedOutput: "'\\\"); alert(\\'hacked\\'); (\\\"'",
+                comment: "Injection attempts should be safely escaped to prevent code execution"
+            ),
+        ]
+    )
+    func sendPromptAction_TextEscaping_EscapesTextCorrectly(testCase: TextEscapingTestCase) async {
         webBridge.attach(to: webViewSpy)
 
-        _ = await sut.handle(action: .textChanged(to: "It's a nice day"))
+        _ = await sut.handle(action: .textChanged(to: testCase.input))
         let effect = await sut.handle(action: .sendPromptTapped)
 
-        // Single quotes inside double-quoted strings don't need escaping in JSON
-        let javascript = "window.nativeComposerApi.sendPrompt('\(UUID.testData.uuidString)', \"It's a nice day\");"
+        let javascript = "window.nativeComposerApi.sendPrompt('\(UUID.testData.uuidString)', \(testCase.expectedOutput));"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
@@ -160,119 +188,8 @@ final class ComposerStateStoreTests {
                     javaScript: javascript,
                     frame: .none,
                     contentWorld: .page
-                )
-        )
-        #expect(effect == .none)
-    }
-
-    @Test(.stubbedUUID(.testData))
-    func sendPromptAction_WithNewlines_EscapesTextCorrectly() async {
-        webBridge.attach(to: webViewSpy)
-
-        _ = await sut.handle(action: .textChanged(to: "Line 1\nLine 2\nLine 3"))
-        let effect = await sut.handle(action: .sendPromptTapped)
-
-        // Newlines should be escaped as \n
-        let javascript = "window.nativeComposerApi.sendPrompt('\(UUID.testData.uuidString)', \"Line 1\\nLine 2\\nLine 3\");"
-
-        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
-        #expect(
-            webViewSpy.evaluateJavaScriptCalls.last
-                == .init(
-                    javaScript: javascript,
-                    frame: .none,
-                    contentWorld: .page
-                )
-        )
-        #expect(effect == .none)
-    }
-
-    @Test(.stubbedUUID(.testData))
-    func sendPromptAction_WithBackslashes_EscapesTextCorrectly() async {
-        webBridge.attach(to: webViewSpy)
-
-        _ = await sut.handle(action: .textChanged(to: "Path: C:\\Users\\test"))
-        let effect = await sut.handle(action: .sendPromptTapped)
-
-        // Backslashes should be escaped as \\
-        let javascript = "window.nativeComposerApi.sendPrompt('\(UUID.testData.uuidString)', \"Path: C:\\\\Users\\\\test\");"
-
-        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
-        #expect(
-            webViewSpy.evaluateJavaScriptCalls.last
-                == .init(
-                    javaScript: javascript,
-                    frame: .none,
-                    contentWorld: .page
-                )
-        )
-        #expect(effect == .none)
-    }
-
-    @Test(.stubbedUUID(.testData))
-    func sendPromptAction_WithCarriageReturns_EscapesTextCorrectly() async {
-        webBridge.attach(to: webViewSpy)
-
-        _ = await sut.handle(action: .textChanged(to: "Line 1\r\nLine 2"))
-        let effect = await sut.handle(action: .sendPromptTapped)
-
-        // Carriage returns should be escaped as \r
-        let javascript = "window.nativeComposerApi.sendPrompt('\(UUID.testData.uuidString)', \"Line 1\\r\\nLine 2\");"
-
-        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
-        #expect(
-            webViewSpy.evaluateJavaScriptCalls.last
-                == .init(
-                    javaScript: javascript,
-                    frame: .none,
-                    contentWorld: .page
-                )
-        )
-        #expect(effect == .none)
-    }
-
-    @Test(.stubbedUUID(.testData))
-    func sendPromptAction_WithAllSpecialCharacters_EscapesTextCorrectly() async {
-        webBridge.attach(to: webViewSpy)
-
-        // Combination of all problematic characters
-        _ = await sut.handle(action: .textChanged(to: "Say \"hello\"\nIt's nice\nPath: C:\\test"))
-        let effect = await sut.handle(action: .sendPromptTapped)
-
-        // All special characters should be properly escaped
-        let javascript = "window.nativeComposerApi.sendPrompt('\(UUID.testData.uuidString)', \"Say \\\"hello\\\"\\nIt's nice\\nPath: C:\\\\test\");"
-
-        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
-        #expect(
-            webViewSpy.evaluateJavaScriptCalls.last
-                == .init(
-                    javaScript: javascript,
-                    frame: .none,
-                    contentWorld: .page
-                )
-        )
-        #expect(effect == .none)
-    }
-
-    @Test(.stubbedUUID(.testData))
-    func sendPromptAction_WithCodeInjectionAttempt_EscapesTextSafely() async {
-        webBridge.attach(to: webViewSpy)
-
-        // Attempt to inject malicious code
-        _ = await sut.handle(action: .textChanged(to: "\"); alert('hacked'); (\""))
-        let effect = await sut.handle(action: .sendPromptTapped)
-
-        // The injection attempt should be safely escaped
-        let javascript = "window.nativeComposerApi.sendPrompt('\(UUID.testData.uuidString)', \"\\\"); alert('hacked'); (\\\"\");"
-
-        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
-        #expect(
-            webViewSpy.evaluateJavaScriptCalls.last
-                == .init(
-                    javaScript: javascript,
-                    frame: .none,
-                    contentWorld: .page
-                )
+                ),
+            testCase.comment
         )
         #expect(effect == .none)
     }
