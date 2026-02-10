@@ -153,9 +153,6 @@ let project = Project(
             bundleId: "me.proton.lumo.LumoCore",
             deploymentTargets: .iOS("17.6"),
             sources: ["Modules/LumoCore/Sources/**"],
-            resources: [
-                "Modules/LumoCore/Resources/**"
-            ],
             settings: .settings(base: moduleVerifierSettings)
         ),
         .target(
