@@ -16,21 +16,21 @@ protocol WebComposerBridging {
     func sendPrompt(_ text: String) async throws(WebComposerBridgeError)
 
     /// Stop the current response generation
-    func stopResponse() async throws
+    func stopResponse() async throws(WebComposerBridgeError)
 
     /// Toggle web search on/off
-    func toggleWebSearch() async throws
+    func toggleWebSearch() async throws(WebComposerBridgeError)
 
     /// Open file picker in WebView
-    func openFilePicker() async throws
+    func openFilePicker() async throws(WebComposerBridgeError)
 
     /// Remove an attachment
     /// - Parameter id: Attachment identifier
-    func removeAttachment(id: String) async throws
+    func removeAttachment(id: String) async throws(WebComposerBridgeError)
 
     /// Preview an attachment
     /// - Parameter id: Attachment identifier
-    func previewAttachment(id: String) async throws
+    func previewAttachment(id: String) async throws(WebComposerBridgeError)
 
     /// Stream of state updates from WebView
     var stateUpdates: AsyncStream<WebComposerState> { get }
