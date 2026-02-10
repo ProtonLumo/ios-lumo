@@ -171,6 +171,12 @@ final class ComposerStateStoreTests {
                 expectedOutput: "'\\\"); alert(\\'hacked\\'); (\\\"'",
                 comment: "Injection attempts should be safely escaped to prevent code execution"
             ),
+            // Test 8: Unicode Line and Paragraph Separators (JavaScript edge case)
+            TextEscapingTestCase(
+                input: "Line 1\u{2028}Line 2\u{2029}Line 3",
+                expectedOutput: "'Line 1\\u2028Line 2\\u2029Line 3'",
+                comment: "Unicode line/paragraph separators (U+2028, U+2029) must be escaped to prevent breaking JavaScript"
+            ),
         ]
     )
     func sendPromptAction_TextEscaping_EscapesTextCorrectly(testCase: TextEscapingTestCase) async {
