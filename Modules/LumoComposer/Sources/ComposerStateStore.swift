@@ -4,6 +4,9 @@ import WebKit
 @MainActor
 final class ComposerStateStore: ObservableObject {
     enum Action {
+        case taskStarted
+        case onDisappear
+
         case textChanged(to: String)
         case sendPromptTapped
         case stopResponseTapped
@@ -22,6 +25,7 @@ final class ComposerStateStore: ObservableObject {
     @Published var state: ComposerViewState
 
     private let webBridge: WebComposerBridging
+    private var observationTask: Task<Void, Never>?
 
     init(initialState: ComposerViewState, webBridge: WebComposerBridging) {
         self.state = initialState
@@ -30,6 +34,21 @@ final class ComposerStateStore: ObservableObject {
 
     func handle(action: Action) async -> Effect {
         switch action {
+        case .taskStarted:
+            observationTask?.cancel()
+            observationTask = Task {
+                for await webState in webBridge.stateUpdates {
+                    guard !Task.isCancelled else { break }
+                    state = state.copy(\.webState, to: webState)
+                }
+            }
+            return .none
+
+        case .onDisappear:
+            observationTask?.cancel()
+            observationTask = nil
+            return .none
+
         case .textChanged(let newText):
             state = state.copy(\.currentText, to: newText)
             return .none

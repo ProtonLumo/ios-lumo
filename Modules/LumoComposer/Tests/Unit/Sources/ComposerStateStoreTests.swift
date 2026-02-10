@@ -1,4 +1,5 @@
 import Combine
+import Difference
 import Testing
 import WebKit
 
@@ -8,10 +9,60 @@ import WebKit
 final class ComposerStateStoreTests {
     let webViewSpy = WKWebViewSpy()
     let webBridge = WebComposerBridge()
-    lazy var sut = ComposerStateStore(initialState: .initial, webBridge: webBridge)
+    lazy var sut = ComposerStateStore(initialState: initialState, webBridge: webBridge)
 
     var initialState = ComposerViewState.initial
     var cancellables: Set<AnyCancellable> = []
+
+    // MARK: - .taskStarted action
+
+    @Test
+    func taskStartedAction_StartsObservingStateUpdates() async {
+        webBridge.attach(to: webViewSpy)
+
+        #expect(sut.state.webState.mode == .idle)
+
+        let effect = await sut.handle(action: .taskStarted)
+        #expect(effect == .none)
+
+        simulateDidReceiveStateChange(state: [
+            "lumoMode": "Working",
+            "isGhostModeEnabled": false,
+            "isWebSearchEnabled": false,
+            "isVisible": true,
+            "showTsAndCs": false,
+            "attachedFiles": [],
+        ])
+
+        try? await Task.sleep(for: .milliseconds(50))
+
+        #expect(sut.state.webState.mode == .working)
+    }
+
+    @Test
+    func onDisappearAction_CancelsObservation() async {
+        webBridge.attach(to: webViewSpy)
+
+        _ = await sut.handle(action: .taskStarted)
+
+        let effect = await sut.handle(action: .onDisappear)
+        #expect(effect == .none)
+
+        simulateDidReceiveStateChange(state: [
+            "lumoMode": "Working",
+            "isGhostModeEnabled": false,
+            "isWebSearchEnabled": false,
+            "isVisible": true,
+            "showTsAndCs": false,
+            "attachedFiles": [],
+        ])
+
+        await Task.yield()
+
+        #expect(sut.state.webState.mode == .idle)
+    }
+
+    // MARK: - .textChanged action
 
     @Test
     func textChangedAction_ItUpdatesStateCorrectly() async {
@@ -37,8 +88,9 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.handle(action: .sendPromptTapped)
 
-        #expect(
-            stateChanges == [
+        expectDiff(
+            stateChanges,
+            [
                 initialState,
                 initialState.copy(\.currentText, to: "Tell me something about AI"),
                 initialState.copy(\.isProcessing, to: true),
@@ -60,29 +112,63 @@ final class ComposerStateStoreTests {
 
         #expect(webBridge.webView === webViewSpy)
 
+        _ = await sut.handle(action: .taskStarted)
         _ = await sut.handle(action: .textChanged(to: "How to make proper neapolitan pizza?"))
 
         let effect = await sut.handle(action: .sendPromptTapped)
 
-        let javascript = """
+        let javaScript = """
             window.nativeComposerApi?.sendPrompt('212A909D-2D5C-4891-8717-685D27C6A4EE', 'How to make proper neapolitan pizza?');
             """
+
+        simulateDidReceiveStateChange(state: [
+            "lumoMode": "Working",
+            "isGhostModeEnabled": false,
+            "isWebSearchEnabled": false,
+            "isVisible": true,
+            "showTsAndCs": true,
+            "attachedFiles": [],
+        ])
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
             webViewSpy.evaluateJavaScriptCalls.last
                 == .init(
-                    javaScript: javascript,
+                    javaScript: javaScript,
                     frame: .none,
                     contentWorld: .page
                 )
         )
 
-        #expect(
-            stateChanges == [
+        simulateDidReceiveStateChange(state: [
+            "lumoMode": "Idle",
+            "isGhostModeEnabled": false,
+            "isWebSearchEnabled": false,
+            "isVisible": true,
+            "showTsAndCs": true,
+            "attachedFiles": [],
+        ])
+
+        try? await Task.sleep(for: .milliseconds(50))
+
+        expectDiff(
+            stateChanges,
+            [
                 initialState,
                 initialState.copy(\.currentText, to: "How to make proper neapolitan pizza?"),
                 initialState.copy(\.isProcessing, to: true),
+                initialState,
+                initialState.copy(
+                    \.webState,
+                    to: .init(
+                        mode: .working,
+                        isGhostModeEnabled: false,
+                        isWebSearchEnabled: false,
+                        isVisible: true,
+                        showTermsAndPrivacy: true,
+                        attachedFiles: []
+                    )
+                ),
                 initialState,
             ]
         )
@@ -101,14 +187,16 @@ final class ComposerStateStoreTests {
 
         #expect(webBridge.webView === webViewSpy)
 
+        _ = await sut.handle(action: .taskStarted)
         _ = await sut.handle(action: .textChanged(to: "Tell me a story"))
 
         webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
 
         let effect = await sut.handle(action: .sendPromptTapped)
 
-        #expect(
-            stateChanges == [
+        expectDiff(
+            stateChanges,
+            [
                 initialState,
                 initialState.copy(\.currentText, to: "Tell me a story"),
                 initialState.copy(\.isProcessing, to: true),
@@ -213,15 +301,16 @@ final class ComposerStateStoreTests {
     func stopResponseAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
 
+        _ = await sut.handle(action: .taskStarted)
         let effect = await sut.handle(action: .stopResponseTapped)
 
-        let javascript = "window.nativeComposerApi?.abortPrompt('A1B2C3D4-E5F6-7890-ABCD-EF1234567890');"
+        let javaScript = "window.nativeComposerApi?.abortPrompt('A1B2C3D4-E5F6-7890-ABCD-EF1234567890');"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
             webViewSpy.evaluateJavaScriptCalls.last
                 == .init(
-                    javaScript: javascript,
+                    javaScript: javaScript,
                     frame: .none,
                     contentWorld: .page
                 )
@@ -233,6 +322,8 @@ final class ComposerStateStoreTests {
     func stopResponseAction_WhenJavaScriptEvaluationFails_ItReturnsError() async {
         webBridge.attach(to: webViewSpy)
         webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
+
+        _ = await sut.handle(action: .taskStarted)
 
         let effect = await sut.handle(action: .stopResponseTapped)
 
@@ -251,6 +342,8 @@ final class ComposerStateStoreTests {
     @Test(.stubbedUUID(UUID(uuidString: "B2C3D4E5-F6A7-8901-BCDE-F12345678901")!))
     func openFilePickerAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
+
+        _ = await sut.handle(action: .taskStarted)
 
         let effect = await sut.handle(action: .openFilePickerTapped)
 
@@ -273,6 +366,8 @@ final class ComposerStateStoreTests {
         webBridge.attach(to: webViewSpy)
         webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
 
+        _ = await sut.handle(action: .taskStarted)
+
         let effect = await sut.handle(action: .openFilePickerTapped)
 
         #expect(effect == .error(.evaluatingJSFailed(.openFilePicker)))
@@ -290,6 +385,8 @@ final class ComposerStateStoreTests {
     @Test(.stubbedUUID(UUID(uuidString: "C3D4E5F6-A7B8-9012-CDEF-123456789012")!))
     func toggleWebSearchAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
+
+        _ = await sut.handle(action: .taskStarted)
 
         let effect = await sut.handle(action: .toggleWebSearchTapped)
 
@@ -312,6 +409,8 @@ final class ComposerStateStoreTests {
         webBridge.attach(to: webViewSpy)
         webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
 
+        _ = await sut.handle(action: .taskStarted)
+
         let effect = await sut.handle(action: .toggleWebSearchTapped)
 
         #expect(effect == .error(.evaluatingJSFailed(.toggleWebSearch)))
@@ -329,6 +428,8 @@ final class ComposerStateStoreTests {
     @Test(.stubbedUUID(UUID(uuidString: "D4E5F6A7-B8C9-0123-DEF1-234567890123")!))
     func previewAttachmentAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
+
+        _ = await sut.handle(action: .taskStarted)
 
         let effect = await sut.handle(action: .previewAttachmentTapped(id: "attachment-456"))
 
@@ -351,6 +452,8 @@ final class ComposerStateStoreTests {
         webBridge.attach(to: webViewSpy)
         webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
 
+        _ = await sut.handle(action: .taskStarted)
+
         let effect = await sut.handle(action: .previewAttachmentTapped(id: "attachment-789"))
 
         #expect(effect == .error(.evaluatingJSFailed(.previewAttachment(id: "attachment-789"))))
@@ -368,6 +471,8 @@ final class ComposerStateStoreTests {
     @Test(.stubbedUUID(UUID(uuidString: "E5F6A7B8-C9D0-1234-EF12-345678901234")!))
     func removeAttachmentAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
+
+        _ = await sut.handle(action: .taskStarted)
 
         let effect = await sut.handle(action: .removeAttachmentTapped(id: "attachment-789"))
 
@@ -388,7 +493,10 @@ final class ComposerStateStoreTests {
     @Test
     func removeAttachmentAction_WhenJavaScriptEvaluationFails_ItReturnsError() async {
         webBridge.attach(to: webViewSpy)
+
         webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
+
+        _ = await sut.handle(action: .taskStarted)
 
         let effect = await sut.handle(action: .removeAttachmentTapped(id: "attachment-789"))
 
@@ -405,6 +513,62 @@ final class ComposerStateStoreTests {
         #expect(effect == .none)
     }
 
+    // MARK: - Web State observation
+
+    @Test
+    func webStateChanges_UpdatesStateCorrectly() async {
+        var stateChanges: [ComposerViewState] = []
+
+        observeStateChanges { state in
+            stateChanges.append(state)
+        }
+
+        webBridge.attach(to: webViewSpy)
+
+        #expect(sut.state.webState.mode == .idle)
+
+        let effect = await sut.handle(action: .taskStarted)
+        #expect(effect == .none)
+
+        simulateDidReceiveStateChange(state: [
+            "lumoMode": "Working",
+            "isGhostModeEnabled": true,
+            "isWebSearchEnabled": true,
+            "isVisible": false,
+            "showTsAndCs": false,
+            "attachedFiles": [
+                [
+                    "id": "<id_1>",
+                    "name": "document.pdf",
+                    "type": "PDF",
+                ]
+            ],
+        ])
+
+        try? await Task.sleep(for: .milliseconds(50))
+
+        expectDiff(
+            stateChanges,
+            [
+                initialState,
+                initialState
+                    .copy(
+                        \.webState,
+                        to: WebComposerState(
+                            mode: .working,
+                            isGhostModeEnabled: true,
+                            isWebSearchEnabled: true,
+                            isVisible: false,
+                            showTermsAndPrivacy: false,
+                            attachedFiles: [
+                                File(id: "<id_1>", name: "document.pdf", type: .pdf)
+                            ]
+                        )
+                    ),
+            ]
+        )
+    }
+
     // MARK: - Private
 
     private func observeStateChanges(_ stateChange: @escaping (ComposerViewState) -> Void) {
@@ -412,8 +576,12 @@ final class ComposerStateStoreTests {
             .sink { state in stateChange(state) }
             .store(in: &cancellables)
     }
+
+    private func simulateDidReceiveStateChange(state: [String: Any]) {
+        webBridge.handleStateChange(state: state)
+    }
 }
 
 private extension UUID {
-    static let testData: UUID = UUID(uuidString: "F82958B5-6EB1-42A7-BC2B-A7F6617E1EF7")!
+    static let testData = UUID(uuidString: "F82958B5-6EB1-42A7-BC2B-A7F6617E1EF7")!
 }

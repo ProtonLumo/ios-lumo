@@ -7,6 +7,8 @@ enum WebComposerBridgeError: Error, Equatable {
 }
 
 final class WebComposerBridge: WebComposerAttaching, WebComposerBridging {
+    private let (stream, continuation) = AsyncStream.makeStream(of: WebComposerState.self)
+
     enum Command: Equatable {
         case sendPrompt(String)
         case stopResponse
@@ -69,8 +71,24 @@ final class WebComposerBridge: WebComposerAttaching, WebComposerBridging {
         try await executeJavaScript(.previewAttachment(id: id))
     }
 
-    var stateUpdates: AsyncStream<WebComposerState> {
-        fatalError()  // FIXME: Implement
+    var stateUpdates: AsyncStream<WebComposerState> { stream }
+
+    // MARK: - JavaScript -> Swift (Receiving Messages)
+
+    /// Processes state updates received from the WebView's JavaScript layer.
+    ///
+    /// **Data flow:** JavaScript → WKScriptMessage → Dictionary → `WebComposerState` → AsyncStream
+    ///
+    /// Decoding failures are silently ignored to maintain stable bridge communication.
+    func handleStateChange(state: [String: Any]) {
+        guard
+            let jsonData = try? JSONSerialization.data(withJSONObject: state),
+            let webState = try? JSONDecoder().decode(WebComposerState.self, from: jsonData)
+        else {
+            return
+        }
+
+        continuation.yield(webState)
     }
 
     // MARK: - Private

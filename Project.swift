@@ -201,6 +201,7 @@ let project = Project(
             deploymentTargets: .iOS("17.6"),
             sources: ["Modules/LumoComposer/Tests/**"],
             dependencies: [
+                .external(name: "Difference"),
                 .target(name: "LumoComposer"),
                 .target(name: "LumoApp"),
                 .external(name: "SnapshotTesting"),
