@@ -449,6 +449,12 @@
             "value" : "Erro"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1444,6 +1450,12 @@
             "value" : "Agora não"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Now"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1503,10 +1515,22 @@
             "value" : "Instellingen > Privacy en Security > Lockdown Mode"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings > Privacy & Security > Lockdown Mode"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajustes > Privacidade e Segurança > Modo de Isolamento"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings > Privacy & Security > Lockdown Mode"
           }
         },
         "tr" : {
@@ -1568,10 +1592,22 @@
             "value" : "Voeg deze app toe aan Lockdown Mode uitzonderingen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add this app to Lockdown Mode exceptions"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adicionar esse aplicativo para as exceções no Modo de Isolamento"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add this app to Lockdown Mode exceptions"
           }
         },
         "tr" : {
@@ -1633,10 +1669,22 @@
             "value" : "Synchroniseren van conversaties is uitgeschakeld omwille van Lockdown Mode beperkingen."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conversation syncing is disabled due to Lockdown Mode restrictions."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "A sincronização de conversa está desativado devido às restrições do Modo de Isolamento"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conversation syncing is disabled due to Lockdown Mode restrictions."
           }
         },
         "tr" : {
@@ -1698,10 +1746,22 @@
             "value" : "Lockdown Mode is Actief"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lockdown Mode is Active"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "O Modo de Isolamento está ativo"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lockdown Mode is Active"
           }
         },
         "tr" : {
@@ -2299,10 +2359,22 @@
             "value" : "Log in of maak een account aan om Lumo Plus aan te kopen."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please sign in or create an account to purchase Lumo Plus."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inicie sessão ou crie uma conta para adquirir o Lumo Plus."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please sign in or create an account to purchase Lumo Plus."
           }
         },
         "tr" : {
@@ -2364,10 +2436,22 @@
             "value" : "Inloggen vereist"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign In Required"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inicio de sessão necessário"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign In Required"
           }
         },
         "tr" : {
@@ -2430,10 +2514,22 @@
             "value" : "beste prijs-kwaliteitverhouding"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Best Value"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Melhor valor"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Best Value"
           }
         },
         "tr" : {
@@ -2572,10 +2668,22 @@
             "value" : "Geannuleerd • Vervallen %@"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelled • Expires %@"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancelado • Expira em %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelled • Expires %@"
           }
         },
         "tr" : {
@@ -2638,10 +2746,22 @@
             "value" : "Mis onze speciale aanbieding niet"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Don't miss our special deal"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não perca nossa oferta especial"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Don't miss our special deal"
           }
         },
         "tr" : {
@@ -3007,6 +3127,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fout"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
           }
         },
         "pt-BR" : {
@@ -3512,6 +3638,12 @@
             "value" : "Free"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3536,7 +3668,19 @@
             "value" : "Gratis"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
         "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
+        "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Free"
@@ -3602,10 +3746,22 @@
             "value" : "Claim de Black Friday aanbieding"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claim Black Friday Deal"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aproveite a oferta da Black Friday"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claim Black Friday Deal"
           }
         },
         "tr" : {
@@ -3745,10 +3901,22 @@
             "value" : "Tijdelijke Black Friday aanbieding"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limited time Black Friday offer"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oferta de Black Friday por tempo limitado"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limited time Black Friday offer"
           }
         },
         "tr" : {
@@ -3887,6 +4055,12 @@
             "value" : "/maand"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/month"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3959,10 +4133,22 @@
             "value" : "Abonnementen niet beschikbaar"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plans Not Available"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Planos não disponíveis"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plans Not Available"
           }
         },
         "tr" : {
@@ -4025,10 +4211,22 @@
             "value" : "De aankoop van Lumo Plus is nog niet mogelijk. Probeer later opnieuw."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase of Lumo Plus is not yet possible. Please try again later."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "A compra do Lumo Plus ainda não é possível. Tente novamente mais tarde."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase of Lumo Plus is not yet possible. Please try again later."
           }
         },
         "tr" : {
@@ -4213,6 +4411,12 @@
             "value" : "Plus"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4237,7 +4441,19 @@
             "value" : "Plus"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        },
         "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        },
+        "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plus"
@@ -4377,6 +4593,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opslaan "
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save "
           }
         },
         "pt-BR" : {
@@ -4682,10 +4904,22 @@
             "value" : "Ontgrendel vandaag nog alle Lumo Plus premium features voor onze beste prijs tot nu toe."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock all premium features today on Lumo Plus with our best price yet."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desbloqueie todos os recursos premium hoje no Lumo Plus com nosso melhor preço."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock all premium features today on Lumo Plus with our best price yet."
           }
         },
         "tr" : {
@@ -15292,6 +15526,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stel Lumo een vraag"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask Lumo a question"
           }
         },
         "pt-BR" : {
