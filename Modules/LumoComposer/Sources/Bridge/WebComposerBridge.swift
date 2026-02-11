@@ -2,7 +2,7 @@ import LumoCore
 import WebKit
 
 /// Errors that can occur during bridge operations.
-enum WebComposerBridgeError: Error, Equatable {
+public enum WebComposerBridgeError: Error, Equatable {
     /// JavaScript evaluation failed for the given command
     case evaluatingJSFailed(WebComposerBridge.Command)
 
@@ -10,11 +10,11 @@ enum WebComposerBridgeError: Error, Equatable {
     case webViewNotAttached
 }
 
-final class WebComposerBridge: WebComposerAttaching, WebComposerBridging, WebComposerStateReceiving {
+public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging, WebComposerStateReceiving {
     private let (stream, continuation) = AsyncStream.makeStream(of: WebComposerState.self)
 
     /// Commands that can be sent to the WebView's JavaScript layer.
-    enum Command: Equatable {
+    public enum Command: Equatable {
         case sendPrompt(String)
         case stopResponse
         case openFilePicker
@@ -55,31 +55,31 @@ final class WebComposerBridge: WebComposerAttaching, WebComposerBridging, WebCom
 
     // MARK: - WebComposerBridging
 
-    func sendPrompt(_ text: String) async throws(WebComposerBridgeError) {
+    public func sendPrompt(_ text: String) async throws(WebComposerBridgeError) {
         try await executeJavaScript(.sendPrompt(text.jsEscaped))
     }
 
-    func stopResponse() async throws(WebComposerBridgeError) {
+    public func stopResponse() async throws(WebComposerBridgeError) {
         try await executeJavaScript(.stopResponse)
     }
 
-    func toggleWebSearch() async throws(WebComposerBridgeError) {
+    public func toggleWebSearch() async throws(WebComposerBridgeError) {
         try await executeJavaScript(.toggleWebSearch)
     }
 
-    func openFilePicker() async throws(WebComposerBridgeError) {
+    public func openFilePicker() async throws(WebComposerBridgeError) {
         try await executeJavaScript(.openFilePicker)
     }
 
-    func removeAttachment(id: String) async throws(WebComposerBridgeError) {
+    public func removeAttachment(id: String) async throws(WebComposerBridgeError) {
         try await executeJavaScript(.removeAttachment(id: id))
     }
 
-    func previewAttachment(id: String) async throws(WebComposerBridgeError) {
+    public func previewAttachment(id: String) async throws(WebComposerBridgeError) {
         try await executeJavaScript(.previewAttachment(id: id))
     }
 
-    var stateUpdates: AsyncStream<WebComposerState> { stream }
+    public var stateUpdates: AsyncStream<WebComposerState> { stream }
 
     // MARK: - WebComposerStateReceiving
 

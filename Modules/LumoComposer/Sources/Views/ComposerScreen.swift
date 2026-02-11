@@ -6,7 +6,15 @@ public struct ComposerScreen: View {
     @StateObject var store: ComposerStateStore
     @Environment(\.colorScheme) var colorScheme
 
-    init(initialState: ComposerViewState?, webBridge: WebComposerBridging) {
+    public init(webBridge: WebComposerBridging) {
+        self.init(initialState: .none, webBridge: webBridge)
+    }
+
+    /// - Parameter initialState: Exposed for snapshot testing with different states
+    init(
+        initialState: ComposerViewState?,
+        webBridge: WebComposerBridging
+    ) {
         _store = .init(
             wrappedValue: .init(
                 initialState: initialState ?? .initial,
@@ -18,51 +26,34 @@ public struct ComposerScreen: View {
     // MARK: - View
 
     public var body: some View {
-        ZStack {
-            catPlaceholder()
+        GeometryReader { proxy in
+            ZStack(alignment: .center) {
+                placeholders(screenSize: proxy.size)
 
-            VStack(spacing: DS.Spacing.medium) {
-                logoPlaceholder()
-                Spacer()
-                TermsAndPrivacyText()
-                ComposerView(
-                    text: .init(
-                        get: { store.state.currentText },
-                        set: { newValue in store.send(action: .textChanged(newValue)) }
-                    ),
-                    files: store.state.webState.attachedFiles,
-                    isGhostModeEnabled: store.state.webState.isGhostModeEnabled,
-                    isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
-                    actionButton: store.state.actionButton,
-                    action: { action in didReceive(action: action) }
-                )
-                .padding(.horizontal, DS.Spacing.tiny)
-                .padding(.bottom, DS.Spacing.standard)
+                VStack(spacing: DS.Spacing.medium) {
+                    Spacer()
+                    TermsAndPrivacyText()
+                    ComposerView(
+                        text: .init(
+                            get: { store.state.currentText },
+                            set: { newValue in store.send(action: .textChanged(newValue)) }
+                        ),
+                        files: store.state.webState.attachedFiles,
+                        isGhostModeEnabled: store.state.webState.isGhostModeEnabled,
+                        isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
+                        actionButton: store.state.actionButton,
+                        action: handle(action:)
+                    )
+                    .padding(.horizontal, DS.Spacing.tiny)
+                    .padding(.bottom, DS.Spacing.standard)
+                }
             }
         }
     }
 
-    private func logoPlaceholder() -> some View {
-        HStack(spacing: .zero) {
-            DS.Icon.lumoLogo.swiftUIImage
-                .foregroundStyle(DS.Color.Text.norm)
-                .padding(.top, DS.Spacing.large)
-                .padding(.leading, 58)
-            Spacer()
-        }
-    }
-
-    private func catPlaceholder() -> some View {
-        VStack(spacing: -DS.Spacing.standard) {
-            lottieView()
-            ComposerWelcomeText()
-        }
-        .offset(y: -DS.Spacing.extraLarge)
-    }
-
     // MARK: - Private
 
-    private func didReceive(action: ComposerView.Action) {
+    private func handle(action: ComposerView.Action) {
         switch action {
         case .sendTapped:
             store.send(action: .sendPromptTapped)
@@ -79,6 +70,34 @@ public struct ComposerScreen: View {
         case .removeAttachmentTapped(let id):
             store.send(action: .removeAttachmentTapped(id: id))
         }
+    }
+
+    private func placeholders(screenSize: CGSize) -> some View {
+        VStack(spacing: DS.Spacing.medium) {
+            logoPlaceholder()
+            Spacer()
+            catPlaceholder(offsetY: -screenSize.height * 0.07)
+            Spacer()
+        }
+        .ignoresSafeArea(.keyboard)
+    }
+
+    private func logoPlaceholder() -> some View {
+        HStack(spacing: .zero) {
+            DS.Icon.lumoLogo.swiftUIImage
+                .foregroundStyle(DS.Color.Text.norm)
+                .padding(.top, DS.Spacing.large)
+                .padding(.leading, 58)
+            Spacer()
+        }
+    }
+
+    private func catPlaceholder(offsetY: CGFloat) -> some View {
+        VStack(spacing: -DS.Spacing.standard) {
+            lottieView()
+            ComposerWelcomeText()
+        }
+        .offset(y: offsetY)
     }
 
     private func lottieView() -> some View {

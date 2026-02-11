@@ -4,7 +4,7 @@ import Foundation
 ///
 /// This represents the complete state of the composer as synchronized from the web application.
 /// All properties are immutable - state updates come as complete new instances.
-struct WebComposerState: Equatable, Decodable {
+public struct WebComposerState: Equatable, Decodable {
     /// Represents working state
     ///
     /// This enum has only two states to keep the state machine simple:

@@ -12,7 +12,7 @@ import Testing
 ///   - expected: The expected value
 ///   - received: The received/actual value
 ///   - sourceLocation: The source location where the assertion is called (automatically captured)
-public func expectDiff<T: Equatable>(
+func expectDiff<T: Equatable>(
     _ expected: @autoclosure () throws -> T,
     _ received: @autoclosure () throws -> T,
     sourceLocation: SourceLocation = #_sourceLocation

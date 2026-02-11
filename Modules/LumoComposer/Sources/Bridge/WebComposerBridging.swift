@@ -4,7 +4,7 @@ import WebKit
 ///
 /// Handles outbound communication from Swift to the web application.
 /// Complements `WebComposerStateReceiving` which handles inbound communication (JavaScript → Swift).
-protocol WebComposerBridging {
+public protocol WebComposerBridging {
     /// Send a prompt to Lumo
     /// - Parameter text: The prompt text to send
     func sendPrompt(_ text: String) async throws(WebComposerBridgeError)

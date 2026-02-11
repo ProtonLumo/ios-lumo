@@ -1,7 +1,7 @@
 import Combine
 
 @MainActor
-public protocol StateStore: ObservableObject where Action: Sendable {
+protocol StateStore: ObservableObject where Action: Sendable {
     associatedtype State
     associatedtype Action
     associatedtype Effect
