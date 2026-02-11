@@ -1,6 +1,5 @@
 import Foundation
 
-// MARK: - String Extension for JS Escaping
 extension String {
     /// Properly escape string for JavaScript injection
     public var jsEscaped: String {
