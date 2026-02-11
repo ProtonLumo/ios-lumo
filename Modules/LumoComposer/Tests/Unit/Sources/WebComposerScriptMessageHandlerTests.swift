@@ -8,76 +8,60 @@ final class WebComposerScriptMessageHandlerTests {
     let webBridge = WebComposerBridge()
     lazy var sut = WebComposerScriptMessageHandler(webBridge: webBridge)
 
-    @Test
-    func handleStateChange_WithIdleState_EmitsStateUpdateToStateUpdates() async {
-        let stateDict: [String: Any] = [
-            "lumoMode": "Idle",
-            "isGhostModeEnabled": false,
-            "isWebSearchEnabled": false,
-            "isVisible": true,
-            "showTsAndCs": true,
-            "attachedFiles": [],
-        ]
-
-        let expectedState = WebComposerState(
-            mode: .idle,
-            isGhostModeEnabled: false,
-            isWebSearchEnabled: false,
-            isVisible: true,
-            showTermsAndPrivacy: true,
-            attachedFiles: []
-        )
-
-        let stateTask = Task {
-            var receivedStates: [WebComposerState] = []
-            for await state in webBridge.stateUpdates {
-                receivedStates.append(state)
-                if receivedStates.count == 1 {
-                    break
-                }
-            }
-            return receivedStates
-        }
-
-        sut.userContentController(
-            WKUserContentController(),
-            didReceive: WKScriptMessageStub(name: "nativeComposerStateHandler", body: stateDict)
-        )
-
-        let receivedStates = await stateTask.value
-
-        #expect(receivedStates.count == 1)
-        expectDiff(receivedStates.last, expectedState)
+    struct TestCase {
+        let stateDict: [String: Any]
+        let expectedState: WebComposerState
     }
 
-    @Test
-    func handleStateChange_WithWorkingState_EmitsStateUpdateToStateUpdates() async {
-        let stateDict: [String: Any] = [
-            "lumoMode": "Working",
-            "isGhostModeEnabled": true,
-            "isWebSearchEnabled": true,
-            "isVisible": false,
-            "showTsAndCs": false,
-            "attachedFiles": [
-                [
-                    "id": "<file-123>",
-                    "name": "document.pdf",
-                    "type": "PDF",
-                ]
-            ],
+    @Test(
+        arguments: [
+            TestCase(
+                stateDict: [
+                    "lumoMode": "Idle",
+                    "isGhostModeEnabled": false,
+                    "isWebSearchEnabled": false,
+                    "isVisible": true,
+                    "showTsAndCs": true,
+                    "attachedFiles": [],
+                ],
+                expectedState: .init(
+                    mode: .idle,
+                    isGhostModeEnabled: false,
+                    isWebSearchEnabled: false,
+                    isVisible: true,
+                    showTermsAndPrivacy: true,
+                    attachedFiles: []
+                )
+            ),
+            TestCase(
+                stateDict: [
+                    "lumoMode": "Working",
+                    "isGhostModeEnabled": true,
+                    "isWebSearchEnabled": true,
+                    "isVisible": false,
+                    "showTsAndCs": false,
+                    "attachedFiles": [
+                        [
+                            "id": "<file-123>",
+                            "name": "document.pdf",
+                            "type": "PDF",
+                        ]
+                    ],
+                ],
+                expectedState: .init(
+                    mode: .working,
+                    isGhostModeEnabled: true,
+                    isWebSearchEnabled: true,
+                    isVisible: false,
+                    showTermsAndPrivacy: false,
+                    attachedFiles: [
+                        File(id: "<file-123>", name: "document.pdf", type: .pdf)
+                    ]
+                )
+            ),
         ]
-
-        let expectedState = WebComposerState(
-            mode: .working,
-            isGhostModeEnabled: true,
-            isWebSearchEnabled: true,
-            isVisible: false,
-            showTermsAndPrivacy: false,
-            attachedFiles: [
-                File(id: "<file-123>", name: "document.pdf", type: .pdf)
-            ]
-        )
-
+    )
+    func handleStateChange_EmitsStateUpdateToStateUpdates(testCase: TestCase) async {
         let stateTask = Task {
             var receivedStates: [WebComposerState] = []
             for await state in webBridge.stateUpdates {
@@ -91,13 +75,13 @@ final class WebComposerScriptMessageHandlerTests {
 
         sut.userContentController(
             WKUserContentController(),
-            didReceive: WKScriptMessageStub(name: "nativeComposerStateHandler", body: stateDict)
+            didReceive: WKScriptMessageStub(name: "nativeComposerStateHandler", body: testCase.stateDict)
         )
 
         let receivedStates = await stateTask.value
 
         #expect(receivedStates.count == 1)
-        expectDiff(receivedStates.last, expectedState)
+        expectDiff(receivedStates.last, testCase.expectedState)
     }
 }
 
