@@ -10,6 +10,7 @@ struct ComposerViewSnapshotTests {
         let files: [File]
         let isGhostModeEnabled: Bool
         let isWebSearchEnabled: Bool
+        let areButtonsDisabled: Bool
         let actionButton: ComposerView.ActionButtonState
         let testName: String
     }
@@ -21,14 +22,16 @@ struct ComposerViewSnapshotTests {
             files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
+            areButtonsDisabled: true,
             actionButton: .none,
-            testName: "idle_empty"
+            testName: "idle_empty_disabled"
         ),
         TestCase(
             initialText: "",
             files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
+            areButtonsDisabled: false,
             actionButton: .none,
             testName: "idle_empty_web_search"
         ),
@@ -37,6 +40,7 @@ struct ComposerViewSnapshotTests {
             files: [],
             isGhostModeEnabled: true,
             isWebSearchEnabled: false,
+            areButtonsDisabled: false,
             actionButton: .none,
             testName: "idle_empty_ghost_mode"
         ),
@@ -45,6 +49,7 @@ struct ComposerViewSnapshotTests {
             files: [],
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
+            areButtonsDisabled: false,
             actionButton: .none,
             testName: "idle_empty_ghost_mode_web_search"
         ),
@@ -57,6 +62,7 @@ struct ComposerViewSnapshotTests {
             files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
+            areButtonsDisabled: false,
             actionButton: .send,
             testName: "short_prompt_web_search"
         ),
@@ -65,6 +71,7 @@ struct ComposerViewSnapshotTests {
             files: [],
             isGhostModeEnabled: true,
             isWebSearchEnabled: false,
+            areButtonsDisabled: false,
             actionButton: .send,
             testName: "short_prompt_ghost_mode"
         ),
@@ -78,6 +85,7 @@ struct ComposerViewSnapshotTests {
             files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
+            areButtonsDisabled: false,
             actionButton: .send,
             testName: "long_prompt_web_search"
         ),
@@ -87,6 +95,7 @@ struct ComposerViewSnapshotTests {
             files: [],
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
+            areButtonsDisabled: false,
             actionButton: .send,
             testName: "long_prompt_ghost_mode_web_search"
         ),
@@ -99,6 +108,7 @@ struct ComposerViewSnapshotTests {
             files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
+            areButtonsDisabled: false,
             actionButton: .send,
             testName: "send_state_ready"
         ),
@@ -107,6 +117,7 @@ struct ComposerViewSnapshotTests {
             files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
+            areButtonsDisabled: false,
             actionButton: .send,
             testName: "send_state_ready_web_search"
         ),
@@ -119,6 +130,7 @@ struct ComposerViewSnapshotTests {
             files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
+            areButtonsDisabled: false,
             actionButton: .stop,
             testName: "sending_state"
         ),
@@ -127,6 +139,7 @@ struct ComposerViewSnapshotTests {
             files: [],
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
+            areButtonsDisabled: false,
             actionButton: .stop,
             testName: "sending_state_ghost_mode_web_search"
         ),
@@ -140,6 +153,7 @@ struct ComposerViewSnapshotTests {
             files: [.init(id: "1", name: "Report.pdf", type: .pdf)],
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
+            areButtonsDisabled: false,
             actionButton: .send,
             testName: "with_one_file"
         ),
@@ -148,6 +162,7 @@ struct ComposerViewSnapshotTests {
             files: [.init(id: "1", name: "Report.pdf", type: .pdf)],
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
+            areButtonsDisabled: false,
             actionButton: .send,
             testName: "with_one_file_ghost_mode_web_search"
         ),
@@ -160,6 +175,7 @@ struct ComposerViewSnapshotTests {
             ],
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
+            areButtonsDisabled: false,
             actionButton: .send,
             testName: "with_two_files"
         ),
@@ -171,6 +187,7 @@ struct ComposerViewSnapshotTests {
             ],
             isGhostModeEnabled: true,
             isWebSearchEnabled: false,
+            areButtonsDisabled: false,
             actionButton: .send,
             testName: "with_two_files_ghost_mode"
         ),
@@ -186,6 +203,7 @@ struct ComposerViewSnapshotTests {
             ],
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
+            areButtonsDisabled: false,
             actionButton: .send,
             testName: "with_many_files"
         ),
@@ -200,6 +218,7 @@ struct ComposerViewSnapshotTests {
             ],
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
+            areButtonsDisabled: false,
             actionButton: .send,
             testName: "with_many_files_ghost_mode_web_search"
         ),
@@ -221,7 +240,7 @@ struct ComposerViewSnapshotTests {
                 files: testCase.files,
                 isGhostModeEnabled: testCase.isGhostModeEnabled,
                 isWebSearchEnabled: testCase.isWebSearchEnabled,
-                areButtonsDisabled: false,
+                areButtonsDisabled: testCase.areButtonsDisabled,
                 actionButton: testCase.actionButton,
                 action: { _ in }
             )
