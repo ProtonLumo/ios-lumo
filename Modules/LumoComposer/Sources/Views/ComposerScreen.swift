@@ -5,22 +5,25 @@ import SwiftUI
 public struct ComposerScreen: View {
     @StateObject var store: ComposerStateStore
     @Environment(\.colorScheme) var colorScheme
+    private let isWebViewReady: Bool
 
-    public init(webBridge: WebComposerBridging) {
-        self.init(initialState: .none, webBridge: webBridge)
+    public init(webBridge: WebComposerBridging, isWebViewReady: Bool) {
+        self.init(initialState: .initial, webBridge: webBridge, isWebViewReady: isWebViewReady)
     }
 
     /// - Parameter initialState: Exposed for snapshot testing with different states
     init(
-        initialState: ComposerViewState?,
-        webBridge: WebComposerBridging
+        initialState: ComposerViewState,
+        webBridge: WebComposerBridging,
+        isWebViewReady: Bool
     ) {
         _store = .init(
             wrappedValue: .init(
-                initialState: initialState ?? .initial,
+                initialState: initialState,
                 webBridge: webBridge
             )
         )
+        self.isWebViewReady = isWebViewReady
     }
 
     // MARK: - View
@@ -41,6 +44,7 @@ public struct ComposerScreen: View {
                         files: store.state.webState.attachedFiles,
                         isGhostModeEnabled: store.state.webState.isGhostModeEnabled,
                         isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
+                        areButtonsDisabled: !store.state.isWebViewReady,
                         actionButton: store.state.actionButton,
                         action: handle(action:)
                     )
@@ -49,6 +53,11 @@ public struct ComposerScreen: View {
                 }
             }
         }
+        .onChange(of: isWebViewReady, initial: true) { _, newValue in
+            store.send(action: .webViewReadyChanged(newValue))
+        }
+        .task { store.send(action: .taskStarted) }
+        .onDisappear { store.send(action: .onDisappear) }
     }
 
     // MARK: - Private
@@ -123,6 +132,10 @@ public struct ComposerScreen: View {
 
 #if DEBUG
     #Preview {
-        ComposerScreen(initialState: .initial, webBridge: WebComposerBridge())
+        ComposerScreen(
+            initialState: .initial,
+            webBridge: WebComposerBridge(),
+            isWebViewReady: true
+        )
     }
 #endif

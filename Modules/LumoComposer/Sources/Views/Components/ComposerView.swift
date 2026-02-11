@@ -22,6 +22,7 @@ struct ComposerView: View {
     let files: [File]
     let isGhostModeEnabled: Bool
     let isWebSearchEnabled: Bool
+    let areButtonsDisabled: Bool
     let actionButton: ActionButtonState
     let action: (Action) -> Void
 
@@ -69,6 +70,7 @@ struct ComposerView: View {
                 onGlobeTap: { action(.webSearchTapped) },
                 onMicrophoneTap: { action(.microphoneTapped) }
             )
+            .disabled(areButtonsDisabled)
         }
         .padding(.all, DS.Spacing.compact)
         .background {
@@ -121,6 +123,7 @@ struct ComposerView: View {
                 ],
                 isGhostModeEnabled: false,
                 isWebSearchEnabled: true,
+                areButtonsDisabled: false,
                 actionButton: .none,
                 action: { _ in }
             )
@@ -129,6 +132,7 @@ struct ComposerView: View {
                 files: [],
                 isGhostModeEnabled: false,
                 isWebSearchEnabled: false,
+                areButtonsDisabled: true,
                 actionButton: .send,
                 action: { _ in }
             )
@@ -137,6 +141,7 @@ struct ComposerView: View {
                 files: [],
                 isGhostModeEnabled: true,
                 isWebSearchEnabled: false,
+                areButtonsDisabled: false,
                 actionButton: .stop,
                 action: { _ in }
             )
@@ -151,6 +156,7 @@ struct ComposerView: View {
                 ],
                 isGhostModeEnabled: true,
                 isWebSearchEnabled: true,
+                areButtonsDisabled: false,
                 actionButton: .send,
                 action: { _ in }
             )

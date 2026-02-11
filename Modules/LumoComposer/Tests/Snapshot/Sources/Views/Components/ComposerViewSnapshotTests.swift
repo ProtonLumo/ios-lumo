@@ -221,6 +221,7 @@ struct ComposerViewSnapshotTests {
                 files: testCase.files,
                 isGhostModeEnabled: testCase.isGhostModeEnabled,
                 isWebSearchEnabled: testCase.isWebSearchEnabled,
+                areButtonsDisabled: false,
                 actionButton: testCase.actionButton,
                 action: { _ in }
             )
