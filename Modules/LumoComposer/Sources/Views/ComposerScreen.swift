@@ -3,26 +3,38 @@ import LumoDesignSystem
 import SwiftUI
 
 public struct ComposerScreen: View {
+    @StateObject var store: ComposerStateStore
     @Environment(\.colorScheme) var colorScheme
+
+    init(initialState: ComposerViewState?, webBridge: WebComposerBridging) {
+        _store = .init(
+            wrappedValue: .init(
+                initialState: initialState ?? .initial,
+                webBridge: webBridge
+            )
+        )
+    }
 
     // MARK: - View
 
     public var body: some View {
         ZStack {
             catPlaceholder()
-                .offset(y: -DS.Spacing.extraLarge)
 
             VStack(spacing: DS.Spacing.medium) {
                 logoPlaceholder()
                 Spacer()
                 TermsAndPrivacyText()
                 ComposerView(
-                    text: .constant(""),
-                    files: [],
-                    isGhostModeEnabled: false,
-                    isWebSearchEnabled: false,
-                    actionButton: .none,
-                    action: { _ in }
+                    text: .init(
+                        get: { store.state.currentText },
+                        set: { newValue in store.send(action: .textChanged(newValue)) }
+                    ),
+                    files: store.state.webState.attachedFiles,
+                    isGhostModeEnabled: store.state.webState.isGhostModeEnabled,
+                    isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
+                    actionButton: store.state.actionButton,
+                    action: { action in didReceive(action: action) }
                 )
                 .padding(.horizontal, DS.Spacing.tiny)
                 .padding(.bottom, DS.Spacing.standard)
@@ -45,9 +57,29 @@ public struct ComposerScreen: View {
             lottieView()
             ComposerWelcomeText()
         }
+        .offset(y: -DS.Spacing.extraLarge)
     }
 
     // MARK: - Private
+
+    private func didReceive(action: ComposerView.Action) {
+        switch action {
+        case .sendTapped:
+            store.send(action: .sendPromptTapped)
+        case .stopTapped:
+            store.send(action: .stopResponseTapped)
+        case .filePickerTapped:
+            store.send(action: .openFilePickerTapped)
+        case .webSearchTapped:
+            store.send(action: .toggleWebSearchTapped)
+        case .microphoneTapped:
+            store.send(action: .startRecordingTapped)
+        case .attachmentTapped(let id):
+            store.send(action: .previewAttachmentTapped(id: id))
+        case .removeAttachmentTapped(let id):
+            store.send(action: .removeAttachmentTapped(id: id))
+        }
+    }
 
     private func lottieView() -> some View {
         Group {
@@ -72,6 +104,6 @@ public struct ComposerScreen: View {
 
 #if DEBUG
     #Preview {
-        ComposerScreen()
+        ComposerScreen(initialState: .initial, webBridge: WebComposerBridge())
     }
 #endif

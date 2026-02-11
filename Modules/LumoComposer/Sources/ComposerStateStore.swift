@@ -1,8 +1,7 @@
 import Combine
 import WebKit
 
-@MainActor
-final class ComposerStateStore: ObservableObject {
+final class ComposerStateStore: StateStore {
     enum Action {
         case webViewReadyChanged(Bool)
         case taskStarted
@@ -33,7 +32,7 @@ final class ComposerStateStore: ObservableObject {
         self.webBridge = webBridge
     }
 
-    func handle(action: Action) async -> Effect {
+    func send(action: Action) async -> Effect {
         switch action {
         case .webViewReadyChanged(let newValue):
             state = state.copy(\.isWebViewReady, to: newValue)

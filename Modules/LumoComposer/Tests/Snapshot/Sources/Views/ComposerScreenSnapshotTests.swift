@@ -8,7 +8,7 @@ struct ComposerScreenSnapshotTests {
     @MainActor
     @Test(.lottiePaused(at: 0.2))
     func composerScreen() {
-        let sut = ComposerScreen()
+        let sut = ComposerScreen(initialState: .initial, webBridge: WebComposerBridge())
 
         assertSnapshotsOnEdgeDevices(of: sut, drawHierarchyInKeyWindow: true)
     }
