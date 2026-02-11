@@ -14,6 +14,30 @@ final class ComposerStateStoreTests {
     var initialState = ComposerViewState.initial
     var cancellables: Set<AnyCancellable> = []
 
+    // MARK: - .webViewReadyChanged action
+
+    @Test
+    func webViewReadyChanged_UpdatesStateCorrectly() async {
+        var stateChanges: [ComposerViewState] = []
+
+        observeStateChanges { state in
+            stateChanges.append(state)
+        }
+
+        expectDiff(stateChanges, [initialState])
+
+        let effect = await sut.handle(action: .webViewReadyChanged(true))
+
+        #expect(effect == .none)
+        expectDiff(
+            stateChanges,
+            [
+                initialState,
+                initialState.copy(\.isWebViewReady, to: true),
+            ]
+        )
+    }
+
     // MARK: - .taskStarted action
 
     @Test
@@ -68,7 +92,7 @@ final class ComposerStateStoreTests {
     func textChangedAction_ItUpdatesStateCorrectly() async {
         #expect(sut.state == initialState)
 
-        let effect = await sut.handle(action: .textChanged(to: "Where Apple Park is located?"))
+        let effect = await sut.handle(action: .textChanged("Where Apple Park is located?"))
 
         #expect(sut.state == initialState.copy(\.currentText, to: "Where Apple Park is located?"))
         #expect(effect == .none)
@@ -84,7 +108,7 @@ final class ComposerStateStoreTests {
             stateChanges.append(state)
         }
 
-        _ = await sut.handle(action: .textChanged(to: "Tell me something about AI"))
+        _ = await sut.handle(action: .textChanged("Tell me something about AI"))
 
         let effect = await sut.handle(action: .sendPromptTapped)
 
@@ -113,7 +137,7 @@ final class ComposerStateStoreTests {
         #expect(webBridge.webView === webViewSpy)
 
         _ = await sut.handle(action: .taskStarted)
-        _ = await sut.handle(action: .textChanged(to: "How to make proper neapolitan pizza?"))
+        _ = await sut.handle(action: .textChanged("How to make proper neapolitan pizza?"))
 
         let effect = await sut.handle(action: .sendPromptTapped)
 
@@ -188,7 +212,7 @@ final class ComposerStateStoreTests {
         #expect(webBridge.webView === webViewSpy)
 
         _ = await sut.handle(action: .taskStarted)
-        _ = await sut.handle(action: .textChanged(to: "Tell me a story"))
+        _ = await sut.handle(action: .textChanged("Tell me a story"))
 
         webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
 
@@ -270,7 +294,7 @@ final class ComposerStateStoreTests {
     func sendPromptAction_TextEscaping_EscapesTextCorrectly(testCase: TextEscapingTestCase) async {
         webBridge.attach(to: webViewSpy)
 
-        _ = await sut.handle(action: .textChanged(to: testCase.input))
+        _ = await sut.handle(action: .textChanged(testCase.input))
         let effect = await sut.handle(action: .sendPromptTapped)
 
         let javaScript = "window.nativeComposerApi?.sendPrompt('\(UUID.testData.uuidString)', '\(testCase.expectedOutput)');"

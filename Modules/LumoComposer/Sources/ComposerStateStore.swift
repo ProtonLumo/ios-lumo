@@ -4,10 +4,11 @@ import WebKit
 @MainActor
 final class ComposerStateStore: ObservableObject {
     enum Action {
+        case webViewReadyChanged(Bool)
         case taskStarted
         case onDisappear
 
-        case textChanged(to: String)
+        case textChanged(String)
         case sendPromptTapped
         case stopResponseTapped
         case openFilePickerTapped
@@ -34,6 +35,9 @@ final class ComposerStateStore: ObservableObject {
 
     func handle(action: Action) async -> Effect {
         switch action {
+        case .webViewReadyChanged(let newValue):
+            state = state.copy(\.isWebViewReady, to: newValue)
+            return .none
         case .taskStarted:
             observationTask?.cancel()
             observationTask = Task {
