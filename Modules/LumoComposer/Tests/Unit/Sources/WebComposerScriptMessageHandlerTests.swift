@@ -13,6 +13,25 @@ final class WebComposerScriptMessageHandlerTests {
         let expectedState: WebComposerState
     }
 
+    @Test
+    func registerForAll_RegistersAllMessageNames() {
+        let configuration = WKWebViewConfigurationSpy()
+        let contentControllerSpy = configuration.stubbedUserContentController
+        let allMessageNames = WebComposerScriptMessageHandler.MessageName.allCases
+
+        #expect(contentControllerSpy.addCalls.isEmpty)
+
+        sut.registerForAll(in: configuration)
+
+        #expect(contentControllerSpy.addCalls.count == allMessageNames.count)
+
+        zip(allMessageNames, configuration.stubbedUserContentController.addCalls)
+            .forEach { messageName, params in
+                #expect(params.scriptMessageHandler === sut)
+                #expect(params.name == messageName.rawValue)
+            }
+    }
+
     @Test(
         arguments: [
             TestCase(
@@ -72,10 +91,11 @@ final class WebComposerScriptMessageHandlerTests {
             }
             return receivedStates
         }
+        let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerStateHandler
 
         sut.userContentController(
             WKUserContentController(),
-            didReceive: WKScriptMessageStub(name: "nativeComposerStateHandler", body: testCase.stateDict)
+            didReceive: WKScriptMessageStub(name: messageName.rawValue, body: testCase.stateDict)
         )
 
         let receivedStates = await stateTask.value
@@ -101,5 +121,26 @@ private final class WKScriptMessageStub: WKScriptMessage {
 
     override var body: Any {
         _body
+    }
+}
+
+private final class WKWebViewConfigurationSpy: WKWebViewConfiguration {
+    let stubbedUserContentController = WKUserContentControllerSpy()
+
+    // MARK: - WKWebViewConfiguration
+
+    override var userContentController: WKUserContentController {
+        get { stubbedUserContentController }
+        set {}
+    }
+}
+
+private final class WKUserContentControllerSpy: WKUserContentController {
+    private(set) var addCalls: [(scriptMessageHandler: any WKScriptMessageHandler, name: String)] = []
+
+    // MARK: - WKUserContentController
+
+    override func add(_ scriptMessageHandler: any WKScriptMessageHandler, name: String) {
+        addCalls.append((scriptMessageHandler, name))
     }
 }
