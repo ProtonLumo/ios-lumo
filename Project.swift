@@ -1,4 +1,5 @@
 import ProjectDescription
+import ProjectDescriptionHelpers
 
 // MARK: - Version Configuration
 
@@ -17,6 +18,10 @@ let project = Project(
 
             // Security - script sandboxing (important for Xcode 15+)
             "ENABLE_USER_SCRIPT_SANDBOXING": true,
+
+            // Module verification - validate clang modules
+            "ENABLE_MODULE_VERIFIER": true,
+            "ENABLE_MODULE_VERIFIER_SUPPORTED_LANGUAGES": true,
 
             // Localization - prefer string catalogs
             "LOCALIZATION_PREFERS_STRING_CATALOGS": true,
@@ -57,6 +62,8 @@ let project = Project(
                 .external(name: "ProtonUIFoundations"),
                 .external(name: "Lottie"),
                 .target(name: "LumoWidgetExtension"),
+                .target(name: "LumoComposer"),
+                .target(name: "LumoDesignSystem"),
             ],
             settings: .settings(
                 base: [
@@ -114,6 +121,31 @@ let project = Project(
             )
         ),
         .target(
+            name: "LumoComposer",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "me.proton.lumo.LumoComposer",
+            deploymentTargets: .iOS("17.6"),
+            sources: ["Modules/LumoComposer/Sources/**"],
+            resources: [
+                "Modules/LumoComposer/Resources/**"
+            ],
+            dependencies: [
+                .target(name: "LumoDesignSystem")
+            ]
+        ),
+        .target(
+            name: "LumoDesignSystem",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "me.proton.lumo.LumoDesignSystem",
+            deploymentTargets: .iOS("17.6"),
+            sources: ["Modules/LumoDesignSystem/Sources/**"],
+            resources: [
+                "Modules/LumoDesignSystem/Resources/**"
+            ]
+        ),
+        .target(
             name: "LumoAppUnitTests",
             destinations: .iOS,
             product: .unitTests,
@@ -124,14 +156,29 @@ let project = Project(
                 .target(name: "LumoApp")
             ]
         ),
+        .target(
+            name: "LumoComposerTests",
+            destinations: .iOS,
+            product: .unitTests,
+            bundleId: "me.proton.lumo.LumoComposerTests",
+            deploymentTargets: .iOS("17.6"),
+            sources: ["Modules/LumoComposer/Tests/**"],
+            dependencies: [
+                .target(name: "LumoComposer"),
+                .external(name: "SnapshotTesting"),
+            ]
+        ),
     ],
     schemes: [
         .scheme(
             name: "LumoApp",
             shared: true,
-            buildAction: swiftFormatBuildAction,
+            buildAction: .swiftFormat(target: .target("LumoApp")),
             testAction: .targets(
-                [.testableTarget(target: .target("LumoAppUnitTests"))],
+                [
+                    .testableTarget(target: .target("LumoAppUnitTests")),
+                    .testableTarget(target: .target("LumoComposerTests")),
+                ],
                 configuration: "Debug"
             ),
             runAction: .runAction(configuration: "Debug"),
@@ -142,9 +189,12 @@ let project = Project(
         .scheme(
             name: "LumoApp-Dev",
             shared: true,
-            buildAction: swiftFormatBuildAction,
+            buildAction: .swiftFormat(target: .target("LumoApp")),
             testAction: .targets(
-                [.testableTarget(target: .target("LumoAppUnitTests"))],
+                [
+                    .testableTarget(target: .target("LumoAppUnitTests")),
+                    .testableTarget(target: .target("LumoComposerTests")),
+                ],
                 configuration: "Debug-Dev"
             ),
             runAction: .runAction(configuration: "Debug-Dev"),
@@ -162,20 +212,3 @@ let project = Project(
         ),
     ]
 )
-
-var swiftFormatBuildAction: BuildAction {
-    .buildAction(
-        targets: [.target("LumoApp")],
-        preActions: [
-            .executionAction(
-                scriptText: """
-                    if [ $ACTION == "build" ]; then
-                      cd "$SRCROOT"
-                      xcrun swift-format format -r Modules -i
-                    fi
-                    """,
-                target: .target("LumoApp")
-            )
-        ]
-    )
-}

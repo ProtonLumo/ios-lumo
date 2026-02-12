@@ -85,5 +85,4 @@ Tuist/.build
 *.xcodeproj.backup
 *.xcworkspace
 Derived/
-.build/
 !*.xcworkspace/xcshareddata/swiftpm/Package.resolved

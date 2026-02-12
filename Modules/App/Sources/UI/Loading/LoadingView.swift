@@ -41,7 +41,8 @@ struct LoadingView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 20) {
-                LottieView(name: "lumo-loader")
+                LottieView(animation: LottieAnimations.lumoLoader)
+                    .playbackInLoopMode()
                     .frame(width: 180, height: 180)
 
                 // Message with fade transition

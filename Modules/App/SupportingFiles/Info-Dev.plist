@@ -69,13 +69,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>WKAppBoundDomains</key>
-	<array>
-		<string>lumo.proton.me</string>
-		<string>lumo-api.proton.me</string>
-		<string>account.proton.me</string>
-		<string>account-api.proton.me</string>
-	</array>
 	<key>ACCOUNT_API_BASE_URL</key>
 	<string>$(ACCOUNT_API_BASE_URL)</string>
 	<key>ACCOUNT_BASE_URL</key>

@@ -1,0 +1,9 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Ask anything..." : {
+      "comment" : "Placeholder text for the composer input."
+    }
+  },
+  "version" : "1.1"
+}
