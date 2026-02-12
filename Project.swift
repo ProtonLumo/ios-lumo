@@ -1,11 +1,17 @@
 import ProjectDescription
-import ProjectDescriptionHelpers
 
 // MARK: - Version Configuration
 
 let marketingVersion = "1.2.6"
 let currentProjectVersion = "31"
 let developmentTeam = "2SB5Z68H26"
+
+// MARK: - Shared Settings
+
+let moduleVerifierSettings: SettingsDictionary = [
+    "ENABLE_MODULE_VERIFIER": true,
+    "ENABLE_MODULE_VERIFIER_SUPPORTED_LANGUAGES": true,
+]
 
 // MARK: - Project
 
@@ -132,7 +138,8 @@ let project = Project(
             ],
             dependencies: [
                 .target(name: "LumoDesignSystem")
-            ]
+            ],
+            settings: .settings(base: moduleVerifierSettings)
         ),
         .target(
             name: "LumoDesignSystem",
@@ -143,7 +150,11 @@ let project = Project(
             sources: ["Modules/LumoDesignSystem/Sources/**"],
             resources: [
                 "Modules/LumoDesignSystem/Resources/**"
-            ]
+            ],
+            dependencies: [
+                .external(name: "Lottie")
+            ],
+            settings: .settings(base: moduleVerifierSettings)
         ),
         .target(
             name: "LumoAppUnitTests",
@@ -165,15 +176,22 @@ let project = Project(
             sources: ["Modules/LumoComposer/Tests/**"],
             dependencies: [
                 .target(name: "LumoComposer"),
+                .target(name: "LumoApp"),
                 .external(name: "SnapshotTesting"),
-            ]
+            ],
+            settings: .settings(
+                base: [
+                    "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/LumoApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LumoApp",
+                    "BUNDLE_LOADER": "$(TEST_HOST)",
+                ]
+            )
         ),
     ],
     schemes: [
         .scheme(
             name: "LumoApp",
             shared: true,
-            buildAction: .swiftFormat(target: .target("LumoApp")),
+            buildAction: .buildAction(targets: [.target("LumoApp")]),
             testAction: .targets(
                 [
                     .testableTarget(target: .target("LumoAppUnitTests")),
@@ -189,7 +207,7 @@ let project = Project(
         .scheme(
             name: "LumoApp-Dev",
             shared: true,
-            buildAction: .swiftFormat(target: .target("LumoApp")),
+            buildAction: .buildAction(targets: [.target("LumoApp")]),
             testAction: .targets(
                 [
                     .testableTarget(target: .target("LumoAppUnitTests")),

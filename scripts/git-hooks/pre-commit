@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Swift format pre-commit hook
+# Formats staged Swift files before commit
+
+echo "🔍 Running swift-format on staged files..."
+
+# Get list of staged Swift files
+STAGED_SWIFT_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.swift$')
+
+if [ -z "$STAGED_SWIFT_FILES" ]; then
+    echo "✅ No Swift files to format"
+    exit 0
+fi
+
+# Format each staged file
+for file in $STAGED_SWIFT_FILES; do
+    if [ -f "$file" ]; then
+        echo "  📝 Formatting: $file"
+        xcrun swift-format format -i "$file"
+        git add "$file"
+    fi
+done
+
+echo "✅ swift-format complete"
+exit 0

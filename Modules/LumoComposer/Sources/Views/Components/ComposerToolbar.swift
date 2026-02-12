@@ -12,14 +12,14 @@ struct ComposerToolbar: View {
         HStack(spacing: .zero) {
             HStack(spacing: DS.Spacing.compact) {
                 ComposerToggleButton(
-                    icon: DS.Icon.paperClip,
+                    icon: DS.Icon.icPaperClip.swiftUIImage,
                     isOn: false,
                     isGhostModeEnabled: isGhostModeEnabled,
                     action: onPaperclipTap
                 )
 
                 ComposerToggleButton(
-                    icon: DS.Icon.globe,
+                    icon: DS.Icon.icGlobe.swiftUIImage,
                     isOn: isWebSearchEnabled,
                     isGhostModeEnabled: isGhostModeEnabled,
                     action: onGlobeTap
@@ -27,7 +27,7 @@ struct ComposerToolbar: View {
             }
             Spacer()
             ComposerToggleButton(
-                icon: DS.Icon.microphone,
+                icon: DS.Icon.icMicrophone.swiftUIImage,
                 isOn: false,
                 isGhostModeEnabled: isGhostModeEnabled,
                 action: onMicrophoneTap

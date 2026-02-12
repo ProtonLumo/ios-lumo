@@ -1,14 +1,13 @@
 import SnapshotTesting
 import SwiftUI
 import Testing
-import XCTest
 
 @testable import LumoComposer
 
-@MainActor
 struct ComposerViewSnapshotTests {
     struct TestCase {
         let initialText: String
+        let files: [File]
         let isGhostModeEnabled: Bool
         let isWebSearchEnabled: Bool
         let actionButton: ComposerView.ActionButtonState
@@ -19,6 +18,7 @@ struct ComposerViewSnapshotTests {
     static let idleEmptyComposer: [TestCase] = [
         TestCase(
             initialText: "",
+            files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             actionButton: .none,
@@ -26,6 +26,7 @@ struct ComposerViewSnapshotTests {
         ),
         TestCase(
             initialText: "",
+            files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
             actionButton: .none,
@@ -33,6 +34,7 @@ struct ComposerViewSnapshotTests {
         ),
         TestCase(
             initialText: "",
+            files: [],
             isGhostModeEnabled: true,
             isWebSearchEnabled: false,
             actionButton: .none,
@@ -40,6 +42,7 @@ struct ComposerViewSnapshotTests {
         ),
         TestCase(
             initialText: "",
+            files: [],
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
             actionButton: .none,
@@ -51,6 +54,7 @@ struct ComposerViewSnapshotTests {
     static let shortPrompt: [TestCase] = [
         TestCase(
             initialText: "What is AI?",
+            files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
             actionButton: .send,
@@ -58,6 +62,7 @@ struct ComposerViewSnapshotTests {
         ),
         TestCase(
             initialText: "Explain quantum physics",
+            files: [],
             isGhostModeEnabled: true,
             isWebSearchEnabled: false,
             actionButton: .send,
@@ -70,6 +75,7 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText:
                 "Can you help me understand the differences between supervised and unsupervised learning? I'm particularly interested in real-world examples and how these concepts apply to modern AI systems.",
+            files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
             actionButton: .send,
@@ -78,6 +84,7 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText:
                 "Explain quantum computing in simple terms. What are qubits, how do they differ from classical bits, and what are the main challenges in building practical quantum computers?",
+            files: [],
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
             actionButton: .send,
@@ -89,6 +96,7 @@ struct ComposerViewSnapshotTests {
     static let readyToSend: [TestCase] = [
         TestCase(
             initialText: "Tell me a story",
+            files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             actionButton: .send,
@@ -96,6 +104,7 @@ struct ComposerViewSnapshotTests {
         ),
         TestCase(
             initialText: "Search for latest news",
+            files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
             actionButton: .send,
@@ -103,10 +112,11 @@ struct ComposerViewSnapshotTests {
         ),
     ]
 
-    /// Sending
+    /// Sending state
     static let sending: [TestCase] = [
         TestCase(
             initialText: "",
+            files: [],
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             actionButton: .stop,
@@ -114,6 +124,7 @@ struct ComposerViewSnapshotTests {
         ),
         TestCase(
             initialText: "",
+            files: [],
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
             actionButton: .stop,
@@ -121,7 +132,81 @@ struct ComposerViewSnapshotTests {
         ),
     ]
 
-    @Test(arguments: idleEmptyComposer + shortPrompt + longPrompt + readyToSend + sending)
+    /// With files
+    static let withFiles: [TestCase] = [
+        // One file
+        TestCase(
+            initialText: "Analyze this document",
+            files: [.init(name: "Report.pdf", type: .pdf)],
+            isGhostModeEnabled: false,
+            isWebSearchEnabled: false,
+            actionButton: .send,
+            testName: "with_one_file"
+        ),
+        TestCase(
+            initialText: "Analyze this document",
+            files: [.init(name: "Report.pdf", type: .pdf)],
+            isGhostModeEnabled: true,
+            isWebSearchEnabled: true,
+            actionButton: .send,
+            testName: "with_one_file_ghost_mode_web_search"
+        ),
+        // Two files
+        TestCase(
+            initialText: "Compare these documents",
+            files: [
+                .init(name: "Contract_v1.pdf", type: .pdf),
+                .init(name: "Budget.xls", type: .xls),
+            ],
+            isGhostModeEnabled: false,
+            isWebSearchEnabled: true,
+            actionButton: .send,
+            testName: "with_two_files"
+        ),
+        TestCase(
+            initialText: "Compare these documents",
+            files: [
+                .init(name: "Contract_v1.pdf", type: .pdf),
+                .init(name: "Budget.xls", type: .xls),
+            ],
+            isGhostModeEnabled: true,
+            isWebSearchEnabled: false,
+            actionButton: .send,
+            testName: "with_two_files_ghost_mode"
+        ),
+        // Many files
+        TestCase(
+            initialText: "Process all these files",
+            files: [
+                .init(name: "Report.pdf", type: .pdf),
+                .init(name: "Data.xls", type: .xls),
+                .init(name: "Slides.ppt", type: .ppt),
+                .init(name: "Image.jpg", type: .image),
+                .init(name: "Video.mp4", type: .video),
+            ],
+            isGhostModeEnabled: false,
+            isWebSearchEnabled: false,
+            actionButton: .send,
+            testName: "with_many_files"
+        ),
+        TestCase(
+            initialText: "Process all these files",
+            files: [
+                .init(name: "Report.pdf", type: .pdf),
+                .init(name: "Data.xls", type: .xls),
+                .init(name: "Slides.ppt", type: .ppt),
+                .init(name: "Image.jpg", type: .image),
+                .init(name: "Video.mp4", type: .video),
+            ],
+            isGhostModeEnabled: true,
+            isWebSearchEnabled: true,
+            actionButton: .send,
+            testName: "with_many_files_ghost_mode_web_search"
+        ),
+    ]
+
+    @Test(arguments: idleEmptyComposer + shortPrompt + longPrompt + readyToSend + sending + withFiles)
+    @MainActor
     func composerView(testCase: TestCase) {
         assertSnapshotsOnEdgeDevices(of: sut(testCase: testCase), testName: testCase.testName)
     }
@@ -133,87 +218,12 @@ struct ComposerViewSnapshotTests {
             Spacer()
             ComposerView(
                 text: .constant(testCase.initialText),
+                files: testCase.files,
                 isGhostModeEnabled: testCase.isGhostModeEnabled,
                 isWebSearchEnabled: testCase.isWebSearchEnabled,
                 actionButton: testCase.actionButton,
                 action: { _ in }
             )
-        }
-    }
-}
-
-private func assertSnapshotsOnEdgeDevices(
-    of view: some View,
-    named name: String? = nil,
-    record recording: Bool = false,
-    timeout: TimeInterval = 5,
-    file: StaticString = #file,
-    testName: String = #function,
-    line: UInt = #line
-) {
-    assertSnapshots(
-        matching: UIHostingController(rootView: view),
-        on: [("SE", .iPhoneSe), ("13 Pro Max", .iPhone13ProMax)],
-        named: name,
-        record: recording,
-        timeout: timeout,
-        file: file,
-        testName: testName,
-        line: line
-    )
-}
-
-private func assertSnapshots(
-    matching controller: @autoclosure () throws -> UIViewController,
-    on configurations: [(String, ViewImageConfig)],
-    styles: [UIUserInterfaceStyle] = [.light, .dark],
-    named name: String? = nil,
-    record recording: Bool = false,
-    timeout: TimeInterval = 5,
-    file: StaticString = #file,
-    testName: String = #function,
-    line: UInt = #line
-) {
-    configurations.forEach { (configurationName, configuration) in
-        let name = [name, configurationName].compactMap { $0 }.joined(separator: "_")
-
-        try? styles.forEach { style in
-            let controller = try controller()
-            controller.overrideUserInterfaceStyle = style
-
-            assertSnapshot(
-                of: controller,
-                as: .image(on: configuration),
-                named: suffixedName(name: name, withStyle: style),
-                record: recording,
-                timeout: timeout,
-                file: file,
-                testName: testName,
-                line: line
-            )
-        }
-    }
-}
-
-//// MARK: - Private
-
-private func suffixedName(name: String?, withStyle style: UIUserInterfaceStyle) -> String? {
-    [name, style.humanReadable]
-        .compactMap { $0 }
-        .joined(separator: "_")
-}
-
-private extension UIUserInterfaceStyle {
-    var humanReadable: String {
-        switch self {
-        case .dark:
-            return "dark"
-        case .light:
-            return "light"
-        case .unspecified:
-            return "unspecified"
-        @unknown default:
-            return "unknown"
         }
     }
 }

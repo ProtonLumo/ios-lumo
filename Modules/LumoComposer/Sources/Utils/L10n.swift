@@ -8,7 +8,35 @@ enum L10n {
         static let placeholder = LocalizedStringResource(
             "Ask anything...",
             bundle: .module,
-            comment: "Placeholder text for the composer input."
+            comment: "Placeholder text shown in the composer input field when empty"
+        )
+        static func termsAndPrivacy(
+            termsURL: String,
+            privacyURL: String
+        ) -> LocalizedStringResource {
+            .init(
+                "By using Lumo, you agree to our [Terms](\(termsURL)) and [Privacy Policy](\(privacyURL)).",
+                bundle: .module,
+                comment: "Terms and privacy policy agreement text with clickable links. The text uses Markdown format with embedded URLs that should not be translated."
+            )
+        }
+    }
+
+    enum Welcome {
+        static let greeting = LocalizedStringResource(
+            "Hey, I'm Lumo.",
+            bundle: .module,
+            comment: "First line of welcome message - Lumo's introduction"
+        )
+        static let prompt = LocalizedStringResource(
+            "Ask me anything.",
+            bundle: .module,
+            comment: "Second line of welcome message - invitation to ask questions"
+        )
+        static let confidentiality = LocalizedStringResource(
+            "It's confidential.",
+            bundle: .module,
+            comment: "Third line of welcome message - privacy assurance"
         )
     }
 }

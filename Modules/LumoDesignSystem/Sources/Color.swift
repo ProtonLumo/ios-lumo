@@ -13,6 +13,11 @@ extension DS {
             public static let weakDarkOnly = SwiftColor.backgroundWeakDark
         }
 
+        public enum Border {
+            public static let weak = SwiftColor.borderWeak
+            public static let weakDark = SwiftColor.borderWeakDark
+        }
+
         public enum Interaction {
             public static let defaultHover = SwiftColor.interactionDefaultHover
         }

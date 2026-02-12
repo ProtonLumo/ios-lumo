@@ -17,6 +17,7 @@ struct ComposerView: View {
     }
 
     @Binding var text: String
+    let files: [File]
     let isGhostModeEnabled: Bool
     let isWebSearchEnabled: Bool
     let actionButton: ActionButtonState
@@ -24,6 +25,10 @@ struct ComposerView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.standard) {
+            if !files.isEmpty {
+                ComposerAttachmentsView(files: files, isGhostModeEnabled: isGhostModeEnabled)
+            }
+
             HStack(alignment: .center, spacing: DS.Spacing.small) {
                 ComposerInput(text: $text, isGhostModeEnabled: isGhostModeEnabled)
                     .background(isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak)
@@ -63,7 +68,7 @@ struct ComposerView: View {
     private var sendButton: some View {
         ComposerActionButton(
             action: { action(.sendTapped) },
-            icon: DS.Icon.arrowRight,
+            icon: DS.Icon.icArrowRight.swiftUIImage,
             isGhostModeEnabled: isGhostModeEnabled
         )
     }
@@ -71,7 +76,7 @@ struct ComposerView: View {
     private var stopButton: some View {
         ComposerActionButton(
             action: { action(.stopTapped) },
-            icon: DS.Icon.stop,
+            icon: DS.Icon.icStop.swiftUIImage,
             isGhostModeEnabled: isGhostModeEnabled
         )
     }
@@ -83,6 +88,13 @@ struct ComposerView: View {
             Spacer()
             ComposerView(
                 text: .constant(""),
+                files: [
+                    .init(name: "Report.pdf", type: .pdf),
+                    .init(name: "Data.xls", type: .xls),
+                    .init(name: "Slides.ppt", type: .ppt),
+                    .init(name: "Image.jpg", type: .image),
+                    .init(name: "Video.mp4", type: .video),
+                ],
                 isGhostModeEnabled: false,
                 isWebSearchEnabled: true,
                 actionButton: .none,
@@ -90,6 +102,7 @@ struct ComposerView: View {
             )
             ComposerView(
                 text: .constant("Tell me a long story"),
+                files: [],
                 isGhostModeEnabled: false,
                 isWebSearchEnabled: false,
                 actionButton: .send,
@@ -97,6 +110,7 @@ struct ComposerView: View {
             )
             ComposerView(
                 text: .constant(""),
+                files: [],
                 isGhostModeEnabled: true,
                 isWebSearchEnabled: false,
                 actionButton: .stop,
@@ -104,6 +118,13 @@ struct ComposerView: View {
             )
             ComposerView(
                 text: .constant("Tell me a long story"),
+                files: [
+                    .init(name: "Report.pdf", type: .pdf),
+                    .init(name: "Data.xls", type: .xls),
+                    .init(name: "Slides.ppt", type: .ppt),
+                    .init(name: "Image.jpg", type: .image),
+                    .init(name: "Video.mp4", type: .video),
+                ],
                 isGhostModeEnabled: true,
                 isWebSearchEnabled: true,
                 actionButton: .send,

@@ -72,5 +72,10 @@
 	<string>$(LUMO_BASE_URL)</string>
 	<key>ENABLE_LOCALHOST</key>
 	<string>$(ENABLE_LOCALHOST)</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Inter-Regular.ttf</string>
+		<string>Syne-Medium.ttf</string>
+	</array>
 </dict>
 </plist>

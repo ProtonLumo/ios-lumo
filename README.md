@@ -188,11 +188,13 @@ mise install tuist
 1. Clone the repository
 2. Install dependencies: `tuist install`
 3. Generate workspace: `tuist generate`
-4. Open the project in Xcode:
+4. Setup git hooks (optional but recommended): `./scripts/setup-git-hooks.sh`
+   - Installs pre-commit hook that auto-formats Swift code with `swift-format`
+5. Open the project in Xcode:
    - **`Lumo.xcodeproj`** - For regular development (recommended for most cases)
    - **`Lumo.xcworkspace`** - Only if you need to browse/edit dependency source code (Lottie, ProtonUIFoundations, etc.)
-5. Select the **LumoApp** scheme (production)
-6. Build and run
+6. Select the **LumoApp** scheme (production)
+7. Build and run
 
 > **Note:** After modifying `Project.swift` or `Package.swift`, run `tuist generate` to regenerate the workspace.
 >
