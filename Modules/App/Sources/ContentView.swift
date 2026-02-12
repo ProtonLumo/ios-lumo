@@ -1,3 +1,4 @@
+import LumoComposer
 import ProtonUIFoundations
 import Speech
 import SwiftUI
@@ -47,6 +48,7 @@ struct ContentView: View {
     // MARK: - State Properties
     @StateObject private var speechRecognizer = SpeechRecognizer()
     @StateObject private var jsCoordinator = WebViewCoordinator()
+    @StateObject private var webComposerBridge = WebComposerBridge()
     @State private var isLoading = true
     @State private var webViewIsActive = true
     @State private var webViewReady = false
@@ -132,6 +134,7 @@ struct ContentView: View {
 
                 WebView(
                     url: URL.lumoBase!,
+                    webComposerBridge: webComposerBridge,
                     isReady: $webViewReady,
                     jsCoordinator: jsCoordinator,
                     action: $webViewAction,

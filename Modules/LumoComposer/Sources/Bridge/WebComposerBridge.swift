@@ -45,6 +45,8 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
         }
     }
 
+    public init() {}
+
     weak var webView: WebViewProtocol?
 
     // MARK: - WebComposerAttaching
@@ -88,7 +90,7 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
     /// **Data flow:** JavaScript → WKScriptMessage → Dictionary → `WebComposerState` → AsyncStream
     ///
     /// Decoding failures are silently ignored to maintain stable bridge communication.
-    func handleStateChange(state: [String: Any]) {
+    public func handleStateChange(state: [String: Any]) {
         guard
             let jsonData = try? JSONSerialization.data(withJSONObject: state),
             let webState = try? JSONDecoder().decode(WebComposerState.self, from: jsonData)

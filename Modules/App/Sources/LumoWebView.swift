@@ -1,4 +1,5 @@
 import Darwin
+import LumoComposer
 import SwiftUI
 @preconcurrency import WebKit
 import os.log
@@ -15,6 +16,7 @@ class LumoWebView: WKWebView {
 // MARK: - WebView Component
 struct WebView: UIViewRepresentable {
     let url: URL
+    let webComposerBridge: WebComposerStateReceiving
     @Binding var isReady: Bool
     @ObservedObject var jsCoordinator: WebViewCoordinator
     @Binding var action: WebViewAction?
@@ -26,14 +28,16 @@ struct WebView: UIViewRepresentable {
     @Binding var paymentHandler: PaymentHandler?
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self, webComposerBridge: webComposerBridge)
     }
 
     class Coordinator: NSObject, WKNavigationDelegate, UIScrollViewDelegate {
         let parent: WebView
+        let webComposerBridge: WebComposerStateReceiving
 
-        init(_ parent: WebView) {
+        init(_ parent: WebView, webComposerBridge: WebComposerStateReceiving) {
             self.parent = parent
+            self.webComposerBridge = webComposerBridge
             super.init()
 
             // Add observer for back navigation to lumo.proton.me
@@ -795,6 +799,7 @@ struct WebView: UIViewRepresentable {
         let themeMessageHandler = ThemeMessageHandler()
         let unifiedHandler = UnifiedMessageHandler(self)
         let paymentBridgeHandler = PaymentBridgeCallbackHandler()
+        let webComposerHandler = WebComposerScriptMessageHandler(webComposerBridge: context.coordinator.webComposerBridge)
 
         // Store payment handler in binding so ContentView can access it
         DispatchQueue.main.async {
@@ -807,6 +812,7 @@ struct WebView: UIViewRepresentable {
         themeMessageHandler.registerForAll(in: configuration)
         unifiedHandler.registerForAll(in: configuration)
         paymentBridgeHandler.registerForAll(in: configuration)
+        webComposerHandler.registerForAll(in: configuration)
 
         if let voiceEntryScript = JSBridgeManager.shared.createUserScript(.voiceEntrySetup, injectionTime: .atDocumentEnd, forMainFrameOnly: false) {
             configuration.userContentController.addUserScript(voiceEntryScript)

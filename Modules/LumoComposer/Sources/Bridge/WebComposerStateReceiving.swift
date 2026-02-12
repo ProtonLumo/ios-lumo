@@ -2,7 +2,7 @@
 ///
 /// Handles inbound communication from the web application to Swift.
 /// Complements `WebComposerBridging` which handles outbound communication (Swift → JavaScript).
-protocol WebComposerStateReceiving {
+public protocol WebComposerStateReceiving {
     /// Processes state updates received from the WebView.
     ///
     /// **Data flow:** JavaScript → WKScriptMessage → Dictionary → `WebComposerState` → AsyncStream

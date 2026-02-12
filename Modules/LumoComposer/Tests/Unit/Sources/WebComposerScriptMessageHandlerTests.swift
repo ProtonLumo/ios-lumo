@@ -5,8 +5,8 @@ import WebKit
 
 @MainActor
 final class WebComposerScriptMessageHandlerTests {
-    let webBridge = WebComposerBridge()
-    lazy var sut = WebComposerScriptMessageHandler(webBridge: webBridge)
+    let composerBridge = WebComposerBridge()
+    lazy var sut = WebComposerScriptMessageHandler(webComposerBridge: composerBridge)
 
     struct TestCase {
         let stateDict: [String: Any]
@@ -83,7 +83,7 @@ final class WebComposerScriptMessageHandlerTests {
     func handleStateChange_EmitsStateUpdateToStateUpdates(testCase: TestCase) async {
         let stateTask = Task {
             var receivedStates: [WebComposerState] = []
-            for await state in webBridge.stateUpdates {
+            for await state in composerBridge.stateUpdates {
                 receivedStates.append(state)
                 if receivedStates.count == 1 {
                     break

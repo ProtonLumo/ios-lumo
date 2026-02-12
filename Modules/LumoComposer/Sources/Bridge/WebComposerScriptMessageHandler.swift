@@ -2,19 +2,19 @@ import LumoCore
 import WebKit
 
 /// Message handler for receiving composer messages from JavaScript
-final class WebComposerScriptMessageHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
+public final class WebComposerScriptMessageHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
     enum MessageName: String, CaseIterable {
         case nativeComposerStateHandler
     }
 
-    init(webBridge: WebComposerStateReceiving) {
-        self.webBridge = webBridge
+    public init(webComposerBridge: WebComposerStateReceiving) {
+        self.webComposerBridge = webComposerBridge
         super.init()
     }
 
     // MARK: - WKMessageHandlerRegistering
 
-    func registerForAll(in configuration: WKWebViewConfiguration) {
+    public func registerForAll(in configuration: WKWebViewConfiguration) {
         MessageName.allCases.forEach { message in
             configuration.userContentController.add(self, name: message.rawValue)
         }
@@ -35,11 +35,11 @@ final class WebComposerScriptMessageHandler: NSObject, WKScriptMessageHandler, W
 
     // MARK: - Private
 
-    private let webBridge: WebComposerStateReceiving
+    private let webComposerBridge: WebComposerStateReceiving
 
     private func handleStateChange(_ message: WKScriptMessage) {
         if let dictionary = message.body as? [String: Any] {
-            webBridge.handleStateChange(state: dictionary)
+            webComposerBridge.handleStateChange(state: dictionary)
         }
     }
 }
