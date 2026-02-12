@@ -15,7 +15,7 @@ public struct PaymentHandlerActions {
     let payload: [String: Any]
 }
 
-class PaymentHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
+final class PaymentHandler: NSObject, WebScriptMessageHandler {
     private var completion: (PaymentHandlerActions) -> Void
     private weak var webView: WKWebView?
 

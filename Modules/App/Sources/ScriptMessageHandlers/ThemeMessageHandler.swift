@@ -1,8 +1,8 @@
 import LumoCore
 import WebKit
 
-final class ThemeMessageHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
-    // MARK: - WKMessageHandlerRegistering
+final class ThemeMessageHandler: NSObject, WebScriptMessageHandler {
+    // MARK: - WebScriptMessageHandler
 
     enum MessageName: String, CaseIterable {
         case themeChanged

@@ -1,8 +1,8 @@
 import LumoCore
 import WebKit
 
-final class PaymentBridgeCallbackHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
-    // MARK: - WKMessageHandlerRegistering
+final class PaymentBridgeCallbackHandler: NSObject, WebScriptMessageHandler {
+    // MARK: - WebScriptMessageHandler
 
     enum MessageName: String, CaseIterable {
         case paymentBridgeCallback

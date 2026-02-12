@@ -2,13 +2,13 @@ import LumoCore
 import WebKit
 
 /// Message handler for receiving composer messages from JavaScript
-public final class WebComposerScriptMessageHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
+public final class WebComposerScriptMessageHandler: NSObject, WebScriptMessageHandler {
     public init(webComposerBridge: WebComposerStateReceiving) {
         self.webComposerBridge = webComposerBridge
         super.init()
     }
 
-    // MARK: - WKMessageHandlerRegistering
+    // MARK: - WebScriptMessageHandler
 
     public enum MessageName: String, CaseIterable {
         case nativeComposerStateHandler

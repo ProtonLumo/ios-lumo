@@ -1,7 +1,7 @@
 import LumoCore
 import WebKit
 
-final class UnifiedMessageHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
+final class UnifiedMessageHandler: NSObject, WebScriptMessageHandler {
     let parent: WebView
     private var lastSubmitTime: Date?
     private let submitDebounceInterval: TimeInterval = 0.5
@@ -10,7 +10,7 @@ final class UnifiedMessageHandler: NSObject, WKScriptMessageHandler, WKMessageHa
         self.parent = parent
     }
 
-    // MARK: - WKMessageHandlerRegistering
+    // MARK: - WebScriptMessageHandler
 
     enum MessageName: String, CaseIterable {
         case navigationState
