@@ -5,7 +5,73 @@
       "comment" : "Bundle display name",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Lumo"
@@ -18,7 +84,73 @@
       "comment" : "Bundle name",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "LumoApp"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "LumoApp"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "LumoApp"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "LumoApp"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "LumoApp"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "LumoApp"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "LumoApp"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "LumoApp"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "LumoApp"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "LumoApp"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "LumoApp"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "LumoApp"
@@ -33,14 +165,14 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs microphone access to enable voice input for AI assistance."
+            "state" : "translated",
+            "value" : "Lumo vyžaduje přístup k mikrofonu, aby mohla aktivovat hlasové ovládání pro asistenci AI."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs microphone access to enable voice input for AI assistance."
+            "state" : "translated",
+            "value" : "Lumo benötigt Zugriff auf das Mikrofon, um die Spracheingabe für die KI-Unterstützung zu aktivieren"
           }
         },
         "en" : {
@@ -51,56 +183,56 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs microphone access to enable voice input for AI assistance."
+            "state" : "translated",
+            "value" : "Lumo necesita acceder al micrófono para permitir la entrada de voz de la asistencia de IA."
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs microphone access to enable voice input for AI assistance."
+            "state" : "translated",
+            "value" : "Lumo necesita acceder al micrófono para permitir la entrada de voz de la asistencia de IA."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs microphone access to enable voice input for AI assistance."
+            "state" : "translated",
+            "value" : "Lumo a besoin d'accéder au microphone pour activer la saisie vocale et utiliser l'assistance par IA"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs microphone access to enable voice input for AI assistance."
+            "state" : "translated",
+            "value" : "Lumo ha bisogno dell’accesso al microfono per abilitare l’input vocale per l’assistenza AI."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs microphone access to enable voice input for AI assistance."
+            "state" : "translated",
+            "value" : "Lumo heeft toegang tot de microfoon nodig om spraakinvoer voor AI-assistentie mogelijk te maken."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "new",
             "value" : "Lumo needs microphone access to enable voice input for AI assistance."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "new",
             "value" : "Lumo needs microphone access to enable voice input for AI assistance."
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "new",
             "value" : "Lumo needs microphone access to enable voice input for AI assistance."
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs microphone access to enable voice input for AI assistance."
+            "state" : "translated",
+            "value" : "Lumo yapay zeka desteği için sesli girişi etkinleştirmek amacıyla mikrofon erişimine ihtiyaç duyar."
           }
         }
       }
@@ -111,14 +243,14 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs speech recognition to convert your voice to text for AI queries."
+            "state" : "translated",
+            "value" : "Lumo vyžaduje rozpoznávání řeči, aby mohla převést váš hlas na text pro dotazy AI."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs speech recognition to convert your voice to text for AI queries."
+            "state" : "translated",
+            "value" : "Lumo benötigt die Spracherkennung, um deine Stimme für KI-Abfragen in Text umzuwandeln zu können"
           }
         },
         "en" : {
@@ -129,56 +261,56 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs speech recognition to convert your voice to text for AI queries."
+            "state" : "translated",
+            "value" : "Lumo necesita el reconocimiento de voz para convertir tu voz en texto para las consultas de IA."
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs speech recognition to convert your voice to text for AI queries."
+            "state" : "translated",
+            "value" : "Lumo necesita el reconocimiento de voz para convertir su voz en texto para las consultas de IA."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs speech recognition to convert your voice to text for AI queries."
+            "state" : "translated",
+            "value" : "Lumo a besoin de la reconnaissance vocale pour convertir votre voix en texte afin de traiter les requêtes IA."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs speech recognition to convert your voice to text for AI queries."
+            "state" : "translated",
+            "value" : "Lumo ha bisogno del riconoscimento vocale per convertire la tua voce in testo per le richieste all’AI."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs speech recognition to convert your voice to text for AI queries."
+            "state" : "translated",
+            "value" : "Lumo heeft spraakherkenning nodig om uw stem om te zetten in tekst voor AI-zoekopdrachten."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "new",
             "value" : "Lumo needs speech recognition to convert your voice to text for AI queries."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "new",
             "value" : "Lumo needs speech recognition to convert your voice to text for AI queries."
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "new",
             "value" : "Lumo needs speech recognition to convert your voice to text for AI queries."
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lumo needs speech recognition to convert your voice to text for AI queries."
+            "state" : "translated",
+            "value" : "Lumo yapay zeka sorguları için sesinizi metne dönüştürmek amacıyla konuşma tanıma özelliğine ihtiyaç duyar."
           }
         }
       }
