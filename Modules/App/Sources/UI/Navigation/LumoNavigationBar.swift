@@ -1,3 +1,4 @@
+import LumoUI
 import ProtonUIFoundations
 import SwiftUI
 import os.log
@@ -26,7 +27,7 @@ struct LumoNavigationBar: View {
                     HStack(spacing: 8) {
                         Image("LumoIcon")
                             .resizable()
-                            .frame(width: 20, height: 20)
+                            .square(size: 20)
 
                         Text(String(localized: "app.navigation.back"))
                             .font(.system(size: 16, weight: .medium))

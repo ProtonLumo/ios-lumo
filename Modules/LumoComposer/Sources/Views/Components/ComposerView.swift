@@ -8,6 +8,8 @@ struct ComposerView: View {
         case filePickerTapped
         case webSearchTapped
         case microphoneTapped
+        case attachmentTapped(id: String)
+        case removeAttachmentTapped(id: String)
     }
 
     enum ActionButtonState {
@@ -26,13 +28,23 @@ struct ComposerView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.standard) {
             if !files.isEmpty {
-                ComposerAttachmentsView(files: files, isGhostModeEnabled: isGhostModeEnabled)
+                ComposerAttachmentsView(
+                    files: files,
+                    accentColor: accentColor,
+                    backgroundColor: backgroundColor,
+                    borderColor: isGhostModeEnabled ? DS.Color.Border.weakDark : DS.Color.Border.weak,
+                    onAttachmentTapped: { id in action(.attachmentTapped(id: id)) },
+                    onTrashTapped: { id in action(.removeAttachmentTapped(id: id)) }
+                )
             }
 
             HStack(alignment: .center, spacing: DS.Spacing.small) {
-                ComposerInput(text: $text, isGhostModeEnabled: isGhostModeEnabled)
-                    .background(isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak)
-                    .padding(.vertical, DS.Spacing.large)
+                ComposerInput(
+                    text: $text,
+                    placeholderColor: isGhostModeEnabled ? DS.Color.Text.hintDark : DS.Color.Text.hint,
+                    textColor: isGhostModeEnabled ? DS.Color.Text.normDarkOnly : DS.Color.Text.norm,
+                    backgroundColor: backgroundColor
+                )
 
                 switch actionButton {
                 case .none:
@@ -47,11 +59,11 @@ struct ComposerView: View {
             .padding(.horizontal, DS.Spacing.mediumLight)
             .background {
                 RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                    .fill(isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak)
+                    .fill(backgroundColor)
             }
 
             ComposerToolbar(
-                isGhostModeEnabled: isGhostModeEnabled,
+                iconColor: accentColor,
                 isWebSearchEnabled: isWebSearchEnabled,
                 onPaperclipTap: { action(.filePickerTapped) },
                 onGlobeTap: { action(.webSearchTapped) },
@@ -69,7 +81,7 @@ struct ComposerView: View {
         ComposerActionButton(
             action: { action(.sendTapped) },
             icon: DS.Icon.icArrowRight.swiftUIImage,
-            isGhostModeEnabled: isGhostModeEnabled
+            iconColor: actionButtonIconColor
         )
     }
 
@@ -77,8 +89,20 @@ struct ComposerView: View {
         ComposerActionButton(
             action: { action(.stopTapped) },
             icon: DS.Icon.icStop.swiftUIImage,
-            isGhostModeEnabled: isGhostModeEnabled
+            iconColor: actionButtonIconColor
         )
+    }
+
+    private var accentColor: Color {
+        isGhostModeEnabled ? DS.Color.Text.weakDark : DS.Color.Text.weak
+    }
+
+    private var actionButtonIconColor: Color {
+        isGhostModeEnabled ? DS.Color.Background.normDarkOnly : DS.Color.Background.norm
+    }
+
+    private var backgroundColor: Color {
+        isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak
     }
 }
 
@@ -89,11 +113,11 @@ struct ComposerView: View {
             ComposerView(
                 text: .constant(""),
                 files: [
-                    .init(name: "Report.pdf", type: .pdf),
-                    .init(name: "Data.xls", type: .xls),
-                    .init(name: "Slides.ppt", type: .ppt),
-                    .init(name: "Image.jpg", type: .image),
-                    .init(name: "Video.mp4", type: .video),
+                    .init(id: "1", name: "Report.pdf", type: .pdf),
+                    .init(id: "2", name: "Data.xls", type: .xls),
+                    .init(id: "3", name: "Slides.ppt", type: .ppt),
+                    .init(id: "4", name: "Image.jpg", type: .image),
+                    .init(id: "5", name: "Video.mp4", type: .video),
                 ],
                 isGhostModeEnabled: false,
                 isWebSearchEnabled: true,
@@ -119,11 +143,11 @@ struct ComposerView: View {
             ComposerView(
                 text: .constant("Tell me a long story"),
                 files: [
-                    .init(name: "Report.pdf", type: .pdf),
-                    .init(name: "Data.xls", type: .xls),
-                    .init(name: "Slides.ppt", type: .ppt),
-                    .init(name: "Image.jpg", type: .image),
-                    .init(name: "Video.mp4", type: .video),
+                    .init(id: "1", name: "Report.pdf", type: .pdf),
+                    .init(id: "2", name: "Data.xls", type: .xls),
+                    .init(id: "3", name: "Slides.ppt", type: .ppt),
+                    .init(id: "4", name: "Image.jpg", type: .image),
+                    .init(id: "5", name: "Video.mp4", type: .video),
                 ],
                 isGhostModeEnabled: true,
                 isWebSearchEnabled: true,

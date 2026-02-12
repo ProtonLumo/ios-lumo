@@ -1,4 +1,5 @@
 import Intents
+import LumoUI
 import SwiftUI
 import WidgetKit
 import os.log
@@ -112,7 +113,7 @@ struct PromptButtonView: View {
                 Image(systemName: icon)
                     .font(.system(size: 17, weight: .medium))
                     .foregroundColor(textColor)
-                    .frame(width: 32, height: 32)
+                    .square(size: 32)
                     .background(
                         Circle()
                             .fill(buttonBackgroundColor)
@@ -236,7 +237,7 @@ struct LumoWidgetView: View {
                         Image("LumoFront")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 100, height: 100)
+                            .square(size: 100)
                     }
                     Spacer()
                 }

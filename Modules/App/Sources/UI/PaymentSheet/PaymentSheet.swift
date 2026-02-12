@@ -1,3 +1,4 @@
+import LumoUI
 import ProtonUIFoundations
 import SwiftUI
 
@@ -55,7 +56,7 @@ struct SkeletonFeatureRow: View {
             // Icon placeholder
             Circle()
                 .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
-                .frame(width: 20, height: 20)
+                .square(size: 20)
 
             // Text placeholders
             VStack(alignment: .leading, spacing: 4) {
@@ -71,11 +72,11 @@ struct SkeletonFeatureRow: View {
             HStack(spacing: 20) {
                 Circle()
                     .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
-                    .frame(width: 12, height: 12)
+                    .square(size: 12)
 
                 Circle()
                     .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
-                    .frame(width: 12, height: 12)
+                    .square(size: 12)
             }
         }
         .overlay(

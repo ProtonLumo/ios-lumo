@@ -69,7 +69,9 @@ let project = Project(
                 .external(name: "Lottie"),
                 .target(name: "LumoWidgetExtension"),
                 .target(name: "LumoComposer"),
+                .target(name: "LumoCore"),
                 .target(name: "LumoDesignSystem"),
+                .target(name: "LumoUI"),
             ],
             settings: .settings(
                 base: [
@@ -116,7 +118,8 @@ let project = Project(
                 "Modules/WidgetExtension/Resources/**"
             ],
             dependencies: [
-                .external(name: "Lottie")
+                .external(name: "Lottie"),
+                .target(name: "LumoUI"),
             ],
             settings: .settings(
                 base: [
@@ -137,8 +140,19 @@ let project = Project(
                 "Modules/LumoComposer/Resources/**"
             ],
             dependencies: [
-                .target(name: "LumoDesignSystem")
+                .target(name: "LumoCore"),
+                .target(name: "LumoDesignSystem"),
+                .target(name: "LumoUI"),
             ],
+            settings: .settings(base: moduleVerifierSettings)
+        ),
+        .target(
+            name: "LumoCore",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "me.proton.lumo.LumoCore",
+            deploymentTargets: .iOS("17.6"),
+            sources: ["Modules/LumoCore/Sources/**"],
             settings: .settings(base: moduleVerifierSettings)
         ),
         .target(
@@ -154,6 +168,15 @@ let project = Project(
             dependencies: [
                 .external(name: "Lottie")
             ],
+            settings: .settings(base: moduleVerifierSettings)
+        ),
+        .target(
+            name: "LumoUI",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "me.proton.lumo.LumoUI",
+            deploymentTargets: .iOS("17.6"),
+            sources: ["Modules/LumoUI/Sources/**"],
             settings: .settings(base: moduleVerifierSettings)
         ),
         .target(
@@ -175,6 +198,7 @@ let project = Project(
             deploymentTargets: .iOS("17.6"),
             sources: ["Modules/LumoComposer/Tests/**"],
             dependencies: [
+                .external(name: "Difference"),
                 .target(name: "LumoComposer"),
                 .target(name: "LumoApp"),
                 .external(name: "SnapshotTesting"),

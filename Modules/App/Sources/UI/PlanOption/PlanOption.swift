@@ -1,3 +1,4 @@
+import LumoUI
 import ProtonUIFoundations
 import SwiftUI
 
@@ -20,11 +21,11 @@ struct PlanOption: View {
                     // Radio button
                     Circle()
                         .stroke(model.isSelected ? brandPurple : (themeProvider.isDarkMode ? Color.gray.opacity(0.8) : Color.gray), lineWidth: 2)
-                        .frame(width: 24, height: 24)
+                        .square(size: 24)
                         .overlay(
                             Circle()
                                 .fill(model.isSelected ? brandPurple : Color.clear)
-                                .frame(width: 16, height: 16)
+                                .square(size: 16)
                         )
                         .padding(.top, isYearly ? 2 : 0)
 

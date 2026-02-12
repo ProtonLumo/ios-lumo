@@ -1,3 +1,4 @@
+import LumoUI
 import ProtonUIFoundations
 import SwiftUI
 
@@ -17,7 +18,7 @@ struct FeatureRow: View {
                 fallbackImage: Theme.icon.checkmark
             )
             .foregroundColor(Theme.color.iconAccent)
-            .frame(width: Constants.iconSize, height: Constants.iconSize)
+            .square(size: Constants.iconSize)
 
             Text(model.title)
                 .font(.system(size: 14))

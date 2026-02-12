@@ -1,3 +1,4 @@
+import LumoUI
 import ProtonUIFoundations
 import SwiftUI
 
@@ -20,7 +21,7 @@ struct PlanDetailView: View {
                         fallbackImage: Theme.icon.checkmark
                     )
                     .foregroundColor(Theme.color.iconAccent)
-                    .frame(width: Constants.iconSize, height: Constants.iconSize)
+                    .square(size: Constants.iconSize)
                     Text(entitlement.text)
                         .font(.system(size: Constants.entitlementTextSize))
                         .fontWeight(Constants.entitlementFontWeight)

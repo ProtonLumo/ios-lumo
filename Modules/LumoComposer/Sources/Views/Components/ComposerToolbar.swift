@@ -2,7 +2,7 @@ import LumoDesignSystem
 import SwiftUI
 
 struct ComposerToolbar: View {
-    let isGhostModeEnabled: Bool
+    let iconColor: Color
     let isWebSearchEnabled: Bool
     let onPaperclipTap: () -> Void
     let onGlobeTap: () -> Void
@@ -13,23 +13,23 @@ struct ComposerToolbar: View {
             HStack(spacing: DS.Spacing.compact) {
                 ComposerToggleButton(
                     icon: DS.Icon.icPaperClip.swiftUIImage,
+                    iconColor: iconColor,
                     isOn: false,
-                    isGhostModeEnabled: isGhostModeEnabled,
                     action: onPaperclipTap
                 )
 
                 ComposerToggleButton(
                     icon: DS.Icon.icGlobe.swiftUIImage,
+                    iconColor: iconColor,
                     isOn: isWebSearchEnabled,
-                    isGhostModeEnabled: isGhostModeEnabled,
                     action: onGlobeTap
                 )
             }
             Spacer()
             ComposerToggleButton(
                 icon: DS.Icon.icMicrophone.swiftUIImage,
+                iconColor: iconColor,
                 isOn: false,
-                isGhostModeEnabled: isGhostModeEnabled,
                 action: onMicrophoneTap
             )
         }

@@ -1,3 +1,4 @@
+import LumoUI
 import ProtonUIFoundations
 import SwiftUI
 
@@ -42,7 +43,7 @@ struct PlanDetailHeaderView: View {
                     }
                 } label: {
                     Image(systemName: "chevron.down")
-                        .frame(width: Constants.chevronSize, height: Constants.chevronSize)
+                        .square(size: Constants.chevronSize)
                         .padding(Constants.imageTouchArea)
                         .rotationEffect(.degrees(Constants.imageRotationAngle(isExpanded: isExpanded)))
                 }
