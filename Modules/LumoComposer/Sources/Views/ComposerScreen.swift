@@ -31,25 +31,32 @@ public struct ComposerScreen: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .center) {
-                placeholders(screenSize: proxy.size)
+                if !store.state.isWebViewReady && store.state.webState.isVisible {
+                    placeholders(screenSize: proxy.size)
+                }
 
                 VStack(spacing: DS.Spacing.medium) {
                     Spacer()
-                    TermsAndPrivacyText()
-                    ComposerView(
-                        text: .init(
-                            get: { store.state.currentText },
-                            set: { newValue in store.send(action: .textChanged(newValue)) }
-                        ),
-                        files: store.state.webState.attachedFiles,
-                        isGhostModeEnabled: store.state.webState.isGhostModeEnabled,
-                        isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
-                        areButtonsDisabled: !store.state.isWebViewReady,
-                        actionButton: store.state.actionButton,
-                        action: handle(action:)
-                    )
-                    .padding(.horizontal, DS.Spacing.tiny)
-                    .padding(.bottom, DS.Spacing.standard)
+                    if store.state.webState.isVisible && store.state.webState.showTermsAndPrivacy {
+                        TermsAndPrivacyText()
+                    }
+
+                    if store.state.webState.isVisible {
+                        ComposerView(
+                            text: .init(
+                                get: { store.state.currentText },
+                                set: { newValue in store.send(action: .textChanged(newValue)) }
+                            ),
+                            files: store.state.webState.attachedFiles,
+                            isGhostModeEnabled: store.state.webState.isGhostModeEnabled,
+                            isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
+                            areButtonsDisabled: !store.state.isWebViewReady,
+                            actionButton: store.state.actionButton,
+                            action: handle(action:)
+                        )
+                        .padding(.horizontal, DS.Spacing.tiny)
+                        .padding(.bottom, DS.Spacing.standard)
+                    }
                 }
             }
         }
