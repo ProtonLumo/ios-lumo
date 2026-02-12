@@ -3,10 +3,6 @@ import WebKit
 
 /// Message handler for receiving composer messages from JavaScript
 public final class WebComposerScriptMessageHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
-    enum MessageName: String, CaseIterable {
-        case nativeComposerStateHandler
-    }
-
     public init(webComposerBridge: WebComposerStateReceiving) {
         self.webComposerBridge = webComposerBridge
         super.init()
@@ -14,10 +10,8 @@ public final class WebComposerScriptMessageHandler: NSObject, WKScriptMessageHan
 
     // MARK: - WKMessageHandlerRegistering
 
-    public func registerForAll(in configuration: WKWebViewConfiguration) {
-        MessageName.allCases.forEach { message in
-            configuration.userContentController.add(self, name: message.rawValue)
-        }
+    public enum MessageName: String, CaseIterable {
+        case nativeComposerStateHandler
     }
 
     // MARK: - WKScriptMessageHandler

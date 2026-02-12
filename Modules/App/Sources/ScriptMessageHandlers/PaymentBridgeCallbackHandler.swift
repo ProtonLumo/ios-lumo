@@ -2,16 +2,10 @@ import LumoCore
 import WebKit
 
 final class PaymentBridgeCallbackHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
-    enum MessageName: String, CaseIterable {
-        case paymentBridgeCallback
-    }
-
     // MARK: - WKMessageHandlerRegistering
 
-    func registerForAll(in configuration: WKWebViewConfiguration) {
-        MessageName.allCases.forEach { message in
-            configuration.userContentController.add(self, name: message.rawValue)
-        }
+    enum MessageName: String, CaseIterable {
+        case paymentBridgeCallback
     }
 
     // MARK: - WKScriptMessageHandler

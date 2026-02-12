@@ -2,6 +2,16 @@ import LumoCore
 import WebKit
 
 final class UnifiedMessageHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
+    let parent: WebView
+    private var lastSubmitTime: Date?
+    private let submitDebounceInterval: TimeInterval = 0.5
+
+    init(_ parent: WebView) {
+        self.parent = parent
+    }
+
+    // MARK: - WKMessageHandlerRegistering
+
     enum MessageName: String, CaseIterable {
         case navigationState
         case paymentResponse
@@ -13,22 +23,6 @@ final class UnifiedMessageHandler: NSObject, WKScriptMessageHandler, WKMessageHa
         case managePlanClicked
         case getSubscriptionsResponseReceived
         case openExternalURL
-    }
-
-    let parent: WebView
-    private var lastSubmitTime: Date?
-    private let submitDebounceInterval: TimeInterval = 0.5
-
-    init(_ parent: WebView) {
-        self.parent = parent
-    }
-
-    // MARK: - WKMessageHandlerRegistering
-
-    func registerForAll(in configuration: WKWebViewConfiguration) {
-        MessageName.allCases.forEach { message in
-            configuration.userContentController.add(self, name: message.rawValue)
-        }
     }
 
     // MARK: - WKScriptMessageHandler

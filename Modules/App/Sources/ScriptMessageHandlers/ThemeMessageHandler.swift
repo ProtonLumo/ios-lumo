@@ -2,17 +2,11 @@ import LumoCore
 import WebKit
 
 final class ThemeMessageHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
+    // MARK: - WKMessageHandlerRegistering
+
     enum MessageName: String, CaseIterable {
         case themeChanged
         case themeRead
-    }
-
-    // MARK: - WKMessageHandlerRegistering
-
-    func registerForAll(in configuration: WKWebViewConfiguration) {
-        MessageName.allCases.forEach { message in
-            configuration.userContentController.add(self, name: message.rawValue)
-        }
     }
 
     // MARK: - WKScriptMessageHandler

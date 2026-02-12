@@ -16,10 +16,6 @@ public struct PaymentHandlerActions {
 }
 
 class PaymentHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
-    enum MessageName: String, CaseIterable {
-        case showPayment
-    }
-
     private var completion: (PaymentHandlerActions) -> Void
     private weak var webView: WKWebView?
 
@@ -30,10 +26,8 @@ class PaymentHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegister
 
     // MARK: - WKMessageHandlerRegistering
 
-    func registerForAll(in configuration: WKWebViewConfiguration) {
-        MessageName.allCases.forEach { message in
-            configuration.userContentController.add(self, name: message.rawValue)
-        }
+    enum MessageName: String, CaseIterable {
+        case showPayment
     }
 
     // MARK: - WKScriptMessageHandler

@@ -25,7 +25,7 @@ final class WebComposerScriptMessageHandlerTests {
 
         #expect(contentControllerSpy.addCalls.count == allMessageNames.count)
 
-        zip(allMessageNames, configuration.stubbedUserContentController.addCalls)
+        zip(allMessageNames, contentControllerSpy.addCalls)
             .forEach { messageName, params in
                 #expect(params.scriptMessageHandler === sut)
                 #expect(params.name == messageName.rawValue)
