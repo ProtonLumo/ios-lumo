@@ -1,6 +1,20 @@
+import LumoCore
 import WebKit
 
-final class UnifiedMessageHandler: NSObject, WKScriptMessageHandler {
+final class UnifiedMessageHandler: NSObject, WKScriptMessageHandler, WKMessageHandlerRegistering {
+    enum MessageName: String, CaseIterable {
+        case navigationState
+        case paymentResponse
+        case submitButtonClicked
+        case elementFound
+        case insertPrompt
+        case startVoiceEntry
+        case promotionButtonClicked
+        case managePlanClicked
+        case getSubscriptionsResponseReceived
+        case openExternalURL
+    }
+
     let parent: WebView
     private var lastSubmitTime: Date?
     private let submitDebounceInterval: TimeInterval = 0.5
@@ -9,37 +23,47 @@ final class UnifiedMessageHandler: NSObject, WKScriptMessageHandler {
         self.parent = parent
     }
 
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        let messageName = message.name
-        Logger.shared.log("📨 Received message: \(messageName)")
+    // MARK: - WKMessageHandlerRegistering
 
-        DispatchQueue.main.async {
-            switch messageName {
-            case "navigationState":
-                self.handleNavigationState(message)
-            case "paymentResponse":
-                self.handlePaymentResponse(message)
-            case "submitButtonClicked":
-                self.handleSubmitButtonClicked()
-            case "elementFound":
-                self.handleElementFound(message)
-            case "insertPrompt":
-                self.handleInsertPrompt(message)
-            case "startVoiceEntry":
-                self.handleStartVoiceEntry()
-            case "promotionButtonClicked":
-                self.handlePromotionButtonClicked(message)
-            case "managePlanClicked":
-                self.handleManagePlanClicked()
-            case "getSubscriptionsResponseReceived":
-                self.handleGetSubscriptionsResponse(message)
-            case "openExternalURL":
-                self.handleOpenExternalURL(message)
-            default:
-                Logger.shared.log("⚠️ Unknown message: \(messageName)")
-            }
+    func registerForAll(in configuration: WKWebViewConfiguration) {
+        MessageName.allCases.forEach { message in
+            configuration.userContentController.add(self, name: message.rawValue)
         }
     }
+
+    // MARK: - WKScriptMessageHandler
+
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        let messageName = MessageName(rawValue: message.name)
+        Logger.shared.log("📨 Received message: \(message.name)")
+
+        switch messageName {
+        case .navigationState:
+            handleNavigationState(message)
+        case .paymentResponse:
+            handlePaymentResponse(message)
+        case .submitButtonClicked:
+            handleSubmitButtonClicked()
+        case .elementFound:
+            handleElementFound(message)
+        case .insertPrompt:
+            handleInsertPrompt(message)
+        case .startVoiceEntry:
+            handleStartVoiceEntry()
+        case .promotionButtonClicked:
+            handlePromotionButtonClicked(message)
+        case .managePlanClicked:
+            handleManagePlanClicked()
+        case .getSubscriptionsResponseReceived:
+            handleGetSubscriptionsResponse(message)
+        case .openExternalURL:
+            handleOpenExternalURL(message)
+        case .none:
+            Logger.shared.log("⚠️ Unknown message: \(message.name)")
+        }
+    }
+
+    // MARK: - Private
 
     private func handleNavigationState(_ message: WKScriptMessage) {
         guard let dict = message.body as? [String: Any] else { return }

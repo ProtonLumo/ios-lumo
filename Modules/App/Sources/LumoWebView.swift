@@ -12,23 +12,6 @@ class LumoWebView: WKWebView {
     }
 }
 
-class PaymentBridgeCallbackHandler: NSObject, WKScriptMessageHandler {
-    static var shared = PaymentBridgeCallbackHandler()
-
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard let messageBody = message.body as? [String: Any],
-            let txId = messageBody["txId"] as? String,
-            let resultString = messageBody["result"] as? String
-        else {
-            Logger.shared.log("Error: Invalid payment bridge callback message format")
-            return
-        }
-
-        Logger.shared.log("Payment bridge callback received for transaction: \(txId)")
-        PaymentBridge.shared.processJavascriptResult(resultString, transactionId: txId)
-    }
-}
-
 // MARK: - WebView Component
 struct WebView: UIViewRepresentable {
     let url: URL
@@ -48,7 +31,6 @@ struct WebView: UIViewRepresentable {
 
     class Coordinator: NSObject, WKNavigationDelegate, UIScrollViewDelegate {
         let parent: WebView
-        let themeMessageHandler = ThemeMessageHandler()
 
         init(_ parent: WebView) {
             self.parent = parent
@@ -797,6 +779,7 @@ struct WebView: UIViewRepresentable {
         let webView = LumoWebView(frame: .zero, configuration: configuration)
         webView.customUserAgent = WKWebView.generateCustomUserAgent()
         webView.isInspectable = true
+
         let paymentHandler = PaymentHandler(webView: webView) { action in
             switch action.type {
             case .createSubscription:
@@ -809,7 +792,9 @@ struct WebView: UIViewRepresentable {
                 self.action = .getSubscriptions
             }
         }
-        configuration.userContentController.add(paymentHandler, name: "showPayment")
+        let themeMessageHandler = ThemeMessageHandler()
+        let unifiedHandler = UnifiedMessageHandler(self)
+        let paymentBridgeHandler = PaymentBridgeCallbackHandler()
 
         // Store payment handler in binding so ContentView can access it
         DispatchQueue.main.async {
@@ -818,20 +803,10 @@ struct WebView: UIViewRepresentable {
 
         PurchaseManager.shared.setup(webView: webView)
 
-        let unifiedHandler = UnifiedMessageHandler(self)
-        let messageNames = [
-            "navigationState", "paymentResponse", "submitButtonClicked", "elementFound",
-            "insertPrompt", "startVoiceEntry", "promotionButtonClicked", "managePlanClicked",
-            "getSubscriptionsResponseReceived", "openExternalURL",
-        ]
-
-        for messageName in messageNames {
-            configuration.userContentController.add(unifiedHandler, name: messageName)
-        }
-
-        configuration.userContentController.add(PaymentBridgeCallbackHandler.shared, name: "paymentBridgeCallback")
-
-        context.coordinator.themeMessageHandler.registerForAll(in: configuration)
+        paymentHandler.registerForAll(in: configuration)
+        themeMessageHandler.registerForAll(in: configuration)
+        unifiedHandler.registerForAll(in: configuration)
+        paymentBridgeHandler.registerForAll(in: configuration)
 
         if let voiceEntryScript = JSBridgeManager.shared.createUserScript(.voiceEntrySetup, injectionTime: .atDocumentEnd, forMainFrameOnly: false) {
             configuration.userContentController.addUserScript(voiceEntryScript)
