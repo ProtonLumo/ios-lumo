@@ -48,6 +48,7 @@ struct WebView: UIViewRepresentable {
 
     class Coordinator: NSObject, WKNavigationDelegate, UIScrollViewDelegate {
         let parent: WebView
+        let themeMessageHandler = ThemeMessageHandler()
 
         init(_ parent: WebView) {
             self.parent = parent
@@ -975,10 +976,7 @@ struct WebView: UIViewRepresentable {
 
         configuration.userContentController.add(PaymentBridgeCallbackHandler.shared, name: "paymentBridgeCallback")
 
-        // Add theme message handlers
-        let themeHandler = ThemeMessageHandler.shared
-        configuration.userContentController.add(themeHandler, name: "themeChanged")
-        configuration.userContentController.add(themeHandler, name: "themeRead")
+        context.coordinator.themeMessageHandler.registerForAll(in: configuration)
 
         if let voiceEntryScript = JSBridgeManager.shared.createUserScript(.voiceEntrySetup, injectionTime: .atDocumentEnd, forMainFrameOnly: false) {
             configuration.userContentController.addUserScript(voiceEntryScript)
