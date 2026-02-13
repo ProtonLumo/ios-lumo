@@ -35,7 +35,7 @@ struct PlanOption: View {
                         HStack(spacing: 6) {
                             Text(model.title)
                                 .font(.headline)
-                                .foregroundColor(themeProvider.textColor)
+                                .foregroundColor(DS.Color.Text.norm)
 
                             // "Best Value" badge for yearly with promo
                             if isYearly {

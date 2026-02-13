@@ -52,10 +52,6 @@ class ThemeProvider: ObservableObject {
         }
     }
 
-    var textColor: Color {
-        isDarkMode ? .white : .black
-    }
-
     var secondaryTextColor: Color {
         isDarkMode ? Color.gray.opacity(0.7) : Color(.systemGray)
     }

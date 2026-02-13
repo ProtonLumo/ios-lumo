@@ -46,7 +46,7 @@ struct TransactionProgressView: View {
                 Text(String(localized: "app.payment.verifying.title"))
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .foregroundColor(themeProvider.textColor)
+                    .foregroundColor(DS.Color.Text.norm)
                     .multilineTextAlignment(.center)
 
                 Text(String(localized: "app.payment.verifying.subtitle"))
@@ -78,7 +78,7 @@ struct TransactionProgressView: View {
 
                         Text(stepTitle)
                             .font(.body)
-                            .foregroundColor(viewModel.stepStates[index] ? themeProvider.textColor : themeProvider.secondaryTextColor)
+                            .foregroundColor(viewModel.stepStates[index] ? DS.Color.Text.norm : themeProvider.secondaryTextColor)
                             .transition(.opacity)
                     }
                     .animation(.easeInOut(duration: 0.3), value: viewModel.stepStates[index])
@@ -122,7 +122,7 @@ struct TransactionProgressView: View {
                 Text(String(localized: "app.payment.verifying.error.title"))
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .foregroundColor(themeProvider.textColor)
+                    .foregroundColor(DS.Color.Text.norm)
                     .multilineTextAlignment(.center)
 
                 Text(viewModel.errorMessage.isEmpty ? String(localized: "app.payment.verifying.error.info") : viewModel.errorMessage)

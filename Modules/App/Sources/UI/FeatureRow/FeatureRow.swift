@@ -1,10 +1,10 @@
+import LumoDesignSystem
 import LumoUI
 import ProtonUIFoundations
 import SwiftUI
 
 struct FeatureRow: View {
     let model: FeatureRowModel
-    @EnvironmentObject private var themeProvider: ThemeProvider
 
     private struct Constants {
         static var iconSize: CGFloat = 15
@@ -24,13 +24,13 @@ struct FeatureRow: View {
                 .font(.system(size: 14))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .lineLimit(1)
-                .foregroundColor(themeProvider.textColor)
+                .foregroundColor(DS.Color.Text.norm)
 
             Text(model.plus)
                 .font(.system(size: 14))
                 .frame(width: Constants.valueColumnWidth, alignment: .center)
                 .lineLimit(1)
-                .foregroundColor(themeProvider.textColor)
+                .foregroundColor(DS.Color.Text.norm)
         }
         .padding(.horizontal, 32)
     }

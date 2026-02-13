@@ -6,15 +6,10 @@ import SwiftUI
 // MARK: - Skeleton Loading Views
 struct SkeletonPlanCard: View {
     @State private var isAnimating = false
-    @EnvironmentObject private var themeProvider: ThemeProvider
-
-    private var isDarkMode: Bool {
-        themeProvider.isDarkMode
-    }
 
     var body: some View {
         RoundedRectangle(cornerRadius: 12)
-            .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
+            .fill(DS.Color.middleGray)
             .frame(height: 80)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
@@ -22,7 +17,7 @@ struct SkeletonPlanCard: View {
                         LinearGradient(
                             gradient: Gradient(colors: [
                                 Color.clear,
-                                (isDarkMode ? Color.gray : Color.white).opacity(0.6),
+                                DS.Color.gradient.opacity(0.6),
                                 Color.clear,
                             ]),
                             startPoint: .leading,
@@ -46,23 +41,18 @@ struct SkeletonPlanCard: View {
 
 struct SkeletonFeatureRow: View {
     @State private var isAnimating = false
-    @EnvironmentObject private var themeProvider: ThemeProvider
-
-    private var isDarkMode: Bool {
-        themeProvider.isDarkMode
-    }
 
     var body: some View {
         HStack(spacing: 12) {
             // Icon placeholder
             Circle()
-                .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
+                .fill(DS.Color.middleGray)
                 .square(size: 20)
 
             // Text placeholders
             VStack(alignment: .leading, spacing: 4) {
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
+                    .fill(DS.Color.middleGray)
                     .frame(height: 12)
                     .frame(maxWidth: .infinity)
             }
@@ -72,11 +62,11 @@ struct SkeletonFeatureRow: View {
             // Status placeholders
             HStack(spacing: 20) {
                 Circle()
-                    .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
+                    .fill(DS.Color.middleGray)
                     .square(size: 12)
 
                 Circle()
-                    .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
+                    .fill(DS.Color.middleGray)
                     .square(size: 12)
             }
         }
@@ -84,7 +74,7 @@ struct SkeletonFeatureRow: View {
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color.clear,
-                    (isDarkMode ? Color.gray : Color.white).opacity(0.4),
+                    DS.Color.gradient.opacity(0.4),
                     Color.clear,
                 ]),
                 startPoint: .leading,
@@ -206,7 +196,7 @@ struct PaymentSheet: View {
                     Spacer()
                     Button(action: { dismiss() }) {
                         Image(systemName: "xmark")
-                            .foregroundColor(themeProvider.textColor)
+                            .foregroundColor(DS.Color.Text.norm)
                             .padding()
                     }
                 }
@@ -220,7 +210,7 @@ struct PaymentSheet: View {
                     Text(viewModel.hasNoPlansAvailable ? String(localized: "app.payment.noPlansAvailable") : (String(localized: "app.payment.elevateExperience")))
                         .font(.system(size: 24, weight: .bold))
                         .padding(.top, 16)
-                        .foregroundColor(themeProvider.textColor)
+                        .foregroundColor(DS.Color.Text.norm)
                     Text(viewModel.hasNoPlansAvailable ? String(localized: "app.payment.noPlansMessage") : (String(localized: "app.payment.enjoyPremium")))
                         .font(.system(size: 16))
                         .multilineTextAlignment(.center)
