@@ -96,7 +96,6 @@ class ThemeManager: NSObject {
         if currentTheme == .system && currentMode != cachedSystemAppearance {
             Logger.shared.log("📱 Theme is .system and mode changed - updating from \(currentMode.rawValue) to \(cachedSystemAppearance.rawValue)")
             currentMode = cachedSystemAppearance
-            updateWebViewInterfaceStyle()
 
             // Post notification to update native UI components
             Logger.shared.log("📱 Posting ThemeChangedFromWeb notification")
@@ -129,9 +128,6 @@ class ThemeManager: NSObject {
         currentTheme = theme
         currentMode = mode
 
-        // Update webview interface style to reflect the stored theme
-        updateWebViewInterfaceStyle()
-
         // Notify app about theme change
         NotificationCenter.default.post(
             name: NSNotification.Name("ThemeChangedFromWeb"),
@@ -150,9 +146,6 @@ class ThemeManager: NSObject {
         // currentMode will be set by ContentView's updateSystemThemeMode()
         // based on SwiftUI's colorScheme which is more reliable
 
-        // Update webview interface style for system theme
-        updateWebViewInterfaceStyle()
-
         // Notify app about theme change (mode will be updated by ContentView)
         NotificationCenter.default.post(
             name: NSNotification.Name("ThemeChangedFromWeb"),
@@ -163,34 +156,6 @@ class ThemeManager: NSObject {
                 "source": "default_system",
             ]
         )
-    }
-
-    func updateWebViewInterfaceStyle() {
-        guard let webView = webView else {
-            Logger.shared.log("⚠️ Cannot update webview interface style - webView is nil")
-            return
-        }
-
-        // Set the webview's user interface style based on current theme
-        // Only override for explicit Light/Dark themes
-        // For System theme, don't set anything - let it inherit naturally
-        DispatchQueue.main.async { [weak webView] in
-            guard let webView = webView else {
-                Logger.shared.log("⚠️ WebView deallocated before interface style update")
-                return
-            }
-
-            switch self.currentTheme {
-            case .light:
-                webView.overrideUserInterfaceStyle = .light
-            case .dark:
-                webView.overrideUserInterfaceStyle = .dark
-            case .system:
-                // Don't set overrideUserInterfaceStyle at all for system theme
-                // This allows the webview to naturally inherit the system appearance
-                webView.overrideUserInterfaceStyle = .unspecified
-            }
-        }
     }
 
     func handleThemeChangeFromWeb(_ themeName: String) {
@@ -218,9 +183,6 @@ class ThemeManager: NSObject {
         case .system:
             currentMode = cachedSystemAppearance
         }
-
-        // Update webview interface style to match new theme
-        updateWebViewInterfaceStyle()
 
         // Notify app about theme change - ContentView will call updateSystemThemeMode()
         NotificationCenter.default.post(

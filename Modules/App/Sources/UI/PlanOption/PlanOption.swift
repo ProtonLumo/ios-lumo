@@ -4,6 +4,7 @@ import ProtonUIFoundations
 import SwiftUI
 
 struct PlanOption: View {
+    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var model: PlanOptionViewModel
     @EnvironmentObject private var themeProvider: ThemeProvider
     var isPromotionOffer: Bool = false
@@ -21,7 +22,10 @@ struct PlanOption: View {
                 HStack(alignment: .top, spacing: 12) {
                     // Radio button
                     Circle()
-                        .stroke(model.isSelected ? brandPurple : (themeProvider.isDarkMode ? Color.gray.opacity(0.8) : Color.gray), lineWidth: 2)
+                        .stroke(
+                            model.isSelected ? brandPurple : (colorScheme == .dark ? Color.gray.opacity(0.8) : Color.gray),
+                            lineWidth: 2
+                        )
                         .square(size: 24)
                         .overlay(
                             Circle()

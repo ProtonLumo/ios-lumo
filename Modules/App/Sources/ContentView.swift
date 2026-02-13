@@ -120,6 +120,7 @@ struct ContentView: View {
                 WebView(
                     url: URL.lumoBase!,
                     webComposerBridge: webComposerBridge,
+                    themeProvider: themeProvider,
                     isReady: $webViewReady,
                     jsCoordinator: jsCoordinator,
                     action: $webViewAction,
@@ -236,25 +237,8 @@ struct ContentView: View {
                 Logger.shared.log("✅ Background task is active - generation can continue")
             }
         }
-        .onChange(of: colorScheme) { newValue in
-            // Only respond to colorScheme changes if we're on system theme
-            let themeManager = ThemeManager.shared
-            Logger.shared.log("📱 System colorScheme changed to: \(newValue == .dark ? "dark" : "light")")
-            Logger.shared.log("📱 Current theme setting: \(themeManager.currentTheme.rawValue == 0 ? "light" : themeManager.currentTheme.rawValue == 1 ? "dark" : "system")")
-
-            if themeManager.currentTheme == .system {
-                Logger.shared.log("📱 Theme is .system, updating appearance with new value...")
-                // Pass the new colorScheme value directly to avoid timing issues
-                themeManager.updateSystemThemeMode(newValue == .dark)
-                themeProvider.updateTheme(systemColorScheme: newValue)
-            } else {
-                Logger.shared.log("📱 Theme is explicitly set, ignoring system change")
-            }
-        }
         .onAppear {
             Logger.shared.log("ContentView appeared")
-
-            updateThemeState()
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 isLoading = false
@@ -632,7 +616,7 @@ struct ContentView: View {
         }
 
         // Update the centralized ThemeProvider - this will propagate to all views
-        themeProvider.updateTheme(systemColorScheme: colorScheme)
+        themeProvider.updateTheme()
     }
 
     private func setupPromptObserver() {
@@ -1004,6 +988,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(ThemeProvider.shared)
+            .environmentObject(ThemeProvider())
     }
 }

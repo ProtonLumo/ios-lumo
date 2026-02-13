@@ -98,6 +98,7 @@ struct SkeletonFeatureRow: View {
 }
 
 struct PaymentSheet: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var themeProvider: ThemeProvider
     @ObservedObject var viewModel: PaymentSheetViewModel
@@ -173,7 +174,7 @@ struct PaymentSheet: View {
         ZStack(alignment: .top) {
             LinearGradient(
                 gradient: Gradient(
-                    colors: themeProvider.isDarkMode
+                    colors: colorScheme == .dark
                         ? [
                             Color(hex: 0x1f1d28),
                             Color(hex: 0x1f1d28),
