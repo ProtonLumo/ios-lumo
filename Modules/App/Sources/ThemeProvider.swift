@@ -51,8 +51,4 @@ class ThemeProvider: ObservableObject {
             }
         }
     }
-
-    var secondaryTextColor: Color {
-        isDarkMode ? Color.gray.opacity(0.7) : Color(.systemGray)
-    }
 }

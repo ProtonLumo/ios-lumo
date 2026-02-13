@@ -214,7 +214,7 @@ struct PaymentSheet: View {
                     Text(viewModel.hasNoPlansAvailable ? String(localized: "app.payment.noPlansMessage") : (String(localized: "app.payment.enjoyPremium")))
                         .font(.system(size: 16))
                         .multilineTextAlignment(.center)
-                        .foregroundColor(themeProvider.secondaryTextColor)
+                        .foregroundColor(DS.Color.Text.weak)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 6)
@@ -269,7 +269,7 @@ struct PaymentSheet: View {
             if !viewModel.hasNoPlansAvailable {
                 Text(String(localized: "app.payment.renewalinfo"))
                     .font(.system(size: 14, weight: .regular))
-                    .foregroundStyle(themeProvider.secondaryTextColor)
+                    .foregroundStyle(DS.Color.Text.weak)
                     .padding(.top, 5)
             }
 

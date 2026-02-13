@@ -52,7 +52,7 @@ struct PlanOption: View {
                         if !model.subtitle.isEmpty {
                             Text(model.subtitle)
                                 .font(.system(size: 13))
-                                .foregroundColor(themeProvider.secondaryTextColor)
+                                .foregroundColor(DS.Color.Text.weak)
                         }
                     }
 
