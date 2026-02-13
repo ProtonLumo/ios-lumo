@@ -20,7 +20,7 @@ struct TransactionProgressView: View {
 
     var body: some View {
         ZStack {
-            themeProvider.backgroundColor
+            DS.Color.Background.norm
                 .ignoresSafeArea()
 
             if viewModel.hasError {

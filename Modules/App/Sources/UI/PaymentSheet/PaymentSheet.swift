@@ -1,3 +1,4 @@
+import LumoDesignSystem
 import LumoUI
 import ProtonUIFoundations
 import SwiftUI
@@ -119,7 +120,7 @@ struct PaymentSheet: View {
         ZStack {
             // Force background color to fill entire view
             // Use themeProvider properties directly so SwiftUI observes changes
-            themeProvider.backgroundColor
+            DS.Color.Background.norm
                 .ignoresSafeArea(.all, edges: .all)
 
             ScrollView {
@@ -130,7 +131,7 @@ struct PaymentSheet: View {
                 }
             }
         }
-        .background(themeProvider.backgroundColor)
+        .background(DS.Color.Background.norm)
         .alert(isPresented: $viewModel.showAlert) {
             Alert(
                 title: Text(viewModel.alertTitle),

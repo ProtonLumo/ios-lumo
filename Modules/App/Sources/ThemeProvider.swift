@@ -52,11 +52,6 @@ class ThemeProvider: ObservableObject {
         }
     }
 
-    /// Convenience computed properties
-    var backgroundColor: Color {
-        isDarkMode ? Color(hex: 0x16141c) : .white
-    }
-
     var textColor: Color {
         isDarkMode ? .white : .black
     }

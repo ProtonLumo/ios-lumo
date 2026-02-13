@@ -1,3 +1,4 @@
+import LumoDesignSystem
 import LumoUI
 import ProtonUIFoundations
 import SwiftUI
@@ -78,7 +79,7 @@ struct PlanOption: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(themeProvider.backgroundColor)
+                    .fill(DS.Color.Background.norm)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
