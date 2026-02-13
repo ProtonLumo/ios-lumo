@@ -35,5 +35,6 @@ extension DS {
 
         public static let gradient = SwiftColor.gradient
         public static let middleGray = SwiftColor.middleGray
+        public static let overlay = SwiftColor.overlay
     }
 }

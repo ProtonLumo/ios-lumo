@@ -146,7 +146,7 @@ struct PaymentSheet: View {
                 if viewModel.showTransactionProgress {
                     ZStack {
                         // Use semi-transparent overlay that adapts to theme
-                        (themeProvider.isDarkMode ? Color.black : Color.gray)
+                        DS.Color.overlay
                             .opacity(0.3)
                             .ignoresSafeArea()
                         TransactionProgressView(viewModel: viewModel.transactionProgressViewModel)
@@ -302,7 +302,7 @@ struct PaymentSheet: View {
                 .background(
                     Group {
                         if viewModel.isLoadingPlans || viewModel.hasNoPlansAvailable {
-                            (themeProvider.isDarkMode ? Color.gray.opacity(0.3) : Color.gray.opacity(0.5))
+                            DS.Color.middleGray
                         } else {
                             LinearGradient(
                                 colors: [Color(hex: 0xFFAC2E), Color(hex: 0xFF8C00)],

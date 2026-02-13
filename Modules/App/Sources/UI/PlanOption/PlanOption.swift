@@ -84,7 +84,7 @@ struct PlanOption: View {
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(
-                        isYearly && model.isSelected ? brandOrange : model.isSelected ? brandPurple : (themeProvider.isDarkMode ? Color.gray.opacity(0.5) : Color.gray.opacity(0.3)),
+                        isYearly && model.isSelected ? brandOrange : model.isSelected ? brandPurple : DS.Color.middleGray,
                         lineWidth: isYearly && model.isSelected ? 3 : 2
                     )
             )

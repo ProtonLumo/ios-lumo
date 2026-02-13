@@ -1,4 +1,5 @@
 import LumoComposer
+import LumoDesignSystem
 import ProtonUIFoundations
 import Speech
 import SwiftUI
@@ -77,15 +78,6 @@ struct ContentView: View {
     private let paymentSheetDelegate = PaymentSheetDelegate()
     private let brandPurple = Color(hex: 0x6D4AFF)
 
-    // Use ThemeProvider for consistent theme
-    private var isDarkMode: Bool {
-        themeProvider.isDarkMode
-    }
-
-    private var darkModeBackgroundColor: Color {
-        Color(hex: 0x16141c)
-    }
-
     private let safetyTimeoutDuration: TimeInterval = 3.0
 
     init() {
@@ -112,23 +104,16 @@ struct ContentView: View {
         return url.contains(Config.ACCOUNT_BASE_URL)
     }
 
-    private var backgroundColor: Color {
-        // Use isDarkMode state which is kept in sync by updateThemeState()
-        isDarkMode ? darkModeBackgroundColor : Color.white
-    }
-
     var body: some View {
         ZStack(alignment: .top) {
-            // Background color that adapts to theme
-            backgroundColor
+            DS.Color.Background.norm
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
                 if shouldShowBackButton {
                     LumoNavigationBar(
                         currentURL: currentWebViewURL,
-                        onBackButtonPress: handleBackButtonPress,
-                        isDarkMode: isDarkMode
+                        onBackButtonPress: handleBackButtonPress
                     )
                 }
 
@@ -154,7 +139,7 @@ struct ContentView: View {
             }
 
             if !webViewReady && (showLoader || currentWebViewURL == nil) {
-                LoadingView(isDarkMode: isDarkMode)
+                LoadingView()
                     .transition(.opacity)
                     .animation(.easeInOut(duration: 0.3), value: !webViewReady && (showLoader || currentWebViewURL == nil))
                     .onAppear {
