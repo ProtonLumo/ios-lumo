@@ -8,11 +8,7 @@ import Testing
 struct ComposerScreenSnapshotTests {
     @Test(.lottiePaused(at: 0.2))
     func composerScreenInitial() {
-        let sut = ComposerScreen(
-            initialState: .initial,
-            webBridge: WebComposerBridge(),
-            isWebViewReady: false
-        )
+        let sut = makeSUT(initialState: .initial)
 
         assertSnapshotsOnEdgeDevices(of: sut, drawHierarchyInKeyWindow: true)
     }
@@ -37,12 +33,7 @@ struct ComposerScreenSnapshotTests {
             .copy(\.currentText, to: "")
             .copy(\.isProcessing, to: true)
             .copy(\.isWebViewReady, to: true)
-
-        let sut = ComposerScreen(
-            initialState: state,
-            webBridge: WebComposerBridge(),
-            isWebViewReady: false
-        )
+        let sut = makeSUT(initialState: state)
 
         assertSnapshotsOnEdgeDevices(of: sut, drawHierarchyInKeyWindow: true)
     }
@@ -61,13 +52,19 @@ struct ComposerScreenSnapshotTests {
                     attachedFiles: []
                 )
             )
-
-        let sut = ComposerScreen(
-            initialState: state,
-            webBridge: WebComposerBridge(),
-            isWebViewReady: false
-        )
+        let sut = makeSUT(initialState: state)
 
         assertSnapshotsOnEdgeDevices(of: sut, drawHierarchyInKeyWindow: true)
+    }
+
+    // MARK: - Private
+
+    private func makeSUT(initialState: ComposerViewState) -> some View {
+        ComposerScreen(
+            initialState: initialState,
+            webBridge: WebComposerBridge(),
+            isWebViewReady: false,
+            webContent: { EmptyView() }
+        )
     }
 }
