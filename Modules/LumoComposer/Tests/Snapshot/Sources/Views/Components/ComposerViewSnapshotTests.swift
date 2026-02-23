@@ -150,7 +150,7 @@ struct ComposerViewSnapshotTests {
         // One file
         TestCase(
             initialText: "Analyze this document",
-            files: [.init(id: "1", name: "Report.pdf", type: .pdf)],
+            files: [.init(id: "1", name: "Report.pdf", type: .pdf, preview: .none)],
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
@@ -159,7 +159,7 @@ struct ComposerViewSnapshotTests {
         ),
         TestCase(
             initialText: "Analyze this document",
-            files: [.init(id: "1", name: "Report.pdf", type: .pdf)],
+            files: [.init(id: "1", name: "Report.pdf", type: .pdf, preview: .none)],
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
@@ -170,8 +170,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "Compare these documents",
             files: [
-                .init(id: "1", name: "Contract_v1.pdf", type: .pdf),
-                .init(id: "2", name: "Budget.xls", type: .xls),
+                .init(id: "1", name: "Contract_v1.pdf", type: .pdf, preview: .none),
+                .init(id: "2", name: "Budget.xls", type: .xls, preview: .none),
             ],
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
@@ -182,8 +182,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "Compare these documents",
             files: [
-                .init(id: "1", name: "Contract_v1.pdf", type: .pdf),
-                .init(id: "2", name: "Budget.xls", type: .xls),
+                .init(id: "1", name: "Contract_v1.pdf", type: .pdf, preview: .none),
+                .init(id: "2", name: "Budget.xls", type: .xls, preview: .none),
             ],
             isGhostModeEnabled: true,
             isWebSearchEnabled: false,
@@ -195,11 +195,11 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "Process all these files",
             files: [
-                .init(id: "1", name: "Report.pdf", type: .pdf),
-                .init(id: "2", name: "Data.xls", type: .xls),
-                .init(id: "3", name: "Slides.ppt", type: .ppt),
-                .init(id: "4", name: "Image.jpg", type: .image),
-                .init(id: "5", name: "Video.mp4", type: .video),
+                .init(id: "1", name: "Report.pdf", type: .pdf, preview: .none),
+                .init(id: "2", name: "Data.xls", type: .xls, preview: .none),
+                .init(id: "3", name: "Slides.ppt", type: .ppt, preview: .none),
+                .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
+                .init(id: "5", name: "Video.mp4", type: .video, preview: .none),
             ],
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
@@ -210,11 +210,11 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "Process all these files",
             files: [
-                .init(id: "1", name: "Report.pdf", type: .pdf),
-                .init(id: "2", name: "Data.xls", type: .xls),
-                .init(id: "3", name: "Slides.ppt", type: .ppt),
-                .init(id: "4", name: "Image.jpg", type: .image),
-                .init(id: "5", name: "Video.mp4", type: .video),
+                .init(id: "1", name: "Report.pdf", type: .pdf, preview: .none),
+                .init(id: "2", name: "Data.xls", type: .xls, preview: .none),
+                .init(id: "3", name: "Slides.ppt", type: .ppt, preview: .none),
+                .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
+                .init(id: "5", name: "Video.mp4", type: .video, preview: .none),
             ],
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,

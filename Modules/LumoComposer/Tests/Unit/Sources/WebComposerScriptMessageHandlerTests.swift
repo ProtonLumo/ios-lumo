@@ -37,16 +37,20 @@ final class WebComposerScriptMessageHandlerTests {
             TestCase(
                 stateDict: [
                     "lumoMode": "Idle",
+                    "modelType": "Auto",
                     "isGhostModeEnabled": false,
                     "isWebSearchEnabled": false,
+                    "isCreateImageEnabled": false,
                     "isVisible": true,
                     "showTsAndCs": true,
                     "attachedFiles": [],
                 ],
                 expectedState: .init(
                     mode: .idle,
+                    modelType: .auto,
                     isGhostModeEnabled: false,
                     isWebSearchEnabled: false,
+                    isCreateImageEnabled: false,
                     isVisible: true,
                     showTermsAndPrivacy: true,
                     attachedFiles: []
@@ -55,8 +59,10 @@ final class WebComposerScriptMessageHandlerTests {
             TestCase(
                 stateDict: [
                     "lumoMode": "Working",
+                    "modelType": "Auto",
                     "isGhostModeEnabled": true,
                     "isWebSearchEnabled": true,
+                    "isCreateImageEnabled": false,
                     "isVisible": false,
                     "showTsAndCs": false,
                     "attachedFiles": [
@@ -69,12 +75,14 @@ final class WebComposerScriptMessageHandlerTests {
                 ],
                 expectedState: .init(
                     mode: .working,
+                    modelType: .auto,
                     isGhostModeEnabled: true,
                     isWebSearchEnabled: true,
+                    isCreateImageEnabled: false,
                     isVisible: false,
                     showTermsAndPrivacy: false,
                     attachedFiles: [
-                        File(id: "<file-123>", name: "document.pdf", type: .pdf)
+                        File(id: "<file-123>", name: "document.pdf", type: .pdf, preview: .none)
                     ]
                 )
             ),

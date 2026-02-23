@@ -16,8 +16,10 @@ struct ComposerViewStateTests {
                     isWebViewReady: false,
                     webState: .init(
                         mode: .idle,
+                        modelType: .auto,
                         isGhostModeEnabled: false,
                         isWebSearchEnabled: false,
+                        isCreateImageEnabled: false,
                         isVisible: true,
                         showTermsAndPrivacy: true,
                         attachedFiles: []
@@ -72,8 +74,10 @@ private extension ComposerViewState {
             isWebViewReady: isWebViewReady,
             webState: WebComposerState(
                 mode: mode,
+                modelType: .auto,
                 isGhostModeEnabled: false,
                 isWebSearchEnabled: false,
+                isCreateImageEnabled: false,
                 isVisible: true,
                 showTermsAndPrivacy: true,
                 attachedFiles: []

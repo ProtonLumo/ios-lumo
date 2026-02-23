@@ -20,14 +20,16 @@ struct ComposerScreenSnapshotTests {
                 \.webState,
                 to: .init(
                     mode: .working,
+                    modelType: .auto,
                     isGhostModeEnabled: false,
                     isWebSearchEnabled: true,
+                    isCreateImageEnabled: false,
                     isVisible: true,
                     showTermsAndPrivacy: false,
                     attachedFiles: [
-                        .init(id: "<id_1>", name: "selfie.png", type: .image),
-                        .init(id: "<id_2>", name: "information_about_me.pdf", type: .pdf),
-                        .init(id: "<id_3>", name: "data", type: .protonSheet),
+                        .init(id: "<id_1>", name: "selfie.png", type: .image, preview: .none),
+                        .init(id: "<id_2>", name: "information_about_me.pdf", type: .pdf, preview: .none),
+                        .init(id: "<id_3>", name: "data", type: .protonSheet, preview: .none),
                     ])
             )
             .copy(\.currentText, to: "")
@@ -45,8 +47,10 @@ struct ComposerScreenSnapshotTests {
                 \.webState,
                 to: .init(
                     mode: .idle,
+                    modelType: .auto,
                     isGhostModeEnabled: false,
                     isWebSearchEnabled: false,
+                    isCreateImageEnabled: false,
                     isVisible: false,
                     showTermsAndPrivacy: false,
                     attachedFiles: []

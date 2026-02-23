@@ -50,14 +50,14 @@ final class ComposerStateStoreTests {
 
         #expect(effect == .none)
 
-        simulateWebStateChange(state: [
-            "lumoMode": "Working",
-            "isGhostModeEnabled": false,
-            "isWebSearchEnabled": false,
-            "isVisible": true,
-            "showTsAndCs": false,
-            "attachedFiles": [],
-        ])
+        simulateWebStateChange(
+            lumoMode: "Working",
+            isGhostModeEnabled: false,
+            isWebSearchEnabled: false,
+            isVisible: true,
+            showTsAndCs: false,
+            files: []
+        )
 
         try? await Task.sleep(for: .milliseconds(50))
 
@@ -72,14 +72,14 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.send(action: .onDisappear)
 
-        simulateWebStateChange(state: [
-            "lumoMode": "Working",
-            "isGhostModeEnabled": false,
-            "isWebSearchEnabled": false,
-            "isVisible": true,
-            "showTsAndCs": false,
-            "attachedFiles": [],
-        ])
+        simulateWebStateChange(
+            lumoMode: "Working",
+            isGhostModeEnabled: false,
+            isWebSearchEnabled: false,
+            isVisible: true,
+            showTsAndCs: false,
+            files: []
+        )
 
         await Task.yield()
 
@@ -146,14 +146,14 @@ final class ComposerStateStoreTests {
             window.nativeComposerApi?.sendPrompt('212A909D-2D5C-4891-8717-685D27C6A4EE', 'How to make proper neapolitan pizza?');
             """
 
-        simulateWebStateChange(state: [
-            "lumoMode": "Working",
-            "isGhostModeEnabled": false,
-            "isWebSearchEnabled": false,
-            "isVisible": true,
-            "showTsAndCs": true,
-            "attachedFiles": [],
-        ])
+        simulateWebStateChange(
+            lumoMode: "Working",
+            isGhostModeEnabled: false,
+            isWebSearchEnabled: false,
+            isVisible: true,
+            showTsAndCs: true,
+            files: []
+        )
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
@@ -165,14 +165,14 @@ final class ComposerStateStoreTests {
                 )
         )
 
-        simulateWebStateChange(state: [
-            "lumoMode": "Idle",
-            "isGhostModeEnabled": false,
-            "isWebSearchEnabled": false,
-            "isVisible": true,
-            "showTsAndCs": true,
-            "attachedFiles": [],
-        ])
+        simulateWebStateChange(
+            lumoMode: "Idle",
+            isGhostModeEnabled: false,
+            isWebSearchEnabled: false,
+            isVisible: true,
+            showTsAndCs: true,
+            files: []
+        )
 
         try? await Task.sleep(for: .milliseconds(50))
 
@@ -187,8 +187,10 @@ final class ComposerStateStoreTests {
                     \.webState,
                     to: .init(
                         mode: .working,
+                        modelType: .auto,
                         isGhostModeEnabled: false,
                         isWebSearchEnabled: false,
+                        isCreateImageEnabled: false,
                         isVisible: true,
                         showTermsAndPrivacy: true,
                         attachedFiles: []
@@ -556,20 +558,16 @@ final class ComposerStateStoreTests {
 
         #expect(effect == .none)
 
-        simulateWebStateChange(state: [
-            "lumoMode": "Working",
-            "isGhostModeEnabled": true,
-            "isWebSearchEnabled": true,
-            "isVisible": false,
-            "showTsAndCs": false,
-            "attachedFiles": [
-                [
-                    "id": "<id_1>",
-                    "name": "document.pdf",
-                    "type": "PDF",
-                ]
-            ],
-        ])
+        simulateWebStateChange(
+            lumoMode: "Working",
+            isGhostModeEnabled: true,
+            isWebSearchEnabled: true,
+            isVisible: false,
+            showTsAndCs: false,
+            files: [
+                .init(id: "<id_1>", name: "document.pdf", type: .pdf, preview: .none)
+            ]
+        )
 
         try? await Task.sleep(for: .milliseconds(50))
 
@@ -582,12 +580,14 @@ final class ComposerStateStoreTests {
                         \.webState,
                         to: WebComposerState(
                             mode: .working,
+                            modelType: .auto,
                             isGhostModeEnabled: true,
                             isWebSearchEnabled: true,
+                            isCreateImageEnabled: false,
                             isVisible: false,
                             showTermsAndPrivacy: false,
                             attachedFiles: [
-                                File(id: "<id_1>", name: "document.pdf", type: .pdf)
+                                File(id: "<id_1>", name: "document.pdf", type: .pdf, preview: .none)
                             ]
                         )
                     ),
@@ -603,7 +603,32 @@ final class ComposerStateStoreTests {
             .store(in: &cancellables)
     }
 
-    private func simulateWebStateChange(state: [String: Any]) {
+    private func simulateWebStateChange(
+        lumoMode: String,
+        isGhostModeEnabled: Bool,
+        isWebSearchEnabled: Bool,
+        isVisible: Bool,
+        showTsAndCs: Bool,
+        files: [File]
+    ) {
+        let attachedFiles: [[String: Any]] = files.map { file in
+            var fileDict: [String: Any] = [:]
+            fileDict["id"] = file.id
+            fileDict["name"] = file.name
+            fileDict["type"] = file.type.rawValue
+            return fileDict
+        }
+        let state: [String: Any] = [
+            "lumoMode": lumoMode,
+            "modelType": "Auto",
+            "isGhostModeEnabled": isGhostModeEnabled,
+            "isWebSearchEnabled": isWebSearchEnabled,
+            "isCreateImageEnabled": false,
+            "isVisible": isVisible,
+            "showTsAndCs": showTsAndCs,
+            "attachedFiles": attachedFiles,
+        ]
+
         webBridge.handleStateChange(state: state)
     }
 }
