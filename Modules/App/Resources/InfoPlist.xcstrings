@@ -232,7 +232,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo, sesli girişle yapay zeka yardımı sağlamak için mikrofona erişir."
+            "value" : "Lumo yapay zeka desteği için sesli girişi etkinleştirmek amacıyla mikrofon erişimine ihtiyaç duyar."
           }
         }
       }
@@ -310,7 +310,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo, yapay zeka sorgularında sesinizi yazıya dönüştürmek için konuşma tanıma kullanır."
+            "value" : "Lumo yapay zeka sorguları için sesinizi metne dönüştürmek amacıyla konuşma tanıma özelliğine ihtiyaç duyar."
           }
         }
       }
