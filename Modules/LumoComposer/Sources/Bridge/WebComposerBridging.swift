@@ -15,8 +15,22 @@ public protocol WebComposerBridging {
     /// Toggle web search on/off
     func toggleWebSearch() async throws(WebComposerBridgeError)
 
-    /// Open file picker in WebView
-    func openFilePicker() async throws(WebComposerBridgeError)
+    /// Upload files from native to web
+    /// - Parameter files: Array of files with base64 data and names
+    func uploadFiles(_ files: [FileUploadData]) async throws(WebComposerBridgeError)
+
+    /// Open Proton Drive file picker
+    func openProtonDrive() async throws(WebComposerBridgeError)
+
+    /// Open sketch/drawing interface
+    func openSketch() async throws(WebComposerBridgeError)
+
+    /// Toggle image generation
+    func toggleCreateImage() async throws(WebComposerBridgeError)
+
+    /// Change model type
+    /// - Parameter modelType: The model type to use
+    func changeModel(_ modelType: WebComposerState.ModelType) async throws(WebComposerBridgeError)
 
     /// Remove an attachment
     /// - Parameter id: Attachment identifier

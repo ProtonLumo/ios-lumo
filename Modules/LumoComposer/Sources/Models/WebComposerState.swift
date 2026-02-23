@@ -15,7 +15,7 @@ public struct WebComposerState: Equatable, Decodable {
         case working = "Working"
     }
 
-    enum ModelType: String, Equatable, Decodable {
+    public enum ModelType: String, Equatable, Decodable {
         case auto = "Auto"
         case fast = "Fast"
         case thinking = "Thinking"

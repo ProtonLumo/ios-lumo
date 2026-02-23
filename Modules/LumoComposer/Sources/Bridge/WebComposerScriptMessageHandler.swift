@@ -3,7 +3,7 @@ import WebKit
 
 /// Message handler for receiving composer messages from JavaScript
 public final class WebComposerScriptMessageHandler: NSObject, WebScriptMessageHandler {
-    public init(webComposerBridge: WebComposerStateReceiving) {
+    public init(webComposerBridge: WebComposerStateReceiving & WebComposerErrorReceiving) {
         self.webComposerBridge = webComposerBridge
         super.init()
     }
@@ -12,6 +12,7 @@ public final class WebComposerScriptMessageHandler: NSObject, WebScriptMessageHa
 
     public enum MessageName: String, CaseIterable {
         case nativeComposerStateHandler
+        case nativeComposerHandler
     }
 
     // MARK: - WKScriptMessageHandler
@@ -22,6 +23,8 @@ public final class WebComposerScriptMessageHandler: NSObject, WebScriptMessageHa
         switch messageName {
         case .nativeComposerStateHandler:
             handleStateChange(message)
+        case .nativeComposerHandler:
+            handleResult(message)
         case .none:
             break
         }
@@ -29,11 +32,17 @@ public final class WebComposerScriptMessageHandler: NSObject, WebScriptMessageHa
 
     // MARK: - Private
 
-    private let webComposerBridge: WebComposerStateReceiving
+    private let webComposerBridge: WebComposerStateReceiving & WebComposerErrorReceiving
 
     private func handleStateChange(_ message: WKScriptMessage) {
         if let dictionary = message.body as? [String: Any] {
             webComposerBridge.handleStateChange(state: dictionary)
+        }
+    }
+
+    private func handleResult(_ message: WKScriptMessage) {
+        if let dictionary = message.body as? [String: Any] {
+            webComposerBridge.handleError(dictionary)
         }
     }
 }

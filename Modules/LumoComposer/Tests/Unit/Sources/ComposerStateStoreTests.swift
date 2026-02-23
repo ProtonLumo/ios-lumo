@@ -357,49 +357,6 @@ final class ComposerStateStoreTests {
         #expect(effect == .error(.evaluatingJSFailed(.stopResponse)))
     }
 
-    // MARK: - .openFilePicker action
-
-    @Test
-    func openFilePickerAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
-        let effect = await sut.send(action: .openFilePickerTapped)
-
-        #expect(effect == .error(.webViewNotAttached))
-    }
-
-    @Test(.stubbedUUID(UUID(uuidString: "B2C3D4E5-F6A7-8901-BCDE-F12345678901")!))
-    func openFilePickerAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
-        webBridge.attach(to: webViewSpy)
-
-        _ = await sut.send(action: .taskStarted)
-
-        let effect = await sut.send(action: .openFilePickerTapped)
-
-        let javascript = "window.nativeComposerApi?.onAttachClick('B2C3D4E5-F6A7-8901-BCDE-F12345678901');"
-
-        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
-        #expect(
-            webViewSpy.evaluateJavaScriptCalls.last
-                == .init(
-                    javaScript: javascript,
-                    frame: .none,
-                    contentWorld: .page
-                )
-        )
-        #expect(effect == .none)
-    }
-
-    @Test
-    func openFilePickerAction_WhenJavaScriptEvaluationFails_ItReturnsError() async {
-        webBridge.attach(to: webViewSpy)
-        webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
-
-        _ = await sut.send(action: .taskStarted)
-
-        let effect = await sut.send(action: .openFilePickerTapped)
-
-        #expect(effect == .error(.evaluatingJSFailed(.openFilePicker)))
-    }
-
     // MARK: - .toggleWebSearch action
 
     @Test
@@ -538,6 +495,249 @@ final class ComposerStateStoreTests {
         let effect = await sut.send(action: .startRecordingTapped)
 
         #expect(effect == .none)
+    }
+
+    // MARK: - .uploadFiles action
+
+    @Test
+    func uploadFilesAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
+        let files = [FileUploadData(base64: "YmFzZTY0ZGF0YQ==", name: "test.pdf")]
+        let effect = await sut.send(action: .uploadFilesTapped(files))
+
+        #expect(effect == .error(.webViewNotAttached))
+    }
+
+    @Test(.stubbedUUID(UUID(uuidString: "F6A7B8C9-D0E1-2345-F123-456789012345")!))
+    func uploadFilesAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
+        webBridge.attach(to: webViewSpy)
+
+        _ = await sut.send(action: .taskStarted)
+
+        let files = [
+            FileUploadData(base64: "ZGF0YTE=", name: "file1.pdf"),
+            FileUploadData(base64: "ZGF0YTI=", name: "file2.png"),
+        ]
+        let effect = await sut.send(action: .uploadFilesTapped(files))
+
+        let javascript = "window.nativeComposerApi?.uploadFiles('F6A7B8C9-D0E1-2345-F123-456789012345', [{ base64: 'ZGF0YTE=', name: 'file1.pdf' }, { base64: 'ZGF0YTI=', name: 'file2.png' }]);"
+
+        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
+        #expect(
+            webViewSpy.evaluateJavaScriptCalls.last
+                == .init(
+                    javaScript: javascript,
+                    frame: .none,
+                    contentWorld: .page
+                )
+        )
+        #expect(effect == .none)
+    }
+
+    @Test
+    func uploadFilesAction_WhenJavaScriptEvaluationFails_ItReturnsError() async {
+        webBridge.attach(to: webViewSpy)
+        webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
+
+        _ = await sut.send(action: .taskStarted)
+
+        let files = [FileUploadData(base64: "data", name: "test.pdf")]
+        let effect = await sut.send(action: .uploadFilesTapped(files))
+
+        #expect(effect == .error(.evaluatingJSFailed(.uploadFiles(files))))
+    }
+
+    // MARK: - .openProtonDrive action
+
+    @Test
+    func openProtonDriveAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
+        let effect = await sut.send(action: .openProtonDriveTapped)
+
+        #expect(effect == .error(.webViewNotAttached))
+    }
+
+    @Test(.stubbedUUID(UUID(uuidString: "A7B8C9D0-E1F2-3456-A123-567890123456")!))
+    func openProtonDriveAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
+        webBridge.attach(to: webViewSpy)
+
+        _ = await sut.send(action: .taskStarted)
+
+        let effect = await sut.send(action: .openProtonDriveTapped)
+
+        let javascript = "window.nativeComposerApi?.openProtonDrive('A7B8C9D0-E1F2-3456-A123-567890123456');"
+
+        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
+        #expect(
+            webViewSpy.evaluateJavaScriptCalls.last
+                == .init(
+                    javaScript: javascript,
+                    frame: .none,
+                    contentWorld: .page
+                )
+        )
+        #expect(effect == .none)
+    }
+
+    @Test
+    func openProtonDriveAction_WhenJavaScriptEvaluationFails_ItReturnsError() async {
+        webBridge.attach(to: webViewSpy)
+        webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
+
+        _ = await sut.send(action: .taskStarted)
+
+        let effect = await sut.send(action: .openProtonDriveTapped)
+
+        #expect(effect == .error(.evaluatingJSFailed(.openProtonDrive)))
+    }
+
+    // MARK: - .openSketch action
+
+    @Test
+    func openSketchAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
+        let effect = await sut.send(action: .openSketchTapped)
+
+        #expect(effect == .error(.webViewNotAttached))
+    }
+
+    @Test(.stubbedUUID(UUID(uuidString: "B8C9D0E1-F2A3-4567-B234-678901234567")!))
+    func openSketchAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
+        webBridge.attach(to: webViewSpy)
+
+        _ = await sut.send(action: .taskStarted)
+
+        let effect = await sut.send(action: .openSketchTapped)
+
+        let javascript = "window.nativeComposerApi?.openSketch('B8C9D0E1-F2A3-4567-B234-678901234567');"
+
+        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
+        #expect(
+            webViewSpy.evaluateJavaScriptCalls.last
+                == .init(
+                    javaScript: javascript,
+                    frame: .none,
+                    contentWorld: .page
+                )
+        )
+        #expect(effect == .none)
+    }
+
+    @Test
+    func openSketchAction_WhenJavaScriptEvaluationFails_ItReturnsError() async {
+        webBridge.attach(to: webViewSpy)
+        webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
+
+        _ = await sut.send(action: .taskStarted)
+
+        let effect = await sut.send(action: .openSketchTapped)
+
+        #expect(effect == .error(.evaluatingJSFailed(.openSketch)))
+    }
+
+    // MARK: - .toggleCreateImage action
+
+    @Test
+    func toggleCreateImageAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
+        let effect = await sut.send(action: .toggleCreateImageTapped)
+
+        #expect(effect == .error(.webViewNotAttached))
+    }
+
+    @Test(.stubbedUUID(UUID(uuidString: "C9D0E1F2-A3B4-5678-C345-789012345678")!))
+    func toggleCreateImageAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
+        webBridge.attach(to: webViewSpy)
+
+        _ = await sut.send(action: .taskStarted)
+
+        let effect = await sut.send(action: .toggleCreateImageTapped)
+
+        let javascript = "window.nativeComposerApi?.toggleCreateImage('C9D0E1F2-A3B4-5678-C345-789012345678');"
+
+        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
+        #expect(
+            webViewSpy.evaluateJavaScriptCalls.last
+                == .init(
+                    javaScript: javascript,
+                    frame: .none,
+                    contentWorld: .page
+                )
+        )
+        #expect(effect == .none)
+    }
+
+    @Test
+    func toggleCreateImageAction_WhenJavaScriptEvaluationFails_ItReturnsError() async {
+        webBridge.attach(to: webViewSpy)
+        webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
+
+        _ = await sut.send(action: .taskStarted)
+
+        let effect = await sut.send(action: .toggleCreateImageTapped)
+
+        #expect(effect == .error(.evaluatingJSFailed(.toggleCreateImage)))
+    }
+
+    // MARK: - .changeModel action
+
+    @Test
+    func changeModelAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
+        let effect = await sut.send(action: .changeModelTapped(.fast))
+
+        #expect(effect == .error(.webViewNotAttached))
+    }
+
+    @Test(.stubbedUUID(UUID(uuidString: "D0E1F2A3-B4C5-6789-D456-890123456789")!))
+    func changeModelAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
+        webBridge.attach(to: webViewSpy)
+
+        _ = await sut.send(action: .taskStarted)
+
+        let effect = await sut.send(action: .changeModelTapped(.thinking))
+
+        let javascript = "window.nativeComposerApi?.changeModel('D0E1F2A3-B4C5-6789-D456-890123456789', 'Thinking');"
+
+        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
+        #expect(
+            webViewSpy.evaluateJavaScriptCalls.last
+                == .init(
+                    javaScript: javascript,
+                    frame: .none,
+                    contentWorld: .page
+                )
+        )
+        #expect(effect == .none)
+    }
+
+    @Test(.stubbedUUID(UUID(uuidString: "E1F2A3B4-C5D6-7890-E567-901234567890")!))
+    func changeModelAction_ForAllModelTypes_ExecutesCorrectJavaScript() async {
+        webBridge.attach(to: webViewSpy)
+
+        _ = await sut.send(action: .taskStarted)
+
+        let javascript: (String) -> String = { mode in
+            "window.nativeComposerApi?.changeModel('E1F2A3B4-C5D6-7890-E567-901234567890', '\(mode)');"
+        }
+
+        _ = await sut.send(action: .changeModelTapped(.auto))
+        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("Auto"))
+
+        _ = await sut.send(action: .changeModelTapped(.fast))
+        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("Fast"))
+
+        _ = await sut.send(action: .changeModelTapped(.thinking))
+        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("Thinking"))
+
+        #expect(webViewSpy.evaluateJavaScriptCalls.count == 3)
+    }
+
+    @Test
+    func changeModelAction_WhenJavaScriptEvaluationFails_ItReturnsError() async {
+        webBridge.attach(to: webViewSpy)
+        webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
+
+        _ = await sut.send(action: .taskStarted)
+
+        let effect = await sut.send(action: .changeModelTapped(.auto))
+
+        #expect(effect == .error(.evaluatingJSFailed(.changeModel(.auto))))
     }
 
     // MARK: - Web State observation

@@ -10,8 +10,12 @@ final class ComposerStateStore: StateStore {
         case textChanged(String)
         case sendPromptTapped
         case stopResponseTapped
-        case openFilePickerTapped
+        case uploadFilesTapped([FileUploadData])
+        case openProtonDriveTapped
+        case openSketchTapped
         case toggleWebSearchTapped
+        case toggleCreateImageTapped
+        case changeModelTapped(WebComposerState.ModelType)
         case startRecordingTapped
         case previewAttachmentTapped(id: String)
         case removeAttachmentTapped(id: String)
@@ -81,14 +85,34 @@ final class ComposerStateStore: StateStore {
                 try await webBridge.stopResponse()
             }
 
-        case .openFilePickerTapped:
+        case .uploadFilesTapped(let files):
             return await execute { () async throws(WebComposerBridgeError) in
-                try await webBridge.openFilePicker()
+                try await webBridge.uploadFiles(files)
+            }
+
+        case .openProtonDriveTapped:
+            return await execute { () async throws(WebComposerBridgeError) in
+                try await webBridge.openProtonDrive()
+            }
+
+        case .openSketchTapped:
+            return await execute { () async throws(WebComposerBridgeError) in
+                try await webBridge.openSketch()
             }
 
         case .toggleWebSearchTapped:
             return await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.toggleWebSearch()
+            }
+
+        case .toggleCreateImageTapped:
+            return await execute { () async throws(WebComposerBridgeError) in
+                try await webBridge.toggleCreateImage()
+            }
+
+        case .changeModelTapped(let modelType):
+            return await execute { () async throws(WebComposerBridgeError) in
+                try await webBridge.changeModel(modelType)
             }
 
         case .startRecordingTapped:
