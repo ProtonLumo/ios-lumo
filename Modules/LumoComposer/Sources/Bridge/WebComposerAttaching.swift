@@ -1,4 +1,4 @@
-protocol WebComposerAttaching {
+public protocol WebComposerAttaching {
     /// Set up communication with the WebView
     ///
     /// Must be called before using other bridge methods.
