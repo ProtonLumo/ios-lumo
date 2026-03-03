@@ -14,6 +14,7 @@ extension DS {
         }
 
         public enum Border {
+            public static let norm = SwiftColor.borderNorm
             public static let weak = SwiftColor.borderWeak
             public static let weakDark = SwiftColor.borderWeakDark
         }

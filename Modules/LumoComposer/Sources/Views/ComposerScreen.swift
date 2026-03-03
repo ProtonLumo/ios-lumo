@@ -68,7 +68,7 @@ public struct ComposerScreen<WebContent: View>: View {
                             actionButton: store.state.actionButton,
                             action: handle(action:)
                         )
-                        .padding(.horizontal, DS.Spacing.tiny)
+                        .padding(.horizontal, DS.Spacing.large)
                         .padding(.bottom, DS.Spacing.standard)
                     }
                 }

@@ -27,7 +27,7 @@ struct ComposerView: View {
     let action: (Action) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.standard) {
+        VStack(alignment: .leading, spacing: DS.Spacing.large) {
             if !files.isEmpty {
                 ComposerAttachmentsView(
                     files: files,
@@ -76,6 +76,7 @@ struct ComposerView: View {
         .background {
             RoundedRectangle(cornerRadius: DS.Radius.massive)
                 .fill(isGhostModeEnabled ? DS.Color.Background.normDarkOnly : DS.Color.Background.weak)
+                .strokeBorder(isGhostModeEnabled ? Color.clear : DS.Color.Border.norm, lineWidth: 1)
         }
     }
 
