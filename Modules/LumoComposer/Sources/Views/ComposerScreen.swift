@@ -2,20 +2,31 @@ import Lottie
 import LumoDesignSystem
 import SwiftUI
 
-public struct ComposerScreen: View {
-    @StateObject var store: ComposerStateStore
+public struct ComposerScreen<WebContent: View>: View {
     @Environment(\.colorScheme) var colorScheme
+    @StateObject private var store: ComposerStateStore
     private let isWebViewReady: Bool
+    @ViewBuilder private let webContent: () -> WebContent
 
-    public init(webBridge: WebComposerBridging, isWebViewReady: Bool) {
-        self.init(initialState: .initial, webBridge: webBridge, isWebViewReady: isWebViewReady)
+    public init(
+        webBridge: WebComposerBridging,
+        isWebViewReady: Bool,
+        webContent: @escaping () -> WebContent
+    ) {
+        self.init(
+            initialState: .initial,
+            webBridge: webBridge,
+            isWebViewReady: isWebViewReady,
+            webContent: webContent
+        )
     }
 
     /// - Parameter initialState: Exposed for snapshot testing with different states
     init(
         initialState: ComposerViewState,
         webBridge: WebComposerBridging,
-        isWebViewReady: Bool
+        isWebViewReady: Bool,
+        webContent: @escaping () -> WebContent
     ) {
         _store = .init(
             wrappedValue: .init(
@@ -24,6 +35,7 @@ public struct ComposerScreen: View {
             )
         )
         self.isWebViewReady = isWebViewReady
+        self.webContent = webContent
     }
 
     // MARK: - View
@@ -31,6 +43,8 @@ public struct ComposerScreen: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .center) {
+                webContent()
+
                 if !store.state.isWebViewReady && store.state.webState.isVisible {
                     placeholders(screenSize: proxy.size)
                 }
@@ -142,7 +156,8 @@ public struct ComposerScreen: View {
         ComposerScreen(
             initialState: .initial,
             webBridge: WebComposerBridge(),
-            isWebViewReady: true
+            isWebViewReady: true,
+            webContent: { EmptyView() }
         )
     }
 #endif

@@ -1,4 +1,5 @@
 import LumoComposer
+import LumoDesignSystem
 import ProtonUIFoundations
 import Speech
 import SwiftUI
@@ -77,15 +78,6 @@ struct ContentView: View {
     private let paymentSheetDelegate = PaymentSheetDelegate()
     private let brandPurple = Color(hex: 0x6D4AFF)
 
-    // Use ThemeProvider for consistent theme
-    private var isDarkMode: Bool {
-        themeProvider.isDarkMode
-    }
-
-    private var darkModeBackgroundColor: Color {
-        Color(hex: 0x16141c)
-    }
-
     private let safetyTimeoutDuration: TimeInterval = 3.0
 
     init() {
@@ -112,29 +104,23 @@ struct ContentView: View {
         return url.contains(Config.ACCOUNT_BASE_URL)
     }
 
-    private var backgroundColor: Color {
-        // Use isDarkMode state which is kept in sync by updateThemeState()
-        isDarkMode ? darkModeBackgroundColor : Color.white
-    }
-
     var body: some View {
         ZStack(alignment: .top) {
-            // Background color that adapts to theme
-            backgroundColor
+            DS.Color.Background.norm
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
                 if shouldShowBackButton {
                     LumoNavigationBar(
                         currentURL: currentWebViewURL,
-                        onBackButtonPress: handleBackButtonPress,
-                        isDarkMode: isDarkMode
+                        onBackButtonPress: handleBackButtonPress
                     )
                 }
 
                 WebView(
                     url: URL.lumoBase!,
                     webComposerBridge: webComposerBridge,
+                    themeProvider: themeProvider,
                     isReady: $webViewReady,
                     jsCoordinator: jsCoordinator,
                     action: $webViewAction,
@@ -154,7 +140,7 @@ struct ContentView: View {
             }
 
             if !webViewReady && (showLoader || currentWebViewURL == nil) {
-                LoadingView(isDarkMode: isDarkMode)
+                LoadingView()
                     .transition(.opacity)
                     .animation(.easeInOut(duration: 0.3), value: !webViewReady && (showLoader || currentWebViewURL == nil))
                     .onAppear {
@@ -251,25 +237,8 @@ struct ContentView: View {
                 Logger.shared.log("✅ Background task is active - generation can continue")
             }
         }
-        .onChange(of: colorScheme) { newValue in
-            // Only respond to colorScheme changes if we're on system theme
-            let themeManager = ThemeManager.shared
-            Logger.shared.log("📱 System colorScheme changed to: \(newValue == .dark ? "dark" : "light")")
-            Logger.shared.log("📱 Current theme setting: \(themeManager.currentTheme.rawValue == 0 ? "light" : themeManager.currentTheme.rawValue == 1 ? "dark" : "system")")
-
-            if themeManager.currentTheme == .system {
-                Logger.shared.log("📱 Theme is .system, updating appearance with new value...")
-                // Pass the new colorScheme value directly to avoid timing issues
-                themeManager.updateSystemThemeMode(newValue == .dark)
-                themeProvider.updateTheme(systemColorScheme: newValue)
-            } else {
-                Logger.shared.log("📱 Theme is explicitly set, ignoring system change")
-            }
-        }
         .onAppear {
             Logger.shared.log("ContentView appeared")
-
-            updateThemeState()
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 isLoading = false
@@ -647,7 +616,7 @@ struct ContentView: View {
         }
 
         // Update the centralized ThemeProvider - this will propagate to all views
-        themeProvider.updateTheme(systemColorScheme: colorScheme)
+        themeProvider.updateTheme()
     }
 
     private func setupPromptObserver() {
@@ -1019,6 +988,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(ThemeProvider.shared)
+            .environmentObject(ThemeProvider())
     }
 }

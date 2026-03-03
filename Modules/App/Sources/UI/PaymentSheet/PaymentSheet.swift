@@ -1,3 +1,4 @@
+import LumoDesignSystem
 import LumoUI
 import ProtonUIFoundations
 import SwiftUI
@@ -5,15 +6,10 @@ import SwiftUI
 // MARK: - Skeleton Loading Views
 struct SkeletonPlanCard: View {
     @State private var isAnimating = false
-    @EnvironmentObject private var themeProvider: ThemeProvider
-
-    private var isDarkMode: Bool {
-        themeProvider.isDarkMode
-    }
 
     var body: some View {
         RoundedRectangle(cornerRadius: 12)
-            .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
+            .fill(DS.Color.middleGray)
             .frame(height: 80)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
@@ -21,7 +17,7 @@ struct SkeletonPlanCard: View {
                         LinearGradient(
                             gradient: Gradient(colors: [
                                 Color.clear,
-                                (isDarkMode ? Color.gray : Color.white).opacity(0.6),
+                                DS.Color.gradient.opacity(0.6),
                                 Color.clear,
                             ]),
                             startPoint: .leading,
@@ -45,23 +41,18 @@ struct SkeletonPlanCard: View {
 
 struct SkeletonFeatureRow: View {
     @State private var isAnimating = false
-    @EnvironmentObject private var themeProvider: ThemeProvider
-
-    private var isDarkMode: Bool {
-        themeProvider.isDarkMode
-    }
 
     var body: some View {
         HStack(spacing: 12) {
             // Icon placeholder
             Circle()
-                .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
+                .fill(DS.Color.middleGray)
                 .square(size: 20)
 
             // Text placeholders
             VStack(alignment: .leading, spacing: 4) {
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
+                    .fill(DS.Color.middleGray)
                     .frame(height: 12)
                     .frame(maxWidth: .infinity)
             }
@@ -71,11 +62,11 @@ struct SkeletonFeatureRow: View {
             // Status placeholders
             HStack(spacing: 20) {
                 Circle()
-                    .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
+                    .fill(DS.Color.middleGray)
                     .square(size: 12)
 
                 Circle()
-                    .fill(Color.gray.opacity(isDarkMode ? 0.3 : 0.2))
+                    .fill(DS.Color.middleGray)
                     .square(size: 12)
             }
         }
@@ -83,7 +74,7 @@ struct SkeletonFeatureRow: View {
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color.clear,
-                    (isDarkMode ? Color.gray : Color.white).opacity(0.4),
+                    DS.Color.gradient.opacity(0.4),
                     Color.clear,
                 ]),
                 startPoint: .leading,
@@ -107,6 +98,7 @@ struct SkeletonFeatureRow: View {
 }
 
 struct PaymentSheet: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var themeProvider: ThemeProvider
     @ObservedObject var viewModel: PaymentSheetViewModel
@@ -119,7 +111,7 @@ struct PaymentSheet: View {
         ZStack {
             // Force background color to fill entire view
             // Use themeProvider properties directly so SwiftUI observes changes
-            themeProvider.backgroundColor
+            DS.Color.Background.norm
                 .ignoresSafeArea(.all, edges: .all)
 
             ScrollView {
@@ -130,7 +122,7 @@ struct PaymentSheet: View {
                 }
             }
         }
-        .background(themeProvider.backgroundColor)
+        .background(DS.Color.Background.norm)
         .alert(isPresented: $viewModel.showAlert) {
             Alert(
                 title: Text(viewModel.alertTitle),
@@ -155,7 +147,7 @@ struct PaymentSheet: View {
                 if viewModel.showTransactionProgress {
                     ZStack {
                         // Use semi-transparent overlay that adapts to theme
-                        (themeProvider.isDarkMode ? Color.black : Color.gray)
+                        DS.Color.overlay
                             .opacity(0.3)
                             .ignoresSafeArea()
                         TransactionProgressView(viewModel: viewModel.transactionProgressViewModel)
@@ -182,7 +174,7 @@ struct PaymentSheet: View {
         ZStack(alignment: .top) {
             LinearGradient(
                 gradient: Gradient(
-                    colors: themeProvider.isDarkMode
+                    colors: colorScheme == .dark
                         ? [
                             Color(hex: 0x1f1d28),
                             Color(hex: 0x1f1d28),
@@ -205,7 +197,7 @@ struct PaymentSheet: View {
                     Spacer()
                     Button(action: { dismiss() }) {
                         Image(systemName: "xmark")
-                            .foregroundColor(themeProvider.textColor)
+                            .foregroundColor(DS.Color.Text.norm)
                             .padding()
                     }
                 }
@@ -219,11 +211,11 @@ struct PaymentSheet: View {
                     Text(viewModel.hasNoPlansAvailable ? String(localized: "app.payment.noPlansAvailable") : (String(localized: "app.payment.elevateExperience")))
                         .font(.system(size: 24, weight: .bold))
                         .padding(.top, 16)
-                        .foregroundColor(themeProvider.textColor)
+                        .foregroundColor(DS.Color.Text.norm)
                     Text(viewModel.hasNoPlansAvailable ? String(localized: "app.payment.noPlansMessage") : (String(localized: "app.payment.enjoyPremium")))
                         .font(.system(size: 16))
                         .multilineTextAlignment(.center)
-                        .foregroundColor(themeProvider.secondaryTextColor)
+                        .foregroundColor(DS.Color.Text.weak)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 6)
@@ -278,7 +270,7 @@ struct PaymentSheet: View {
             if !viewModel.hasNoPlansAvailable {
                 Text(String(localized: "app.payment.renewalinfo"))
                     .font(.system(size: 14, weight: .regular))
-                    .foregroundStyle(themeProvider.secondaryTextColor)
+                    .foregroundStyle(DS.Color.Text.weak)
                     .padding(.top, 5)
             }
 
@@ -311,7 +303,7 @@ struct PaymentSheet: View {
                 .background(
                     Group {
                         if viewModel.isLoadingPlans || viewModel.hasNoPlansAvailable {
-                            (themeProvider.isDarkMode ? Color.gray.opacity(0.3) : Color.gray.opacity(0.5))
+                            DS.Color.middleGray
                         } else {
                             LinearGradient(
                                 colors: [Color(hex: 0xFFAC2E), Color(hex: 0xFF8C00)],

@@ -1,10 +1,10 @@
 import SwiftUI
 
 @main
-struct lumoApp: App {
+struct LumoApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
-    @StateObject private var themeProvider = ThemeProvider.shared
+    @StateObject private var themeProvider = ThemeProvider()
 
     var body: some Scene {
         WindowGroup {
@@ -43,6 +43,7 @@ struct lumoApp: App {
                         Logger.shared.log("Unknown scene phase: \(newPhase)", category: "AppDelegate")
                     }
                 }
+                .preferredColorScheme(themeProvider.systemColorScheme)
         }
     }
 }

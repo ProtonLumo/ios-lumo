@@ -30,5 +30,11 @@ extension DS {
             public static let weak = SwiftColor.textWeak
             public static let weakDark = SwiftColor.textWeakDark
         }
+
+        // MARK: - Deprecated
+
+        public static let gradient = SwiftColor.gradient
+        public static let middleGray = SwiftColor.middleGray
+        public static let overlay = SwiftColor.overlay
     }
 }

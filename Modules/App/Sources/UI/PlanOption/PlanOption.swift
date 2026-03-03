@@ -1,8 +1,10 @@
+import LumoDesignSystem
 import LumoUI
 import ProtonUIFoundations
 import SwiftUI
 
 struct PlanOption: View {
+    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var model: PlanOptionViewModel
     @EnvironmentObject private var themeProvider: ThemeProvider
     var isPromotionOffer: Bool = false
@@ -20,7 +22,10 @@ struct PlanOption: View {
                 HStack(alignment: .top, spacing: 12) {
                     // Radio button
                     Circle()
-                        .stroke(model.isSelected ? brandPurple : (themeProvider.isDarkMode ? Color.gray.opacity(0.8) : Color.gray), lineWidth: 2)
+                        .stroke(
+                            model.isSelected ? brandPurple : (colorScheme == .dark ? Color.gray.opacity(0.8) : Color.gray),
+                            lineWidth: 2
+                        )
                         .square(size: 24)
                         .overlay(
                             Circle()
@@ -34,7 +39,7 @@ struct PlanOption: View {
                         HStack(spacing: 6) {
                             Text(model.title)
                                 .font(.headline)
-                                .foregroundColor(themeProvider.textColor)
+                                .foregroundColor(DS.Color.Text.norm)
 
                             // "Best Value" badge for yearly with promo
                             if isYearly {
@@ -51,7 +56,7 @@ struct PlanOption: View {
                         if !model.subtitle.isEmpty {
                             Text(model.subtitle)
                                 .font(.system(size: 13))
-                                .foregroundColor(themeProvider.secondaryTextColor)
+                                .foregroundColor(DS.Color.Text.weak)
                         }
                     }
 
@@ -78,12 +83,12 @@ struct PlanOption: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(themeProvider.backgroundColor)
+                    .fill(DS.Color.Background.norm)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(
-                        isYearly && model.isSelected ? brandOrange : model.isSelected ? brandPurple : (themeProvider.isDarkMode ? Color.gray.opacity(0.5) : Color.gray.opacity(0.3)),
+                        isYearly && model.isSelected ? brandOrange : model.isSelected ? brandPurple : DS.Color.middleGray,
                         lineWidth: isYearly && model.isSelected ? 3 : 2
                     )
             )

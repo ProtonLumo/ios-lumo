@@ -51,7 +51,7 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
 
     // MARK: - WebComposerAttaching
 
-    func attach(to webView: WebViewProtocol) {
+    public func attach(to webView: WebViewProtocol) {
         self.webView = webView
     }
 

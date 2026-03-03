@@ -5,8 +5,6 @@ import SwiftUI
 import UIKit
 
 struct LoadingView: View {
-    let isDarkMode: Bool
-
     // State to track the current message index
     @State private var currentMessageIndex = 0
 
@@ -28,17 +26,9 @@ struct LoadingView: View {
         String(localized: "app.loading.stretching"),
     ]
 
-    private var backgroundColor: Color {
-        isDarkMode ? Color(hex: 0x16141c) : Color.white
-    }
-
-    private var textColor: Color {
-        isDarkMode ? Color.white : Color.black
-    }
-
     var body: some View {
         ZStack {
-            backgroundColor
+            DS.Color.Background.norm
                 .ignoresSafeArea()
 
             VStack(spacing: 20) {
@@ -49,7 +39,7 @@ struct LoadingView: View {
                 // Message with fade transition
                 Text(loadingMessages[currentMessageIndex])
                     .font(.footnote)
-                    .foregroundColor(textColor)
+                    .foregroundColor(DS.Color.Text.norm)
                     .multilineTextAlignment(.center)
                     .frame(height: 40)  // Fixed height to prevent layout shifts
                     .transition(.opacity)

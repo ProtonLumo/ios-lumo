@@ -17,6 +17,7 @@ class LumoWebView: WKWebView {
 struct WebView: UIViewRepresentable {
     let url: URL
     let webComposerBridge: WebComposerStateReceiving
+    let themeProvider: ThemeProvider
     @Binding var isReady: Bool
     @ObservedObject var jsCoordinator: WebViewCoordinator
     @Binding var action: WebViewAction?
@@ -784,7 +785,7 @@ struct WebView: UIViewRepresentable {
         webView.customUserAgent = WKWebView.generateCustomUserAgent()
         webView.isInspectable = true
 
-        let paymentHandler = PaymentHandler(webView: webView) { action in
+        let paymentHandler = PaymentHandler(webView: webView, themeProvider: themeProvider) { action in
             switch action.type {
             case .createSubscription:
                 self.action = .postSubscription(payload: action.payload)

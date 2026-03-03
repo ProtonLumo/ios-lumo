@@ -3,7 +3,7 @@ import WebKit
 /// Abstraction over WKWebView for JavaScript evaluation.
 ///
 /// Enables testability by allowing mock implementations of WebView functionality.
-protocol WebViewProtocol: AnyObject {
+public protocol WebViewProtocol: AnyObject {
     /// Evaluates JavaScript code in the WebView.
     ///
     /// - Parameters:
@@ -19,3 +19,5 @@ protocol WebViewProtocol: AnyObject {
         contentWorld: WKContentWorld
     ) async throws -> Any?
 }
+
+extension WKWebView: WebViewProtocol {}
