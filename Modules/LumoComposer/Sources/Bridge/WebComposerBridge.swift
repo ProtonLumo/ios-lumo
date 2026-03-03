@@ -12,7 +12,7 @@ public enum WebComposerBridgeError: Error, Equatable {
 
 public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging, WebComposerStateReceiving, WebComposerErrorReceiving {
     private let (stream, continuation) = AsyncStream.makeStream(of: WebComposerState.self)
-    private let (errorStream, errorContinuation) = AsyncStream.makeStream(of: String.self)
+    private let (errorStream, errorContinuation) = AsyncStream.makeStream(of: WebComposerError.self)
 
     /// Commands that can be sent to the WebView's JavaScript layer.
     public enum Command: Equatable {
@@ -116,7 +116,7 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
 
     public var stateUpdates: AsyncStream<WebComposerState> { stream }
 
-    public var errorUpdates: AsyncStream<String> { errorStream }
+    public var errorUpdates: AsyncStream<WebComposerError> { errorStream }
 
     // MARK: - WebComposerStateReceiving
 
@@ -140,7 +140,7 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
             return
         }
 
-        errorContinuation.yield(response.result.error)
+        errorContinuation.yield(response.error)
     }
 
     // MARK: - Private

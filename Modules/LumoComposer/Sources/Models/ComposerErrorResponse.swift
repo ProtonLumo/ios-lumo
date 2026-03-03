@@ -4,7 +4,7 @@ import Foundation
 ///
 /// This type can only be decoded if the status is "error". Decoding will fail (return nil) for any other status.
 struct ComposerErrorResponse: Equatable, Decodable {
-    let result: Result
+    let error: WebComposerError
 
     struct Result: Equatable, Decodable {
         let status: String
@@ -24,7 +24,7 @@ struct ComposerErrorResponse: Equatable, Decodable {
             )
         }
 
-        self.result = result
+        error = WebComposerError(rawValue: result.error) ?? .unknown
     }
 
     enum CodingKeys: String, CodingKey {

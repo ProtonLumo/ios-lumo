@@ -114,18 +114,18 @@ final class WebComposerScriptMessageHandlerTests {
 
     @Test
     func handleResult_WithErrorStatus_EmitsErrorToStream() async {
-        let errorMessage = "TIER_LIMIT"
+        let error = WebComposerError.tierLimit
         let resultDict: [String: Any] = [
             "requestId": "",
             "result": [
                 "status": "error",
-                "error": errorMessage,
+                "error": error.rawValue,
             ],
         ]
         let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
 
         let errorTask = Task {
-            var receivedErrors: [String] = []
+            var receivedErrors: [WebComposerError] = []
             for await error in composerBridge.errorUpdates {
                 receivedErrors.append(error)
                 if receivedErrors.count == 1 {
@@ -143,7 +143,7 @@ final class WebComposerScriptMessageHandlerTests {
         let receivedErrors = await errorTask.value
 
         #expect(receivedErrors.count == 1)
-        #expect(receivedErrors.first == errorMessage)
+        #expect(receivedErrors.first == error)
     }
 
     @Test
@@ -157,7 +157,7 @@ final class WebComposerScriptMessageHandlerTests {
         let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
 
         let errorTask = Task {
-            var receivedErrors: [String] = []
+            var receivedErrors: [WebComposerError] = []
             for await error in composerBridge.errorUpdates {
                 receivedErrors.append(error)
                 if receivedErrors.count == 1 {
@@ -188,7 +188,7 @@ final class WebComposerScriptMessageHandlerTests {
         let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
 
         let errorTask = Task {
-            var receivedErrors: [String] = []
+            var receivedErrors: [WebComposerError] = []
             for await error in composerBridge.errorUpdates {
                 receivedErrors.append(error)
                 if receivedErrors.count == 1 {
@@ -213,11 +213,15 @@ final class WebComposerScriptMessageHandlerTests {
 
     @Test
     func handleResult_WithMultipleErrors_EmitsAllToStream() async {
-        let errors = ["TIER_LIMIT", "NETWORK_ERROR", "UNKNOWN_ERROR"]
+        let errors: [WebComposerError] = [
+            .tierLimit,
+            .generationError,
+            .unknown,
+        ]
         let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
 
         let errorTask = Task {
-            var receivedErrors: [String] = []
+            var receivedErrors: [WebComposerError] = []
             for await error in composerBridge.errorUpdates {
                 receivedErrors.append(error)
                 if receivedErrors.count == errors.count {
@@ -227,12 +231,12 @@ final class WebComposerScriptMessageHandlerTests {
             return receivedErrors
         }
 
-        for errorMessage in errors {
+        for error in errors {
             let resultDict: [String: Any] = [
                 "requestId": "",
                 "result": [
                     "status": "error",
-                    "error": errorMessage,
+                    "error": error.rawValue,
                 ],
             ]
 
