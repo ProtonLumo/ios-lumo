@@ -214,8 +214,8 @@
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "By using Lumo, you agree to our [Terms](%1$@) and [Privacy Policy](%2$@)."
+            "state" : "translated",
+            "value" : "Ao usar o Lumo, você concorda com os nossos [Termos](%1$@) e [Política de privacidade](%2$@)."
           }
         },
         "ru" : {
