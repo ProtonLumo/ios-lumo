@@ -59,6 +59,43 @@ struct ComposerViewStateTests {
     func actionButton(testCase: TestCase) {
         #expect(testCase.given.actionButton == testCase.expected)
     }
+
+    // MARK: - File previews cache
+
+    @Test
+    func copyApplyingWebState_WhenPreviewIsNilAndCacheIsEmpty_PreviewRemainsNil() {
+        let state = ComposerViewState.initial
+        let file = File.testData(id: "1", preview: nil)
+
+        let result = state.copy(applyingWebState: .testData(attachedFiles: [file]))
+
+        #expect(result.webState.attachedFiles.first?.preview == nil)
+    }
+
+    @Test
+    func copyApplyingWebState_WhenPreviewIsProvided_ItAppearsInResult() {
+        let state = ComposerViewState.initial
+        let file = File.testData(id: "1", preview: "base64data")
+
+        let result = state.copy(applyingWebState: .testData(attachedFiles: [file]))
+
+        #expect(result.webState.attachedFiles.first?.preview == "base64data")
+    }
+
+    @Test
+    func copyApplyingWebState_WhenPreviewIsNilAndCacheHasPreview_PreviewIsRestoredFromCache() {
+        let state = ComposerViewState.initial
+        let preview = "base64data"
+
+        let stateAfterFirstUpdate = state.copy(
+            applyingWebState: .testData(attachedFiles: [.testData(id: "1", preview: preview)])
+        )
+        let stateAfterSecondUpdate = stateAfterFirstUpdate.copy(
+            applyingWebState: .testData(attachedFiles: [.testData(id: "1", preview: nil)])
+        )
+
+        #expect(stateAfterSecondUpdate.webState.attachedFiles.first?.preview == preview)
+    }
 }
 
 private extension ComposerViewState {
@@ -83,5 +120,26 @@ private extension ComposerViewState {
                 attachedFiles: []
             )
         )
+    }
+}
+
+private extension WebComposerState {
+    static func testData(attachedFiles: [File]) -> Self {
+        .init(
+            mode: .idle,
+            modelType: .auto,
+            isGhostModeEnabled: false,
+            isWebSearchEnabled: false,
+            isCreateImageEnabled: false,
+            isVisible: true,
+            showTermsAndPrivacy: true,
+            attachedFiles: attachedFiles
+        )
+    }
+}
+
+private extension File {
+    static func testData(id: String, preview: String?) -> Self {
+        .init(id: id, name: "file.png", type: .image, preview: preview)
     }
 }

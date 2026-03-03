@@ -46,7 +46,7 @@ final class ComposerStateStore: StateStore {
             observationTask = Task {
                 for await webState in webBridge.stateUpdates {
                     guard !Task.isCancelled else { break }
-                    state = state.copy(\.webState, to: webState)
+                    state = state.copy(applyingWebState: webState)
                 }
             }
             return .none

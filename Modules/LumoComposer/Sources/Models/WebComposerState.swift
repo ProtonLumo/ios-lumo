@@ -40,6 +40,19 @@ public struct WebComposerState: Equatable, Decodable {
         case showTermsAndPrivacy = "showTsAndCs"
         case attachedFiles
     }
+
+    func copy(attachedFiles: [File]) -> Self {
+        .init(
+            mode: mode,
+            modelType: modelType,
+            isGhostModeEnabled: isGhostModeEnabled,
+            isWebSearchEnabled: isWebSearchEnabled,
+            isCreateImageEnabled: isCreateImageEnabled,
+            isVisible: isVisible,
+            showTermsAndPrivacy: showTermsAndPrivacy,
+            attachedFiles: attachedFiles
+        )
+    }
 }
 
 extension WebComposerState {
