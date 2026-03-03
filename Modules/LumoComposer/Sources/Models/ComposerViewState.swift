@@ -16,6 +16,24 @@ struct ComposerViewState: Equatable, Copying {
     var isWebViewReady: Bool
     /// State synchronized from WebView
     var webState: WebComposerState
+    /// In-memory cache mapping file IDs to their base64 preview strings
+    ///
+    /// The WebAPI only returns `preview` on the first upload; subsequent state updates omit it.
+    /// This cache preserves previews for the duration of the session.
+    private var filePreviewsCache: [String: String]
+
+    init(
+        currentText: String,
+        isProcessing: Bool,
+        isWebViewReady: Bool,
+        webState: WebComposerState
+    ) {
+        self.currentText = currentText
+        self.isProcessing = isProcessing
+        self.isWebViewReady = isWebViewReady
+        self.webState = webState
+        self.filePreviewsCache = [:]
+    }
 
     /// Action button state for ComposerView
     ///
@@ -37,6 +55,35 @@ struct ComposerViewState: Equatable, Copying {
         }
 
         return hasNonEmptyText ? .send : .none
+    }
+
+    /// Returns a new state with the given `webState` applied, merging file previews with the cache.
+    ///
+    /// - Files arriving with a non-nil `preview` are stored in the cache.
+    /// - Files arriving with a nil `preview` are enriched from the cache if available.
+    func copy(applyingWebState webState: WebComposerState) -> Self {
+        var updated = self
+
+        for file in webState.attachedFiles {
+            if let preview = file.preview {
+                updated.filePreviewsCache[file.id] = preview
+            }
+        }
+
+        let updatedAttachedFiles = webState.attachedFiles.map { file in
+            guard
+                file.preview == nil,
+                let cachedPreview = updated.filePreviewsCache[file.id]
+            else {
+                return file
+            }
+
+            return File(id: file.id, name: file.name, type: file.type, preview: cachedPreview)
+        }
+
+        let updatedWebState = webState.copy(attachedFiles: updatedAttachedFiles)
+
+        return updated.copy(\.webState, to: updatedWebState)
     }
 
     /// Whether there's text in the input (after trimming whitespace)

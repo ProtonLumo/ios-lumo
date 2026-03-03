@@ -90,7 +90,8 @@ public struct ComposerScreen<WebContent: View>: View {
         case .stopTapped:
             store.send(action: .stopResponseTapped)
         case .filePickerTapped:
-            store.send(action: .openFilePickerTapped)
+            // FIXME: Show UI menu instead
+            break
         case .webSearchTapped:
             store.send(action: .toggleWebSearchTapped)
         case .microphoneTapped:

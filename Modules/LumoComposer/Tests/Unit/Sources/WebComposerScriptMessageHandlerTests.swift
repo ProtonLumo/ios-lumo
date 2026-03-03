@@ -37,16 +37,20 @@ final class WebComposerScriptMessageHandlerTests {
             TestCase(
                 stateDict: [
                     "lumoMode": "Idle",
+                    "modelType": "Auto",
                     "isGhostModeEnabled": false,
                     "isWebSearchEnabled": false,
+                    "isCreateImageEnabled": false,
                     "isVisible": true,
                     "showTsAndCs": true,
                     "attachedFiles": [],
                 ],
                 expectedState: .init(
                     mode: .idle,
+                    modelType: .auto,
                     isGhostModeEnabled: false,
                     isWebSearchEnabled: false,
+                    isCreateImageEnabled: false,
                     isVisible: true,
                     showTermsAndPrivacy: true,
                     attachedFiles: []
@@ -55,8 +59,10 @@ final class WebComposerScriptMessageHandlerTests {
             TestCase(
                 stateDict: [
                     "lumoMode": "Working",
+                    "modelType": "Auto",
                     "isGhostModeEnabled": true,
                     "isWebSearchEnabled": true,
+                    "isCreateImageEnabled": false,
                     "isVisible": false,
                     "showTsAndCs": false,
                     "attachedFiles": [
@@ -69,12 +75,14 @@ final class WebComposerScriptMessageHandlerTests {
                 ],
                 expectedState: .init(
                     mode: .working,
+                    modelType: .auto,
                     isGhostModeEnabled: true,
                     isWebSearchEnabled: true,
+                    isCreateImageEnabled: false,
                     isVisible: false,
                     showTermsAndPrivacy: false,
                     attachedFiles: [
-                        File(id: "<file-123>", name: "document.pdf", type: .pdf)
+                        File(id: "<file-123>", name: "document.pdf", type: .pdf, preview: .none)
                     ]
                 )
             ),
@@ -102,6 +110,146 @@ final class WebComposerScriptMessageHandlerTests {
 
         #expect(receivedStates.count == 1)
         expectDiff(receivedStates.last, testCase.expectedState)
+    }
+
+    @Test
+    func handleResult_WithErrorStatus_EmitsErrorToStream() async {
+        let error = WebComposerError.tierLimit
+        let resultDict: [String: Any] = [
+            "requestId": "",
+            "result": [
+                "status": "error",
+                "error": error.rawValue,
+            ],
+        ]
+        let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
+
+        let errorTask = Task {
+            var receivedErrors: [WebComposerError] = []
+            for await error in composerBridge.errorUpdates {
+                receivedErrors.append(error)
+                if receivedErrors.count == 1 {
+                    break
+                }
+            }
+            return receivedErrors
+        }
+
+        sut.userContentController(
+            WKUserContentController(),
+            didReceive: WKScriptMessageStub(name: messageName.rawValue, body: resultDict)
+        )
+
+        let receivedErrors = await errorTask.value
+
+        #expect(receivedErrors.count == 1)
+        #expect(receivedErrors.first == error)
+    }
+
+    @Test
+    func handleResult_WithSuccessStatus_DoesNotEmitError() async {
+        let resultDict: [String: Any] = [
+            "requestId": "123",
+            "result": [
+                "status": "success"
+            ],
+        ]
+        let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
+
+        let errorTask = Task {
+            var receivedErrors: [WebComposerError] = []
+            for await error in composerBridge.errorUpdates {
+                receivedErrors.append(error)
+                if receivedErrors.count == 1 {
+                    break
+                }
+            }
+            return receivedErrors
+        }
+
+        sut.userContentController(
+            WKUserContentController(),
+            didReceive: WKScriptMessageStub(name: messageName.rawValue, body: resultDict)
+        )
+
+        try? await Task.sleep(for: .milliseconds(50))
+
+        errorTask.cancel()
+        let receivedErrors = await errorTask.value
+
+        #expect(receivedErrors.isEmpty)
+    }
+
+    @Test
+    func handleResult_WithMalformedData_DoesNotEmitError() async {
+        let resultDict: [String: Any] = [
+            "invalidKey": "invalidValue"
+        ]
+        let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
+
+        let errorTask = Task {
+            var receivedErrors: [WebComposerError] = []
+            for await error in composerBridge.errorUpdates {
+                receivedErrors.append(error)
+                if receivedErrors.count == 1 {
+                    break
+                }
+            }
+            return receivedErrors
+        }
+
+        sut.userContentController(
+            WKUserContentController(),
+            didReceive: WKScriptMessageStub(name: messageName.rawValue, body: resultDict)
+        )
+
+        try? await Task.sleep(for: .milliseconds(50))
+
+        errorTask.cancel()
+        let receivedErrors = await errorTask.value
+
+        #expect(receivedErrors.isEmpty)
+    }
+
+    @Test
+    func handleResult_WithMultipleErrors_EmitsAllToStream() async {
+        let errors: [WebComposerError] = [
+            .tierLimit,
+            .generationError,
+            .unknown,
+        ]
+        let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
+
+        let errorTask = Task {
+            var receivedErrors: [WebComposerError] = []
+            for await error in composerBridge.errorUpdates {
+                receivedErrors.append(error)
+                if receivedErrors.count == errors.count {
+                    break
+                }
+            }
+            return receivedErrors
+        }
+
+        for error in errors {
+            let resultDict: [String: Any] = [
+                "requestId": "",
+                "result": [
+                    "status": "error",
+                    "error": error.rawValue,
+                ],
+            ]
+
+            sut.userContentController(
+                WKUserContentController(),
+                didReceive: WKScriptMessageStub(name: messageName.rawValue, body: resultDict)
+            )
+        }
+
+        let receivedErrors = await errorTask.value
+
+        #expect(receivedErrors.count == errors.count)
+        #expect(receivedErrors == errors)
     }
 }
 
