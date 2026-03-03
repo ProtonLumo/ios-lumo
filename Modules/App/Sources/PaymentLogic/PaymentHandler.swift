@@ -1,4 +1,5 @@
 import Foundation
+import LumoCore
 import SwiftUI
 import WebKit
 
@@ -14,7 +15,7 @@ public struct PaymentHandlerActions {
     let payload: [String: Any]
 }
 
-class PaymentHandler: NSObject, WKScriptMessageHandler {
+final class PaymentHandler: NSObject, WebScriptMessageHandler {
     private var completion: (PaymentHandlerActions) -> Void
     private weak var webView: WKWebView?
 
@@ -23,8 +24,19 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
         self.completion = completion
     }
 
+    // MARK: - WKMessageHandlerRegistering
+
+    enum MessageName: String, CaseIterable {
+        case showPayment
+    }
+
+    // MARK: - WKScriptMessageHandler
+
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == "showPayment" {
+        let messageName = MessageName(rawValue: message.name)
+
+        switch messageName {
+        case .showPayment:
             // Safely cast the message body to a Dictionary
             guard message.body is [String: Any] else {
                 Logger.shared.log("PaymentHandler received unexpected message body: \(message.body)")
@@ -33,6 +45,8 @@ class PaymentHandler: NSObject, WKScriptMessageHandler {
 
             // Trigger the payment flow
             fetchAndShowPaymentSheet()
+        case .none:
+            break
         }
     }
 

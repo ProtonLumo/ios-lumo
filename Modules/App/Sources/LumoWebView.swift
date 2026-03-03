@@ -1,4 +1,5 @@
 import Darwin
+import LumoComposer
 import SwiftUI
 @preconcurrency import WebKit
 import os.log
@@ -12,102 +13,10 @@ class LumoWebView: WKWebView {
     }
 }
 
-class PaymentBridgeCallbackHandler: NSObject, WKScriptMessageHandler {
-    static var shared = PaymentBridgeCallbackHandler()
-
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard let messageBody = message.body as? [String: Any],
-            let txId = messageBody["txId"] as? String,
-            let resultString = messageBody["result"] as? String
-        else {
-            Logger.shared.log("Error: Invalid payment bridge callback message format")
-            return
-        }
-
-        Logger.shared.log("Payment bridge callback received for transaction: \(txId)")
-        PaymentBridge.shared.processJavascriptResult(resultString, transactionId: txId)
-    }
-}
-
-class ThemeMessageHandler: NSObject, WKScriptMessageHandler {
-    static let shared = ThemeMessageHandler()
-
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        let messageName = message.name
-
-        switch messageName {
-        case "themeChanged":
-            handleThemeChanged(message)
-        case "themeRead":
-            handleThemeRead(message)
-        default:
-            Logger.shared.log("⚠️ Unknown theme message: \(messageName)")
-        }
-    }
-
-    private func handleThemeChanged(_ message: WKScriptMessage) {
-        guard let messageBody = message.body as? [String: Any],
-            let theme = messageBody["theme"] as? String
-        else {
-            Logger.shared.log("❌ Invalid theme change message format")
-            return
-        }
-
-        ThemeManager.shared.handleThemeChangeFromWeb(theme)
-    }
-
-    private func handleThemeRead(_ message: WKScriptMessage) {
-        guard let messageBody = message.body as? [String: Any] else {
-            Logger.shared.log("❌ Invalid theme read message format")
-            return
-        }
-
-        let success = messageBody["success"] as? Bool ?? false
-
-        if success {
-            let mode = messageBody["mode"] as? Int ?? 2  // default to light (web: 0=system, 1=dark, 2=light)
-            let key = messageBody["key"] as? String ?? "unknown"
-
-            // Stored theme found - use it (allows web override of system)
-            Logger.shared.log("✅ Theme read from localStorage: mode=\(mode), key=\(key)")
-
-            // Convert web mode value to native theme and mode
-            // Web format: mode is the only value that matters (0=system, 1=dark, 2=light)
-            let lumoTheme: LumoTheme
-            let lumoMode: LumoThemeMode
-
-            switch mode {
-            case 0:
-                // Mode 0 = System theme
-                lumoTheme = .system
-                // Use ThemeManager's cached system appearance
-                lumoMode = ThemeManager.shared.getSystemThemeMode()
-            case 1:
-                // Mode 1 = Explicit Dark theme
-                lumoTheme = .dark
-                lumoMode = .dark
-            case 2:
-                // Mode 2 = Explicit Light theme
-                lumoTheme = .light
-                lumoMode = .light
-            default:
-                // Fallback to system
-                lumoTheme = .system
-                lumoMode = ThemeManager.shared.getSystemThemeMode()
-            }
-
-            ThemeManager.shared.setStoredTheme(lumoTheme, mode: lumoMode)
-        } else {
-            let reason = messageBody["reason"] as? String ?? "Unknown error"
-            Logger.shared.log("⚠️ Could not read stored theme: \(reason)")
-            ThemeManager.shared.setDefaultSystemTheme()
-        }
-    }
-}
-
 // MARK: - WebView Component
 struct WebView: UIViewRepresentable {
     let url: URL
+    let webComposerBridge: WebComposerStateReceiving
     @Binding var isReady: Bool
     @ObservedObject var jsCoordinator: WebViewCoordinator
     @Binding var action: WebViewAction?
@@ -119,14 +28,16 @@ struct WebView: UIViewRepresentable {
     @Binding var paymentHandler: PaymentHandler?
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self, webComposerBridge: webComposerBridge)
     }
 
     class Coordinator: NSObject, WKNavigationDelegate, UIScrollViewDelegate {
         let parent: WebView
+        let webComposerBridge: WebComposerStateReceiving
 
-        init(_ parent: WebView) {
+        init(_ parent: WebView, webComposerBridge: WebComposerStateReceiving) {
             self.parent = parent
+            self.webComposerBridge = webComposerBridge
             super.init()
 
             // Add observer for back navigation to lumo.proton.me
@@ -872,6 +783,7 @@ struct WebView: UIViewRepresentable {
         let webView = LumoWebView(frame: .zero, configuration: configuration)
         webView.customUserAgent = WKWebView.generateCustomUserAgent()
         webView.isInspectable = true
+
         let paymentHandler = PaymentHandler(webView: webView) { action in
             switch action.type {
             case .createSubscription:
@@ -884,7 +796,10 @@ struct WebView: UIViewRepresentable {
                 self.action = .getSubscriptions
             }
         }
-        configuration.userContentController.add(paymentHandler, name: "showPayment")
+        let themeMessageHandler = ThemeMessageHandler()
+        let unifiedHandler = UnifiedMessageHandler(self)
+        let paymentBridgeHandler = PaymentBridgeCallbackHandler()
+        let webComposerHandler = WebComposerScriptMessageHandler(webComposerBridge: context.coordinator.webComposerBridge)
 
         // Store payment handler in binding so ContentView can access it
         DispatchQueue.main.async {
@@ -892,169 +807,12 @@ struct WebView: UIViewRepresentable {
         }
 
         PurchaseManager.shared.setup(webView: webView)
-        class UnifiedMessageHandler: NSObject, WKScriptMessageHandler {
-            let parent: WebView
-            private var lastSubmitTime: Date?
-            private let submitDebounceInterval: TimeInterval = 0.5
 
-            init(_ parent: WebView) {
-                self.parent = parent
-            }
-
-            func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-                let messageName = message.name
-                Logger.shared.log("📨 Received message: \(messageName)")
-
-                DispatchQueue.main.async {
-                    switch messageName {
-                    case "navigationState":
-                        self.handleNavigationState(message)
-                    case "paymentResponse":
-                        self.handlePaymentResponse(message)
-                    case "submitButtonClicked":
-                        self.handleSubmitButtonClicked()
-                    case "elementFound":
-                        self.handleElementFound(message)
-                    case "insertPrompt":
-                        self.handleInsertPrompt(message)
-                    case "startVoiceEntry":
-                        self.handleStartVoiceEntry()
-                    case "promotionButtonClicked":
-                        self.handlePromotionButtonClicked(message)
-                    case "managePlanClicked":
-                        self.handleManagePlanClicked()
-                    case "getSubscriptionsResponseReceived":
-                        self.handleGetSubscriptionsResponse(message)
-                    case "openExternalURL":
-                        self.handleOpenExternalURL(message)
-                    default:
-                        Logger.shared.log("⚠️ Unknown message: \(messageName)")
-                    }
-                }
-            }
-
-            private func handleNavigationState(_ message: WKScriptMessage) {
-                guard let dict = message.body as? [String: Any] else { return }
-
-                if let action = dict["action"] as? String, action == "forceBack" {
-                    Logger.shared.log("Received forceBack action from JavaScript")
-                    if let webView = self.parent.webViewStore, webView.canGoBack {
-                        webView.goBack()
-                    }
-                    return
-                }
-
-                if let canGoBack = dict["canGoBack"] as? Bool {
-                    let nativeCanGoBack = self.parent.webViewStore?.canGoBack ?? false
-                    self.parent.canGoBack = nativeCanGoBack || canGoBack
-                }
-
-                if let urlString = dict["url"] as? String, let url = URL(string: urlString) {
-                    self.parent.currentURL = url
-                }
-            }
-
-            private func handlePaymentResponse(_ message: WKScriptMessage) {
-                if let response = message.body as? [String: Any] {
-                    NotificationCenter.default.post(
-                        name: Notification.Name("PaymentResponseReceived"),
-                        object: nil,
-                        userInfo: ["response": response]
-                    )
-                }
-            }
-
-            private func handleSubmitButtonClicked() {
-                let now = Date()
-                if let lastTime = lastSubmitTime,
-                    now.timeIntervalSince(lastTime) < submitDebounceInterval
-                {
-                    return
-                }
-                lastSubmitTime = now
-
-                NotificationCenter.default.post(name: NSNotification.Name("SubmitButtonClicked"), object: nil)
-            }
-
-            private func handleElementFound(_ message: WKScriptMessage) {
-                self.parent.isReady = true
-            }
-
-            private func handleInsertPrompt(_ message: WKScriptMessage) {
-                if let body = message.body as? [String: Any],
-                    let prompt = body["prompt"] as? String
-                {
-                    // Use coordinator directly
-                    Task {
-                        await self.parent.jsCoordinator.insertPrompt(prompt, editorType: .tiptap)
-                    }
-                }
-            }
-
-            private func handleStartVoiceEntry() {
-                NotificationCenter.default.post(name: Notification.Name("StartVoiceEntryNotification"), object: nil)
-            }
-
-            private func handleOpenExternalURL(_ message: WKScriptMessage) {
-                if let body = message.body as? [String: Any],
-                    let urlString = body["url"] as? String,
-                    let url = URL(string: urlString)
-                {
-                    Logger.shared.log("Opening external URL from JS: \(urlString)")
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                }
-            }
-
-            private func handlePromotionButtonClicked(_ message: WKScriptMessage) {
-                var userInfo: [String: Any] = [:]
-
-                if let body = message.body as? [String: Any],
-                    let buttonClass = body["buttonClass"] as? String
-                {
-                    userInfo["buttonClass"] = buttonClass
-                    Logger.shared.log("📊 Promotion button clicked with class: \(buttonClass)")
-                }
-
-                NotificationCenter.default.post(
-                    name: Notification.Name("PromotionButtonClicked"),
-                    object: nil,
-                    userInfo: userInfo
-                )
-            }
-
-            private func handleManagePlanClicked() {
-                NotificationCenter.default.post(name: Notification.Name("ManagePlanClicked"), object: nil)
-            }
-
-            private func handleGetSubscriptionsResponse(_ message: WKScriptMessage) {
-                if let messageBody = message.body as? [String: Any],
-                    let response = messageBody["response"] as? [String: Any]
-                {
-                    NotificationCenter.default.post(
-                        name: Notification.Name("getSubscriptionsResponseReceived"),
-                        object: response
-                    )
-                }
-            }
-        }
-
-        let unifiedHandler = UnifiedMessageHandler(self)
-        let messageNames = [
-            "navigationState", "paymentResponse", "submitButtonClicked", "elementFound",
-            "insertPrompt", "startVoiceEntry", "promotionButtonClicked", "managePlanClicked",
-            "getSubscriptionsResponseReceived", "openExternalURL",
-        ]
-
-        for messageName in messageNames {
-            configuration.userContentController.add(unifiedHandler, name: messageName)
-        }
-
-        configuration.userContentController.add(PaymentBridgeCallbackHandler.shared, name: "paymentBridgeCallback")
-
-        // Add theme message handlers
-        let themeHandler = ThemeMessageHandler.shared
-        configuration.userContentController.add(themeHandler, name: "themeChanged")
-        configuration.userContentController.add(themeHandler, name: "themeRead")
+        paymentHandler.registerForAll(in: configuration)
+        themeMessageHandler.registerForAll(in: configuration)
+        unifiedHandler.registerForAll(in: configuration)
+        paymentBridgeHandler.registerForAll(in: configuration)
+        webComposerHandler.registerForAll(in: configuration)
 
         if let voiceEntryScript = JSBridgeManager.shared.createUserScript(.voiceEntrySetup, injectionTime: .atDocumentEnd, forMainFrameOnly: false) {
             configuration.userContentController.addUserScript(voiceEntryScript)
