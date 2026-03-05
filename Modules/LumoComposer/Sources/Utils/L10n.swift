@@ -27,6 +27,34 @@ enum L10n {
         }
     }
 
+    enum Attachment {
+        static let protonDrive = LocalizedStringResource(
+            "Proton Drive",
+            bundle: .module,
+            comment: "Attachment menu option to attach a file from Proton Drive"
+        )
+        static let files = LocalizedStringResource(
+            "Files",
+            bundle: .module,
+            comment: "Attachment menu option to attach a file from the device's file system"
+        )
+        static let camera = LocalizedStringResource(
+            "Camera",
+            bundle: .module,
+            comment: "Attachment menu option to take a photo using the camera"
+        )
+        static let photos = LocalizedStringResource(
+            "Photos",
+            bundle: .module,
+            comment: "Attachment menu option to select a photo from the photo library"
+        )
+        static let sketch = LocalizedStringResource(
+            "Draw a sketch",
+            bundle: .module,
+            comment: "Attachment menu option to draw a sketch and attach it to the message"
+        )
+    }
+
     enum Welcome {
         static let greeting = LocalizedStringResource(
             "Hey, I'm Lumo.",

@@ -2,7 +2,7 @@ import LumoDesignSystem
 import SwiftUI
 
 struct AddAttachmentButton: View {
-    let title: String
+    let title: LocalizedStringResource
     let icon: Image
     let action: () -> Void
 

@@ -4,7 +4,7 @@ import SwiftUI
 struct ComposerToolbar: View {
     enum Action {
         case attachmentOptionChosen(AddAttachmentOption)
-        case imageModeButtonTapped
+        case exitImageModeTapped
         case toolsTapped
         case modelSelectionTapped
         case microphoneTapped
@@ -23,22 +23,22 @@ struct ComposerToolbar: View {
                 Menu(
                     content: {
                         Section {
-                            AddAttachmentButton(title: "Proton Drive", icon: DS.Icon.icBrandProtonDrive.swiftUIImage) {
+                            AddAttachmentButton(title: L10n.Attachment.protonDrive, icon: DS.Icon.icBrandProtonDrive.swiftUIImage) {
                                 action(.attachmentOptionChosen(.protonDrive))
                             }
-                            AddAttachmentButton(title: "Files", icon: DS.Icon.icPaperClip.swiftUIImage) {
+                            AddAttachmentButton(title: L10n.Attachment.files, icon: DS.Icon.icPaperClip.swiftUIImage) {
                                 action(.attachmentOptionChosen(.files))
                             }
-                            AddAttachmentButton(title: "Camera", icon: DS.Icon.icCamera.swiftUIImage) {
+                            AddAttachmentButton(title: L10n.Attachment.camera, icon: DS.Icon.icCamera.swiftUIImage) {
                                 action(.attachmentOptionChosen(.camera))
                             }
-                            AddAttachmentButton(title: "Photos", icon: DS.Icon.icImage.swiftUIImage) {
+                            AddAttachmentButton(title: L10n.Attachment.photos, icon: DS.Icon.icImage.swiftUIImage) {
                                 action(.attachmentOptionChosen(.photos))
                             }
                         }
                         Section {
-                            AddAttachmentButton(title: "Draw a sketch", icon: DS.Icon.icPencil.swiftUIImage) {
-                                action(.attachmentOptionChosen(.drawSketch))
+                            AddAttachmentButton(title: L10n.Attachment.sketch, icon: DS.Icon.icPencil.swiftUIImage) {
+                                action(.attachmentOptionChosen(.sketch))
                             }
                         }
                     },
@@ -53,7 +53,7 @@ struct ComposerToolbar: View {
                 )
 
                 if isCreateImageEnabled {
-                    ImageModeButton(action: { action(.imageModeButtonTapped) })
+                    ImageModeButton(action: { action(.exitImageModeTapped) })
                 } else {
                     ComposerToggleButton(
                         icon: DS.Icon.icSliders.swiftUIImage,

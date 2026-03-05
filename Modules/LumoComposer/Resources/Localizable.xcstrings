@@ -232,8 +232,17 @@
         }
       }
     },
+    "Camera" : {
+      "comment" : "Attachment menu option to take a photo using the camera"
+    },
     "Describe your image" : {
       "comment" : "Placeholder text shown in the composer input field when empty for image mode"
+    },
+    "Draw a sketch" : {
+      "comment" : "Attachment menu option to draw a sketch and attach it to the message"
+    },
+    "Files" : {
+      "comment" : "Attachment menu option to attach a file from the device's file system"
     },
     "Hey, I'm Lumo." : {
       "comment" : "First line of welcome message - Lumo's introduction",
@@ -388,6 +397,12 @@
           }
         }
       }
+    },
+    "Photos" : {
+      "comment" : "Attachment menu option to select a photo from the photo library"
+    },
+    "Proton Drive" : {
+      "comment" : "Attachment menu option to attach a file from Proton Drive"
     }
   },
   "version" : "1.1"
