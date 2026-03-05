@@ -55,6 +55,24 @@ enum L10n {
         )
     }
 
+    enum ToolsSheet {
+        static let title = LocalizedStringResource(
+            "Tools",
+            bundle: .module,
+            comment: "Title of the tools bottom sheet"
+        )
+        static let createImage = LocalizedStringResource(
+            "Create image",
+            bundle: .module,
+            comment: "Option in tools sheet to enable image creation mode"
+        )
+        static let webSearch = LocalizedStringResource(
+            "Web search",
+            bundle: .module,
+            comment: "Option in tools sheet to toggle web search"
+        )
+    }
+
     enum Welcome {
         static let greeting = LocalizedStringResource(
             "Hey, I'm Lumo.",

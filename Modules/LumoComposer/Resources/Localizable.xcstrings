@@ -235,6 +235,9 @@
     "Camera" : {
       "comment" : "Attachment menu option to take a photo using the camera"
     },
+    "Create image" : {
+      "comment" : "Option in tools sheet to enable image creation mode"
+    },
     "Describe your image" : {
       "comment" : "Placeholder text shown in the composer input field when empty for image mode"
     },
@@ -403,6 +406,12 @@
     },
     "Proton Drive" : {
       "comment" : "Attachment menu option to attach a file from Proton Drive"
+    },
+    "Tools" : {
+      "comment" : "Title of the tools bottom sheet"
+    },
+    "Web search" : {
+      "comment" : "Option in tools sheet to toggle web search"
     }
   },
   "version" : "1.1"

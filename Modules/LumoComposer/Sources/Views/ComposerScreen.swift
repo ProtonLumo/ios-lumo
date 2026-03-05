@@ -5,6 +5,8 @@ import SwiftUI
 public struct ComposerScreen<WebContent: View>: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var store: ComposerStateStore
+    @State private var isShowingToolsSheet = false
+    @State private var toolsSheetHeight: CGFloat = 250
     private let isWebViewReady: Bool
     @ViewBuilder private let webContent: () -> WebContent
 
@@ -81,6 +83,32 @@ public struct ComposerScreen<WebContent: View>: View {
         }
         .task { store.send(action: .taskStarted) }
         .onDisappear { store.send(action: .onDisappear) }
+        .sheet(isPresented: $isShowingToolsSheet) {
+            ToolsSheetView(
+                isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
+                action: handle(toolsSheetAction:)
+            )
+            .background {
+                GeometryReader { geometry in
+                    Color.clear.preference(key: SheetHeightKey.self, value: geometry.size.height)
+                }
+            }
+            .onPreferenceChange(SheetHeightKey.self) { toolsSheetHeight = $0 }
+            .presentationDetents([.height(toolsSheetHeight)])
+            .presentationDragIndicator(.visible)
+        }
+    }
+
+    private func handle(toolsSheetAction action: ToolsSheetView.Action) {
+        switch action {
+        case .createImageTapped:
+            store.send(action: .toggleCreateImageTapped)
+            isShowingToolsSheet = false
+        case .webSearchToggled:
+            store.send(action: .toggleWebSearchTapped)
+        case .closeTapped:
+            isShowingToolsSheet = false
+        }
     }
 
     // MARK: - Private
@@ -113,10 +141,7 @@ public struct ComposerScreen<WebContent: View>: View {
         case .exitImageModeTapped:
             store.send(action: .toggleCreateImageTapped)
         case .toolsTapped:
-            // FIXME: Show native sheet that has two options:
-            // - "Create image" which triggerss `store.send(action: .toggleCreateImageTapped)`
-            // - "Web search" toggle which triggerss `store.send(action: .toggleWebSearchTapped)`
-            break
+            isShowingToolsSheet = true
         case .modelSelectionTapped:
             // FIXME: Show native sheet that has three options:
             // - "Auto" which triggerss `store.send(action: .changeModelTapped(.auto))`
@@ -178,6 +203,14 @@ public struct ComposerScreen<WebContent: View>: View {
         let lightItem = LottieAnimations.LumoCat.light
 
         return colorScheme == .dark ? darkItem : lightItem
+    }
+}
+
+private struct SheetHeightKey: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
     }
 }
 
