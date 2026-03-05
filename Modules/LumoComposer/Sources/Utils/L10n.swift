@@ -55,6 +55,44 @@ enum L10n {
         )
     }
 
+    enum ModelSelectionSheet {
+        static let title = LocalizedStringResource(
+            "Models",
+            bundle: .module,
+            comment: "Title of the model selection bottom sheet"
+        )
+        static let autoTitle = LocalizedStringResource(
+            "Auto",
+            bundle: .module,
+            comment: "Name of the Auto model in the model selection sheet"
+        )
+        static let autoSubtitle = LocalizedStringResource(
+            "Auto choose the best model",
+            bundle: .module,
+            comment: "Subtitle describing the Auto model in the model selection sheet"
+        )
+        static let fastTitle = LocalizedStringResource(
+            "Fast",
+            bundle: .module,
+            comment: "Name of the Fast model in the model selection sheet"
+        )
+        static let fastSubtitle = LocalizedStringResource(
+            "Quick responses",
+            bundle: .module,
+            comment: "Subtitle describing the Fast model in the model selection sheet"
+        )
+        static let thinkingTitle = LocalizedStringResource(
+            "Thinking",
+            bundle: .module,
+            comment: "Name of the Thinking model in the model selection sheet. Note: 'lumo+' badge is shown separately in the UI and should not be included here."
+        )
+        static let thinkingSubtitle = LocalizedStringResource(
+            "Solves complex problems",
+            bundle: .module,
+            comment: "Subtitle describing the Thinking model in the model selection sheet"
+        )
+    }
+
     enum ToolsSheet {
         static let title = LocalizedStringResource(
             "Tools",

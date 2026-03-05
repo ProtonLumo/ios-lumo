@@ -5,8 +5,8 @@ import SwiftUI
 public struct ComposerScreen<WebContent: View>: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var store: ComposerStateStore
-    @State private var isShowingToolsSheet = false
-    @State private var toolsSheetHeight: CGFloat = 250
+    @State private var activeSheet: ActiveSheet?
+    @State private var sheetHeight: CGFloat = 250
     private let isWebViewReady: Bool
     @ViewBuilder private let webContent: () -> WebContent
 
@@ -83,19 +83,32 @@ public struct ComposerScreen<WebContent: View>: View {
         }
         .task { store.send(action: .taskStarted) }
         .onDisappear { store.send(action: .onDisappear) }
-        .sheet(isPresented: $isShowingToolsSheet) {
+        .sheet(item: $activeSheet) { sheet in
+            sheetContent(for: sheet)
+                .background {
+                    GeometryReader { geometry in
+                        Color.clear.preference(key: SheetHeightKey.self, value: geometry.size.height)
+                    }
+                }
+                .onPreferenceChange(SheetHeightKey.self) { sheetHeight = $0 }
+                .presentationDetents([.height(sheetHeight)])
+                .presentationDragIndicator(.visible)
+        }
+    }
+
+    @ViewBuilder
+    private func sheetContent(for sheet: ActiveSheet) -> some View {
+        switch sheet {
+        case .tools:
             ToolsSheetView(
                 isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
                 action: handle(toolsSheetAction:)
             )
-            .background {
-                GeometryReader { geometry in
-                    Color.clear.preference(key: SheetHeightKey.self, value: geometry.size.height)
-                }
-            }
-            .onPreferenceChange(SheetHeightKey.self) { toolsSheetHeight = $0 }
-            .presentationDetents([.height(toolsSheetHeight)])
-            .presentationDragIndicator(.visible)
+        case .modelSelection:
+            ModelSelectionSheetView(
+                selectedModel: store.state.webState.model,
+                action: handle(modelSelectionSheetAction:)
+            )
         }
     }
 
@@ -103,11 +116,22 @@ public struct ComposerScreen<WebContent: View>: View {
         switch action {
         case .createImageTapped:
             store.send(action: .toggleCreateImageTapped)
-            isShowingToolsSheet = false
+            activeSheet = nil
         case .webSearchToggled:
             store.send(action: .toggleWebSearchTapped)
         case .closeTapped:
-            isShowingToolsSheet = false
+            activeSheet = nil
+        }
+    }
+
+    private func handle(modelSelectionSheetAction action: ModelSelectionSheetView.Action) {
+        switch action {
+        case .modelSelected(let model):
+            // FIXME: Show upsell for free users when model == .thinking
+            store.send(action: .changeModelTapped(model))
+            activeSheet = nil
+        case .closeTapped:
+            activeSheet = nil
         }
     }
 
@@ -141,13 +165,9 @@ public struct ComposerScreen<WebContent: View>: View {
         case .exitImageModeTapped:
             store.send(action: .toggleCreateImageTapped)
         case .toolsTapped:
-            isShowingToolsSheet = true
+            activeSheet = .tools
         case .modelSelectionTapped:
-            // FIXME: Show native sheet that has three options:
-            // - "Auto" which triggerss `store.send(action: .changeModelTapped(.auto))`
-            // - "Fast" which triggerss `store.send(action: .changeModelTapped(.fast))`
-            // - "Thinking" which triggerss `store.send(action: .changeModelTapped(.thinking))` if it's paid if it's free user shows an upsel
-            break
+            activeSheet = .modelSelection
         case .microphoneTapped:
             store.send(action: .startRecordingTapped)
         case .attachmentTapped(let id):
@@ -203,6 +223,15 @@ public struct ComposerScreen<WebContent: View>: View {
         let lightItem = LottieAnimations.LumoCat.light
 
         return colorScheme == .dark ? darkItem : lightItem
+    }
+}
+
+private enum ActiveSheet: String, Identifiable {
+    case tools
+    case modelSelection
+
+    var id: String {
+        rawValue
     }
 }
 

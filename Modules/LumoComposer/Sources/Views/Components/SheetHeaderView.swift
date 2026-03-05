@@ -16,7 +16,7 @@ struct SheetHeaderView: View {
                 Image(systemName: "xmark")
                     .foregroundStyle(DS.Color.Text.norm)
                     .square(size: 30)
-                    .padding(DS.Spacing.compact)
+                    .padding(DS.Spacing.tiny)
                     .background {
                         Circle()
                             .fill(.secondary)
