@@ -19,12 +19,14 @@ struct ModelSelectionSheetView: View {
             VStack(spacing: .zero) {
                 ForEach(WebComposerState.Model.allCases, id: \.self) { model in
                     Button(
-                        action: {
-                            action(.modelSelected(model))
-                        },
+                        action: { action(.modelSelected(model)) },
                         label: {
-                            ModelRowView(model: model, isSelected: selectedModel == model)
-                        }
+                            ModelRowView(
+                                model: model,
+                                isSelected: selectedModel == model,
+                                upsellIcon: model == .thinking ? DS.Icon.lumoPlus.swiftUIImage : nil
+                            )
+                        },
                     )
                     .buttonStyle(.plain)
                 }
@@ -37,6 +39,7 @@ struct ModelSelectionSheetView: View {
 private struct ModelRowView: View {
     let model: WebComposerState.Model
     let isSelected: Bool
+    let upsellIcon: Image?
 
     var body: some View {
         HStack(alignment: .top, spacing: DS.Spacing.medium) {
@@ -51,8 +54,8 @@ private struct ModelRowView: View {
                     Text(title)
                         .font(.headline.weight(.medium))
                         .foregroundStyle(DS.Color.Text.norm)
-                    if model == .thinking {
-                        DS.Icon.lumoPlus.swiftUIImage
+                    if let upsellIcon {
+                        upsellIcon
                             .font(.subheadline.weight(.semibold))
                     }
                 }
