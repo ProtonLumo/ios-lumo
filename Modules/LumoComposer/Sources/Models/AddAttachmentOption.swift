@@ -3,5 +3,5 @@ enum AddAttachmentOption: CaseIterable {
     case files
     case camera
     case photos
-    case drawSketch
+    case sketch
 }

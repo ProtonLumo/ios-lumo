@@ -107,10 +107,10 @@ public struct ComposerScreen<WebContent: View>: View {
                 // FIXME: Open photos picker and transform selected photo to base64 and use
                 // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
                 break
-            case .drawSketch:
+            case .sketch:
                 store.send(action: .openSketchTapped)
             }
-        case .imageModeButtonTapped:
+        case .exitImageModeTapped:
             store.send(action: .toggleCreateImageTapped)
         case .toolsTapped:
             // FIXME: Show native sheet that has two options:

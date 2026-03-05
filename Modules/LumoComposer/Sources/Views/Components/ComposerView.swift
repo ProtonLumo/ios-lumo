@@ -7,7 +7,7 @@ struct ComposerView: View {
         case sendTapped
         case stopTapped
         case attachmentOptionChosen(AddAttachmentOption)
-        case imageModeButtonTapped
+        case exitImageModeTapped
         case toolsTapped
         case modelSelectionTapped
         case microphoneTapped
@@ -79,8 +79,8 @@ struct ComposerView: View {
                     switch chosenAction {
                     case .attachmentOptionChosen(let option):
                         action(.attachmentOptionChosen(option))
-                    case .imageModeButtonTapped:
-                        action(.imageModeButtonTapped)
+                    case .exitImageModeTapped:
+                        action(.exitImageModeTapped)
                     case .toolsTapped:
                         action(.toolsTapped)
                     case .modelSelectionTapped:
