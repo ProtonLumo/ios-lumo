@@ -93,7 +93,7 @@ struct ComposerView: View {
             .padding(.horizontal, DS.Spacing.mediumLight)
             .disabled(areButtonsDisabled)
         }
-        .padding(.vertical, DS.Spacing.large)
+        .padding(.vertical, DS.Spacing.standard)
         .padding(.horizontal, DS.Spacing.compact)
         .background {
             RoundedRectangle(cornerRadius: DS.Radius.massive)
