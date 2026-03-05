@@ -1,5 +1,4 @@
 import LumoDesignSystem
-import ProtonUIFoundations
 import SwiftUI
 
 struct ComposerView: View {
