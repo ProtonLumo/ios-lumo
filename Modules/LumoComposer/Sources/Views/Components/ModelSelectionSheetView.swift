@@ -17,26 +17,17 @@ struct ModelSelectionSheetView: View {
             }
 
             VStack(spacing: .zero) {
-                Button {
-                    action(.modelSelected(.auto))
-                } label: {
-                    ModelRowView(model: .auto, isSelected: selectedModel == .auto)
+                ForEach(WebComposerState.Model.allCases, id: \.self) { model in
+                    Button(
+                        action: {
+                            action(.modelSelected(model))
+                        },
+                        label: {
+                            ModelRowView(model: model, isSelected: selectedModel == model)
+                        }
+                    )
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
-
-                Button {
-                    action(.modelSelected(.fast))
-                } label: {
-                    ModelRowView(model: .fast, isSelected: selectedModel == .fast)
-                }
-                .buttonStyle(.plain)
-
-                Button {
-                    action(.modelSelected(.thinking))
-                } label: {
-                    ModelRowView(model: .thinking, isSelected: selectedModel == .thinking)
-                }
-                .buttonStyle(.plain)
             }
             .padding(.top, DS.Spacing.large)
         }
