@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ComposerInput: View {
     @Binding var text: String
+    let placeholderText: LocalizedStringResource
     let placeholderColor: Color
     let textColor: Color
     let backgroundColor: Color
@@ -11,7 +12,7 @@ struct ComposerInput: View {
     var body: some View {
         ZStack(alignment: .topLeading) {
             if text.isEmpty {
-                Text(L10n.Composer.placeholder)
+                Text(placeholderText)
                     .font(.body)
                     .foregroundStyle(placeholderColor)
                     .allowsHitTesting(false)

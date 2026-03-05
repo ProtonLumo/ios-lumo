@@ -15,7 +15,7 @@ final class ComposerStateStore: StateStore {
         case openSketchTapped
         case toggleWebSearchTapped
         case toggleCreateImageTapped
-        case changeModelTapped(WebComposerState.ModelType)
+        case changeModelTapped(WebComposerState.Model)
         case startRecordingTapped
         case previewAttachmentTapped(id: String)
         case removeAttachmentTapped(id: String)

@@ -8,7 +8,12 @@ enum L10n {
         static let placeholder = LocalizedStringResource(
             "Ask anything...",
             bundle: .module,
-            comment: "Placeholder text shown in the composer input field when empty"
+            comment: "Placeholder text shown in the composer input field when empty for non-image mode"
+        )
+        static let placeholderImage = LocalizedStringResource(
+            "Describe your image",
+            bundle: .module,
+            comment: "Placeholder text shown in the composer input field when empty for image mode"
         )
         static func termsAndPrivacy(
             termsURL: String,

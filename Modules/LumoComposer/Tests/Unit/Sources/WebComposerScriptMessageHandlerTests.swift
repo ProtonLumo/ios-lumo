@@ -47,7 +47,7 @@ final class WebComposerScriptMessageHandlerTests {
                 ],
                 expectedState: .init(
                     mode: .idle,
-                    modelType: .auto,
+                    model: .auto,
                     isGhostModeEnabled: false,
                     isWebSearchEnabled: false,
                     isCreateImageEnabled: false,
@@ -75,7 +75,7 @@ final class WebComposerScriptMessageHandlerTests {
                 ],
                 expectedState: .init(
                     mode: .working,
-                    modelType: .auto,
+                    model: .auto,
                     isGhostModeEnabled: true,
                     isWebSearchEnabled: true,
                     isCreateImageEnabled: false,

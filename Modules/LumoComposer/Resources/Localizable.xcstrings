@@ -2,7 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Ask anything..." : {
-      "comment" : "Placeholder text shown in the composer input field when empty",
+      "comment" : "Placeholder text shown in the composer input field when empty for non-image mode",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -231,6 +231,9 @@
           }
         }
       }
+    },
+    "Describe your image" : {
+      "comment" : "Placeholder text shown in the composer input field when empty for image mode"
     },
     "Hey, I'm Lumo." : {
       "comment" : "First line of welcome message - Lumo's introduction",

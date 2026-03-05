@@ -187,7 +187,7 @@ final class ComposerStateStoreTests {
                     \.webState,
                     to: .init(
                         mode: .working,
-                        modelType: .auto,
+                        model: .auto,
                         isGhostModeEnabled: false,
                         isWebSearchEnabled: false,
                         isCreateImageEnabled: false,
@@ -780,7 +780,7 @@ final class ComposerStateStoreTests {
                         \.webState,
                         to: WebComposerState(
                             mode: .working,
-                            modelType: .auto,
+                            model: .auto,
                             isGhostModeEnabled: true,
                             isWebSearchEnabled: true,
                             isCreateImageEnabled: false,

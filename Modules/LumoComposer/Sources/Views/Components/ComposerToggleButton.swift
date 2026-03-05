@@ -5,20 +5,24 @@ import SwiftUI
 struct ComposerToggleButton: View {
     let icon: Image
     let iconColor: Color
-    let isOn: Bool
+    let isDisabled: Bool
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             icon
                 .font(.system(size: 20))
-                .foregroundStyle(iconColor)
+                .foregroundStyle(isDisabled ? iconColor.opacity(0.6) : iconColor)
                 .square(size: 36)
-                .background {
-                    RoundedRectangle(cornerRadius: DS.Radius.medium)
-                        .fill(isOn ? DS.Color.Interaction.defaultHover : Color.clear)
-                }
         }
-        .buttonStyle(.plain)
+        .buttonStyle(ComposerToggleButtonStyle())
+    }
+}
+
+private struct ComposerToggleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(configuration.isPressed ? DS.Color.Interaction.defaultHover : .clear)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.medium))
     }
 }

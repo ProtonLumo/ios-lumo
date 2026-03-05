@@ -15,14 +15,14 @@ public struct WebComposerState: Equatable, Decodable {
         case working = "Working"
     }
 
-    public enum ModelType: String, Equatable, Decodable {
+    public enum Model: String, Equatable, Decodable {
         case auto = "Auto"
         case fast = "Fast"
         case thinking = "Thinking"
     }
 
     let mode: Mode
-    let modelType: ModelType
+    let model: Model
     let isGhostModeEnabled: Bool
     let isWebSearchEnabled: Bool
     let isCreateImageEnabled: Bool
@@ -32,7 +32,7 @@ public struct WebComposerState: Equatable, Decodable {
 
     enum CodingKeys: String, CodingKey {
         case mode = "lumoMode"
-        case modelType
+        case model = "modelType"
         case isGhostModeEnabled
         case isWebSearchEnabled
         case isCreateImageEnabled
@@ -44,7 +44,7 @@ public struct WebComposerState: Equatable, Decodable {
     func copy(attachedFiles: [File]) -> Self {
         .init(
             mode: mode,
-            modelType: modelType,
+            model: model,
             isGhostModeEnabled: isGhostModeEnabled,
             isWebSearchEnabled: isWebSearchEnabled,
             isCreateImageEnabled: isCreateImageEnabled,
@@ -59,7 +59,7 @@ extension WebComposerState {
     static var initial: Self {
         .init(
             mode: .idle,
-            modelType: .auto,
+            model: .auto,
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             isCreateImageEnabled: false,

@@ -8,6 +8,8 @@ struct ComposerViewSnapshotTests {
     struct TestCase {
         let initialText: String
         let files: [File]
+        let model: WebComposerState.Model
+        let isCreateImageEnabled: Bool
         let isGhostModeEnabled: Bool
         let isWebSearchEnabled: Bool
         let areButtonsDisabled: Bool
@@ -20,6 +22,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "",
             files: [],
+            model: .auto,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             areButtonsDisabled: true,
@@ -29,6 +33,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "",
             files: [],
+            model: .thinking,
+            isCreateImageEnabled: true,
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
@@ -38,6 +44,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "",
             files: [],
+            model: .fast,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: true,
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
@@ -47,6 +55,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "",
             files: [],
+            model: .auto,
+            isCreateImageEnabled: true,
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
@@ -60,6 +70,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "What is AI?",
             files: [],
+            model: .auto,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
@@ -69,6 +81,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "Explain quantum physics",
             files: [],
+            model: .thinking,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: true,
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
@@ -83,6 +97,8 @@ struct ComposerViewSnapshotTests {
             initialText:
                 "Can you help me understand the differences between supervised and unsupervised learning? I'm particularly interested in real-world examples and how these concepts apply to modern AI systems.",
             files: [],
+            model: .auto,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
@@ -93,6 +109,8 @@ struct ComposerViewSnapshotTests {
             initialText:
                 "Explain quantum computing in simple terms. What are qubits, how do they differ from classical bits, and what are the main challenges in building practical quantum computers?",
             files: [],
+            model: .auto,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
@@ -106,6 +124,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "Tell me a story",
             files: [],
+            model: .auto,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
@@ -115,6 +135,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "Search for latest news",
             files: [],
+            model: .auto,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
@@ -128,6 +150,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "",
             files: [],
+            model: .auto,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
@@ -137,6 +161,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "",
             files: [],
+            model: .auto,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
@@ -151,6 +177,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "Analyze this document",
             files: [.init(id: "1", name: "Report.pdf", type: .pdf, preview: .none)],
+            model: .auto,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
@@ -160,6 +188,8 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "Analyze this document",
             files: [.init(id: "1", name: "Report.pdf", type: .pdf, preview: .none)],
+            model: .auto,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
@@ -173,6 +203,8 @@ struct ComposerViewSnapshotTests {
                 .init(id: "1", name: "Contract_v1.pdf", type: .pdf, preview: .none),
                 .init(id: "2", name: "Budget.xls", type: .xls, preview: .none),
             ],
+            model: .auto,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: false,
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
@@ -185,6 +217,8 @@ struct ComposerViewSnapshotTests {
                 .init(id: "1", name: "Contract_v1.pdf", type: .pdf, preview: .none),
                 .init(id: "2", name: "Budget.xls", type: .xls, preview: .none),
             ],
+            model: .auto,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: true,
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
@@ -201,6 +235,8 @@ struct ComposerViewSnapshotTests {
                 .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
                 .init(id: "5", name: "Video.mp4", type: .video, preview: .none),
             ],
+            model: .fast,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
@@ -216,6 +252,8 @@ struct ComposerViewSnapshotTests {
                 .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
                 .init(id: "5", name: "Video.mp4", type: .video, preview: .none),
             ],
+            model: .fast,
+            isCreateImageEnabled: false,
             isGhostModeEnabled: true,
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
@@ -238,6 +276,8 @@ struct ComposerViewSnapshotTests {
             ComposerView(
                 text: .constant(testCase.initialText),
                 files: testCase.files,
+                model: testCase.model,
+                isCreateImageEnabled: testCase.isCreateImageEnabled,
                 isGhostModeEnabled: testCase.isGhostModeEnabled,
                 isWebSearchEnabled: testCase.isWebSearchEnabled,
                 areButtonsDisabled: testCase.areButtonsDisabled,

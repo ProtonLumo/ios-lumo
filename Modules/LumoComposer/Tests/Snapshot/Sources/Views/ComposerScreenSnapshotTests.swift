@@ -20,7 +20,7 @@ struct ComposerScreenSnapshotTests {
                 \.webState,
                 to: .init(
                     mode: .working,
-                    modelType: .auto,
+                    model: .auto,
                     isGhostModeEnabled: false,
                     isWebSearchEnabled: true,
                     isCreateImageEnabled: false,
@@ -47,7 +47,7 @@ struct ComposerScreenSnapshotTests {
                 \.webState,
                 to: .init(
                     mode: .idle,
-                    modelType: .auto,
+                    model: .auto,
                     isGhostModeEnabled: false,
                     isWebSearchEnabled: false,
                     isCreateImageEnabled: false,

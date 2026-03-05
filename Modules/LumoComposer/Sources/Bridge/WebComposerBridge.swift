@@ -23,7 +23,7 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
         case openSketch
         case toggleWebSearch
         case toggleCreateImage
-        case changeModel(WebComposerState.ModelType)
+        case changeModel(WebComposerState.Model)
         case previewAttachment(id: String)
         case removeAttachment(id: String)
 
@@ -102,8 +102,8 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
         try await executeJavaScript(.toggleCreateImage)
     }
 
-    public func changeModel(_ modelType: WebComposerState.ModelType) async throws(WebComposerBridgeError) {
-        try await executeJavaScript(.changeModel(modelType))
+    public func changeModel(_ model: WebComposerState.Model) async throws(WebComposerBridgeError) {
+        try await executeJavaScript(.changeModel(model))
     }
 
     public func removeAttachment(id: String) async throws(WebComposerBridgeError) {

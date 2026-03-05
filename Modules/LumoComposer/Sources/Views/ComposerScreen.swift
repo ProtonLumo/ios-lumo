@@ -62,6 +62,8 @@ public struct ComposerScreen<WebContent: View>: View {
                                 set: { newValue in store.send(action: .textChanged(newValue)) }
                             ),
                             files: store.state.webState.attachedFiles,
+                            model: store.state.webState.model,
+                            isCreateImageEnabled: store.state.webState.isCreateImageEnabled,
                             isGhostModeEnabled: store.state.webState.isGhostModeEnabled,
                             isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
                             areButtonsDisabled: !store.state.isWebViewReady,
@@ -89,11 +91,38 @@ public struct ComposerScreen<WebContent: View>: View {
             store.send(action: .sendPromptTapped)
         case .stopTapped:
             store.send(action: .stopResponseTapped)
-        case .filePickerTapped:
-            // FIXME: Show UI menu instead
+        case .attachmentOptionChosen(let option):
+            switch option {
+            case .protonDrive:
+                store.send(action: .openProtonDriveTapped)
+            case .files:
+                // FIXME: Open native files picker and transform selected file to base64 and use
+                // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
+                break
+            case .camera:
+                // FIXME: Open native camera picker and transform captured photo to base64 and use
+                // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
+                break
+            case .photos:
+                // FIXME: Open photos picker and transform selected photo to base64 and use
+                // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
+                break
+            case .drawSketch:
+                store.send(action: .openSketchTapped)
+            }
+        case .imageModeButtonTapped:
+            store.send(action: .toggleCreateImageTapped)
+        case .toolsTapped:
+            // FIXME: Show native sheet that has two options:
+            // - "Create image" which triggerss `store.send(action: .toggleCreateImageTapped)`
+            // - "Web search" toggle which triggerss `store.send(action: .toggleWebSearchTapped)`
             break
-        case .webSearchTapped:
-            store.send(action: .toggleWebSearchTapped)
+        case .modelSelectionTapped:
+            // FIXME: Show native sheet that has three options:
+            // - "Auto" which triggerss `store.send(action: .changeModelTapped(.auto))`
+            // - "Fast" which triggerss `store.send(action: .changeModelTapped(.fast))`
+            // - "Thinking" which triggerss `store.send(action: .changeModelTapped(.thinking))` if it's paid if it's free user shows an upsel
+            break
         case .microphoneTapped:
             store.send(action: .startRecordingTapped)
         case .attachmentTapped(let id):

@@ -16,7 +16,7 @@ struct ComposerViewStateTests {
                     isWebViewReady: false,
                     webState: .init(
                         mode: .idle,
-                        modelType: .auto,
+                        model: .auto,
                         isGhostModeEnabled: false,
                         isWebSearchEnabled: false,
                         isCreateImageEnabled: false,
@@ -111,7 +111,7 @@ private extension ComposerViewState {
             isWebViewReady: isWebViewReady,
             webState: WebComposerState(
                 mode: mode,
-                modelType: .auto,
+                model: .auto,
                 isGhostModeEnabled: false,
                 isWebSearchEnabled: false,
                 isCreateImageEnabled: false,
@@ -127,7 +127,7 @@ private extension WebComposerState {
     static func testData(attachedFiles: [File]) -> Self {
         .init(
             mode: .idle,
-            modelType: .auto,
+            model: .auto,
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             isCreateImageEnabled: false,
