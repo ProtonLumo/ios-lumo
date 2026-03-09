@@ -43,7 +43,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ask anything..."
+            "value" : "Fai qualsiasi domanda…"
           }
         },
         "nl" : {
@@ -120,7 +120,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ask me anything."
+            "value" : "Chiedimi qualunque cosa."
           }
         },
         "nl" : {
@@ -196,8 +196,8 @@
         },
         "it" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "By using Lumo, you agree to our [Terms](%1$@) and [Privacy Policy](%2$@)."
+            "state" : "translated",
+            "value" : "Utilizzando Lumo, accetti i nostri [Termini](%1$@) e [Politica sulla Privacy](%2$@)."
           }
         },
         "nl" : {
@@ -274,7 +274,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hey, I'm Lumo."
+            "value" : "Ciao, sono Lumo."
           }
         },
         "nl" : {
@@ -351,7 +351,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "It's confidential."
+            "value" : "E' confidenziale"
           }
         },
         "nl" : {
