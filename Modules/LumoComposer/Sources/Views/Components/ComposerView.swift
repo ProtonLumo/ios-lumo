@@ -2,6 +2,8 @@ import LumoDesignSystem
 import SwiftUI
 
 struct ComposerView: View {
+    @Environment(\.featureFlags) var featureFlags: WebComposerState.FeatureFlags
+
     enum Action {
         case sendTapped
         case stopTapped
@@ -46,7 +48,7 @@ struct ComposerView: View {
             HStack(alignment: .center, spacing: DS.Spacing.small) {
                 ComposerInput(
                     text: $text,
-                    placeholderText: isCreateImageEnabled ? L10n.Composer.placeholderImage : L10n.Composer.placeholder,
+                    placeholderText: featureFlags.isImageGenEnabled && isCreateImageEnabled ? L10n.Composer.placeholderImage : L10n.Composer.placeholder,
                     placeholderColor: isGhostModeEnabled ? DS.Color.Text.hintDark : DS.Color.Text.hint,
                     textColor: isGhostModeEnabled ? DS.Color.Text.normDarkOnly : DS.Color.Text.norm,
                     backgroundColor: backgroundColor
