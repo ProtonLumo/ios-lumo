@@ -2,6 +2,8 @@ import LumoDesignSystem
 import SwiftUI
 
 struct ComposerToolbar: View {
+    @Environment(\.featureFlags) var featureFlags: WebComposerState.FeatureFlags
+
     enum Action {
         case attachmentOptionChosen(AddAttachmentOption)
         case exitImageModeTapped
@@ -52,7 +54,7 @@ struct ComposerToolbar: View {
                     }
                 )
 
-                if isCreateImageEnabled {
+                if featureFlags.isImageGenEnabled && isCreateImageEnabled {
                     ImageModeButton(action: { action(.exitImageModeTapped) })
                 } else {
                     ComposerToggleButton(
@@ -65,12 +67,14 @@ struct ComposerToolbar: View {
             }
             Spacer()
             HStack(spacing: DS.Spacing.standard) {
-                SelectModelButton(
-                    model: model,
-                    color: iconColor,
-                    isDisabled: areButtonsDisabled,
-                    action: { action(.modelSelectionTapped) }
-                )
+                if featureFlags.isModelSelectionEnabled {
+                    SelectModelButton(
+                        model: model,
+                        color: iconColor,
+                        isDisabled: areButtonsDisabled,
+                        action: { action(.modelSelectionTapped) }
+                    )
+                }
                 ComposerToggleButton(
                     icon: DS.Icon.icMicrophone.swiftUIImage,
                     iconColor: iconColor,

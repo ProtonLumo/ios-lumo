@@ -94,6 +94,7 @@ public struct ComposerScreen<WebContent: View>: View {
                 .presentationDetents([.height(sheetHeight)])
                 .presentationDragIndicator(.visible)
         }
+        .environment(\.featureFlags, store.state.webState.featureFlags)
     }
 
     @ViewBuilder

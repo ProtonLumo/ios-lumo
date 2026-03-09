@@ -21,6 +21,16 @@ public struct WebComposerState: Equatable, Decodable {
         case thinking = "Thinking"
     }
 
+    struct FeatureFlags: Equatable, Decodable {
+        let isImageGenEnabled: Bool
+        let isModelSelectionEnabled: Bool
+
+        enum CodingKeys: String, CodingKey {
+            case isImageGenEnabled
+            case isModelSelectionEnabled
+        }
+    }
+
     let mode: Mode
     let model: Model
     let isGhostModeEnabled: Bool
@@ -29,6 +39,7 @@ public struct WebComposerState: Equatable, Decodable {
     let isVisible: Bool
     let showTermsAndPrivacy: Bool
     let attachedFiles: [File]
+    let featureFlags: FeatureFlags
 
     enum CodingKeys: String, CodingKey {
         case mode = "lumoMode"
@@ -39,6 +50,7 @@ public struct WebComposerState: Equatable, Decodable {
         case isVisible
         case showTermsAndPrivacy = "showTsAndCs"
         case attachedFiles
+        case featureFlags
     }
 
     func copy(attachedFiles: [File]) -> Self {
@@ -50,7 +62,8 @@ public struct WebComposerState: Equatable, Decodable {
             isCreateImageEnabled: isCreateImageEnabled,
             isVisible: isVisible,
             showTermsAndPrivacy: showTermsAndPrivacy,
-            attachedFiles: attachedFiles
+            attachedFiles: attachedFiles,
+            featureFlags: featureFlags
         )
     }
 }
@@ -65,7 +78,8 @@ extension WebComposerState {
             isCreateImageEnabled: false,
             isVisible: true,
             showTermsAndPrivacy: true,
-            attachedFiles: []
+            attachedFiles: [],
+            featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
         )
     }
 }

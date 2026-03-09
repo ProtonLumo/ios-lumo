@@ -193,7 +193,8 @@ final class ComposerStateStoreTests {
                         isCreateImageEnabled: false,
                         isVisible: true,
                         showTermsAndPrivacy: true,
-                        attachedFiles: []
+                        attachedFiles: [],
+                        featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
                     )
                 ),
                 initialState,
@@ -788,7 +789,8 @@ final class ComposerStateStoreTests {
                             showTermsAndPrivacy: false,
                             attachedFiles: [
                                 File(id: "<id_1>", name: "document.pdf", type: .pdf, preview: .none)
-                            ]
+                            ],
+                            featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
                         )
                     ),
             ]
@@ -827,6 +829,10 @@ final class ComposerStateStoreTests {
             "isVisible": isVisible,
             "showTsAndCs": showTsAndCs,
             "attachedFiles": attachedFiles,
+            "featureFlags": [
+                "isImageGenEnabled": false,
+                "isModelSelectionEnabled": false,
+            ],
         ]
 
         webBridge.handleStateChange(state: state)

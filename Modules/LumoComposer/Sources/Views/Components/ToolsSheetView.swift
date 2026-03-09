@@ -2,6 +2,8 @@ import LumoDesignSystem
 import SwiftUI
 
 struct ToolsSheetView: View {
+    @Environment(\.featureFlags) var featureFlags: WebComposerState.FeatureFlags
+
     enum Action {
         case createImageTapped
         case webSearchToggled
@@ -18,17 +20,19 @@ struct ToolsSheetView: View {
             }
 
             VStack(spacing: .zero) {
-                Button(
-                    action: { action(.createImageTapped) },
-                    label: {
-                        ToolItem<EmptyView>(
-                            icon: DS.Icon.icPalette.swiftUIImage,
-                            text: L10n.ToolsSheet.createImage,
-                            trailingElement: .none
-                        )
-                    }
-                )
-                .buttonStyle(.plain)
+                if featureFlags.isImageGenEnabled {
+                    Button(
+                        action: { action(.createImageTapped) },
+                        label: {
+                            ToolItem<EmptyView>(
+                                icon: DS.Icon.icPalette.swiftUIImage,
+                                text: L10n.ToolsSheet.createImage,
+                                trailingElement: .none
+                            )
+                        }
+                    )
+                    .buttonStyle(.plain)
+                }
 
                 ToolItem(
                     icon: DS.Icon.icGlobe.swiftUIImage,

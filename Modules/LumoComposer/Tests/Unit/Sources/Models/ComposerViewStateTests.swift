@@ -22,7 +22,8 @@ struct ComposerViewStateTests {
                         isCreateImageEnabled: false,
                         isVisible: true,
                         showTermsAndPrivacy: true,
-                        attachedFiles: []
+                        attachedFiles: [],
+                        featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
                     )
                 )
         )
@@ -117,7 +118,8 @@ private extension ComposerViewState {
                 isCreateImageEnabled: false,
                 isVisible: true,
                 showTermsAndPrivacy: true,
-                attachedFiles: []
+                attachedFiles: [],
+                featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true)
             )
         )
     }
@@ -133,7 +135,8 @@ private extension WebComposerState {
             isCreateImageEnabled: false,
             isVisible: true,
             showTermsAndPrivacy: true,
-            attachedFiles: attachedFiles
+            attachedFiles: attachedFiles,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true)
         )
     }
 }

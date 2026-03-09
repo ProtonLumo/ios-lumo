@@ -14,6 +14,7 @@ struct ComposerViewSnapshotTests {
         let isWebSearchEnabled: Bool
         let areButtonsDisabled: Bool
         let actionButton: ComposerView.ActionButtonState
+        let featureFlags: WebComposerState.FeatureFlags
         let testName: String
     }
 
@@ -28,6 +29,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: false,
             areButtonsDisabled: true,
             actionButton: .none,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "idle_empty_disabled"
         ),
         TestCase(
@@ -39,6 +41,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
             actionButton: .none,
+            featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: true),
             testName: "idle_empty_web_search"
         ),
         TestCase(
@@ -50,6 +53,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
             actionButton: .none,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "idle_empty_ghost_mode"
         ),
         TestCase(
@@ -61,6 +65,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
             actionButton: .none,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "idle_empty_ghost_mode_web_search"
         ),
     ]
@@ -76,6 +81,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
             actionButton: .send,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "short_prompt_web_search"
         ),
         TestCase(
@@ -87,6 +93,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
             actionButton: .send,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "short_prompt_ghost_mode"
         ),
     ]
@@ -103,6 +110,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
             actionButton: .send,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "long_prompt_web_search"
         ),
         TestCase(
@@ -115,6 +123,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
             actionButton: .send,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "long_prompt_ghost_mode_web_search"
         ),
     ]
@@ -130,6 +139,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
             actionButton: .send,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "send_state_ready"
         ),
         TestCase(
@@ -141,6 +151,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
             actionButton: .send,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "send_state_ready_web_search"
         ),
     ]
@@ -156,6 +167,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
             actionButton: .stop,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "sending_state"
         ),
         TestCase(
@@ -167,6 +179,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
             actionButton: .stop,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "sending_state_ghost_mode_web_search"
         ),
     ]
@@ -183,6 +196,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
             actionButton: .send,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: false),
             testName: "with_one_file"
         ),
         TestCase(
@@ -194,6 +208,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
             actionButton: .send,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: false),
             testName: "with_one_file_ghost_mode_web_search"
         ),
         // Two files
@@ -209,6 +224,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
             actionButton: .send,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "with_two_files"
         ),
         TestCase(
@@ -223,6 +239,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
             actionButton: .send,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "with_two_files_ghost_mode"
         ),
         // Many files
@@ -241,6 +258,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
             actionButton: .send,
+            featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: true),
             testName: "with_many_files"
         ),
         TestCase(
@@ -258,6 +276,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: true,
             areButtonsDisabled: false,
             actionButton: .send,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "with_many_files_ghost_mode_web_search"
         ),
     ]
@@ -284,6 +303,7 @@ struct ComposerViewSnapshotTests {
                 actionButton: testCase.actionButton,
                 action: { _ in }
             )
+            .environment(\.featureFlags, testCase.featureFlags)
         }
     }
 }

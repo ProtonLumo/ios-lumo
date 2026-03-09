@@ -30,10 +30,36 @@ struct ComposerScreenSnapshotTests {
                         .init(id: "<id_1>", name: "selfie.png", type: .image, preview: .none),
                         .init(id: "<id_2>", name: "information_about_me.pdf", type: .pdf, preview: .none),
                         .init(id: "<id_3>", name: "data", type: .protonSheet, preview: .none),
-                    ])
+                    ],
+                    featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true)
+                )
             )
             .copy(\.currentText, to: "")
             .copy(\.isProcessing, to: true)
+            .copy(\.isWebViewReady, to: true)
+        let sut = makeSUT(initialState: state)
+
+        assertSnapshotsOnEdgeDevices(of: sut, drawHierarchyInKeyWindow: true)
+    }
+
+    @Test(.lottiePaused(at: 0.0))
+    func composerScreenIdle() {
+        let state: ComposerViewState = .initial
+            .copy(
+                \.webState,
+                to: .init(
+                    mode: .working,
+                    model: .fast,
+                    isGhostModeEnabled: false,
+                    isWebSearchEnabled: true,
+                    isCreateImageEnabled: false,
+                    isVisible: true,
+                    showTermsAndPrivacy: false,
+                    attachedFiles: [],
+                    featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
+                )
+            )
+            .copy(\.currentText, to: "")
             .copy(\.isWebViewReady, to: true)
         let sut = makeSUT(initialState: state)
 
@@ -53,7 +79,8 @@ struct ComposerScreenSnapshotTests {
                     isCreateImageEnabled: false,
                     isVisible: false,
                     showTermsAndPrivacy: false,
-                    attachedFiles: []
+                    attachedFiles: [],
+                    featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
                 )
             )
         let sut = makeSUT(initialState: state)

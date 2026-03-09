@@ -7,20 +7,24 @@ import Testing
 
 struct ToolsSheetViewSnapshotTests {
     struct TestCase: Sendable {
+        let isImageGenEnabled: Bool
         let isWebSearchEnabled: Bool
         let testName: String
     }
 
     static let testCases: [TestCase] = [
-        TestCase(isWebSearchEnabled: false, testName: "web_search_off"),
-        TestCase(isWebSearchEnabled: true, testName: "web_search_on"),
+        TestCase(isImageGenEnabled: true, isWebSearchEnabled: false, testName: "web_search_off"),
+        TestCase(isImageGenEnabled: false, isWebSearchEnabled: true, testName: "web_search_on"),
     ]
 
     @Test(arguments: testCases)
     @MainActor
     func toolsSheetView(testCase: TestCase) {
         assertSnapshotsOnEdgeDevices(
-            of: sut(testCase: testCase),
+            of: sut(testCase: testCase)
+                .environment(
+                    \.featureFlags, .init(isImageGenEnabled: testCase.isImageGenEnabled, isModelSelectionEnabled: false)
+                ),
             drawHierarchyInKeyWindow: true,
             testName: testCase.testName
         )
