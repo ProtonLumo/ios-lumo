@@ -31,16 +31,20 @@ struct ComposerToolbar: View {
                             AddAttachmentButton(title: L10n.Attachment.files, icon: DS.Icon.icPaperClip.swiftUIImage) {
                                 action(.attachmentOptionChosen(.files))
                             }
-                            AddAttachmentButton(title: L10n.Attachment.camera, icon: DS.Icon.icCamera.swiftUIImage) {
-                                action(.attachmentOptionChosen(.camera))
-                            }
-                            AddAttachmentButton(title: L10n.Attachment.photos, icon: DS.Icon.icImage.swiftUIImage) {
-                                action(.attachmentOptionChosen(.photos))
+                            if featureFlags.isImageGenEnabled {
+                                AddAttachmentButton(title: L10n.Attachment.camera, icon: DS.Icon.icCamera.swiftUIImage) {
+                                    action(.attachmentOptionChosen(.camera))
+                                }
+                                AddAttachmentButton(title: L10n.Attachment.photos, icon: DS.Icon.icImage.swiftUIImage) {
+                                    action(.attachmentOptionChosen(.photos))
+                                }
                             }
                         }
-                        Section {
-                            AddAttachmentButton(title: L10n.Attachment.sketch, icon: DS.Icon.icPencil.swiftUIImage) {
-                                action(.attachmentOptionChosen(.sketch))
+                        if featureFlags.isImageGenEnabled {
+                            Section {
+                                AddAttachmentButton(title: L10n.Attachment.sketch, icon: DS.Icon.icPencil.swiftUIImage) {
+                                    action(.attachmentOptionChosen(.sketch))
+                                }
                             }
                         }
                     },
