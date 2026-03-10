@@ -38,10 +38,10 @@ struct ComposerView: View {
                 ComposerAttachmentsView(
                     files: files,
                     accentColor: accentColor,
-                    backgroundColor: backgroundColor,
+                    backgroundColor: isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak,
                     borderColor: isGhostModeEnabled ? DS.Color.Border.weakDark : DS.Color.Border.weak,
                     onAttachmentTapped: { id in action(.attachmentTapped(id: id)) },
-                    onTrashTapped: { id in action(.removeAttachmentTapped(id: id)) }
+                    onRemoveTapped: { id in action(.removeAttachmentTapped(id: id)) }
                 )
             }
 
@@ -98,7 +98,7 @@ struct ComposerView: View {
         .padding(.horizontal, DS.Spacing.compact)
         .background {
             RoundedRectangle(cornerRadius: DS.Radius.massive)
-                .fill(isGhostModeEnabled ? DS.Color.Background.normDarkOnly : DS.Color.Background.weak)
+                .fill(isGhostModeEnabled ? DS.Color.Background.normDarkOnly : DS.Color.Text.invert)
                 .strokeBorder(isGhostModeEnabled ? Color.clear : DS.Color.Border.norm, lineWidth: 1)
         }
     }
@@ -128,7 +128,7 @@ struct ComposerView: View {
     }
 
     private var backgroundColor: Color {
-        isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak
+        isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Text.invert
     }
 }
 

@@ -23,6 +23,10 @@ extension DS {
             public static let defaultHover = SwiftColor.interactionDefaultHover
         }
 
+        public enum Icon {
+            public static let norm = SwiftColor.iconNorm
+        }
+
         public enum Text {
             public static let hint = SwiftColor.textHint
             public static let hintDark = SwiftColor.textHintDark
@@ -30,6 +34,7 @@ extension DS {
             public static let normDarkOnly = SwiftColor.textNormDark
             public static let weak = SwiftColor.textWeak
             public static let weakDark = SwiftColor.textWeakDark
+            public static let invert = SwiftColor.textInvert
         }
 
         // MARK: - Deprecated
