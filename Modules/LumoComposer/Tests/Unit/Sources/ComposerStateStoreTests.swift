@@ -125,7 +125,7 @@ final class ComposerStateStoreTests {
         #expect(effect == .error(.webViewNotAttached))
     }
 
-    @Test(.stubbedUUID(UUID(uuidString: "212A909D-2D5C-4891-8717-685D27C6A4EE")!))
+    @Test(.stubbedUUID(.testData))
     func sendPromptAction_WhenWebViewIsAttached_UpdatesStateCorrectly() async {
         var stateChanges: [ComposerViewState] = []
 
@@ -143,7 +143,7 @@ final class ComposerStateStoreTests {
         let effect = await sut.send(action: .sendPromptTapped)
 
         let javaScript = """
-            window.nativeComposerApi?.sendPrompt('212A909D-2D5C-4891-8717-685D27C6A4EE', 'How to make proper neapolitan pizza?');
+            window.nativeComposerApi?.sendPrompt('\(UUID.testData.uuidString)', 'How to make proper neapolitan pizza?');
             """
 
         simulateWebStateChange(
@@ -325,14 +325,14 @@ final class ComposerStateStoreTests {
         #expect(effect == .error(.webViewNotAttached))
     }
 
-    @Test(.stubbedUUID(UUID(uuidString: "A1B2C3D4-E5F6-7890-ABCD-EF1234567890")!))
+    @Test(.stubbedUUID(.testData2))
     func stopResponseAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
 
         _ = await sut.send(action: .taskStarted)
         let effect = await sut.send(action: .stopResponseTapped)
 
-        let javaScript = "window.nativeComposerApi?.abortPrompt('A1B2C3D4-E5F6-7890-ABCD-EF1234567890');"
+        let javaScript = "window.nativeComposerApi?.abortPrompt('\(UUID.testData2.uuidString)');"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
@@ -367,7 +367,7 @@ final class ComposerStateStoreTests {
         #expect(effect == .error(.webViewNotAttached))
     }
 
-    @Test(.stubbedUUID(UUID(uuidString: "C3D4E5F6-A7B8-9012-CDEF-123456789012")!))
+    @Test(.stubbedUUID(.testData3))
     func toggleWebSearchAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
 
@@ -375,7 +375,7 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.send(action: .toggleWebSearchTapped)
 
-        let javascript = "window.nativeComposerApi?.toggleWebSearch('C3D4E5F6-A7B8-9012-CDEF-123456789012');"
+        let javascript = "window.nativeComposerApi?.toggleWebSearch('\(UUID.testData3.uuidString)');"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
@@ -410,7 +410,7 @@ final class ComposerStateStoreTests {
         #expect(effect == .error(.webViewNotAttached))
     }
 
-    @Test(.stubbedUUID(UUID(uuidString: "D4E5F6A7-B8C9-0123-DEF1-234567890123")!))
+    @Test(.stubbedUUID(.testData))
     func previewAttachmentAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
 
@@ -418,7 +418,7 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.send(action: .previewAttachmentTapped(id: "attachment-456"))
 
-        let javascript = "window.nativeComposerApi?.previewFile('D4E5F6A7-B8C9-0123-DEF1-234567890123', 'attachment-456');"
+        let javascript = "window.nativeComposerApi?.previewFile('\(UUID.testData.uuidString)', 'attachment-456');"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
@@ -453,7 +453,7 @@ final class ComposerStateStoreTests {
         #expect(effect == .error(.webViewNotAttached))
     }
 
-    @Test(.stubbedUUID(UUID(uuidString: "E5F6A7B8-C9D0-1234-EF12-345678901234")!))
+    @Test(.stubbedUUID(.testData2))
     func removeAttachmentAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
 
@@ -461,7 +461,7 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.send(action: .removeAttachmentTapped(id: "attachment-789"))
 
-        let javascript = "window.nativeComposerApi?.removeFileEvent('E5F6A7B8-C9D0-1234-EF12-345678901234', 'attachment-789');"
+        let javascript = "window.nativeComposerApi?.removeFileEvent('\(UUID.testData2.uuidString)', 'attachment-789');"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
@@ -530,7 +530,7 @@ final class ComposerStateStoreTests {
 
     // MARK: - .toolsSheetAction action
 
-    @Test(.stubbedUUID(UUID(uuidString: "F2A3B4C5-D6E7-8901-F678-012345678901")!))
+    @Test(.stubbedUUID(.testData3))
     func toolsSheetAction_CreateImageTapped_DismissesSheetAndTogglesCreateImage() async {
         webBridge.attach(to: webViewSpy)
         _ = await sut.send(action: .taskStarted)
@@ -538,7 +538,7 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.send(action: .toolsSheetAction(.createImageTapped))
 
-        let javascript = "window.nativeComposerApi?.toggleCreateImage('F2A3B4C5-D6E7-8901-F678-012345678901');"
+        let javascript = "window.nativeComposerApi?.toggleCreateImage('\(UUID.testData3.uuidString)');"
 
         #expect(sut.state.activeSheet == nil)
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
@@ -549,7 +549,7 @@ final class ComposerStateStoreTests {
         #expect(effect == .none)
     }
 
-    @Test(.stubbedUUID(UUID(uuidString: "A3B4C5D6-E7F8-9012-A789-123456789012")!))
+    @Test(.stubbedUUID(.testData))
     func toolsSheetAction_WebSearchToggled_DoesNotDismissSheet() async {
         webBridge.attach(to: webViewSpy)
         _ = await sut.send(action: .taskStarted)
@@ -557,7 +557,7 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.send(action: .toolsSheetAction(.webSearchToggled))
 
-        let javascript = "window.nativeComposerApi?.toggleWebSearch('A3B4C5D6-E7F8-9012-A789-123456789012');"
+        let javascript = "window.nativeComposerApi?.toggleWebSearch('\(UUID.testData.uuidString)');"
 
         #expect(sut.state.activeSheet == .tools)
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
@@ -580,7 +580,7 @@ final class ComposerStateStoreTests {
 
     // MARK: - .modelSelectionSheetAction action
 
-    @Test(.stubbedUUID(UUID(uuidString: "B4C5D6E7-F8A9-0123-B890-234567890123")!))
+    @Test(.stubbedUUID(.testData2))
     func modelSelectionSheetAction_ModelSelected_DismissesSheetAndChangesModel() async {
         webBridge.attach(to: webViewSpy)
         _ = await sut.send(action: .taskStarted)
@@ -588,7 +588,7 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.send(action: .modelSelectionSheetAction(.modelSelected(.fast)))
 
-        let javascript = "window.nativeComposerApi?.changeModel('B4C5D6E7-F8A9-0123-B890-234567890123', 'Fast');"
+        let javascript = "window.nativeComposerApi?.changeModel('\(UUID.testData2.uuidString)', 'Fast');"
 
         #expect(sut.state.activeSheet == nil)
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
@@ -619,7 +619,7 @@ final class ComposerStateStoreTests {
         #expect(effect == .error(.webViewNotAttached))
     }
 
-    @Test(.stubbedUUID(UUID(uuidString: "F6A7B8C9-D0E1-2345-F123-456789012345")!))
+    @Test(.stubbedUUID(.testData3))
     func uploadFilesAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
 
@@ -631,7 +631,7 @@ final class ComposerStateStoreTests {
         ]
         let effect = await sut.send(action: .uploadFilesTapped(files))
 
-        let javascript = "window.nativeComposerApi?.uploadFiles('F6A7B8C9-D0E1-2345-F123-456789012345', [{ base64: 'ZGF0YTE=', name: 'file1.pdf' }, { base64: 'ZGF0YTI=', name: 'file2.png' }]);"
+        let javascript = "window.nativeComposerApi?.uploadFiles('\(UUID.testData3.uuidString)', [{ base64: 'ZGF0YTE=', name: 'file1.pdf' }, { base64: 'ZGF0YTI=', name: 'file2.png' }]);"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
@@ -667,7 +667,7 @@ final class ComposerStateStoreTests {
         #expect(effect == .error(.webViewNotAttached))
     }
 
-    @Test(.stubbedUUID(UUID(uuidString: "A7B8C9D0-E1F2-3456-A123-567890123456")!))
+    @Test(.stubbedUUID(.testData))
     func openProtonDriveAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
 
@@ -675,7 +675,7 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.send(action: .openProtonDriveTapped)
 
-        let javascript = "window.nativeComposerApi?.openProtonDrive('A7B8C9D0-E1F2-3456-A123-567890123456');"
+        let javascript = "window.nativeComposerApi?.openProtonDrive('\(UUID.testData.uuidString)');"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
@@ -710,7 +710,7 @@ final class ComposerStateStoreTests {
         #expect(effect == .error(.webViewNotAttached))
     }
 
-    @Test(.stubbedUUID(UUID(uuidString: "B8C9D0E1-F2A3-4567-B234-678901234567")!))
+    @Test(.stubbedUUID(.testData2))
     func openSketchAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
 
@@ -718,7 +718,7 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.send(action: .openSketchTapped)
 
-        let javascript = "window.nativeComposerApi?.openSketch('B8C9D0E1-F2A3-4567-B234-678901234567');"
+        let javascript = "window.nativeComposerApi?.openSketch('\(UUID.testData2.uuidString)');"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
@@ -753,7 +753,7 @@ final class ComposerStateStoreTests {
         #expect(effect == .error(.webViewNotAttached))
     }
 
-    @Test(.stubbedUUID(UUID(uuidString: "C9D0E1F2-A3B4-5678-C345-789012345678")!))
+    @Test(.stubbedUUID(.testData3))
     func toggleCreateImageAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
 
@@ -761,7 +761,7 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.send(action: .toggleCreateImageTapped)
 
-        let javascript = "window.nativeComposerApi?.toggleCreateImage('C9D0E1F2-A3B4-5678-C345-789012345678');"
+        let javascript = "window.nativeComposerApi?.toggleCreateImage('\(UUID.testData3.uuidString)');"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
@@ -796,7 +796,7 @@ final class ComposerStateStoreTests {
         #expect(effect == .error(.webViewNotAttached))
     }
 
-    @Test(.stubbedUUID(UUID(uuidString: "D0E1F2A3-B4C5-6789-D456-890123456789")!))
+    @Test(.stubbedUUID(.testData))
     func changeModelAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
         webBridge.attach(to: webViewSpy)
 
@@ -804,7 +804,7 @@ final class ComposerStateStoreTests {
 
         let effect = await sut.send(action: .changeModelTapped(.thinking))
 
-        let javascript = "window.nativeComposerApi?.changeModel('D0E1F2A3-B4C5-6789-D456-890123456789', 'Thinking');"
+        let javascript = "window.nativeComposerApi?.changeModel('\(UUID.testData.uuidString)', 'Thinking');"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
@@ -818,14 +818,14 @@ final class ComposerStateStoreTests {
         #expect(effect == .none)
     }
 
-    @Test(.stubbedUUID(UUID(uuidString: "E1F2A3B4-C5D6-7890-E567-901234567890")!))
+    @Test(.stubbedUUID(.testData2))
     func changeModelAction_ForAllModelTypes_ExecutesCorrectJavaScript() async {
         webBridge.attach(to: webViewSpy)
 
         _ = await sut.send(action: .taskStarted)
 
         let javascript: (String) -> String = { mode in
-            "window.nativeComposerApi?.changeModel('E1F2A3B4-C5D6-7890-E567-901234567890', '\(mode)');"
+            "window.nativeComposerApi?.changeModel('\(UUID.testData2.uuidString)', '\(mode)');"
         }
 
         _ = await sut.send(action: .changeModelTapped(.auto))
@@ -952,4 +952,6 @@ final class ComposerStateStoreTests {
 
 private extension UUID {
     static let testData = UUID(uuidString: "F82958B5-6EB1-42A7-BC2B-A7F6617E1EF7")!
+    static let testData2 = UUID(uuidString: "BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB")!
+    static let testData3 = UUID(uuidString: "CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC")!
 }
