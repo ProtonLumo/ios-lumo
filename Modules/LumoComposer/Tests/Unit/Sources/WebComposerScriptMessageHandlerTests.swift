@@ -126,11 +126,8 @@ final class WebComposerScriptMessageHandlerTests {
     func handleResult_WithErrorStatus_EmitsErrorToStream() async {
         let error = WebComposerError.tierLimit
         let resultDict: [String: Any] = [
-            "requestId": "",
-            "result": [
-                "status": "error",
-                "error": error.rawValue,
-            ],
+            "status": "error",
+            "error": error.rawValue,
         ]
         let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
 
@@ -243,11 +240,8 @@ final class WebComposerScriptMessageHandlerTests {
 
         for error in errors {
             let resultDict: [String: Any] = [
-                "requestId": "",
-                "result": [
-                    "status": "error",
-                    "error": error.rawValue,
-                ],
+                "status": "error",
+                "error": error.rawValue,
             ]
 
             sut.userContentController(
