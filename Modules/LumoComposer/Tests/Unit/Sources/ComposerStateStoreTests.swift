@@ -498,6 +498,117 @@ final class ComposerStateStoreTests {
         #expect(effect == .none)
     }
 
+    // MARK: - .showSheet action
+
+    @Test
+    func showSheetAction_Tools_SetsActiveSheet() async {
+        let effect = await sut.send(action: .showSheet(.tools))
+
+        #expect(sut.state.activeSheet == .tools)
+        #expect(effect == .none)
+    }
+
+    @Test
+    func showSheetAction_ModelSelection_SetsActiveSheet() async {
+        let effect = await sut.send(action: .showSheet(.modelSelection))
+
+        #expect(sut.state.activeSheet == .modelSelection)
+        #expect(effect == .none)
+    }
+
+    // MARK: - .dismissActiveSheet action
+
+    @Test
+    func dismissActiveSheetAction_ClearsActiveSheet() async {
+        _ = await sut.send(action: .showSheet(.tools))
+
+        let effect = await sut.send(action: .dismissActiveSheet)
+
+        #expect(sut.state.activeSheet == nil)
+        #expect(effect == .none)
+    }
+
+    // MARK: - .toolsSheetAction action
+
+    @Test(.stubbedUUID(UUID(uuidString: "F2A3B4C5-D6E7-8901-F678-012345678901")!))
+    func toolsSheetAction_CreateImageTapped_DismissesSheetAndTogglesCreateImage() async {
+        webBridge.attach(to: webViewSpy)
+        _ = await sut.send(action: .taskStarted)
+        _ = await sut.send(action: .showSheet(.tools))
+
+        let effect = await sut.send(action: .toolsSheetAction(.createImageTapped))
+
+        let javascript = "window.nativeComposerApi?.toggleCreateImage('F2A3B4C5-D6E7-8901-F678-012345678901');"
+
+        #expect(sut.state.activeSheet == nil)
+        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
+        #expect(
+            webViewSpy.evaluateJavaScriptCalls.last
+                == .init(javaScript: javascript, frame: .none, contentWorld: .page)
+        )
+        #expect(effect == .none)
+    }
+
+    @Test(.stubbedUUID(UUID(uuidString: "A3B4C5D6-E7F8-9012-A789-123456789012")!))
+    func toolsSheetAction_WebSearchToggled_DoesNotDismissSheet() async {
+        webBridge.attach(to: webViewSpy)
+        _ = await sut.send(action: .taskStarted)
+        _ = await sut.send(action: .showSheet(.tools))
+
+        let effect = await sut.send(action: .toolsSheetAction(.webSearchToggled))
+
+        let javascript = "window.nativeComposerApi?.toggleWebSearch('A3B4C5D6-E7F8-9012-A789-123456789012');"
+
+        #expect(sut.state.activeSheet == .tools)
+        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
+        #expect(
+            webViewSpy.evaluateJavaScriptCalls.last
+                == .init(javaScript: javascript, frame: .none, contentWorld: .page)
+        )
+        #expect(effect == .none)
+    }
+
+    @Test
+    func toolsSheetAction_CloseTapped_DismissesSheet() async {
+        _ = await sut.send(action: .showSheet(.tools))
+
+        let effect = await sut.send(action: .toolsSheetAction(.closeTapped))
+
+        #expect(sut.state.activeSheet == nil)
+        #expect(effect == .none)
+    }
+
+    // MARK: - .modelSelectionSheetAction action
+
+    @Test(.stubbedUUID(UUID(uuidString: "B4C5D6E7-F8A9-0123-B890-234567890123")!))
+    func modelSelectionSheetAction_ModelSelected_DismissesSheetAndChangesModel() async {
+        webBridge.attach(to: webViewSpy)
+        _ = await sut.send(action: .taskStarted)
+        _ = await sut.send(action: .showSheet(.modelSelection))
+
+        let effect = await sut.send(action: .modelSelectionSheetAction(.modelSelected(.fast)))
+
+        let javascript = "window.nativeComposerApi?.changeModel('B4C5D6E7-F8A9-0123-B890-234567890123', 'Fast');"
+
+        #expect(sut.state.activeSheet == nil)
+        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
+        #expect(
+            webViewSpy.evaluateJavaScriptCalls.last
+                == .init(javaScript: javascript, frame: .none, contentWorld: .page)
+        )
+        #expect(effect == .none)
+    }
+
+    @Test
+    func modelSelectionSheetAction_CloseTapped_DismissesSheet() async {
+        _ = await sut.send(action: .showSheet(.modelSelection))
+
+        let effect = await sut.send(action: .modelSelectionSheetAction(.closeTapped))
+
+        #expect(sut.state.activeSheet == nil)
+        #expect(effect == .none)
+    }
+
     // MARK: - .uploadFiles action
 
     @Test

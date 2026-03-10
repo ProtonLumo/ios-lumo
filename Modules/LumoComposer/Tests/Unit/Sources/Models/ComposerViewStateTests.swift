@@ -24,7 +24,8 @@ struct ComposerViewStateTests {
                         showTermsAndPrivacy: true,
                         attachedFiles: [],
                         featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
-                    )
+                    ),
+                    activeSheet: .none
                 )
         )
     }
@@ -120,7 +121,8 @@ private extension ComposerViewState {
                 showTermsAndPrivacy: true,
                 attachedFiles: [],
                 featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true)
-            )
+            ),
+            activeSheet: .none
         )
     }
 }

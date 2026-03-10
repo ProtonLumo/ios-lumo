@@ -5,10 +5,10 @@ import SwiftUI
 public struct ComposerScreen<WebContent: View>: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var store: ComposerStateStore
-    @State private var activeSheet: ActiveSheet?
-    @State private var sheetHeight: CGFloat = 250
     private let isWebViewReady: Bool
     @ViewBuilder private let webContent: () -> WebContent
+
+    @State private var sheetHeight: CGFloat = 250
 
     public init(
         webBridge: WebComposerBridging,
@@ -83,7 +83,7 @@ public struct ComposerScreen<WebContent: View>: View {
         }
         .task { store.send(action: .taskStarted) }
         .onDisappear { store.send(action: .onDisappear) }
-        .sheet(item: $activeSheet) { sheet in
+        .sheet(item: activeSheetBinding) { sheet in
             sheetContent(for: sheet)
                 .background {
                     GeometryReader { geometry in
@@ -103,37 +103,25 @@ public struct ComposerScreen<WebContent: View>: View {
         case .tools:
             ToolsSheetView(
                 isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
-                action: handle(toolsSheetAction:)
+                action: { action in store.send(action: .toolsSheetAction(action)) }
             )
         case .modelSelection:
             ModelSelectionSheetView(
                 selectedModel: store.state.webState.model,
-                action: handle(modelSelectionSheetAction:)
+                action: { action in store.send(action: .modelSelectionSheetAction(action)) }
             )
         }
     }
 
-    private func handle(toolsSheetAction action: ToolsSheetView.Action) {
-        switch action {
-        case .createImageTapped:
-            store.send(action: .toggleCreateImageTapped)
-            activeSheet = nil
-        case .webSearchToggled:
-            store.send(action: .toggleWebSearchTapped)
-        case .closeTapped:
-            activeSheet = nil
-        }
-    }
-
-    private func handle(modelSelectionSheetAction action: ModelSelectionSheetView.Action) {
-        switch action {
-        case .modelSelected(let model):
-            // FIXME: Show upsell for free users when model == .thinking
-            store.send(action: .changeModelTapped(model))
-            activeSheet = nil
-        case .closeTapped:
-            activeSheet = nil
-        }
+    private var activeSheetBinding: Binding<ActiveSheet?> {
+        Binding(
+            get: { store.state.activeSheet },
+            set: { newValue in
+                if newValue == nil {
+                    store.send(action: .dismissActiveSheet)
+                }
+            }
+        )
     }
 
     // MARK: - Private
@@ -166,9 +154,9 @@ public struct ComposerScreen<WebContent: View>: View {
         case .exitImageModeTapped:
             store.send(action: .toggleCreateImageTapped)
         case .toolsTapped:
-            activeSheet = .tools
+            store.send(action: .showSheet(.tools))
         case .modelSelectionTapped:
-            activeSheet = .modelSelection
+            store.send(action: .showSheet(.modelSelection))
         case .microphoneTapped:
             store.send(action: .startRecordingTapped)
         case .attachmentTapped(let id):
@@ -224,15 +212,6 @@ public struct ComposerScreen<WebContent: View>: View {
         let lightItem = LottieAnimations.LumoCat.light
 
         return colorScheme == .dark ? darkItem : lightItem
-    }
-}
-
-private enum ActiveSheet: String, Identifiable {
-    case tools
-    case modelSelection
-
-    var id: String {
-        rawValue
     }
 }
 

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FeatureFlagsKey: EnvironmentKey {
-    static let defaultValue: WebComposerState.FeatureFlags = .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
+    static let defaultValue: WebComposerState.FeatureFlags = .initial
 }
 
 extension EnvironmentValues {

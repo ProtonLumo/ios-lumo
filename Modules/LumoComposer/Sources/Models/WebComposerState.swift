@@ -79,7 +79,13 @@ extension WebComposerState {
             isVisible: true,
             showTermsAndPrivacy: true,
             attachedFiles: [],
-            featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
+            featureFlags: .initial
         )
+    }
+}
+
+extension WebComposerState.FeatureFlags {
+    static var initial: Self {
+        .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
     }
 }

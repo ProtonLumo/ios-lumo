@@ -19,6 +19,11 @@ final class ComposerStateStore: StateStore {
         case startRecordingTapped
         case previewAttachmentTapped(id: String)
         case removeAttachmentTapped(id: String)
+
+        case showSheet(ActiveSheet)
+        case dismissActiveSheet
+        case toolsSheetAction(ToolsSheetView.Action)
+        case modelSelectionSheetAction(ModelSelectionSheetView.Action)
     }
 
     enum Effect: Equatable {
@@ -127,6 +132,43 @@ final class ComposerStateStore: StateStore {
         case .removeAttachmentTapped(let id):
             return await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.removeAttachment(id: id)
+            }
+
+        case .showSheet(let sheet):
+            state = state.copy(\.activeSheet, to: sheet)
+            return .none
+
+        case .dismissActiveSheet:
+            state = state.copy(\.activeSheet, to: nil)
+            return .none
+
+        case .toolsSheetAction(let action):
+            switch action {
+            case .createImageTapped:
+                state = state.copy(\.activeSheet, to: nil)
+                return await execute { () async throws(WebComposerBridgeError) in
+                    try await webBridge.toggleCreateImage()
+                }
+            case .webSearchToggled:
+                return await execute { () async throws(WebComposerBridgeError) in
+                    try await webBridge.toggleWebSearch()
+                }
+            case .closeTapped:
+                state = state.copy(\.activeSheet, to: nil)
+                return .none
+            }
+
+        case .modelSelectionSheetAction(let action):
+            switch action {
+            case .modelSelected(let model):
+                // FIXME: Show upsell for free users when model == .thinking
+                state = state.copy(\.activeSheet, to: nil)
+                return await execute { () async throws(WebComposerBridgeError) in
+                    try await webBridge.changeModel(model)
+                }
+            case .closeTapped:
+                state = state.copy(\.activeSheet, to: nil)
+                return .none
             }
         }
     }
