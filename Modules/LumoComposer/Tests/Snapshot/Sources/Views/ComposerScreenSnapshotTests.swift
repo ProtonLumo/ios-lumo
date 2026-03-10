@@ -45,21 +45,6 @@ struct ComposerScreenSnapshotTests {
     @Test(.lottiePaused(at: 0.0))
     func composerScreenIdle() {
         let state: ComposerViewState = .initial
-            .copy(
-                \.webState,
-                to: .init(
-                    mode: .working,
-                    model: .fast,
-                    isGhostModeEnabled: false,
-                    isWebSearchEnabled: true,
-                    isCreateImageEnabled: false,
-                    isVisible: true,
-                    showTermsAndPrivacy: false,
-                    attachedFiles: [],
-                    featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
-                )
-            )
-            .copy(\.currentText, to: "")
             .copy(\.isWebViewReady, to: true)
         let sut = makeSUT(initialState: state)
 
