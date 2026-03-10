@@ -2,12 +2,18 @@ import LumoCore
 import WebKit
 
 /// Errors that can occur during bridge operations.
-public enum WebComposerBridgeError: Error, Equatable {
+public enum WebComposerBridgeError: Error, Equatable, LocalizedError {
     /// JavaScript evaluation failed for the given command
     case evaluatingJSFailed(WebComposerBridge.Command)
 
     /// WebView is not attached - call `attach(to:)` first
     case webViewNotAttached
+
+    // MARK: - LocalizedError
+
+    public var errorDescription: String? {
+        String(localized: L10n.Error.generic)
+    }
 }
 
 public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging, WebComposerStateReceiving, WebComposerErrorReceiving {

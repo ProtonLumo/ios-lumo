@@ -27,6 +27,14 @@ enum L10n {
         }
     }
 
+    enum Error {
+        static let generic = LocalizedStringResource(
+            "Something went wrong. Please try again.",
+            bundle: .module,
+            comment: "Generic error message shown in a toast when communication between the iOS app and the Web API fails (e.g. sending a prompt, toggling web search, changing the model)"
+        )
+    }
+
     enum Attachment {
         static let protonDrive = LocalizedStringResource(
             "Proton Drive",

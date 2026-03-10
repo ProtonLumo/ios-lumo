@@ -1,11 +1,13 @@
 import Lottie
 import LumoDesignSystem
+import ProtonUIFoundations
 import SwiftUI
 
 public struct ComposerScreen<WebContent: View>: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var store: ComposerStateStore
     private let isWebViewReady: Bool
+    private let toastStateStore: ToastStateStore
     @ViewBuilder private let webContent: () -> WebContent
 
     @State private var sheetHeight: CGFloat = 250
@@ -13,12 +15,14 @@ public struct ComposerScreen<WebContent: View>: View {
     public init(
         webBridge: WebComposerBridging,
         isWebViewReady: Bool,
+        toastStateStore: ToastStateStore,
         webContent: @escaping () -> WebContent
     ) {
         self.init(
             initialState: .initial,
             webBridge: webBridge,
             isWebViewReady: isWebViewReady,
+            toastStateStore: toastStateStore,
             webContent: webContent
         )
     }
@@ -28,15 +32,18 @@ public struct ComposerScreen<WebContent: View>: View {
         initialState: ComposerViewState,
         webBridge: WebComposerBridging,
         isWebViewReady: Bool,
+        toastStateStore: ToastStateStore,
         webContent: @escaping () -> WebContent
     ) {
         _store = .init(
             wrappedValue: .init(
                 initialState: initialState,
-                webBridge: webBridge
+                webBridge: webBridge,
+                toastStateStore: toastStateStore
             )
         )
         self.isWebViewReady = isWebViewReady
+        self.toastStateStore = toastStateStore
         self.webContent = webContent
     }
 
@@ -229,6 +236,7 @@ private struct SheetHeightKey: PreferenceKey {
             initialState: .initial,
             webBridge: WebComposerBridge(),
             isWebViewReady: true,
+            toastStateStore: ToastStateStore(initialState: .initial),
             webContent: { EmptyView() }
         )
     }

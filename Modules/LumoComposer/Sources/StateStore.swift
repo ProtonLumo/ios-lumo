@@ -4,12 +4,10 @@ import Combine
 protocol StateStore: ObservableObject where Action: Sendable {
     associatedtype State
     associatedtype Action
-    associatedtype Effect
 
     var state: State { get set }
 
-    @discardableResult
-    func send(action: Action) async -> Effect
+    func send(action: Action) async
 }
 
 extension StateStore {

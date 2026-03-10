@@ -1,3 +1,4 @@
+import ProtonUIFoundations
 import SnapshotTesting
 import SwiftUI
 import Testing
@@ -80,6 +81,7 @@ struct ComposerScreenSnapshotTests {
             initialState: initialState,
             webBridge: WebComposerBridge(),
             isWebViewReady: false,
+            toastStateStore: ToastStateStore(initialState: .initial),
             webContent: { EmptyView() }
         )
     }

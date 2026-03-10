@@ -425,6 +425,9 @@
     "Solves complex problems" : {
       "comment" : "Subtitle describing the Thinking model in the model selection sheet"
     },
+    "Something went wrong. Please try again." : {
+      "comment" : "Generic error message shown in a toast when communication between the iOS app and the Web API fails (e.g. sending a prompt, toggling web search, changing the model)"
+    },
     "Thinking" : {
       "comment" : "Name of the Thinking model in the model selection sheet. Note: 'lumo+' badge is shown separately in the UI and should not be included here."
     },

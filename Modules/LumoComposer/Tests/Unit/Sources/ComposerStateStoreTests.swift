@@ -1,5 +1,6 @@
 import Combine
 import Difference
+import ProtonUIFoundations
 import Testing
 import WebKit
 
@@ -9,7 +10,8 @@ import WebKit
 final class ComposerStateStoreTests {
     let webViewSpy = WKWebViewSpy()
     let webBridge = WebComposerBridge()
-    lazy var sut = ComposerStateStore(initialState: initialState, webBridge: webBridge)
+    let toastStateStore = ToastStateStore(initialState: .initial)
+    lazy var sut = ComposerStateStore(initialState: initialState, webBridge: webBridge, toastStateStore: toastStateStore)
 
     var initialState = ComposerViewState.initial
     var cancellables: Set<AnyCancellable> = []
@@ -26,9 +28,8 @@ final class ComposerStateStoreTests {
 
         expectDiff(stateChanges, [initialState])
 
-        let effect = await sut.send(action: .webViewReadyChanged(true))
+        await sut.send(action: .webViewReadyChanged(true))
 
-        #expect(effect == .none)
         expectDiff(
             stateChanges,
             [
@@ -46,9 +47,7 @@ final class ComposerStateStoreTests {
 
         #expect(sut.state.webState.mode == .idle)
 
-        let effect = await sut.send(action: .taskStarted)
-
-        #expect(effect == .none)
+        await sut.send(action: .taskStarted)
 
         simulateWebStateChange(
             lumoMode: "Working",
@@ -70,7 +69,7 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .onDisappear)
+        await sut.send(action: .onDisappear)
 
         simulateWebStateChange(
             lumoMode: "Working",
@@ -84,7 +83,7 @@ final class ComposerStateStoreTests {
         await Task.yield()
 
         #expect(sut.state.webState.mode == .idle)
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     // MARK: - .textChanged action
@@ -93,10 +92,10 @@ final class ComposerStateStoreTests {
     func textChangedAction_ItUpdatesStateCorrectly() async {
         #expect(sut.state == initialState)
 
-        let effect = await sut.send(action: .textChanged("Where Apple Park is located?"))
+        await sut.send(action: .textChanged("Where Apple Park is located?"))
 
         #expect(sut.state == initialState.copy(\.currentText, to: "Where Apple Park is located?"))
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     // MARK: - .sendPrompt action
@@ -111,7 +110,7 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .textChanged("Tell me something about AI"))
 
-        let effect = await sut.send(action: .sendPromptTapped)
+        await sut.send(action: .sendPromptTapped)
 
         expectDiff(
             stateChanges,
@@ -122,7 +121,7 @@ final class ComposerStateStoreTests {
                 initialState.copy(\.currentText, to: "Tell me something about AI"),
             ]
         )
-        #expect(effect == .error(.webViewNotAttached))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     @Test(.stubbedUUID(.testData))
@@ -140,7 +139,7 @@ final class ComposerStateStoreTests {
         _ = await sut.send(action: .taskStarted)
         _ = await sut.send(action: .textChanged("How to make proper neapolitan pizza?"))
 
-        let effect = await sut.send(action: .sendPromptTapped)
+        await sut.send(action: .sendPromptTapped)
 
         let javaScript = """
             window.nativeComposerApi?.sendPrompt('\(UUID.testData.uuidString)', 'How to make proper neapolitan pizza?');
@@ -200,7 +199,7 @@ final class ComposerStateStoreTests {
                 initialState,
             ]
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test
@@ -220,7 +219,7 @@ final class ComposerStateStoreTests {
 
         webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
 
-        let effect = await sut.send(action: .sendPromptTapped)
+        await sut.send(action: .sendPromptTapped)
 
         expectDiff(
             stateChanges,
@@ -231,7 +230,7 @@ final class ComposerStateStoreTests {
                 initialState.copy(\.currentText, to: "Tell me a story"),
             ]
         )
-        #expect(effect == .error(.evaluatingJSFailed(.sendPrompt("Tell me a story"))))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     // MARK: - .sendPrompt action - Text Escaping
@@ -299,7 +298,7 @@ final class ComposerStateStoreTests {
         webBridge.attach(to: webViewSpy)
 
         _ = await sut.send(action: .textChanged(testCase.input))
-        let effect = await sut.send(action: .sendPromptTapped)
+        await sut.send(action: .sendPromptTapped)
 
         let javaScript = "window.nativeComposerApi?.sendPrompt('\(UUID.testData.uuidString)', '\(testCase.expectedOutput)');"
 
@@ -313,16 +312,16 @@ final class ComposerStateStoreTests {
                 ),
             testCase.comment
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     // MARK: - .stopResponse action
 
     @Test
     func stopResponseAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
-        let effect = await sut.send(action: .stopResponseTapped)
+        await sut.send(action: .stopResponseTapped)
 
-        #expect(effect == .error(.webViewNotAttached))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     @Test(.stubbedUUID(.testData2))
@@ -330,7 +329,7 @@ final class ComposerStateStoreTests {
         webBridge.attach(to: webViewSpy)
 
         _ = await sut.send(action: .taskStarted)
-        let effect = await sut.send(action: .stopResponseTapped)
+        await sut.send(action: .stopResponseTapped)
 
         let javaScript = "window.nativeComposerApi?.abortPrompt('\(UUID.testData2.uuidString)');"
 
@@ -343,7 +342,7 @@ final class ComposerStateStoreTests {
                     contentWorld: .page
                 )
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test
@@ -353,18 +352,18 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .stopResponseTapped)
+        await sut.send(action: .stopResponseTapped)
 
-        #expect(effect == .error(.evaluatingJSFailed(.stopResponse)))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     // MARK: - .toggleWebSearch action
 
     @Test
     func toggleWebSearchAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
-        let effect = await sut.send(action: .toggleWebSearchTapped)
+        await sut.send(action: .toggleWebSearchTapped)
 
-        #expect(effect == .error(.webViewNotAttached))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     @Test(.stubbedUUID(.testData3))
@@ -373,7 +372,7 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .toggleWebSearchTapped)
+        await sut.send(action: .toggleWebSearchTapped)
 
         let javascript = "window.nativeComposerApi?.toggleWebSearch('\(UUID.testData3.uuidString)');"
 
@@ -386,7 +385,7 @@ final class ComposerStateStoreTests {
                     contentWorld: .page
                 )
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test
@@ -396,18 +395,18 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .toggleWebSearchTapped)
+        await sut.send(action: .toggleWebSearchTapped)
 
-        #expect(effect == .error(.evaluatingJSFailed(.toggleWebSearch)))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     // MARK: - .previewAttachment action
 
     @Test
     func previewAttachmentAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
-        let effect = await sut.send(action: .previewAttachmentTapped(id: "attachment-123"))
+        await sut.send(action: .previewAttachmentTapped(id: "attachment-123"))
 
-        #expect(effect == .error(.webViewNotAttached))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     @Test(.stubbedUUID(.testData))
@@ -416,7 +415,7 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .previewAttachmentTapped(id: "attachment-456"))
+        await sut.send(action: .previewAttachmentTapped(id: "attachment-456"))
 
         let javascript = "window.nativeComposerApi?.previewFile('\(UUID.testData.uuidString)', 'attachment-456');"
 
@@ -429,7 +428,7 @@ final class ComposerStateStoreTests {
                     contentWorld: .page
                 )
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test
@@ -439,18 +438,18 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .previewAttachmentTapped(id: "attachment-789"))
+        await sut.send(action: .previewAttachmentTapped(id: "attachment-789"))
 
-        #expect(effect == .error(.evaluatingJSFailed(.previewAttachment(id: "attachment-789"))))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     // MARK: - .removeAttachment action
 
     @Test
     func removeAttachmentAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
-        let effect = await sut.send(action: .removeAttachmentTapped(id: "attachment-123"))
+        await sut.send(action: .removeAttachmentTapped(id: "attachment-123"))
 
-        #expect(effect == .error(.webViewNotAttached))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     @Test(.stubbedUUID(.testData2))
@@ -459,7 +458,7 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .removeAttachmentTapped(id: "attachment-789"))
+        await sut.send(action: .removeAttachmentTapped(id: "attachment-789"))
 
         let javascript = "window.nativeComposerApi?.removeFileEvent('\(UUID.testData2.uuidString)', 'attachment-789');"
 
@@ -472,7 +471,7 @@ final class ComposerStateStoreTests {
                     contentWorld: .page
                 )
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test
@@ -483,37 +482,35 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .removeAttachmentTapped(id: "attachment-789"))
+        await sut.send(action: .removeAttachmentTapped(id: "attachment-789"))
 
-        #expect(effect == .error(.evaluatingJSFailed(.removeAttachment(id: "attachment-789"))))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     // MARK: - .startRecording action
 
     @Test
-    func startRecordingAction_ReturnsNoneEffect() async {
+    func startRecordingAction_DoesNothing() async {
         // FIXME: Implement when UI is migrated from main target
-        let effect = await sut.send(action: .startRecordingTapped)
-
-        #expect(effect == .none)
+        await sut.send(action: .startRecordingTapped)
     }
 
     // MARK: - .showSheet action
 
     @Test
     func showSheetAction_Tools_SetsActiveSheet() async {
-        let effect = await sut.send(action: .showSheet(.tools))
+        await sut.send(action: .showSheet(.tools))
 
         #expect(sut.state.activeSheet == .tools)
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test
     func showSheetAction_ModelSelection_SetsActiveSheet() async {
-        let effect = await sut.send(action: .showSheet(.modelSelection))
+        await sut.send(action: .showSheet(.modelSelection))
 
         #expect(sut.state.activeSheet == .modelSelection)
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     // MARK: - .dismissActiveSheet action
@@ -522,10 +519,10 @@ final class ComposerStateStoreTests {
     func dismissActiveSheetAction_ClearsActiveSheet() async {
         _ = await sut.send(action: .showSheet(.tools))
 
-        let effect = await sut.send(action: .dismissActiveSheet)
+        await sut.send(action: .dismissActiveSheet)
 
         #expect(sut.state.activeSheet == nil)
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     // MARK: - .toolsSheetAction action
@@ -536,7 +533,7 @@ final class ComposerStateStoreTests {
         _ = await sut.send(action: .taskStarted)
         _ = await sut.send(action: .showSheet(.tools))
 
-        let effect = await sut.send(action: .toolsSheetAction(.createImageTapped))
+        await sut.send(action: .toolsSheetAction(.createImageTapped))
 
         let javascript = "window.nativeComposerApi?.toggleCreateImage('\(UUID.testData3.uuidString)');"
 
@@ -546,7 +543,7 @@ final class ComposerStateStoreTests {
             webViewSpy.evaluateJavaScriptCalls.last
                 == .init(javaScript: javascript, frame: .none, contentWorld: .page)
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test(.stubbedUUID(.testData))
@@ -555,7 +552,7 @@ final class ComposerStateStoreTests {
         _ = await sut.send(action: .taskStarted)
         _ = await sut.send(action: .showSheet(.tools))
 
-        let effect = await sut.send(action: .toolsSheetAction(.webSearchToggled))
+        await sut.send(action: .toolsSheetAction(.webSearchToggled))
 
         let javascript = "window.nativeComposerApi?.toggleWebSearch('\(UUID.testData.uuidString)');"
 
@@ -565,17 +562,17 @@ final class ComposerStateStoreTests {
             webViewSpy.evaluateJavaScriptCalls.last
                 == .init(javaScript: javascript, frame: .none, contentWorld: .page)
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test
     func toolsSheetAction_CloseTapped_DismissesSheet() async {
         _ = await sut.send(action: .showSheet(.tools))
 
-        let effect = await sut.send(action: .toolsSheetAction(.closeTapped))
+        await sut.send(action: .toolsSheetAction(.closeTapped))
 
         #expect(sut.state.activeSheet == nil)
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     // MARK: - .modelSelectionSheetAction action
@@ -586,7 +583,7 @@ final class ComposerStateStoreTests {
         _ = await sut.send(action: .taskStarted)
         _ = await sut.send(action: .showSheet(.modelSelection))
 
-        let effect = await sut.send(action: .modelSelectionSheetAction(.modelSelected(.fast)))
+        await sut.send(action: .modelSelectionSheetAction(.modelSelected(.fast)))
 
         let javascript = "window.nativeComposerApi?.changeModel('\(UUID.testData2.uuidString)', 'Fast');"
 
@@ -596,17 +593,17 @@ final class ComposerStateStoreTests {
             webViewSpy.evaluateJavaScriptCalls.last
                 == .init(javaScript: javascript, frame: .none, contentWorld: .page)
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test
     func modelSelectionSheetAction_CloseTapped_DismissesSheet() async {
         _ = await sut.send(action: .showSheet(.modelSelection))
 
-        let effect = await sut.send(action: .modelSelectionSheetAction(.closeTapped))
+        await sut.send(action: .modelSelectionSheetAction(.closeTapped))
 
         #expect(sut.state.activeSheet == nil)
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     // MARK: - .uploadFiles action
@@ -614,9 +611,9 @@ final class ComposerStateStoreTests {
     @Test
     func uploadFilesAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
         let files = [FileUploadData(base64: "YmFzZTY0ZGF0YQ==", name: "test.pdf")]
-        let effect = await sut.send(action: .uploadFilesTapped(files))
+        await sut.send(action: .uploadFilesTapped(files))
 
-        #expect(effect == .error(.webViewNotAttached))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     @Test(.stubbedUUID(.testData3))
@@ -629,7 +626,7 @@ final class ComposerStateStoreTests {
             FileUploadData(base64: "ZGF0YTE=", name: "file1.pdf"),
             FileUploadData(base64: "ZGF0YTI=", name: "file2.png"),
         ]
-        let effect = await sut.send(action: .uploadFilesTapped(files))
+        await sut.send(action: .uploadFilesTapped(files))
 
         let javascript = "window.nativeComposerApi?.uploadFiles('\(UUID.testData3.uuidString)', [{ base64: 'ZGF0YTE=', name: 'file1.pdf' }, { base64: 'ZGF0YTI=', name: 'file2.png' }]);"
 
@@ -642,7 +639,7 @@ final class ComposerStateStoreTests {
                     contentWorld: .page
                 )
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test
@@ -653,18 +650,18 @@ final class ComposerStateStoreTests {
         _ = await sut.send(action: .taskStarted)
 
         let files = [FileUploadData(base64: "data", name: "test.pdf")]
-        let effect = await sut.send(action: .uploadFilesTapped(files))
+        await sut.send(action: .uploadFilesTapped(files))
 
-        #expect(effect == .error(.evaluatingJSFailed(.uploadFiles(files))))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     // MARK: - .openProtonDrive action
 
     @Test
     func openProtonDriveAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
-        let effect = await sut.send(action: .openProtonDriveTapped)
+        await sut.send(action: .openProtonDriveTapped)
 
-        #expect(effect == .error(.webViewNotAttached))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     @Test(.stubbedUUID(.testData))
@@ -673,7 +670,7 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .openProtonDriveTapped)
+        await sut.send(action: .openProtonDriveTapped)
 
         let javascript = "window.nativeComposerApi?.openProtonDrive('\(UUID.testData.uuidString)');"
 
@@ -686,7 +683,7 @@ final class ComposerStateStoreTests {
                     contentWorld: .page
                 )
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test
@@ -696,18 +693,18 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .openProtonDriveTapped)
+        await sut.send(action: .openProtonDriveTapped)
 
-        #expect(effect == .error(.evaluatingJSFailed(.openProtonDrive)))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     // MARK: - .openSketch action
 
     @Test
     func openSketchAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
-        let effect = await sut.send(action: .openSketchTapped)
+        await sut.send(action: .openSketchTapped)
 
-        #expect(effect == .error(.webViewNotAttached))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     @Test(.stubbedUUID(.testData2))
@@ -716,7 +713,7 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .openSketchTapped)
+        await sut.send(action: .openSketchTapped)
 
         let javascript = "window.nativeComposerApi?.openSketch('\(UUID.testData2.uuidString)');"
 
@@ -729,7 +726,7 @@ final class ComposerStateStoreTests {
                     contentWorld: .page
                 )
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test
@@ -739,18 +736,18 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .openSketchTapped)
+        await sut.send(action: .openSketchTapped)
 
-        #expect(effect == .error(.evaluatingJSFailed(.openSketch)))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     // MARK: - .toggleCreateImage action
 
     @Test
     func toggleCreateImageAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
-        let effect = await sut.send(action: .toggleCreateImageTapped)
+        await sut.send(action: .toggleCreateImageTapped)
 
-        #expect(effect == .error(.webViewNotAttached))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     @Test(.stubbedUUID(.testData3))
@@ -759,7 +756,7 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .toggleCreateImageTapped)
+        await sut.send(action: .toggleCreateImageTapped)
 
         let javascript = "window.nativeComposerApi?.toggleCreateImage('\(UUID.testData3.uuidString)');"
 
@@ -772,7 +769,7 @@ final class ComposerStateStoreTests {
                     contentWorld: .page
                 )
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test
@@ -782,18 +779,18 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .toggleCreateImageTapped)
+        await sut.send(action: .toggleCreateImageTapped)
 
-        #expect(effect == .error(.evaluatingJSFailed(.toggleCreateImage)))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     // MARK: - .changeModel action
 
     @Test
     func changeModelAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
-        let effect = await sut.send(action: .changeModelTapped(.fast))
+        await sut.send(action: .changeModelTapped(.fast))
 
-        #expect(effect == .error(.webViewNotAttached))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     @Test(.stubbedUUID(.testData))
@@ -802,7 +799,7 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .changeModelTapped(.thinking))
+        await sut.send(action: .changeModelTapped(.thinking))
 
         let javascript = "window.nativeComposerApi?.changeModel('\(UUID.testData.uuidString)', 'Thinking');"
 
@@ -815,7 +812,7 @@ final class ComposerStateStoreTests {
                     contentWorld: .page
                 )
         )
-        #expect(effect == .none)
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     @Test(.stubbedUUID(.testData2))
@@ -847,9 +844,9 @@ final class ComposerStateStoreTests {
 
         _ = await sut.send(action: .taskStarted)
 
-        let effect = await sut.send(action: .changeModelTapped(.auto))
+        await sut.send(action: .changeModelTapped(.auto))
 
-        #expect(effect == .error(.evaluatingJSFailed(.changeModel(.auto))))
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     // MARK: - Web State observation
@@ -866,9 +863,7 @@ final class ComposerStateStoreTests {
 
         expectDiff(stateChanges, [initialState])
 
-        let effect = await sut.send(action: .taskStarted)
-
-        #expect(effect == .none)
+        await sut.send(action: .taskStarted)
 
         simulateWebStateChange(
             lumoMode: "Working",
@@ -948,6 +943,10 @@ final class ComposerStateStoreTests {
 
         webBridge.handleStateChange(state: state)
     }
+}
+
+private extension Toast {
+    static let bridgeError = Toast.error(message: WebComposerBridgeError.webViewNotAttached.localizedDescription)
 }
 
 private extension UUID {
