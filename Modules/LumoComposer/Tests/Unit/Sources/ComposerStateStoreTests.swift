@@ -194,7 +194,7 @@ final class ComposerStateStoreTests {
                         isVisible: true,
                         showTermsAndPrivacy: true,
                         attachedFiles: [],
-                        featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
+                        featureFlags: .initial
                     )
                 ),
                 initialState,
@@ -901,7 +901,7 @@ final class ComposerStateStoreTests {
                             attachedFiles: [
                                 File(id: "<id_1>", name: "document.pdf", type: .pdf, preview: .none)
                             ],
-                            featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
+                            featureFlags: .initial
                         )
                     ),
             ]

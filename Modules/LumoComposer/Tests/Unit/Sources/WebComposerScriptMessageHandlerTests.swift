@@ -58,7 +58,7 @@ final class WebComposerScriptMessageHandlerTests {
                     isVisible: true,
                     showTermsAndPrivacy: true,
                     attachedFiles: [],
-                    featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
+                    featureFlags: .initial
                 )
             ),
             TestCase(

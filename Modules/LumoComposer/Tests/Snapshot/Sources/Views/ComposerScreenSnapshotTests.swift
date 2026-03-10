@@ -65,7 +65,7 @@ struct ComposerScreenSnapshotTests {
                     isVisible: false,
                     showTermsAndPrivacy: false,
                     attachedFiles: [],
-                    featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
+                    featureFlags: .initial
                 )
             )
         let sut = makeSUT(initialState: state)
