@@ -114,6 +114,7 @@
             removeUnwantedLinks();
             removeIfExists('header > div > ul > li.no-print');
             removeIfExists('.button-for-icon.lumo-bf2025-promotion.button-promotion--icon-gradient.bf-2025-free', '');
+            removeIfExists('.lumo-spring-sale-2026-promotion', '');
         }
     });
     
