@@ -246,10 +246,10 @@ struct ComposerViewSnapshotTests {
         TestCase(
             initialText: "Process all these files",
             files: [
-                .init(id: "1", name: "Report.pdf", type: .pdf, preview: .none),
+                .init(id: "1", name: "Report.pdf", type: .pdf, preview: .portraitImage),
                 .init(id: "2", name: "Data.xls", type: .xls, preview: .none),
                 .init(id: "3", name: "Slides.ppt", type: .ppt, preview: .none),
-                .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
+                .init(id: "4", name: "Image.jpg", type: .image, preview: .landscapeImage),
                 .init(id: "5", name: "Video.mp4", type: .video, preview: .none),
             ],
             model: .fast,
