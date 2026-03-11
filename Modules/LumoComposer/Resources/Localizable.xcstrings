@@ -2,7 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Ask anything..." : {
-      "comment" : "Placeholder text shown in the composer input field when empty",
+      "comment" : "Placeholder text shown in the composer input field when empty for non-image mode",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -155,6 +155,12 @@
         }
       }
     },
+    "Auto" : {
+      "comment" : "Name of the Auto model in the model selection sheet"
+    },
+    "Auto choose the best model" : {
+      "comment" : "Subtitle describing the Auto model in the model selection sheet"
+    },
     "By using Lumo, you agree to our [Terms](%@) and [Privacy Policy](%@)." : {
       "comment" : "Terms and privacy policy agreement text with clickable links. The text uses Markdown format with embedded URLs that should not be translated.",
       "localizations" : {
@@ -231,6 +237,24 @@
           }
         }
       }
+    },
+    "Camera" : {
+      "comment" : "Attachment menu option to take a photo using the camera"
+    },
+    "Create image" : {
+      "comment" : "Option in tools sheet to enable image creation mode"
+    },
+    "Describe your image" : {
+      "comment" : "Placeholder text shown in the composer input field when empty for image mode"
+    },
+    "Draw a sketch" : {
+      "comment" : "Attachment menu option to draw a sketch and attach it to the message"
+    },
+    "Fast" : {
+      "comment" : "Name of the Fast model in the model selection sheet"
+    },
+    "Files" : {
+      "comment" : "Attachment menu option to attach a file from the device's file system"
     },
     "Hey, I'm Lumo." : {
       "comment" : "First line of welcome message - Lumo's introduction",
@@ -385,6 +409,33 @@
           }
         }
       }
+    },
+    "Models" : {
+      "comment" : "Title of the model selection bottom sheet"
+    },
+    "Photos" : {
+      "comment" : "Attachment menu option to select a photo from the photo library"
+    },
+    "Proton Drive" : {
+      "comment" : "Attachment menu option to attach a file from Proton Drive"
+    },
+    "Quick responses" : {
+      "comment" : "Subtitle describing the Fast model in the model selection sheet"
+    },
+    "Solves complex problems" : {
+      "comment" : "Subtitle describing the Thinking model in the model selection sheet"
+    },
+    "Something went wrong. Please try again." : {
+      "comment" : "Generic error message shown in a toast when communication between the iOS app and the Web API fails (e.g. sending a prompt, toggling web search, changing the model)"
+    },
+    "Thinking" : {
+      "comment" : "Name of the Thinking model in the model selection sheet. Note: 'lumo+' badge is shown separately in the UI and should not be included here."
+    },
+    "Tools" : {
+      "comment" : "Title of the tools bottom sheet"
+    },
+    "Web search" : {
+      "comment" : "Option in tools sheet to toggle web search"
     }
   },
   "version" : "1.1"

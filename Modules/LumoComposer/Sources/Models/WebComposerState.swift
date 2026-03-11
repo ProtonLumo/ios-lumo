@@ -10,47 +10,60 @@ public struct WebComposerState: Equatable, Decodable {
     /// This enum has only two states to keep the state machine simple:
     /// - `idle`: Lumo is ready to accept new input
     /// - `working`: Lumo is actively processing (thinking or responding)
-    enum Mode: String, Equatable, Decodable {
+    enum Mode: String, Decodable, Equatable {
         case idle = "Idle"
         case working = "Working"
     }
 
-    public enum ModelType: String, Equatable, Decodable {
+    public enum Model: String, CaseIterable, Decodable, Equatable, Sendable {
         case auto = "Auto"
         case fast = "Fast"
         case thinking = "Thinking"
     }
 
+    struct FeatureFlags: Equatable, Decodable {
+        let isImageGenEnabled: Bool
+        let isModelSelectionEnabled: Bool
+
+        enum CodingKeys: String, CodingKey {
+            case isImageGenEnabled
+            case isModelSelectionEnabled
+        }
+    }
+
     let mode: Mode
-    let modelType: ModelType
+    let model: Model
     let isGhostModeEnabled: Bool
     let isWebSearchEnabled: Bool
     let isCreateImageEnabled: Bool
     let isVisible: Bool
     let showTermsAndPrivacy: Bool
     let attachedFiles: [File]
+    let featureFlags: FeatureFlags
 
     enum CodingKeys: String, CodingKey {
         case mode = "lumoMode"
-        case modelType
+        case model = "modelType"
         case isGhostModeEnabled
         case isWebSearchEnabled
         case isCreateImageEnabled
         case isVisible
         case showTermsAndPrivacy = "showTsAndCs"
         case attachedFiles
+        case featureFlags
     }
 
     func copy(attachedFiles: [File]) -> Self {
         .init(
             mode: mode,
-            modelType: modelType,
+            model: model,
             isGhostModeEnabled: isGhostModeEnabled,
             isWebSearchEnabled: isWebSearchEnabled,
             isCreateImageEnabled: isCreateImageEnabled,
             isVisible: isVisible,
             showTermsAndPrivacy: showTermsAndPrivacy,
-            attachedFiles: attachedFiles
+            attachedFiles: attachedFiles,
+            featureFlags: featureFlags
         )
     }
 }
@@ -59,13 +72,20 @@ extension WebComposerState {
     static var initial: Self {
         .init(
             mode: .idle,
-            modelType: .auto,
+            model: .auto,
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             isCreateImageEnabled: false,
             isVisible: true,
             showTermsAndPrivacy: true,
-            attachedFiles: []
+            attachedFiles: [],
+            featureFlags: .initial
         )
+    }
+}
+
+extension WebComposerState.FeatureFlags {
+    static var initial: Self {
+        .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
     }
 }

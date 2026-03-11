@@ -16,6 +16,8 @@ struct ComposerViewState: Equatable, Copying {
     var isWebViewReady: Bool
     /// State synchronized from WebView
     var webState: WebComposerState
+    /// Currently presented sheet, or `nil` when no sheet is shown
+    var activeSheet: ActiveSheet?
     /// In-memory cache mapping file IDs to their base64 preview strings
     ///
     /// The WebAPI only returns `preview` on the first upload; subsequent state updates omit it.
@@ -26,12 +28,14 @@ struct ComposerViewState: Equatable, Copying {
         currentText: String,
         isProcessing: Bool,
         isWebViewReady: Bool,
-        webState: WebComposerState
+        webState: WebComposerState,
+        activeSheet: ActiveSheet?
     ) {
         self.currentText = currentText
         self.isProcessing = isProcessing
         self.isWebViewReady = isWebViewReady
         self.webState = webState
+        self.activeSheet = activeSheet
         self.filePreviewsCache = [:]
     }
 
@@ -98,7 +102,8 @@ extension ComposerViewState {
             currentText: "",
             isProcessing: false,
             isWebViewReady: false,
-            webState: .initial
+            webState: .initial,
+            activeSheet: .none
         )
     }
 }

@@ -16,14 +16,16 @@ struct ComposerViewStateTests {
                     isWebViewReady: false,
                     webState: .init(
                         mode: .idle,
-                        modelType: .auto,
+                        model: .auto,
                         isGhostModeEnabled: false,
                         isWebSearchEnabled: false,
                         isCreateImageEnabled: false,
                         isVisible: true,
                         showTermsAndPrivacy: true,
-                        attachedFiles: []
-                    )
+                        attachedFiles: [],
+                        featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
+                    ),
+                    activeSheet: .none
                 )
         )
     }
@@ -111,14 +113,16 @@ private extension ComposerViewState {
             isWebViewReady: isWebViewReady,
             webState: WebComposerState(
                 mode: mode,
-                modelType: .auto,
+                model: .auto,
                 isGhostModeEnabled: false,
                 isWebSearchEnabled: false,
                 isCreateImageEnabled: false,
                 isVisible: true,
                 showTermsAndPrivacy: true,
-                attachedFiles: []
-            )
+                attachedFiles: [],
+                featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true)
+            ),
+            activeSheet: .none
         )
     }
 }
@@ -127,13 +131,14 @@ private extension WebComposerState {
     static func testData(attachedFiles: [File]) -> Self {
         .init(
             mode: .idle,
-            modelType: .auto,
+            model: .auto,
             isGhostModeEnabled: false,
             isWebSearchEnabled: false,
             isCreateImageEnabled: false,
             isVisible: true,
             showTermsAndPrivacy: true,
-            attachedFiles: attachedFiles
+            attachedFiles: attachedFiles,
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true)
         )
     }
 }

@@ -1,4 +1,5 @@
 import Combine
+import ProtonUIFoundations
 import WebKit
 
 final class ComposerStateStore: StateStore {
@@ -15,32 +16,34 @@ final class ComposerStateStore: StateStore {
         case openSketchTapped
         case toggleWebSearchTapped
         case toggleCreateImageTapped
-        case changeModelTapped(WebComposerState.ModelType)
+        case changeModelTapped(WebComposerState.Model)
         case startRecordingTapped
         case previewAttachmentTapped(id: String)
         case removeAttachmentTapped(id: String)
-    }
 
-    enum Effect: Equatable {
-        case none
-        case error(WebComposerBridgeError)
+        case showSheet(ActiveSheet)
+        case dismissActiveSheet
+        case toolsSheetAction(ToolsSheetView.Action)
+        case modelSelectionSheetAction(ModelSelectionSheetView.Action)
     }
 
     @Published var state: ComposerViewState
 
     private let webBridge: WebComposerBridging
+    private let toastStateStore: ToastStateStore
     private var observationTask: Task<Void, Never>?
 
-    init(initialState: ComposerViewState, webBridge: WebComposerBridging) {
+    init(initialState: ComposerViewState, webBridge: WebComposerBridging, toastStateStore: ToastStateStore) {
         self.state = initialState
         self.webBridge = webBridge
+        self.toastStateStore = toastStateStore
     }
 
-    func send(action: Action) async -> Effect {
+    func send(action: Action) async {
         switch action {
         case .webViewReadyChanged(let newValue):
             state = state.copy(\.isWebViewReady, to: newValue)
-            return .none
+
         case .taskStarted:
             observationTask?.cancel()
             observationTask = Task {
@@ -49,16 +52,13 @@ final class ComposerStateStore: StateStore {
                     state = state.copy(applyingWebState: webState)
                 }
             }
-            return .none
 
         case .onDisappear:
             observationTask?.cancel()
             observationTask = nil
-            return .none
 
         case .textChanged(let newText):
             state = state.copy(\.currentText, to: newText)
-            return .none
 
         case .sendPromptTapped:
             let promptToSend: String = state.currentText
@@ -71,74 +71,105 @@ final class ComposerStateStore: StateStore {
             do {
                 try await webBridge.sendPrompt(promptToSend)
                 state = state.copy(\.isProcessing, to: false)
-                return .none
             } catch {
                 state =
                     state
                     .copy(\.currentText, to: promptToSend)
                     .copy(\.isProcessing, to: false)
-                return .error(error)
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
             }
 
         case .stopResponseTapped:
-            return await execute { () async throws(WebComposerBridgeError) in
+            await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.stopResponse()
             }
 
         case .uploadFilesTapped(let files):
-            return await execute { () async throws(WebComposerBridgeError) in
+            await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.uploadFiles(files)
             }
 
         case .openProtonDriveTapped:
-            return await execute { () async throws(WebComposerBridgeError) in
+            await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.openProtonDrive()
             }
 
         case .openSketchTapped:
-            return await execute { () async throws(WebComposerBridgeError) in
+            await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.openSketch()
             }
 
         case .toggleWebSearchTapped:
-            return await execute { () async throws(WebComposerBridgeError) in
+            await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.toggleWebSearch()
             }
 
         case .toggleCreateImageTapped:
-            return await execute { () async throws(WebComposerBridgeError) in
+            await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.toggleCreateImage()
             }
 
         case .changeModelTapped(let modelType):
-            return await execute { () async throws(WebComposerBridgeError) in
+            await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.changeModel(modelType)
             }
 
         case .startRecordingTapped:
             // FIXME: Implement when UI is migrated from main target
-            return .none
+            break
 
         case .previewAttachmentTapped(let id):
-            return await execute { () async throws(WebComposerBridgeError) in
+            await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.previewAttachment(id: id)
             }
 
         case .removeAttachmentTapped(let id):
-            return await execute { () async throws(WebComposerBridgeError) in
+            await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.removeAttachment(id: id)
+            }
+
+        case .showSheet(let sheet):
+            state = state.copy(\.activeSheet, to: sheet)
+
+        case .dismissActiveSheet:
+            state = state.copy(\.activeSheet, to: nil)
+
+        case .toolsSheetAction(let action):
+            switch action {
+            case .createImageTapped:
+                state = state.copy(\.activeSheet, to: nil)
+                await execute { () async throws(WebComposerBridgeError) in
+                    try await webBridge.toggleCreateImage()
+                }
+            case .webSearchToggled:
+                await execute { () async throws(WebComposerBridgeError) in
+                    try await webBridge.toggleWebSearch()
+                }
+            case .closeTapped:
+                state = state.copy(\.activeSheet, to: nil)
+            }
+
+        case .modelSelectionSheetAction(let action):
+            switch action {
+            case .modelSelected(let model):
+                // FIXME: Show upsell for free users when model == .thinking
+                state = state.copy(\.activeSheet, to: nil)
+                await execute { () async throws(WebComposerBridgeError) in
+                    try await webBridge.changeModel(model)
+                }
+            case .closeTapped:
+                state = state.copy(\.activeSheet, to: nil)
             }
         }
     }
 
     // MARK: - Private
 
-    private func execute(_ command: () async throws(WebComposerBridgeError) -> Void) async -> Effect {
+    private func execute(_ command: () async throws(WebComposerBridgeError) -> Void) async {
         do {
             try await command()
-            return .none
         } catch {
-            return .error(error)
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
     }
 }

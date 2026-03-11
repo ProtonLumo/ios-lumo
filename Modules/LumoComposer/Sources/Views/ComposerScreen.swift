@@ -1,22 +1,28 @@
 import Lottie
 import LumoDesignSystem
+import ProtonUIFoundations
 import SwiftUI
 
 public struct ComposerScreen<WebContent: View>: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var store: ComposerStateStore
     private let isWebViewReady: Bool
+    private let toastStateStore: ToastStateStore
     @ViewBuilder private let webContent: () -> WebContent
+
+    @State private var sheetHeight: CGFloat = 250
 
     public init(
         webBridge: WebComposerBridging,
         isWebViewReady: Bool,
+        toastStateStore: ToastStateStore,
         webContent: @escaping () -> WebContent
     ) {
         self.init(
             initialState: .initial,
             webBridge: webBridge,
             isWebViewReady: isWebViewReady,
+            toastStateStore: toastStateStore,
             webContent: webContent
         )
     }
@@ -26,15 +32,18 @@ public struct ComposerScreen<WebContent: View>: View {
         initialState: ComposerViewState,
         webBridge: WebComposerBridging,
         isWebViewReady: Bool,
+        toastStateStore: ToastStateStore,
         webContent: @escaping () -> WebContent
     ) {
         _store = .init(
             wrappedValue: .init(
                 initialState: initialState,
-                webBridge: webBridge
+                webBridge: webBridge,
+                toastStateStore: toastStateStore
             )
         )
         self.isWebViewReady = isWebViewReady
+        self.toastStateStore = toastStateStore
         self.webContent = webContent
     }
 
@@ -62,13 +71,15 @@ public struct ComposerScreen<WebContent: View>: View {
                                 set: { newValue in store.send(action: .textChanged(newValue)) }
                             ),
                             files: store.state.webState.attachedFiles,
+                            model: store.state.webState.model,
+                            isCreateImageEnabled: store.state.webState.isCreateImageEnabled,
                             isGhostModeEnabled: store.state.webState.isGhostModeEnabled,
                             isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
                             areButtonsDisabled: !store.state.isWebViewReady,
                             actionButton: store.state.actionButton,
                             action: handle(action:)
                         )
-                        .padding(.horizontal, DS.Spacing.tiny)
+                        .padding(.horizontal, DS.Spacing.large)
                         .padding(.bottom, DS.Spacing.standard)
                     }
                 }
@@ -79,6 +90,45 @@ public struct ComposerScreen<WebContent: View>: View {
         }
         .task { store.send(action: .taskStarted) }
         .onDisappear { store.send(action: .onDisappear) }
+        .sheet(item: activeSheetBinding) { sheet in
+            sheetContent(for: sheet)
+                .background {
+                    GeometryReader { geometry in
+                        Color.clear.preference(key: SheetHeightKey.self, value: geometry.size.height)
+                    }
+                }
+                .onPreferenceChange(SheetHeightKey.self) { sheetHeight = $0 }
+                .presentationDetents([.height(sheetHeight)])
+                .presentationDragIndicator(.visible)
+        }
+        .environment(\.featureFlags, store.state.webState.featureFlags)
+    }
+
+    @ViewBuilder
+    private func sheetContent(for sheet: ActiveSheet) -> some View {
+        switch sheet {
+        case .tools:
+            ToolsSheetView(
+                isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
+                action: { action in store.send(action: .toolsSheetAction(action)) }
+            )
+        case .modelSelection:
+            ModelSelectionSheetView(
+                selectedModel: store.state.webState.model,
+                action: { action in store.send(action: .modelSelectionSheetAction(action)) }
+            )
+        }
+    }
+
+    private var activeSheetBinding: Binding<ActiveSheet?> {
+        Binding(
+            get: { store.state.activeSheet },
+            set: { newValue in
+                if newValue == nil {
+                    store.send(action: .dismissActiveSheet)
+                }
+            }
+        )
     }
 
     // MARK: - Private
@@ -89,11 +139,31 @@ public struct ComposerScreen<WebContent: View>: View {
             store.send(action: .sendPromptTapped)
         case .stopTapped:
             store.send(action: .stopResponseTapped)
-        case .filePickerTapped:
-            // FIXME: Show UI menu instead
-            break
-        case .webSearchTapped:
-            store.send(action: .toggleWebSearchTapped)
+        case .attachmentOptionChosen(let option):
+            switch option {
+            case .protonDrive:
+                store.send(action: .openProtonDriveTapped)
+            case .files:
+                // FIXME: Open native files picker and transform selected file to base64 and use
+                // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
+                break
+            case .camera:
+                // FIXME: Open native camera picker and transform captured photo to base64 and use
+                // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
+                break
+            case .photos:
+                // FIXME: Open photos picker and transform selected photo to base64 and use
+                // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
+                break
+            case .sketch:
+                store.send(action: .openSketchTapped)
+            }
+        case .exitImageModeTapped:
+            store.send(action: .toggleCreateImageTapped)
+        case .toolsTapped:
+            store.send(action: .showSheet(.tools))
+        case .modelSelectionTapped:
+            store.send(action: .showSheet(.modelSelection))
         case .microphoneTapped:
             store.send(action: .startRecordingTapped)
         case .attachmentTapped(let id):
@@ -152,12 +222,21 @@ public struct ComposerScreen<WebContent: View>: View {
     }
 }
 
+private struct SheetHeightKey: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
 #if DEBUG
     #Preview {
         ComposerScreen(
             initialState: .initial,
             webBridge: WebComposerBridge(),
             isWebViewReady: true,
+            toastStateStore: ToastStateStore(initialState: .initial),
             webContent: { EmptyView() }
         )
     }

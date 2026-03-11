@@ -1,3 +1,4 @@
+import ProtonUIFoundations
 import SnapshotTesting
 import SwiftUI
 import Testing
@@ -20,7 +21,7 @@ struct ComposerScreenSnapshotTests {
                 \.webState,
                 to: .init(
                     mode: .working,
-                    modelType: .auto,
+                    model: .auto,
                     isGhostModeEnabled: false,
                     isWebSearchEnabled: true,
                     isCreateImageEnabled: false,
@@ -30,10 +31,21 @@ struct ComposerScreenSnapshotTests {
                         .init(id: "<id_1>", name: "selfie.png", type: .image, preview: .none),
                         .init(id: "<id_2>", name: "information_about_me.pdf", type: .pdf, preview: .none),
                         .init(id: "<id_3>", name: "data", type: .protonSheet, preview: .none),
-                    ])
+                    ],
+                    featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true)
+                )
             )
             .copy(\.currentText, to: "")
             .copy(\.isProcessing, to: true)
+            .copy(\.isWebViewReady, to: true)
+        let sut = makeSUT(initialState: state)
+
+        assertSnapshotsOnEdgeDevices(of: sut, drawHierarchyInKeyWindow: true)
+    }
+
+    @Test(.lottiePaused(at: 0.0))
+    func composerScreenIdle() {
+        let state: ComposerViewState = .initial
             .copy(\.isWebViewReady, to: true)
         let sut = makeSUT(initialState: state)
 
@@ -47,13 +59,14 @@ struct ComposerScreenSnapshotTests {
                 \.webState,
                 to: .init(
                     mode: .idle,
-                    modelType: .auto,
+                    model: .auto,
                     isGhostModeEnabled: false,
                     isWebSearchEnabled: false,
                     isCreateImageEnabled: false,
                     isVisible: false,
                     showTermsAndPrivacy: false,
-                    attachedFiles: []
+                    attachedFiles: [],
+                    featureFlags: .initial
                 )
             )
         let sut = makeSUT(initialState: state)
@@ -68,6 +81,7 @@ struct ComposerScreenSnapshotTests {
             initialState: initialState,
             webBridge: WebComposerBridge(),
             isWebViewReady: false,
+            toastStateStore: ToastStateStore(initialState: .initial),
             webContent: { EmptyView() }
         )
     }

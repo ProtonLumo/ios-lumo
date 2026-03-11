@@ -14,12 +14,17 @@ extension DS {
         }
 
         public enum Border {
+            public static let norm = SwiftColor.borderNorm
             public static let weak = SwiftColor.borderWeak
             public static let weakDark = SwiftColor.borderWeakDark
         }
 
         public enum Interaction {
             public static let defaultHover = SwiftColor.interactionDefaultHover
+        }
+
+        public enum Icon {
+            public static let norm = SwiftColor.iconNorm
         }
 
         public enum Text {
@@ -29,6 +34,7 @@ extension DS {
             public static let normDarkOnly = SwiftColor.textNormDark
             public static let weak = SwiftColor.textWeak
             public static let weakDark = SwiftColor.textWeakDark
+            public static let invert = SwiftColor.textInvert
         }
 
         // MARK: - Deprecated

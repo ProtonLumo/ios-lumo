@@ -44,16 +44,21 @@ final class WebComposerScriptMessageHandlerTests {
                     "isVisible": true,
                     "showTsAndCs": true,
                     "attachedFiles": [],
+                    "featureFlags": [
+                        "isImageGenEnabled": false,
+                        "isModelSelectionEnabled": false,
+                    ],
                 ],
                 expectedState: .init(
                     mode: .idle,
-                    modelType: .auto,
+                    model: .auto,
                     isGhostModeEnabled: false,
                     isWebSearchEnabled: false,
                     isCreateImageEnabled: false,
                     isVisible: true,
                     showTermsAndPrivacy: true,
-                    attachedFiles: []
+                    attachedFiles: [],
+                    featureFlags: .initial
                 )
             ),
             TestCase(
@@ -72,10 +77,14 @@ final class WebComposerScriptMessageHandlerTests {
                             "type": "PDF",
                         ]
                     ],
+                    "featureFlags": [
+                        "isImageGenEnabled": true,
+                        "isModelSelectionEnabled": true,
+                    ],
                 ],
                 expectedState: .init(
                     mode: .working,
-                    modelType: .auto,
+                    model: .auto,
                     isGhostModeEnabled: true,
                     isWebSearchEnabled: true,
                     isCreateImageEnabled: false,
@@ -83,7 +92,8 @@ final class WebComposerScriptMessageHandlerTests {
                     showTermsAndPrivacy: false,
                     attachedFiles: [
                         File(id: "<file-123>", name: "document.pdf", type: .pdf, preview: .none)
-                    ]
+                    ],
+                    featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true)
                 )
             ),
         ]
@@ -116,11 +126,8 @@ final class WebComposerScriptMessageHandlerTests {
     func handleResult_WithErrorStatus_EmitsErrorToStream() async {
         let error = WebComposerError.tierLimit
         let resultDict: [String: Any] = [
-            "requestId": "",
-            "result": [
-                "status": "error",
-                "error": error.rawValue,
-            ],
+            "status": "error",
+            "error": error.rawValue,
         ]
         let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
 
@@ -233,11 +240,8 @@ final class WebComposerScriptMessageHandlerTests {
 
         for error in errors {
             let resultDict: [String: Any] = [
-                "requestId": "",
-                "result": [
-                    "status": "error",
-                    "error": error.rawValue,
-                ],
+                "status": "error",
+                "error": error.rawValue,
             ]
 
             sut.userContentController(

@@ -4,30 +4,29 @@ import Foundation
 ///
 /// This type can only be decoded if the status is "error". Decoding will fail (return nil) for any other status.
 struct ComposerErrorResponse: Equatable, Decodable {
+    let status: String
     let error: WebComposerError
 
-    struct Result: Equatable, Decodable {
-        let status: String
-        let error: String
+    enum CodingKeys: String, CodingKey {
+        case status
+        case error
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let result = try container.decode(Result.self, forKey: .result)
+        let status: String = try container.decode(String.self, forKey: .status)
+        let errorString: String = try container.decode(String.self, forKey: .error)
 
-        guard result.status == "error" else {
+        guard status == "error" else {
             throw DecodingError.dataCorrupted(
                 DecodingError.Context(
                     codingPath: decoder.codingPath,
-                    debugDescription: "Status must be 'error' but got '\(result.status)'"
+                    debugDescription: "Status must be 'error' but got '\(status)'"
                 )
             )
         }
 
-        error = WebComposerError(rawValue: result.error) ?? .unknown
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case result
+        self.status = status
+        self.error = WebComposerError(rawValue: errorString) ?? .unknown
     }
 }

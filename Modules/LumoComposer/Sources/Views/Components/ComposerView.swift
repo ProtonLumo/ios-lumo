@@ -2,11 +2,15 @@ import LumoDesignSystem
 import SwiftUI
 
 struct ComposerView: View {
+    @Environment(\.featureFlags) var featureFlags: WebComposerState.FeatureFlags
+
     enum Action {
         case sendTapped
         case stopTapped
-        case filePickerTapped
-        case webSearchTapped
+        case attachmentOptionChosen(AddAttachmentOption)
+        case exitImageModeTapped
+        case toolsTapped
+        case modelSelectionTapped
         case microphoneTapped
         case attachmentTapped(id: String)
         case removeAttachmentTapped(id: String)
@@ -20,6 +24,8 @@ struct ComposerView: View {
 
     @Binding var text: String
     let files: [File]
+    let model: WebComposerState.Model
+    let isCreateImageEnabled: Bool
     let isGhostModeEnabled: Bool
     let isWebSearchEnabled: Bool
     let areButtonsDisabled: Bool
@@ -27,21 +33,22 @@ struct ComposerView: View {
     let action: (Action) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.standard) {
+        VStack(alignment: .leading, spacing: DS.Spacing.large) {
             if !files.isEmpty {
                 ComposerAttachmentsView(
                     files: files,
                     accentColor: accentColor,
-                    backgroundColor: backgroundColor,
+                    backgroundColor: isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak,
                     borderColor: isGhostModeEnabled ? DS.Color.Border.weakDark : DS.Color.Border.weak,
                     onAttachmentTapped: { id in action(.attachmentTapped(id: id)) },
-                    onTrashTapped: { id in action(.removeAttachmentTapped(id: id)) }
+                    onRemoveTapped: { id in action(.removeAttachmentTapped(id: id)) }
                 )
             }
 
             HStack(alignment: .center, spacing: DS.Spacing.small) {
                 ComposerInput(
                     text: $text,
+                    placeholderText: featureFlags.isImageGenEnabled && isCreateImageEnabled ? L10n.Composer.placeholderImage : L10n.Composer.placeholder,
                     placeholderColor: isGhostModeEnabled ? DS.Color.Text.hintDark : DS.Color.Text.hint,
                     textColor: isGhostModeEnabled ? DS.Color.Text.normDarkOnly : DS.Color.Text.norm,
                     backgroundColor: backgroundColor
@@ -64,18 +71,35 @@ struct ComposerView: View {
             }
 
             ComposerToolbar(
+                model: model,
                 iconColor: accentColor,
+                isCreateImageEnabled: isCreateImageEnabled,
                 isWebSearchEnabled: isWebSearchEnabled,
-                onPaperclipTap: { action(.filePickerTapped) },
-                onGlobeTap: { action(.webSearchTapped) },
-                onMicrophoneTap: { action(.microphoneTapped) }
+                areButtonsDisabled: areButtonsDisabled,
+                action: { chosenAction in
+                    switch chosenAction {
+                    case .attachmentOptionChosen(let option):
+                        action(.attachmentOptionChosen(option))
+                    case .exitImageModeTapped:
+                        action(.exitImageModeTapped)
+                    case .toolsTapped:
+                        action(.toolsTapped)
+                    case .modelSelectionTapped:
+                        action(.modelSelectionTapped)
+                    case .microphoneTapped:
+                        action(.microphoneTapped)
+                    }
+                }
             )
+            .padding(.horizontal, DS.Spacing.mediumLight)
             .disabled(areButtonsDisabled)
         }
-        .padding(.all, DS.Spacing.compact)
+        .padding(.vertical, DS.Spacing.standard)
+        .padding(.horizontal, DS.Spacing.compact)
         .background {
             RoundedRectangle(cornerRadius: DS.Radius.massive)
-                .fill(isGhostModeEnabled ? DS.Color.Background.normDarkOnly : DS.Color.Background.weak)
+                .fill(isGhostModeEnabled ? DS.Color.Background.normDarkOnly : DS.Color.Text.invert)
+                .strokeBorder(isGhostModeEnabled ? Color.clear : DS.Color.Border.norm, lineWidth: 1)
         }
     }
 
@@ -96,7 +120,7 @@ struct ComposerView: View {
     }
 
     private var accentColor: Color {
-        isGhostModeEnabled ? DS.Color.Text.weakDark : DS.Color.Text.weak
+        isGhostModeEnabled ? DS.Color.Text.normDarkOnly : DS.Color.Text.norm
     }
 
     private var actionButtonIconColor: Color {
@@ -104,7 +128,7 @@ struct ComposerView: View {
     }
 
     private var backgroundColor: Color {
-        isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Background.weak
+        isGhostModeEnabled ? DS.Color.Background.weakDarkOnly : DS.Color.Text.invert
     }
 }
 
@@ -121,6 +145,8 @@ struct ComposerView: View {
                     .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
                     .init(id: "5", name: "Video.mp4", type: .video, preview: .none),
                 ],
+                model: .auto,
+                isCreateImageEnabled: false,
                 isGhostModeEnabled: false,
                 isWebSearchEnabled: true,
                 areButtonsDisabled: false,
@@ -130,6 +156,8 @@ struct ComposerView: View {
             ComposerView(
                 text: .constant("Tell me a long story"),
                 files: [],
+                model: .fast,
+                isCreateImageEnabled: true,
                 isGhostModeEnabled: false,
                 isWebSearchEnabled: false,
                 areButtonsDisabled: true,
@@ -139,6 +167,8 @@ struct ComposerView: View {
             ComposerView(
                 text: .constant(""),
                 files: [],
+                model: .thinking,
+                isCreateImageEnabled: true,
                 isGhostModeEnabled: true,
                 isWebSearchEnabled: false,
                 areButtonsDisabled: false,
@@ -154,6 +184,8 @@ struct ComposerView: View {
                     .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
                     .init(id: "5", name: "Video.mp4", type: .video, preview: .none),
                 ],
+                model: .thinking,
+                isCreateImageEnabled: true,
                 isGhostModeEnabled: true,
                 isWebSearchEnabled: true,
                 areButtonsDisabled: false,
