@@ -1,0 +1,15 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Sync development and App Store certificates and provisioning profiles via Match"
+  lane :certificates do
+    match(
+      type: "development",
+      app_identifier: ["me.proton.lumo", "me.proton.lumo.LumoWidgetExtension"]
+    )
+    match(
+      type: "appstore",
+      app_identifier: ["me.proton.lumo", "me.proton.lumo.LumoWidgetExtension"]
+    )
+  end
+end

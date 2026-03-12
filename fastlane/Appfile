@@ -1,0 +1,4 @@
+app_identifier("me.proton.lumo")
+
+itc_team_id("106513916") # App Store Connect Team ID
+team_id("2SB5Z68H26") # Developer Portal Team ID
