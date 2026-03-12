@@ -13,6 +13,34 @@ let moduleVerifierSettings: SettingsDictionary = [
     "ENABLE_MODULE_VERIFIER_SUPPORTED_LANGUAGES": true,
 ]
 
+// MARK: - Signing
+
+func signingConfigurations(bundleId: String, extraDebugDevSettings: SettingsDictionary = [:]) -> [Configuration] {
+    [
+        .debug(
+            name: "Debug",
+            settings: [
+                "CODE_SIGN_STYLE": "Manual",
+                "CODE_SIGN_IDENTITY": "Apple Development",
+                "PROVISIONING_PROFILE_SPECIFIER": "match Development \(bundleId)",
+            ]),
+        .debug(
+            name: "Debug-Dev",
+            settings: extraDebugDevSettings.merging([
+                "CODE_SIGN_STYLE": "Manual",
+                "CODE_SIGN_IDENTITY": "Apple Development",
+                "PROVISIONING_PROFILE_SPECIFIER": "match Development \(bundleId)",
+            ]) { $1 }),
+        .release(
+            name: "Release",
+            settings: [
+                "CODE_SIGN_STYLE": "Manual",
+                "CODE_SIGN_IDENTITY": "Apple Distribution",
+                "PROVISIONING_PROFILE_SPECIFIER": "match AppStore \(bundleId)",
+            ]),
+    ]
+}
+
 // MARK: - Project
 
 let project = Project(
@@ -80,33 +108,12 @@ let project = Project(
                     "CURRENT_PROJECT_VERSION": .string(currentProjectVersion),
                     "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.productivity",
                 ],
-                configurations: [
-                    .debug(
-                        name: "Debug",
-                        settings: [
-                            "CODE_SIGN_STYLE": "Manual",
-                            "CODE_SIGN_IDENTITY": "Apple Development",
-                            "PROVISIONING_PROFILE_SPECIFIER": "match Development me.proton.lumo",
-                        ]
-                    ),
-                    .debug(
-                        name: "Debug-Dev",
-                        settings: [
-                            "INFOPLIST_FILE": "Modules/App/SupportingFiles/Info-Dev.plist",
-                            "CODE_SIGN_STYLE": "Manual",
-                            "CODE_SIGN_IDENTITY": "Apple Development",
-                            "PROVISIONING_PROFILE_SPECIFIER": "match Development me.proton.lumo",
-                        ]
-                    ),
-                    .release(
-                        name: "Release",
-                        settings: [
-                            "CODE_SIGN_STYLE": "Manual",
-                            "CODE_SIGN_IDENTITY": "Apple Distribution",
-                            "PROVISIONING_PROFILE_SPECIFIER": "match AppStore me.proton.lumo",
-                        ]
-                    ),
-                ]
+                configurations: signingConfigurations(
+                    bundleId: "me.proton.lumo",
+                    extraDebugDevSettings: [
+                        "INFOPLIST_FILE": "Modules/App/SupportingFiles/Info-Dev.plist"
+                    ]
+                )
             ),
             additionalFiles: [
                 "Modules/App/SupportingFiles/Info.plist",
@@ -144,32 +151,7 @@ let project = Project(
                     "MARKETING_VERSION": .string(marketingVersion),
                     "CURRENT_PROJECT_VERSION": .string(currentProjectVersion),
                 ],
-                configurations: [
-                    .debug(
-                        name: "Debug",
-                        settings: [
-                            "CODE_SIGN_STYLE": "Manual",
-                            "CODE_SIGN_IDENTITY": "Apple Development",
-                            "PROVISIONING_PROFILE_SPECIFIER": "match Development me.proton.lumo.LumoWidgetExtension",
-                        ]
-                    ),
-                    .debug(
-                        name: "Debug-Dev",
-                        settings: [
-                            "CODE_SIGN_STYLE": "Manual",
-                            "CODE_SIGN_IDENTITY": "Apple Development",
-                            "PROVISIONING_PROFILE_SPECIFIER": "match Development me.proton.lumo.LumoWidgetExtension",
-                        ]
-                    ),
-                    .release(
-                        name: "Release",
-                        settings: [
-                            "CODE_SIGN_STYLE": "Manual",
-                            "CODE_SIGN_IDENTITY": "Apple Distribution",
-                            "PROVISIONING_PROFILE_SPECIFIER": "match AppStore me.proton.lumo.LumoWidgetExtension",
-                        ]
-                    ),
-                ]
+                configurations: signingConfigurations(bundleId: "me.proton.lumo.LumoWidgetExtension")
             )
         ),
         .target(
