@@ -26,6 +26,7 @@ platform :ios do
       scheme: "LumoApp",
       configuration: "Release",
       xcodeproj: "Lumo.xcodeproj",
+      export_method: "app-store",
       xcargs: "CURRENT_PROJECT_VERSION=#{next_build_number}"
     )
 
