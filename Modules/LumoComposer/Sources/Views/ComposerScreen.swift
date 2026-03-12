@@ -14,6 +14,7 @@ public struct ComposerScreen<WebContent: View>: View {
     @State private var sheetHeight: CGFloat = 250
     @State private var isPhotoPickerPresented = false
     @State private var selectedPhotoItem: PhotosPickerItem?
+    @State private var isFileImporterPresented = false
 
     public init(
         webBridge: WebComposerBridging,
@@ -113,6 +114,11 @@ public struct ComposerScreen<WebContent: View>: View {
                 }
             }
         }
+        .fileImporter(isPresented: $isFileImporterPresented, allowedContentTypes: [.data]) { result in
+            Task {
+                await upload(fileResult: result)
+            }
+        }
         .environment(\.featureFlags, store.state.webState.featureFlags)
     }
 
@@ -135,11 +141,7 @@ public struct ComposerScreen<WebContent: View>: View {
     private var activeSheetBinding: Binding<ActiveSheet?> {
         Binding(
             get: { store.state.activeSheet },
-            set: { newValue in
-                if newValue == nil {
-                    store.send(action: .dismissActiveSheet)
-                }
-            }
+            set: { if $0 == nil { store.send(action: .dismissActiveSheet) } }
         )
     }
 
@@ -156,9 +158,7 @@ public struct ComposerScreen<WebContent: View>: View {
             case .protonDrive:
                 store.send(action: .openProtonDriveTapped)
             case .files:
-                // FIXME: Open native files picker and transform selected file to base64 and use
-                // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
-                break
+                isFileImporterPresented = true
             case .camera:
                 // FIXME: Open native camera picker and transform captured photo to base64 and use
                 // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
@@ -236,6 +236,21 @@ public struct ComposerScreen<WebContent: View>: View {
 
         let base64 = data.base64EncodedString()
         let name = PhotoFileNameExtractor.fileName(from: photosItem)
+        let file = FileUploadData(base64: base64, name: name)
+
+        await store.send(action: .uploadFilesTapped([file]))
+    }
+
+    private func upload(fileResult: Result<URL, Error>) async {
+        guard case .success(let url) = fileResult else { return }
+
+        guard url.startAccessingSecurityScopedResource() else { return }
+        defer { url.stopAccessingSecurityScopedResource() }
+
+        guard let data = try? Data(contentsOf: url) else { return }
+
+        let base64 = data.base64EncodedString()
+        let name = url.lastPathComponent
         let file = FileUploadData(base64: base64, name: name)
 
         await store.send(action: .uploadFilesTapped([file]))
