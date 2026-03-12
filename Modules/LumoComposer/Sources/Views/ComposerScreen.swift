@@ -3,6 +3,7 @@ import LumoDesignSystem
 import PhotosUI
 import ProtonUIFoundations
 import SwiftUI
+import UIKit
 
 public struct ComposerScreen<WebContent: View>: View {
     @Environment(\.colorScheme) var colorScheme
@@ -15,6 +16,7 @@ public struct ComposerScreen<WebContent: View>: View {
     @State private var isPhotoPickerPresented = false
     @State private var selectedPhotoItem: PhotosPickerItem?
     @State private var isFileImporterPresented = false
+    @State private var isCameraPickerPresented = false
 
     public init(
         webBridge: WebComposerBridging,
@@ -119,6 +121,15 @@ public struct ComposerScreen<WebContent: View>: View {
                 await upload(fileResult: result)
             }
         }
+        .sheet(isPresented: $isCameraPickerPresented) {
+            CameraPickerView(
+                onImageCaptured: { image in
+                    Task { await upload(capturedImage: image) }
+                },
+                onDismiss: { isCameraPickerPresented = false }
+            )
+            .ignoresSafeArea()
+        }
         .environment(\.featureFlags, store.state.webState.featureFlags)
     }
 
@@ -160,9 +171,7 @@ public struct ComposerScreen<WebContent: View>: View {
             case .files:
                 isFileImporterPresented = true
             case .camera:
-                // FIXME: Open native camera picker and transform captured photo to base64 and use
-                // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
-                break
+                isCameraPickerPresented = true
             case .photos:
                 isPhotoPickerPresented = true
             case .sketch:
@@ -231,16 +240,6 @@ public struct ComposerScreen<WebContent: View>: View {
         return colorScheme == .dark ? darkItem : lightItem
     }
 
-    private func upload(photosItem: PhotosPickerItem) async {
-        guard let data = try? await photosItem.loadTransferable(type: Data.self) else { return }
-
-        let base64 = data.base64EncodedString()
-        let name = PhotoFileNameExtractor.fileName(from: photosItem)
-        let file = FileUploadData(base64: base64, name: name)
-
-        await store.send(action: .uploadFilesTapped([file]))
-    }
-
     private func upload(fileResult: Result<URL, Error>) async {
         guard case .success(let url) = fileResult else { return }
 
@@ -251,6 +250,26 @@ public struct ComposerScreen<WebContent: View>: View {
 
         let base64 = data.base64EncodedString()
         let name = url.lastPathComponent
+        let file = FileUploadData(base64: base64, name: name)
+
+        await store.send(action: .uploadFilesTapped([file]))
+    }
+
+    private func upload(capturedImage: UIImage) async {
+        guard let data = capturedImage.jpegData(compressionQuality: 1) else { return }
+
+        let base64 = data.base64EncodedString()
+        let name = "\(UUIDEnvironment.uuid().uuidString).jpg"
+        let file = FileUploadData(base64: base64, name: name)
+
+        await store.send(action: .uploadFilesTapped([file]))
+    }
+
+    private func upload(photosItem: PhotosPickerItem) async {
+        guard let data = try? await photosItem.loadTransferable(type: Data.self) else { return }
+
+        let base64 = data.base64EncodedString()
+        let name = PhotoFileNameExtractor.fileName(from: photosItem)
         let file = FileUploadData(base64: base64, name: name)
 
         await store.send(action: .uploadFilesTapped([file]))

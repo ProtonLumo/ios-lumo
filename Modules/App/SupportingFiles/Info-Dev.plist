@@ -52,6 +52,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Lumo needs camera access to let you capture and attach photos to your messages.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Lumo needs microphone access to enable voice input for AI assistance.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
