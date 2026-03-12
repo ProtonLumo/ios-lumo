@@ -15,8 +15,6 @@ platform :ios do
 
   desc "Build and deploy to TestFlight\nUsage: bundle exec fastlane deploy"
   lane :deploy do
-    app_store_connect_api_key
-
     match(
       type: "appstore",
       app_identifier: ["me.proton.lumo", "me.proton.lumo.LumoWidgetExtension"]
