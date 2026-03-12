@@ -20,7 +20,7 @@ platform :ios do
       app_identifier: ["me.proton.lumo", "me.proton.lumo.LumoWidgetExtension"]
     )
 
-    next_build_number = latest_testflight_build_number + 1
+    next_build_number = current_testflight_build_number + 1
 
     build_app(
       scheme: "LumoApp",
@@ -57,11 +57,8 @@ platform :ios do
     )
   end
 
-  def latest_testflight_build_number
-    app_version = get_version_number(
-      xcodeproj: "Lumo.xcodeproj",
-      target: "LumoApp"
-    )
+  def current_testflight_build_number
+    app_version = File.read("../Project.swift").match(/let marketingVersion = "([^"]+)"/)[1]
 
     latest_testflight_build_number(
       version: app_version,
