@@ -1,5 +1,6 @@
 import Lottie
 import LumoDesignSystem
+import PhotosUI
 import ProtonUIFoundations
 import SwiftUI
 
@@ -11,6 +12,8 @@ public struct ComposerScreen<WebContent: View>: View {
     @ViewBuilder private let webContent: () -> WebContent
 
     @State private var sheetHeight: CGFloat = 250
+    @State private var isPhotoPickerPresented = false
+    @State private var selectedPhotoItem: PhotosPickerItem?
 
     public init(
         webBridge: WebComposerBridging,
@@ -101,6 +104,15 @@ public struct ComposerScreen<WebContent: View>: View {
                 .presentationDetents([.height(sheetHeight)])
                 .presentationDragIndicator(.visible)
         }
+        .photosPicker(isPresented: $isPhotoPickerPresented, selection: $selectedPhotoItem, matching: .images)
+        .onChange(of: selectedPhotoItem) { _, photosItem in
+            if let photosItem {
+                Task {
+                    await upload(photosItem: photosItem)
+                    selectedPhotoItem = nil
+                }
+            }
+        }
         .environment(\.featureFlags, store.state.webState.featureFlags)
     }
 
@@ -152,9 +164,7 @@ public struct ComposerScreen<WebContent: View>: View {
                 // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
                 break
             case .photos:
-                // FIXME: Open photos picker and transform selected photo to base64 and use
-                // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
-                break
+                isPhotoPickerPresented = true
             case .sketch:
                 store.send(action: .openSketchTapped)
             }
@@ -219,6 +229,16 @@ public struct ComposerScreen<WebContent: View>: View {
         let lightItem = LottieAnimations.LumoCat.light
 
         return colorScheme == .dark ? darkItem : lightItem
+    }
+
+    private func upload(photosItem: PhotosPickerItem) async {
+        guard let data = try? await photosItem.loadTransferable(type: Data.self) else { return }
+
+        let base64 = data.base64EncodedString()
+        let name = PhotoFileNameExtractor.fileName(from: photosItem)
+        let file = FileUploadData(base64: base64, name: name)
+
+        await store.send(action: .uploadFilesTapped([file]))
     }
 }
 
