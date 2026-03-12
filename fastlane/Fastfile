@@ -1,0 +1,70 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Sync development and App Store certificates and provisioning profiles via Match"
+  lane :certificates do
+    match(
+      type: "development",
+      app_identifier: ["me.proton.lumo", "me.proton.lumo.LumoWidgetExtension"]
+    )
+    match(
+      type: "appstore",
+      app_identifier: ["me.proton.lumo", "me.proton.lumo.LumoWidgetExtension"]
+    )
+  end
+
+  desc "Build and deploy to TestFlight\nUsage: bundle exec fastlane deploy"
+  lane :deploy do
+    match(
+      type: "appstore",
+      app_identifier: ["me.proton.lumo", "me.proton.lumo.LumoWidgetExtension"]
+    )
+
+    next_build_number = current_testflight_build_number + 1
+
+    sh("cd .. && mise exec -- tuist generate")
+
+    build_app(
+      scheme: "LumoApp",
+      configuration: "Release",
+      workspace: "Lumo.xcworkspace",
+      export_method: "app-store",
+      xcargs: "CURRENT_PROJECT_VERSION=#{next_build_number}"
+    )
+
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+
+    marketing_version = File.read("../Project.swift").match(/let marketingVersion = "([^"]+)"/)[1]
+    tag = "v#{marketing_version}_#{next_build_number}"
+
+    add_git_tag(tag: tag)
+    push_git_tags
+  end
+
+  desc "Bump marketing version in Project.swift and commit\nUsage: bundle exec fastlane bump_version version:1.2.7"
+  lane :bump_version do |options|
+    version = options[:version]
+    UI.user_error!("Pass version: bundle exec fastlane bump_version version:1.2.7") unless version
+
+    file = "../Project.swift"
+    content = File.read(file)
+    updated = content.gsub(/let marketingVersion = "[^"]*"/, "let marketingVersion = \"#{version}\"")
+    File.write(file, updated)
+
+    git_commit(
+      path: "Project.swift",
+      message: "Bump version to #{version}"
+    )
+  end
+
+  def current_testflight_build_number
+    app_version = File.read("../Project.swift").match(/let marketingVersion = "([^"]+)"/)[1]
+
+    latest_testflight_build_number(
+      version: app_version,
+      initial_build_number: 0
+    )
+  end
+end

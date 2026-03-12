@@ -1,0 +1,4 @@
+git_url("https://gitlab.protontech.ch/apple/shared/release-secrets")
+git_branch("ios/lumo")
+readonly(true)
+type("appstore")

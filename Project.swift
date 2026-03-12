@@ -3,7 +3,6 @@ import ProjectDescription
 // MARK: - Version Configuration
 
 let marketingVersion = "1.2.6"
-let currentProjectVersion = "32"
 let developmentTeam = "2SB5Z68H26"
 
 // MARK: - Shared Settings
@@ -12,6 +11,34 @@ let moduleVerifierSettings: SettingsDictionary = [
     "ENABLE_MODULE_VERIFIER": true,
     "ENABLE_MODULE_VERIFIER_SUPPORTED_LANGUAGES": true,
 ]
+
+// MARK: - Signing
+
+func signingConfigurations(bundleId: String, extraDebugDevSettings: SettingsDictionary = [:]) -> [Configuration] {
+    [
+        .debug(
+            name: "Debug",
+            settings: [
+                "CODE_SIGN_STYLE": "Manual",
+                "CODE_SIGN_IDENTITY": "Apple Development",
+                "PROVISIONING_PROFILE_SPECIFIER": "match Development \(bundleId)",
+            ]),
+        .debug(
+            name: "Debug-Dev",
+            settings: extraDebugDevSettings.merging([
+                "CODE_SIGN_STYLE": "Manual",
+                "CODE_SIGN_IDENTITY": "Apple Development",
+                "PROVISIONING_PROFILE_SPECIFIER": "match Development \(bundleId)",
+            ]) { $1 }),
+        .release(
+            name: "Release",
+            settings: [
+                "CODE_SIGN_STYLE": "Manual",
+                "CODE_SIGN_IDENTITY": "Apple Distribution",
+                "PROVISIONING_PROFILE_SPECIFIER": "match AppStore \(bundleId)",
+            ]),
+    ]
+}
 
 // MARK: - Project
 
@@ -77,19 +104,15 @@ let project = Project(
                 base: [
                     "DEVELOPMENT_TEAM": .string(developmentTeam),
                     "MARKETING_VERSION": .string(marketingVersion),
-                    "CURRENT_PROJECT_VERSION": .string(currentProjectVersion),
+                    "CURRENT_PROJECT_VERSION": "$(CURRENT_PROJECT_VERSION)",
                     "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.productivity",
                 ],
-                configurations: [
-                    .debug(name: "Debug"),
-                    .debug(
-                        name: "Debug-Dev",
-                        settings: [
-                            "INFOPLIST_FILE": "Modules/App/SupportingFiles/Info-Dev.plist"
-                        ]
-                    ),
-                    .release(name: "Release"),
-                ]
+                configurations: signingConfigurations(
+                    bundleId: "me.proton.lumo",
+                    extraDebugDevSettings: [
+                        "INFOPLIST_FILE": "Modules/App/SupportingFiles/Info-Dev.plist"
+                    ]
+                )
             ),
             additionalFiles: [
                 "Modules/App/SupportingFiles/Info.plist",
@@ -125,8 +148,9 @@ let project = Project(
                 base: [
                     "DEVELOPMENT_TEAM": .string(developmentTeam),
                     "MARKETING_VERSION": .string(marketingVersion),
-                    "CURRENT_PROJECT_VERSION": .string(currentProjectVersion),
-                ]
+                    "CURRENT_PROJECT_VERSION": "$(CURRENT_PROJECT_VERSION)",
+                ],
+                configurations: signingConfigurations(bundleId: "me.proton.lumo.LumoWidgetExtension")
             )
         ),
         .target(
