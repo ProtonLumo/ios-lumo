@@ -248,28 +248,27 @@ public struct ComposerScreen<WebContent: View>: View {
 
         guard let data = try? Data(contentsOf: url) else { return }
 
-        let base64 = data.base64EncodedString()
-        let name = url.lastPathComponent
-        let file = FileUploadData(base64: base64, name: name)
-
-        await store.send(action: .uploadFilesTapped([file]))
+        await upload(data: data, name: url.lastPathComponent)
     }
 
     private func upload(capturedImage: UIImage) async {
         guard let data = capturedImage.jpegData(compressionQuality: 1) else { return }
 
-        let base64 = data.base64EncodedString()
         let name = "\(UUIDEnvironment.uuid().uuidString).jpg"
-        let file = FileUploadData(base64: base64, name: name)
 
-        await store.send(action: .uploadFilesTapped([file]))
+        await upload(data: data, name: name)
     }
 
     private func upload(photosItem: PhotosPickerItem) async {
         guard let data = try? await photosItem.loadTransferable(type: Data.self) else { return }
 
-        let base64 = data.base64EncodedString()
         let name = PhotoFileNameExtractor.fileName(from: photosItem)
+
+        await upload(data: data, name: name)
+    }
+
+    private func upload(data: Data, name: String) async {
+        let base64 = data.base64EncodedString()
         let file = FileUploadData(base64: base64, name: name)
 
         await store.send(action: .uploadFilesTapped([file]))
