@@ -3,7 +3,6 @@ import ProjectDescription
 // MARK: - Version Configuration
 
 let marketingVersion = "1.2.6"
-let currentProjectVersion = "32"
 let developmentTeam = "2SB5Z68H26"
 
 // MARK: - Shared Settings
@@ -105,7 +104,7 @@ let project = Project(
                 base: [
                     "DEVELOPMENT_TEAM": .string(developmentTeam),
                     "MARKETING_VERSION": .string(marketingVersion),
-                    "CURRENT_PROJECT_VERSION": .string(currentProjectVersion),
+                    "CURRENT_PROJECT_VERSION": "$(CURRENT_PROJECT_VERSION)",
                     "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.productivity",
                 ],
                 configurations: signingConfigurations(
@@ -149,7 +148,7 @@ let project = Project(
                 base: [
                     "DEVELOPMENT_TEAM": .string(developmentTeam),
                     "MARKETING_VERSION": .string(marketingVersion),
-                    "CURRENT_PROJECT_VERSION": .string(currentProjectVersion),
+                    "CURRENT_PROJECT_VERSION": "$(CURRENT_PROJECT_VERSION)",
                 ],
                 configurations: signingConfigurations(bundleId: "me.proton.lumo.LumoWidgetExtension")
             )
