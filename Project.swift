@@ -81,14 +81,31 @@ let project = Project(
                     "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.productivity",
                 ],
                 configurations: [
-                    .debug(name: "Debug"),
+                    .debug(
+                        name: "Debug",
+                        settings: [
+                            "CODE_SIGN_STYLE": "Manual",
+                            "CODE_SIGN_IDENTITY": "Apple Development",
+                            "PROVISIONING_PROFILE_SPECIFIER": "match Development me.proton.lumo",
+                        ]
+                    ),
                     .debug(
                         name: "Debug-Dev",
                         settings: [
-                            "INFOPLIST_FILE": "Modules/App/SupportingFiles/Info-Dev.plist"
+                            "INFOPLIST_FILE": "Modules/App/SupportingFiles/Info-Dev.plist",
+                            "CODE_SIGN_STYLE": "Manual",
+                            "CODE_SIGN_IDENTITY": "Apple Development",
+                            "PROVISIONING_PROFILE_SPECIFIER": "match Development me.proton.lumo",
                         ]
                     ),
-                    .release(name: "Release"),
+                    .release(
+                        name: "Release",
+                        settings: [
+                            "CODE_SIGN_STYLE": "Manual",
+                            "CODE_SIGN_IDENTITY": "Apple Distribution",
+                            "PROVISIONING_PROFILE_SPECIFIER": "match AppStore me.proton.lumo",
+                        ]
+                    ),
                 ]
             ),
             additionalFiles: [
@@ -126,6 +143,32 @@ let project = Project(
                     "DEVELOPMENT_TEAM": .string(developmentTeam),
                     "MARKETING_VERSION": .string(marketingVersion),
                     "CURRENT_PROJECT_VERSION": .string(currentProjectVersion),
+                ],
+                configurations: [
+                    .debug(
+                        name: "Debug",
+                        settings: [
+                            "CODE_SIGN_STYLE": "Manual",
+                            "CODE_SIGN_IDENTITY": "Apple Development",
+                            "PROVISIONING_PROFILE_SPECIFIER": "match Development me.proton.lumo.LumoWidgetExtension",
+                        ]
+                    ),
+                    .debug(
+                        name: "Debug-Dev",
+                        settings: [
+                            "CODE_SIGN_STYLE": "Manual",
+                            "CODE_SIGN_IDENTITY": "Apple Development",
+                            "PROVISIONING_PROFILE_SPECIFIER": "match Development me.proton.lumo.LumoWidgetExtension",
+                        ]
+                    ),
+                    .release(
+                        name: "Release",
+                        settings: [
+                            "CODE_SIGN_STYLE": "Manual",
+                            "CODE_SIGN_IDENTITY": "Apple Distribution",
+                            "PROVISIONING_PROFILE_SPECIFIER": "match AppStore me.proton.lumo.LumoWidgetExtension",
+                        ]
+                    ),
                 ]
             )
         ),
