@@ -86,7 +86,7 @@ struct AttachmentButton: View {
     @ViewBuilder
     private var filenameView: some View {
         Text(file.name)
-            .lineLimit(2)
+            .lineLimit(1)
             .font(.caption)
             .foregroundStyle(accentColor)
             .padding(.vertical, DS.Spacing.tiny)
