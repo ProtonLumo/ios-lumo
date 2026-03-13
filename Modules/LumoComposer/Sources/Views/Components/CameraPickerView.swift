@@ -27,6 +27,8 @@ struct CameraPickerView: UIViewControllerRepresentable {
             self.onDismiss = onDismiss
         }
 
+        // MARK: - UIImagePickerControllerDelegate
+
         func imagePickerController(
             _ picker: UIImagePickerController,
             didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
