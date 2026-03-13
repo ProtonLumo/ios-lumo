@@ -15,7 +15,7 @@ public struct WebComposerState: Equatable, Decodable {
         case working = "Working"
     }
 
-    public enum Model: String, CaseIterable, Decodable, Equatable, Sendable {
+    public enum ModelTier: String, CaseIterable, Decodable, Equatable, Sendable {
         case auto = "Auto"
         case fast = "Fast"
         case thinking = "Thinking"
@@ -32,7 +32,7 @@ public struct WebComposerState: Equatable, Decodable {
     }
 
     let mode: Mode
-    let model: Model
+    let model: ModelTier
     let isGhostModeEnabled: Bool
     let isWebSearchEnabled: Bool
     let isCreateImageEnabled: Bool
@@ -43,7 +43,7 @@ public struct WebComposerState: Equatable, Decodable {
 
     enum CodingKeys: String, CodingKey {
         case mode = "lumoMode"
-        case model = "modelType"
+        case model = "modelTier"
         case isGhostModeEnabled
         case isWebSearchEnabled
         case isCreateImageEnabled

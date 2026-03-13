@@ -2,7 +2,7 @@ import LumoDesignSystem
 import SwiftUI
 
 struct SelectModelButton: View {
-    let model: WebComposerState.Model
+    let model: WebComposerState.ModelTier
     let color: Color
     let isDisabled: Bool
     let action: () -> Void

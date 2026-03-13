@@ -578,7 +578,7 @@ final class ComposerStateStoreTests {
         await sut.send(action: .showSheet(.modelSelection))
         await sut.send(action: .modelSelectionSheetAction(.modelSelected(.fast)))
 
-        let javascript = "window.nativeComposerApi?.changeModel('\(UUID.testData2.uuidString)', 'Fast');"
+        let javascript = "window.nativeComposerApi?.changeModelTier('\(UUID.testData2.uuidString)', 'Fast');"
 
         #expect(sut.state.activeSheet == nil)
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
@@ -787,7 +787,7 @@ final class ComposerStateStoreTests {
         await sut.send(action: .taskStarted)
         await sut.send(action: .changeModelTapped(.thinking))
 
-        let javascript = "window.nativeComposerApi?.changeModel('\(UUID.testData.uuidString)', 'Thinking');"
+        let javascript = "window.nativeComposerApi?.changeModelTier('\(UUID.testData.uuidString)', 'Thinking');"
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(
@@ -808,7 +808,7 @@ final class ComposerStateStoreTests {
         await sut.send(action: .taskStarted)
 
         let javascript: (String) -> String = { mode in
-            "window.nativeComposerApi?.changeModel('\(UUID.testData2.uuidString)', '\(mode)');"
+            "window.nativeComposerApi?.changeModelTier('\(UUID.testData2.uuidString)', '\(mode)');"
         }
 
         await sut.send(action: .changeModelTapped(.auto))
@@ -1067,7 +1067,7 @@ final class ComposerStateStoreTests {
         }
         let state: [String: Any] = [
             "lumoMode": lumoMode,
-            "modelType": "Auto",
+            "modelTier": "Auto",
             "isGhostModeEnabled": isGhostModeEnabled,
             "isWebSearchEnabled": isWebSearchEnabled,
             "isCreateImageEnabled": false,

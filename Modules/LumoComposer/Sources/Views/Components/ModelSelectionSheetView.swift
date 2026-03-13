@@ -3,11 +3,11 @@ import SwiftUI
 
 struct ModelSelectionSheetView: View {
     enum Action {
-        case modelSelected(WebComposerState.Model)
+        case modelSelected(WebComposerState.ModelTier)
         case closeTapped
     }
 
-    let selectedModel: WebComposerState.Model
+    let selectedModel: WebComposerState.ModelTier
     let action: (Action) -> Void
 
     var body: some View {
@@ -17,7 +17,7 @@ struct ModelSelectionSheetView: View {
             }
 
             VStack(spacing: .zero) {
-                ForEach(WebComposerState.Model.allCases, id: \.self) { model in
+                ForEach(WebComposerState.ModelTier.allCases, id: \.self) { model in
                     Button(
                         action: { action(.modelSelected(model)) },
                         label: {
@@ -37,7 +37,7 @@ struct ModelSelectionSheetView: View {
 }
 
 private struct ModelRowView: View {
-    let model: WebComposerState.Model
+    let model: WebComposerState.ModelTier
     let isSelected: Bool
     let upsellIcon: Image?
 

@@ -12,7 +12,7 @@ struct ComposerToolbar: View {
         case microphoneTapped
     }
 
-    let model: WebComposerState.Model
+    let model: WebComposerState.ModelTier
     let iconColor: Color
     let isCreateImageEnabled: Bool
     let isWebSearchEnabled: Bool

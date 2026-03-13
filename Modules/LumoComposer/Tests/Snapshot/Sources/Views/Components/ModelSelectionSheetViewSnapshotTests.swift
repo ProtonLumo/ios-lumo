@@ -7,14 +7,14 @@ import Testing
 
 struct ModelSelectionSheetViewSnapshotTests {
     struct TestCase: Sendable {
-        let selectedModel: WebComposerState.Model
+        let modelTier: WebComposerState.ModelTier
         let testName: String
     }
 
     static let testCases: [TestCase] = [
-        TestCase(selectedModel: .auto, testName: "selected_auto"),
-        TestCase(selectedModel: .fast, testName: "selected_fast"),
-        TestCase(selectedModel: .thinking, testName: "selected_thinking"),
+        TestCase(modelTier: .auto, testName: "selected_auto"),
+        TestCase(modelTier: .fast, testName: "selected_fast"),
+        TestCase(modelTier: .thinking, testName: "selected_thinking"),
     ]
 
     @Test(arguments: testCases)
@@ -27,7 +27,7 @@ struct ModelSelectionSheetViewSnapshotTests {
 
     private func sut(testCase: TestCase) -> some View {
         ModelSelectionSheetView(
-            selectedModel: testCase.selectedModel,
+            selectedModel: testCase.modelTier,
             action: { _ in }
         )
         .background(DS.Color.Background.norm)

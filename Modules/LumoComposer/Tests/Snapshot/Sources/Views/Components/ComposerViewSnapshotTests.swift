@@ -8,7 +8,7 @@ struct ComposerViewSnapshotTests {
     struct TestCase {
         let initialText: String
         let files: [File]
-        let model: WebComposerState.Model
+        let model: WebComposerState.ModelTier
         let isCreateImageEnabled: Bool
         let isGhostModeEnabled: Bool
         let isWebSearchEnabled: Bool

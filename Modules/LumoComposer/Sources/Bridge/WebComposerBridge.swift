@@ -29,7 +29,7 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
         case openSketch
         case toggleWebSearch
         case toggleCreateImage
-        case changeModel(WebComposerState.Model)
+        case changeModelTier(WebComposerState.ModelTier)
         case previewAttachment(id: String)
         case removeAttachment(id: String)
 
@@ -58,8 +58,8 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
                 return "window.nativeComposerApi?.toggleWebSearch('\(id)');"
             case .toggleCreateImage:
                 return "window.nativeComposerApi?.toggleCreateImage('\(id)');"
-            case .changeModel(let modelType):
-                return "window.nativeComposerApi?.changeModel('\(id)', '\(modelType.rawValue)');"
+            case .changeModelTier(let modelTier):
+                return "window.nativeComposerApi?.changeModelTier('\(id)', '\(modelTier.rawValue)');"
             case .previewAttachment(let attachmentId):
                 return "window.nativeComposerApi?.previewFile('\(id)', '\(attachmentId)');"
             case .removeAttachment(let attachmentId):
@@ -108,8 +108,8 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
         try await executeJavaScript(.toggleCreateImage)
     }
 
-    public func changeModel(_ model: WebComposerState.Model) async throws(WebComposerBridgeError) {
-        try await executeJavaScript(.changeModel(model))
+    public func changeModelTier(_ model: WebComposerState.ModelTier) async throws(WebComposerBridgeError) {
+        try await executeJavaScript(.changeModelTier(model))
     }
 
     public func removeAttachment(id: String) async throws(WebComposerBridgeError) {
