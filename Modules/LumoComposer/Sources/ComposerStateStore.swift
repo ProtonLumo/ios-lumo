@@ -5,6 +5,8 @@ import UIKit
 import WebKit
 
 final class ComposerStateStore: StateStore {
+    let premiumModelTappedSubject = PassthroughSubject<Void, Never>()
+
     enum Action {
         case webViewReadyChanged(Bool)
         case taskStarted
@@ -157,10 +159,14 @@ final class ComposerStateStore: StateStore {
         case .modelSelectionSheetAction(let action):
             switch action {
             case .modelSelected(let model):
-                // FIXME: Show upsell for free users when model == .thinking
-                state = state.copy(\.activeSheet, to: nil)
-                await execute { () async throws(WebComposerBridgeError) in
-                    try await webBridge.changeModelTier(model)
+                if model == .thinking && state.webState.isFreeUser {
+                    state = state.copy(\.activeSheet, to: nil)
+                    premiumModelTappedSubject.send()
+                } else {
+                    state = state.copy(\.activeSheet, to: nil)
+                    await execute { () async throws(WebComposerBridgeError) in
+                        try await webBridge.changeModelTier(model)
+                    }
                 }
             case .closeTapped:
                 state = state.copy(\.activeSheet, to: nil)

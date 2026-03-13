@@ -10,15 +10,18 @@ public struct ComposerScreen<WebContent: View>: View {
     @StateObject private var store: ComposerStateStore
     private let isWebViewReady: Bool
     private let toastStateStore: ToastStateStore
+    private let onPremiumModelTapped: () -> Void
     @ViewBuilder private let webContent: () -> WebContent
 
     @State private var sheetHeight: CGFloat = 250
     @State private var selectedPhotoItem: PhotosPickerItem?
+    @State private var pendingPremiumModelTap = false
 
     public init(
         webBridge: WebComposerBridging,
         isWebViewReady: Bool,
         toastStateStore: ToastStateStore,
+        onPremiumModelTapped: @escaping () -> Void,
         webContent: @escaping () -> WebContent
     ) {
         self.init(
@@ -26,6 +29,7 @@ public struct ComposerScreen<WebContent: View>: View {
             webBridge: webBridge,
             isWebViewReady: isWebViewReady,
             toastStateStore: toastStateStore,
+            onPremiumModelTapped: onPremiumModelTapped,
             webContent: webContent
         )
     }
@@ -36,6 +40,7 @@ public struct ComposerScreen<WebContent: View>: View {
         webBridge: WebComposerBridging,
         isWebViewReady: Bool,
         toastStateStore: ToastStateStore,
+        onPremiumModelTapped: @escaping () -> Void,
         webContent: @escaping () -> WebContent
     ) {
         _store = .init(
@@ -47,6 +52,7 @@ public struct ComposerScreen<WebContent: View>: View {
         )
         self.isWebViewReady = isWebViewReady
         self.toastStateStore = toastStateStore
+        self.onPremiumModelTapped = onPremiumModelTapped
         self.webContent = webContent
     }
 
@@ -93,17 +99,26 @@ public struct ComposerScreen<WebContent: View>: View {
         }
         .task { store.send(action: .taskStarted) }
         .onDisappear { store.send(action: .onDisappear) }
-        .sheet(item: activeSheetBinding) { sheet in
-            sheetContent(for: sheet)
-                .background {
-                    GeometryReader { geometry in
-                        Color.clear.preference(key: SheetHeightKey.self, value: geometry.size.height)
-                    }
+        .sheet(
+            item: activeSheetBinding,
+            onDismiss: {
+                if pendingPremiumModelTap {
+                    pendingPremiumModelTap = false
+                    onPremiumModelTapped()
                 }
-                .onPreferenceChange(SheetHeightKey.self) { sheetHeight = $0 }
-                .presentationDetents([.height(sheetHeight)])
-                .presentationDragIndicator(.visible)
-        }
+            },
+            content: { sheet in
+                sheetContent(for: sheet)
+                    .background {
+                        GeometryReader { geometry in
+                            Color.clear.preference(key: SheetHeightKey.self, value: geometry.size.height)
+                        }
+                    }
+                    .onPreferenceChange(SheetHeightKey.self) { sheetHeight = $0 }
+                    .presentationDetents([.height(sheetHeight)])
+                    .presentationDragIndicator(.visible)
+            }
+        )
         .photosPicker(isPresented: isPickerPresentedBinding(for: .photos), selection: $selectedPhotoItem, matching: .images)
         .onChange(of: selectedPhotoItem) { _, item in
             if let item {
@@ -121,6 +136,7 @@ public struct ComposerScreen<WebContent: View>: View {
             )
             .ignoresSafeArea()
         }
+        .onReceive(store.premiumModelTappedSubject) { pendingPremiumModelTap = true }
         .environment(\.featureFlags, store.state.webState.featureFlags)
     }
 
@@ -254,6 +270,7 @@ private struct SheetHeightKey: PreferenceKey {
             webBridge: WebComposerBridge(),
             isWebViewReady: true,
             toastStateStore: ToastStateStore(initialState: .initial),
+            onPremiumModelTapped: {},
             webContent: { EmptyView() }
         )
     }
