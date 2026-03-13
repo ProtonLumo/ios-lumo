@@ -104,17 +104,17 @@ public struct ComposerScreen<WebContent: View>: View {
                 .presentationDetents([.height(sheetHeight)])
                 .presentationDragIndicator(.visible)
         }
-        .photosPicker(isPresented: isPhotoPickerPresentedBinding, selection: $selectedPhotoItem, matching: .images)
+        .photosPicker(isPresented: isPickerPresentedBinding(for: .photos), selection: $selectedPhotoItem, matching: .images)
         .onChange(of: selectedPhotoItem) { _, item in
             if let item {
                 store.send(action: .photoPicked(item))
                 selectedPhotoItem = nil
             }
         }
-        .fileImporter(isPresented: isFilePickerPresentedBinding, allowedContentTypes: [.data]) { result in
+        .fileImporter(isPresented: isPickerPresentedBinding(for: .files), allowedContentTypes: [.data]) { result in
             store.send(action: .filesPicked(result))
         }
-        .sheet(isPresented: isCameraPickerPresentedBinding) {
+        .sheet(isPresented: isPickerPresentedBinding(for: .camera)) {
             CameraPickerView(
                 onImageCaptured: { image in store.send(action: .imageCaptured(image)) },
                 onDismiss: { store.send(action: .dismissActivePicker) }
@@ -124,21 +124,7 @@ public struct ComposerScreen<WebContent: View>: View {
         .environment(\.featureFlags, store.state.webState.featureFlags)
     }
 
-    @ViewBuilder
-    private func sheetContent(for sheet: ActiveSheet) -> some View {
-        switch sheet {
-        case .tools:
-            ToolsSheetView(
-                isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
-                action: { action in store.send(action: .toolsSheetAction(action)) }
-            )
-        case .modelSelection:
-            ModelSelectionSheetView(
-                selectedModel: store.state.webState.model,
-                action: { action in store.send(action: .modelSelectionSheetAction(action)) }
-            )
-        }
-    }
+    // MARK: - Private
 
     private var activeSheetBinding: Binding<ActiveSheet?> {
         Binding(
@@ -147,7 +133,12 @@ public struct ComposerScreen<WebContent: View>: View {
         )
     }
 
-    // MARK: - Private
+    private func isPickerPresentedBinding(for picker: ActiveSystemPicker) -> Binding<Bool> {
+        Binding(
+            get: { store.state.activeSystemPicker == picker },
+            set: { if $0 == false { store.send(action: .dismissActivePicker) } }
+        )
+    }
 
     private func handle(action: ComposerView.Action) {
         switch action {
@@ -180,6 +171,22 @@ public struct ComposerScreen<WebContent: View>: View {
             store.send(action: .previewAttachmentTapped(id: id))
         case .removeAttachmentTapped(let id):
             store.send(action: .removeAttachmentTapped(id: id))
+        }
+    }
+
+    @ViewBuilder
+    private func sheetContent(for sheet: ActiveSheet) -> some View {
+        switch sheet {
+        case .tools:
+            ToolsSheetView(
+                isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
+                action: { action in store.send(action: .toolsSheetAction(action)) }
+            )
+        case .modelSelection:
+            ModelSelectionSheetView(
+                selectedModel: store.state.webState.model,
+                action: { action in store.send(action: .modelSelectionSheetAction(action)) }
+            )
         }
     }
 
@@ -229,29 +236,6 @@ public struct ComposerScreen<WebContent: View>: View {
         let lightItem = LottieAnimations.LumoCat.light
 
         return colorScheme == .dark ? darkItem : lightItem
-    }
-
-    // MARK: - Picker bindings
-
-    private var isPhotoPickerPresentedBinding: Binding<Bool> {
-        Binding(
-            get: { store.state.activeSystemPicker == .photos },
-            set: { if !$0 { store.send(action: .dismissActivePicker) } }
-        )
-    }
-
-    private var isFilePickerPresentedBinding: Binding<Bool> {
-        Binding(
-            get: { store.state.activeSystemPicker == .files },
-            set: { if !$0 { store.send(action: .dismissActivePicker) } }
-        )
-    }
-
-    private var isCameraPickerPresentedBinding: Binding<Bool> {
-        Binding(
-            get: { store.state.activeSystemPicker == .camera },
-            set: { if !$0 { store.send(action: .dismissActivePicker) } }
-        )
     }
 }
 
