@@ -12,6 +12,8 @@ extension DS {
         public static let mediumLarge: CGFloat = 14
         /// 16px
         public static let extraLarge: CGFloat = 16
+        /// 20px
+        public static let huge: CGFloat = 20
         /// 24px
         public static let massive: CGFloat = 24
         /// 32px

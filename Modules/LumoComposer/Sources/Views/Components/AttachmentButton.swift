@@ -35,6 +35,7 @@ struct AttachmentButton: View {
             }
         )
         .frame(minWidth: 100, maxWidth: 130)
+        .frame(height: 127)
         .background {
             RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
                 .fill(backgroundColor)
@@ -61,7 +62,7 @@ struct AttachmentButton: View {
             file.type
                 .image
                 .resizable()
-                .square(size: 63)
+                .square(size: 36)
         }
     }
 
@@ -86,12 +87,12 @@ struct AttachmentButton: View {
     private var filenameView: some View {
         Text(file.name)
             .lineLimit(2)
-            .font(.caption.weight(.semibold))
+            .font(.caption)
             .foregroundStyle(accentColor)
             .padding(.vertical, DS.Spacing.tiny)
             .padding(.horizontal, DS.Spacing.mediumLight)
             .background {
-                RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
+                RoundedRectangle(cornerRadius: DS.Radius.huge)
                     .fill(backgroundColor)
                     .strokeBorder(borderColor, lineWidth: 1)
             }
