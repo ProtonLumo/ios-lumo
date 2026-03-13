@@ -1,4 +1,4 @@
-enum AddAttachmentOption: CaseIterable {
+enum AddAttachmentOption {
     case protonDrive
     case files
     case camera

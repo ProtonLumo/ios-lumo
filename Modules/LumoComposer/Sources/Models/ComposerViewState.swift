@@ -18,6 +18,8 @@ struct ComposerViewState: Equatable, Copying {
     var webState: WebComposerState
     /// Currently presented sheet, or `nil` when no sheet is shown
     var activeSheet: ActiveSheet?
+    /// Currently active system picker, or `nil` when none is shown
+    var activeSystemPicker: ActiveSystemPicker?
     /// In-memory cache mapping file IDs to their base64 preview strings
     ///
     /// The WebAPI only returns `preview` on the first upload; subsequent state updates omit it.
@@ -29,13 +31,15 @@ struct ComposerViewState: Equatable, Copying {
         isProcessing: Bool,
         isWebViewReady: Bool,
         webState: WebComposerState,
-        activeSheet: ActiveSheet?
+        activeSheet: ActiveSheet?,
+        activePicker: ActiveSystemPicker?
     ) {
         self.currentText = currentText
         self.isProcessing = isProcessing
         self.isWebViewReady = isWebViewReady
         self.webState = webState
         self.activeSheet = activeSheet
+        self.activeSystemPicker = activePicker
         self.filePreviewsCache = [:]
     }
 
@@ -103,7 +107,8 @@ extension ComposerViewState {
             isProcessing: false,
             isWebViewReady: false,
             webState: .initial,
-            activeSheet: .none
+            activeSheet: .none,
+            activePicker: .none
         )
     }
 }

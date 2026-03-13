@@ -7,6 +7,10 @@ protocol PhotosItem {
     var supportedContentTypes: [UTType] { get }
 }
 
+protocol PhotosItemLoading: PhotosItem {
+    func loadTransferableData() async throws -> Data?
+}
+
 enum PhotoFileNameExtractor {
     /// Returns the original filename of the photo asset if available, otherwise falls back to a UUID-based name
     /// with an extension inferred from the item's supported content types.
@@ -32,3 +36,8 @@ private extension PHAsset {
 }
 
 extension PhotosPickerItem: PhotosItem {}
+extension PhotosPickerItem: PhotosItemLoading {
+    func loadTransferableData() async throws -> Data? {
+        try await loadTransferable(type: Data.self)
+    }
+}

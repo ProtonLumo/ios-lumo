@@ -13,10 +13,7 @@ public struct ComposerScreen<WebContent: View>: View {
     @ViewBuilder private let webContent: () -> WebContent
 
     @State private var sheetHeight: CGFloat = 250
-    @State private var isPhotoPickerPresented = false
     @State private var selectedPhotoItem: PhotosPickerItem?
-    @State private var isFileImporterPresented = false
-    @State private var isCameraPickerPresented = false
 
     public init(
         webBridge: WebComposerBridging,
@@ -107,26 +104,20 @@ public struct ComposerScreen<WebContent: View>: View {
                 .presentationDetents([.height(sheetHeight)])
                 .presentationDragIndicator(.visible)
         }
-        .photosPicker(isPresented: $isPhotoPickerPresented, selection: $selectedPhotoItem, matching: .images)
-        .onChange(of: selectedPhotoItem) { _, photosItem in
-            if let photosItem {
-                Task {
-                    await upload(photosItem: photosItem)
-                    selectedPhotoItem = nil
-                }
+        .photosPicker(isPresented: isPhotoPickerPresentedBinding, selection: $selectedPhotoItem, matching: .images)
+        .onChange(of: selectedPhotoItem) { _, item in
+            if let item {
+                store.send(action: .photoPicked(item))
+                selectedPhotoItem = nil
             }
         }
-        .fileImporter(isPresented: $isFileImporterPresented, allowedContentTypes: [.data]) { result in
-            Task {
-                await upload(fileResult: result)
-            }
+        .fileImporter(isPresented: isFilePickerPresentedBinding, allowedContentTypes: [.data]) { result in
+            store.send(action: .filesPicked(result))
         }
-        .sheet(isPresented: $isCameraPickerPresented) {
+        .sheet(isPresented: isCameraPickerPresentedBinding) {
             CameraPickerView(
-                onImageCaptured: { image in
-                    Task { await upload(capturedImage: image) }
-                },
-                onDismiss: { isCameraPickerPresented = false }
+                onImageCaptured: { image in store.send(action: .imageCaptured(image)) },
+                onDismiss: { store.send(action: .dismissActivePicker) }
             )
             .ignoresSafeArea()
         }
@@ -169,11 +160,11 @@ public struct ComposerScreen<WebContent: View>: View {
             case .protonDrive:
                 store.send(action: .openProtonDriveTapped)
             case .files:
-                isFileImporterPresented = true
+                store.send(action: .showPicker(.files))
             case .camera:
-                isCameraPickerPresented = true
+                store.send(action: .showPicker(.camera))
             case .photos:
-                isPhotoPickerPresented = true
+                store.send(action: .showPicker(.photos))
             case .sketch:
                 store.send(action: .openSketchTapped)
             }
@@ -240,38 +231,27 @@ public struct ComposerScreen<WebContent: View>: View {
         return colorScheme == .dark ? darkItem : lightItem
     }
 
-    private func upload(fileResult: Result<URL, Error>) async {
-        guard case .success(let url) = fileResult else { return }
+    // MARK: - Picker bindings
 
-        guard url.startAccessingSecurityScopedResource() else { return }
-        defer { url.stopAccessingSecurityScopedResource() }
-
-        guard let data = try? Data(contentsOf: url) else { return }
-
-        await upload(data: data, name: url.lastPathComponent)
+    private var isPhotoPickerPresentedBinding: Binding<Bool> {
+        Binding(
+            get: { store.state.activeSystemPicker == .photos },
+            set: { if !$0 { store.send(action: .dismissActivePicker) } }
+        )
     }
 
-    private func upload(capturedImage: UIImage) async {
-        guard let data = capturedImage.jpegData(compressionQuality: 1) else { return }
-
-        let name = "\(UUIDEnvironment.uuid().uuidString).jpg"
-
-        await upload(data: data, name: name)
+    private var isFilePickerPresentedBinding: Binding<Bool> {
+        Binding(
+            get: { store.state.activeSystemPicker == .files },
+            set: { if !$0 { store.send(action: .dismissActivePicker) } }
+        )
     }
 
-    private func upload(photosItem: PhotosPickerItem) async {
-        guard let data = try? await photosItem.loadTransferable(type: Data.self) else { return }
-
-        let name = PhotoFileNameExtractor.fileName(from: photosItem)
-
-        await upload(data: data, name: name)
-    }
-
-    private func upload(data: Data, name: String) async {
-        let base64 = data.base64EncodedString()
-        let file = FileUploadData(base64: base64, name: name)
-
-        await store.send(action: .uploadFilesTapped([file]))
+    private var isCameraPickerPresentedBinding: Binding<Bool> {
+        Binding(
+            get: { store.state.activeSystemPicker == .camera },
+            set: { if !$0 { store.send(action: .dismissActivePicker) } }
+        )
     }
 }
 
