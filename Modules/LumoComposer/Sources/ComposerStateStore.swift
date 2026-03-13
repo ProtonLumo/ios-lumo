@@ -16,9 +16,7 @@ final class ComposerStateStore: StateStore {
         case uploadFilesTapped([FileUploadData])
         case openProtonDriveTapped
         case openSketchTapped
-        case toggleWebSearchTapped
         case toggleCreateImageTapped
-        case changeModelTapped(WebComposerState.ModelTier)
         case startRecordingTapped
         case previewAttachmentTapped(id: String)
         case removeAttachmentTapped(id: String)
@@ -116,19 +114,9 @@ final class ComposerStateStore: StateStore {
                 try await webBridge.openSketch()
             }
 
-        case .toggleWebSearchTapped:
-            await execute { () async throws(WebComposerBridgeError) in
-                try await webBridge.toggleWebSearch()
-            }
-
         case .toggleCreateImageTapped:
             await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.toggleCreateImage()
-            }
-
-        case .changeModelTapped(let modelType):
-            await execute { () async throws(WebComposerBridgeError) in
-                try await webBridge.changeModelTier(modelType)
             }
 
         case .startRecordingTapped:

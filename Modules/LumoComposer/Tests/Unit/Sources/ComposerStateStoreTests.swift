@@ -358,47 +358,6 @@ final class ComposerStateStoreTests {
         #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
-    // MARK: - .toggleWebSearch action
-
-    @Test
-    func toggleWebSearchAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
-        await sut.send(action: .toggleWebSearchTapped)
-
-        #expect(toastStateStore.state.toasts == [.bridgeError])
-    }
-
-    @Test(.stubbedUUID(.testData3))
-    func toggleWebSearchAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
-        webBridge.attach(to: webViewSpy)
-
-        await sut.send(action: .taskStarted)
-        await sut.send(action: .toggleWebSearchTapped)
-
-        let javascript = "window.nativeComposerApi?.toggleWebSearch('\(UUID.testData3.uuidString)');"
-
-        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
-        #expect(
-            webViewSpy.evaluateJavaScriptCalls.last
-                == .init(
-                    javaScript: javascript,
-                    frame: .none,
-                    contentWorld: .page
-                )
-        )
-        #expect(toastStateStore.state.toasts.isEmpty)
-    }
-
-    @Test
-    func toggleWebSearchAction_WhenJavaScriptEvaluationFails_ItReturnsError() async {
-        webBridge.attach(to: webViewSpy)
-        webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
-
-        await sut.send(action: .taskStarted)
-        await sut.send(action: .toggleWebSearchTapped)
-
-        #expect(toastStateStore.state.toasts == [.bridgeError])
-    }
-
     // MARK: - .previewAttachment action
 
     @Test
@@ -560,6 +519,24 @@ final class ComposerStateStoreTests {
     }
 
     @Test
+    func toolsSheetAction_WebSearchToggled_WhenWebViewNotAttached_ShowsErrorToast() async {
+        await sut.send(action: .toolsSheetAction(.webSearchToggled))
+
+        #expect(toastStateStore.state.toasts == [.bridgeError])
+    }
+
+    @Test
+    func toolsSheetAction_WebSearchToggled_WhenJavaScriptEvaluationFails_ShowsErrorToast() async {
+        webBridge.attach(to: webViewSpy)
+        webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
+
+        await sut.send(action: .taskStarted)
+        await sut.send(action: .toolsSheetAction(.webSearchToggled))
+
+        #expect(toastStateStore.state.toasts == [.bridgeError])
+    }
+
+    @Test
     func toolsSheetAction_CloseTapped_DismissesSheet() async {
         await sut.send(action: .showSheet(.tools))
         await sut.send(action: .toolsSheetAction(.closeTapped))
@@ -571,22 +548,59 @@ final class ComposerStateStoreTests {
     // MARK: - .modelSelectionSheetAction action
 
     @Test(.stubbedUUID(.testData2))
-    func modelSelectionSheetAction_ModelSelected_DismissesSheetAndChangesModel() async {
+    func modelSelectionSheetAction_ModelSelected_DismissesSheet() async {
         webBridge.attach(to: webViewSpy)
 
         await sut.send(action: .taskStarted)
         await sut.send(action: .showSheet(.modelSelection))
         await sut.send(action: .modelSelectionSheetAction(.modelSelected(.fast)))
 
-        let javascript = "window.nativeComposerApi?.changeModelTier('\(UUID.testData2.uuidString)', 'Fast');"
-
         #expect(sut.state.activeSheet == nil)
-        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
-        #expect(
-            webViewSpy.evaluateJavaScriptCalls.last
-                == .init(javaScript: javascript, frame: .none, contentWorld: .page)
-        )
         #expect(toastStateStore.state.toasts.isEmpty)
+    }
+
+    @Test(.stubbedUUID(.testData2))
+    func modelSelectionSheetAction_ModelSelected_ExecutesCorrectJavaScriptForAllModelTiers() async {
+        webBridge.attach(to: webViewSpy)
+
+        await sut.send(action: .taskStarted)
+
+        let javascript: (String) -> String = { mode in
+            "window.nativeComposerApi?.changeModelTier('\(UUID.testData2.uuidString)', '\(mode)');"
+        }
+
+        await sut.send(action: .showSheet(.modelSelection))
+        await sut.send(action: .modelSelectionSheetAction(.modelSelected(.auto)))
+        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("Auto"))
+
+        await sut.send(action: .showSheet(.modelSelection))
+        await sut.send(action: .modelSelectionSheetAction(.modelSelected(.fast)))
+        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("Fast"))
+
+        await sut.send(action: .showSheet(.modelSelection))
+        await sut.send(action: .modelSelectionSheetAction(.modelSelected(.thinking)))
+        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("Thinking"))
+
+        #expect(webViewSpy.evaluateJavaScriptCalls.count == 3)
+        #expect(toastStateStore.state.toasts.isEmpty)
+    }
+
+    @Test
+    func modelSelectionSheetAction_ModelSelected_WhenWebViewNotAttached_ShowsErrorToast() async {
+        await sut.send(action: .modelSelectionSheetAction(.modelSelected(.auto)))
+
+        #expect(toastStateStore.state.toasts == [.bridgeError])
+    }
+
+    @Test
+    func modelSelectionSheetAction_ModelSelected_WhenJavaScriptEvaluationFails_ShowsErrorToast() async {
+        webBridge.attach(to: webViewSpy)
+        webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
+
+        await sut.send(action: .taskStarted)
+        await sut.send(action: .modelSelectionSheetAction(.modelSelected(.auto)))
+
+        #expect(toastStateStore.state.toasts == [.bridgeError])
     }
 
     @Test
@@ -767,69 +781,6 @@ final class ComposerStateStoreTests {
 
         await sut.send(action: .taskStarted)
         await sut.send(action: .toggleCreateImageTapped)
-
-        #expect(toastStateStore.state.toasts == [.bridgeError])
-    }
-
-    // MARK: - .changeModel action
-
-    @Test
-    func changeModelAction_WhenWebViewNotAttached_ItReturnsErrorEffect() async {
-        await sut.send(action: .changeModelTapped(.fast))
-
-        #expect(toastStateStore.state.toasts == [.bridgeError])
-    }
-
-    @Test(.stubbedUUID(.testData))
-    func changeModelAction_WhenWebViewIsAttached_ExecutesJavaScriptCorrectly() async {
-        webBridge.attach(to: webViewSpy)
-
-        await sut.send(action: .taskStarted)
-        await sut.send(action: .changeModelTapped(.thinking))
-
-        let javascript = "window.nativeComposerApi?.changeModelTier('\(UUID.testData.uuidString)', 'Thinking');"
-
-        #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
-        #expect(
-            webViewSpy.evaluateJavaScriptCalls.last
-                == .init(
-                    javaScript: javascript,
-                    frame: .none,
-                    contentWorld: .page
-                )
-        )
-        #expect(toastStateStore.state.toasts.isEmpty)
-    }
-
-    @Test(.stubbedUUID(.testData2))
-    func changeModelAction_ForAllModelTypes_ExecutesCorrectJavaScript() async {
-        webBridge.attach(to: webViewSpy)
-
-        await sut.send(action: .taskStarted)
-
-        let javascript: (String) -> String = { mode in
-            "window.nativeComposerApi?.changeModelTier('\(UUID.testData2.uuidString)', '\(mode)');"
-        }
-
-        await sut.send(action: .changeModelTapped(.auto))
-        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("Auto"))
-
-        await sut.send(action: .changeModelTapped(.fast))
-        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("Fast"))
-
-        await sut.send(action: .changeModelTapped(.thinking))
-        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("Thinking"))
-
-        #expect(webViewSpy.evaluateJavaScriptCalls.count == 3)
-    }
-
-    @Test
-    func changeModelAction_WhenJavaScriptEvaluationFails_ItReturnsError() async {
-        webBridge.attach(to: webViewSpy)
-        webViewSpy.stubbedError = NSError(domain: "JS evaluation fails", code: -9006)
-
-        await sut.send(action: .taskStarted)
-        await sut.send(action: .changeModelTapped(.auto))
 
         #expect(toastStateStore.state.toasts == [.bridgeError])
     }
