@@ -16,9 +16,9 @@ public struct WebComposerState: Equatable, Decodable {
     }
 
     public enum ModelTier: String, CaseIterable, Decodable, Equatable, Sendable {
-        case auto = "Auto"
-        case fast = "Fast"
-        case thinking = "Thinking"
+        case auto = "auto"
+        case fast = "fast"
+        case thinking = "thinking"
     }
 
     struct FeatureFlags: Equatable, Decodable {

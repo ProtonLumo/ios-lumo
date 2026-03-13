@@ -571,15 +571,15 @@ final class ComposerStateStoreTests {
 
         await sut.send(action: .showSheet(.modelSelection))
         await sut.send(action: .modelSelectionSheetAction(.modelSelected(.auto)))
-        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("Auto"))
+        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("auto"))
 
         await sut.send(action: .showSheet(.modelSelection))
         await sut.send(action: .modelSelectionSheetAction(.modelSelected(.fast)))
-        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("Fast"))
+        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("fast"))
 
         await sut.send(action: .showSheet(.modelSelection))
         await sut.send(action: .modelSelectionSheetAction(.modelSelected(.thinking)))
-        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("Thinking"))
+        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("thinking"))
 
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 3)
         #expect(toastStateStore.state.toasts.isEmpty)
@@ -1018,7 +1018,7 @@ final class ComposerStateStoreTests {
         }
         let state: [String: Any] = [
             "lumoMode": lumoMode,
-            "modelTier": "Auto",
+            "modelTier": "auto",
             "isGhostModeEnabled": isGhostModeEnabled,
             "isWebSearchEnabled": isWebSearchEnabled,
             "isCreateImageEnabled": false,
