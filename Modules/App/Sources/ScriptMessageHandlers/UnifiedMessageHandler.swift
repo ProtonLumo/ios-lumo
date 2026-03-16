@@ -99,7 +99,7 @@ final class UnifiedMessageHandler: NSObject, WebScriptMessageHandler {
         }
         lastSubmitTime = now
 
-        NotificationCenter.default.post(name: NSNotification.Name("SubmitButtonClicked"), object: nil)
+        parent.webViewStore?.endEditing(true)
     }
 
     private func handleElementFound(_ message: WKScriptMessage) {
