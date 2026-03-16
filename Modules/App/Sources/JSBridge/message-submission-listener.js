@@ -77,6 +77,7 @@
         
         function applyStabilization(triggerEvent) {
             console.log(`🎯 ${triggerEvent} - applying layout stabilization`);
+            window.webkit?.messageHandlers?.submitButtonClicked?.postMessage({});
             if (applyLayoutStabilization()) {
                 setTimeout(() => {
                     restoreLayout();
