@@ -1,5 +1,7 @@
 import Combine
+import PhotosUI
 import ProtonUIFoundations
+import UIKit
 import WebKit
 
 final class ComposerStateStore: StateStore {
@@ -25,18 +27,33 @@ final class ComposerStateStore: StateStore {
         case dismissActiveSheet
         case toolsSheetAction(ToolsSheetView.Action)
         case modelSelectionSheetAction(ModelSelectionSheetView.Action)
+
+        case showPicker(ActiveSystemPicker)
+        case dismissActivePicker
+        case filesPicked(Result<URL, any Error>)
+        case photoPicked(any PhotosItemLoading)
+        case imageCaptured(UIImage)
     }
+
+    typealias FileLoader = @Sendable (URL) throws -> Data
 
     @Published var state: ComposerViewState
 
     private let webBridge: WebComposerBridging
     private let toastStateStore: ToastStateStore
+    private let fileLoader: FileLoader
     private var observationTask: Task<Void, Never>?
 
-    init(initialState: ComposerViewState, webBridge: WebComposerBridging, toastStateStore: ToastStateStore) {
+    init(
+        initialState: ComposerViewState,
+        webBridge: WebComposerBridging,
+        toastStateStore: ToastStateStore,
+        fileLoader: @escaping FileLoader = { url in try securityScopedFileLoader(url: url) }
+    ) {
         self.state = initialState
         self.webBridge = webBridge
         self.toastStateStore = toastStateStore
+        self.fileLoader = fileLoader
     }
 
     func send(action: Action) async {
@@ -160,6 +177,31 @@ final class ComposerStateStore: StateStore {
             case .closeTapped:
                 state = state.copy(\.activeSheet, to: nil)
             }
+
+        case .showPicker(let picker):
+            state = state.copy(\.activeSystemPicker, to: picker)
+
+        case .dismissActivePicker:
+            state = state.copy(\.activeSystemPicker, to: nil)
+
+        case .filesPicked(let result):
+            guard case .success(let url) = result else { return }
+            do {
+                let data = try fileLoader(url)
+                await sendUploadFile(data: data, name: url.lastPathComponent)
+            } catch {}
+
+        case .photoPicked(let item):
+            do {
+                guard let data = try await item.loadTransferableData() else { return }
+                let name = PhotoFileNameExtractor.fileName(from: item)
+                await sendUploadFile(data: data, name: name)
+            } catch {}
+
+        case .imageCaptured(let image):
+            guard let data = image.jpegData(compressionQuality: 0.7) else { return }
+            let name = "\(UUIDEnvironment.uuid().uuidString).jpg"
+            await sendUploadFile(data: data, name: name)
         }
     }
 
@@ -171,5 +213,12 @@ final class ComposerStateStore: StateStore {
         } catch {
             toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
+    }
+
+    private func sendUploadFile(data: Data, name: String) async {
+        let base64 = data.base64EncodedString()
+        let file = FileUploadData(base64: base64, name: name)
+
+        await send(action: .uploadFilesTapped([file]))
     }
 }

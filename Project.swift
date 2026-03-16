@@ -104,7 +104,7 @@ let project = Project(
                 base: [
                     "DEVELOPMENT_TEAM": .string(developmentTeam),
                     "MARKETING_VERSION": .string(marketingVersion),
-                    "CURRENT_PROJECT_VERSION": "$(CURRENT_PROJECT_VERSION)",
+                    "CURRENT_PROJECT_VERSION": "1",
                     "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.productivity",
                 ],
                 configurations: signingConfigurations(
@@ -148,7 +148,7 @@ let project = Project(
                 base: [
                     "DEVELOPMENT_TEAM": .string(developmentTeam),
                     "MARKETING_VERSION": .string(marketingVersion),
-                    "CURRENT_PROJECT_VERSION": "$(CURRENT_PROJECT_VERSION)",
+                    "CURRENT_PROJECT_VERSION": "1",
                 ],
                 configurations: signingConfigurations(bundleId: "me.proton.lumo.LumoWidgetExtension")
             )
@@ -164,6 +164,7 @@ let project = Project(
                 "Modules/LumoComposer/Resources/**"
             ],
             dependencies: [
+                .external(name: "ProtonUIFoundations"),
                 .target(name: "LumoCore"),
                 .target(name: "LumoDesignSystem"),
                 .target(name: "LumoUI"),

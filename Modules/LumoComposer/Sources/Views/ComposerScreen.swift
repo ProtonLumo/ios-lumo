@@ -1,7 +1,9 @@
 import Lottie
 import LumoDesignSystem
+import PhotosUI
 import ProtonUIFoundations
 import SwiftUI
+import UIKit
 
 public struct ComposerScreen<WebContent: View>: View {
     @Environment(\.colorScheme) var colorScheme
@@ -11,6 +13,7 @@ public struct ComposerScreen<WebContent: View>: View {
     @ViewBuilder private let webContent: () -> WebContent
 
     @State private var sheetHeight: CGFloat = 250
+    @State private var selectedPhotoItem: PhotosPickerItem?
 
     public init(
         webBridge: WebComposerBridging,
@@ -101,37 +104,41 @@ public struct ComposerScreen<WebContent: View>: View {
                 .presentationDetents([.height(sheetHeight)])
                 .presentationDragIndicator(.visible)
         }
+        .photosPicker(isPresented: isPickerPresentedBinding(for: .photos), selection: $selectedPhotoItem, matching: .images)
+        .onChange(of: selectedPhotoItem) { _, item in
+            if let item {
+                store.send(action: .photoPicked(item))
+                selectedPhotoItem = nil
+            }
+        }
+        .fileImporter(isPresented: isPickerPresentedBinding(for: .files), allowedContentTypes: [.data]) { result in
+            store.send(action: .filesPicked(result))
+        }
+        .sheet(isPresented: isPickerPresentedBinding(for: .camera)) {
+            CameraPickerView(
+                onImageCaptured: { image in store.send(action: .imageCaptured(image)) },
+                onDismiss: { store.send(action: .dismissActivePicker) }
+            )
+            .ignoresSafeArea()
+        }
         .environment(\.featureFlags, store.state.webState.featureFlags)
     }
 
-    @ViewBuilder
-    private func sheetContent(for sheet: ActiveSheet) -> some View {
-        switch sheet {
-        case .tools:
-            ToolsSheetView(
-                isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
-                action: { action in store.send(action: .toolsSheetAction(action)) }
-            )
-        case .modelSelection:
-            ModelSelectionSheetView(
-                selectedModel: store.state.webState.model,
-                action: { action in store.send(action: .modelSelectionSheetAction(action)) }
-            )
-        }
-    }
+    // MARK: - Private
 
     private var activeSheetBinding: Binding<ActiveSheet?> {
         Binding(
             get: { store.state.activeSheet },
-            set: { newValue in
-                if newValue == nil {
-                    store.send(action: .dismissActiveSheet)
-                }
-            }
+            set: { if $0 == nil { store.send(action: .dismissActiveSheet) } }
         )
     }
 
-    // MARK: - Private
+    private func isPickerPresentedBinding(for picker: ActiveSystemPicker) -> Binding<Bool> {
+        Binding(
+            get: { store.state.activeSystemPicker == picker },
+            set: { if $0 == false { store.send(action: .dismissActivePicker) } }
+        )
+    }
 
     private func handle(action: ComposerView.Action) {
         switch action {
@@ -144,17 +151,11 @@ public struct ComposerScreen<WebContent: View>: View {
             case .protonDrive:
                 store.send(action: .openProtonDriveTapped)
             case .files:
-                // FIXME: Open native files picker and transform selected file to base64 and use
-                // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
-                break
+                store.send(action: .showPicker(.files))
             case .camera:
-                // FIXME: Open native camera picker and transform captured photo to base64 and use
-                // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
-                break
+                store.send(action: .showPicker(.camera))
             case .photos:
-                // FIXME: Open photos picker and transform selected photo to base64 and use
-                // store.send(action: .uploadFilesTapped([.init(base64: {{base64}}, name: {{fileName}})]))
-                break
+                store.send(action: .showPicker(.photos))
             case .sketch:
                 store.send(action: .openSketchTapped)
             }
@@ -170,6 +171,22 @@ public struct ComposerScreen<WebContent: View>: View {
             store.send(action: .previewAttachmentTapped(id: id))
         case .removeAttachmentTapped(let id):
             store.send(action: .removeAttachmentTapped(id: id))
+        }
+    }
+
+    @ViewBuilder
+    private func sheetContent(for sheet: ActiveSheet) -> some View {
+        switch sheet {
+        case .tools:
+            ToolsSheetView(
+                isWebSearchEnabled: store.state.webState.isWebSearchEnabled,
+                action: { action in store.send(action: .toolsSheetAction(action)) }
+            )
+        case .modelSelection:
+            ModelSelectionSheetView(
+                selectedModel: store.state.webState.model,
+                action: { action in store.send(action: .modelSelectionSheetAction(action)) }
+            )
         }
     }
 

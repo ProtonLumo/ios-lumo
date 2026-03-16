@@ -25,7 +25,8 @@ struct ComposerViewStateTests {
                         attachedFiles: [],
                         featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
                     ),
-                    activeSheet: .none
+                    activeSheet: .none,
+                    activePicker: .none
                 )
         )
     }
@@ -122,7 +123,8 @@ private extension ComposerViewState {
                 attachedFiles: [],
                 featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true)
             ),
-            activeSheet: .none
+            activeSheet: .none,
+            activePicker: .none
         )
     }
 }
