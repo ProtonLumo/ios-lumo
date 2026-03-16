@@ -16,9 +16,7 @@ final class ComposerStateStore: StateStore {
         case uploadFilesTapped([FileUploadData])
         case openProtonDriveTapped
         case openSketchTapped
-        case toggleWebSearchTapped
         case toggleCreateImageTapped
-        case changeModelTapped(WebComposerState.Model)
         case startRecordingTapped
         case previewAttachmentTapped(id: String)
         case removeAttachmentTapped(id: String)
@@ -116,19 +114,9 @@ final class ComposerStateStore: StateStore {
                 try await webBridge.openSketch()
             }
 
-        case .toggleWebSearchTapped:
-            await execute { () async throws(WebComposerBridgeError) in
-                try await webBridge.toggleWebSearch()
-            }
-
         case .toggleCreateImageTapped:
             await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.toggleCreateImage()
-            }
-
-        case .changeModelTapped(let modelType):
-            await execute { () async throws(WebComposerBridgeError) in
-                try await webBridge.changeModel(modelType)
             }
 
         case .startRecordingTapped:
@@ -172,7 +160,7 @@ final class ComposerStateStore: StateStore {
                 // FIXME: Show upsell for free users when model == .thinking
                 state = state.copy(\.activeSheet, to: nil)
                 await execute { () async throws(WebComposerBridgeError) in
-                    try await webBridge.changeModel(model)
+                    try await webBridge.changeModelTier(model)
                 }
             case .closeTapped:
                 state = state.copy(\.activeSheet, to: nil)

@@ -29,7 +29,7 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
         case openSketch
         case toggleWebSearch
         case toggleCreateImage
-        case changeModel(WebComposerState.Model)
+        case changeModelTier(WebComposerState.ModelTier)
         case previewAttachment(id: String)
         case removeAttachment(id: String)
 
@@ -38,33 +38,36 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
         /// Generates a call to `window.nativeComposerApi` with a unique request ID.
         var rawString: String {
             let id = UUIDEnvironment.uuid().uuidString
+            let command: String
 
             switch self {
             case .sendPrompt(let prompt):
-                return "window.nativeComposerApi?.sendPrompt('\(id)', '\(prompt.jsEscaped)');"
+                command = "sendPrompt('\(id)', '\(prompt.jsEscaped)');"
             case .stopResponse:
-                return "window.nativeComposerApi?.abortPrompt('\(id)');"
+                command = "abortPrompt('\(id)');"
             case .uploadFiles(let files):
                 let filesJSON =
                     files
                     .map { "{ base64: '\($0.base64.jsEscaped)', name: '\($0.name.jsEscaped)' }" }
                     .joined(separator: ", ")
-                return "window.nativeComposerApi?.uploadFiles('\(id)', [\(filesJSON)]);"
+                command = "uploadFiles('\(id)', [\(filesJSON)]);"
             case .openProtonDrive:
-                return "window.nativeComposerApi?.openProtonDrive('\(id)');"
+                command = "openProtonDrive('\(id)');"
             case .openSketch:
-                return "window.nativeComposerApi?.openSketch('\(id)');"
+                command = "openSketch('\(id)');"
             case .toggleWebSearch:
-                return "window.nativeComposerApi?.toggleWebSearch('\(id)');"
+                command = "toggleWebSearch('\(id)');"
             case .toggleCreateImage:
-                return "window.nativeComposerApi?.toggleCreateImage('\(id)');"
-            case .changeModel(let modelType):
-                return "window.nativeComposerApi?.changeModel('\(id)', '\(modelType.rawValue)');"
+                command = "toggleCreateImage('\(id)');"
+            case .changeModelTier(let modelTier):
+                command = "changeModelTier('\(id)', '\(modelTier.rawValue)');"
             case .previewAttachment(let attachmentId):
-                return "window.nativeComposerApi?.previewFile('\(id)', '\(attachmentId)');"
+                command = "previewFile('\(id)', '\(attachmentId)');"
             case .removeAttachment(let attachmentId):
-                return "window.nativeComposerApi?.removeFileEvent('\(id)', '\(attachmentId)');"
+                command = "removeFileEvent('\(id)', '\(attachmentId)');"
             }
+
+            return "window.nativeComposerApi?.\(command)"
         }
     }
 
@@ -108,8 +111,8 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
         try await executeJavaScript(.toggleCreateImage)
     }
 
-    public func changeModel(_ model: WebComposerState.Model) async throws(WebComposerBridgeError) {
-        try await executeJavaScript(.changeModel(model))
+    public func changeModelTier(_ model: WebComposerState.ModelTier) async throws(WebComposerBridgeError) {
+        try await executeJavaScript(.changeModelTier(model))
     }
 
     public func removeAttachment(id: String) async throws(WebComposerBridgeError) {

@@ -28,9 +28,9 @@ public protocol WebComposerBridging {
     /// Toggle image generation
     func toggleCreateImage() async throws(WebComposerBridgeError)
 
-    /// Change model type
-    /// - Parameter model: The model to use
-    func changeModel(_ model: WebComposerState.Model) async throws(WebComposerBridgeError)
+    /// Change model tier
+    /// - Parameter model: The model tier to use
+    func changeModelTier(_ model: WebComposerState.ModelTier) async throws(WebComposerBridgeError)
 
     /// Remove an attachment
     /// - Parameter id: Attachment identifier

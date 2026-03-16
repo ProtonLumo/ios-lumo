@@ -37,7 +37,7 @@ final class WebComposerScriptMessageHandlerTests {
             TestCase(
                 stateDict: [
                     "lumoMode": "Idle",
-                    "modelType": "Auto",
+                    "modelTier": "auto",
                     "isGhostModeEnabled": false,
                     "isWebSearchEnabled": false,
                     "isCreateImageEnabled": false,
@@ -64,7 +64,7 @@ final class WebComposerScriptMessageHandlerTests {
             TestCase(
                 stateDict: [
                     "lumoMode": "Working",
-                    "modelType": "Auto",
+                    "modelTier": "auto",
                     "isGhostModeEnabled": true,
                     "isWebSearchEnabled": true,
                     "isCreateImageEnabled": false,
