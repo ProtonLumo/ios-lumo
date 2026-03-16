@@ -1033,7 +1033,7 @@ final class ComposerStateStoreTests {
 
         await sut.send(action: .imageCaptured(image))
 
-        let expectedBase64 = image.jpegData(compressionQuality: 1)!.base64EncodedString()
+        let expectedBase64 = image.jpegData(compressionQuality: 0.7)!.base64EncodedString()
         let expectedName = "\(UUID.testData2.uuidString).jpg"
         let javascript = "window.nativeComposerApi?.uploadFiles('\(UUID.testData2.uuidString)', [{ base64: '\(expectedBase64)', name: '\(expectedName)' }]);"
 

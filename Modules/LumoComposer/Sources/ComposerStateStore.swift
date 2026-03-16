@@ -199,7 +199,7 @@ final class ComposerStateStore: StateStore {
             } catch {}
 
         case .imageCaptured(let image):
-            guard let data = image.jpegData(compressionQuality: 1) else { return }
+            guard let data = image.jpegData(compressionQuality: 0.7) else { return }
             let name = "\(UUIDEnvironment.uuid().uuidString).jpg"
             await sendUploadFile(data: data, name: name)
         }
