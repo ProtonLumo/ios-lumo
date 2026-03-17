@@ -74,6 +74,10 @@
 	<string>$(LUMO_BASE_URL)</string>
 	<key>ENABLE_LOCALHOST</key>
 	<string>$(ENABLE_LOCALHOST)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<true/>
+	<key>ITSEncryptionExportComplianceCode</key>
+	<string>a5778f9d-ef81-45a5-bc2b-8c0ec593fa94</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter-Regular.ttf</string>
