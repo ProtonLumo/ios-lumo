@@ -64,18 +64,10 @@ struct LumoWidgetEntry: TimelineEntry {
 }
 
 struct TimePrompt: Identifiable {
-    let labelKey: String
-    let promptKey: String
+    let label: LocalizedStringResource
+    let prompt: LocalizedStringResource
     let id: String
     let icon: String
-
-    var label: String {
-        String(localized: LocalizedStringResource(stringLiteral: labelKey))
-    }
-
-    var prompt: String {
-        String(localized: LocalizedStringResource(stringLiteral: promptKey))
-    }
 
     var destination: String {
         // Create a proper character set for URL query values
@@ -83,25 +75,27 @@ struct TimePrompt: Identifiable {
         var allowedCharacters = CharacterSet.urlQueryAllowed
         allowedCharacters.remove(charactersIn: "!*'();:@&=+$,/?#[]")
 
-        let encodedLabel = label.addingPercentEncoding(withAllowedCharacters: allowedCharacters) ?? label
-        let encodedPrompt = prompt.addingPercentEncoding(withAllowedCharacters: allowedCharacters) ?? prompt
+        let labelString = String(localized: label)
+        let promptString = String(localized: prompt)
+        let encodedLabel = labelString.addingPercentEncoding(withAllowedCharacters: allowedCharacters) ?? labelString
+        let encodedPrompt = promptString.addingPercentEncoding(withAllowedCharacters: allowedCharacters) ?? promptString
 
         let dest = "lumo://prompt?id=\(id)&source=widget&label=\(encodedLabel)&prompt=\(encodedPrompt)"
         WidgetLogger.shared.log("Created widget URL: \(dest)")
         return dest
     }
 
-    init(labelKey: String, promptKey: String, id: String, icon: String) {
-        self.labelKey = labelKey
-        self.promptKey = promptKey
+    init(label: LocalizedStringResource, prompt: LocalizedStringResource, id: String, icon: String) {
+        self.label = label
+        self.prompt = prompt
         self.id = id
         self.icon = icon
-        WidgetLogger.shared.log("Created TimePrompt - Label: \(self.label), ID: \(id)")
+        WidgetLogger.shared.log("Created TimePrompt - Label: \(String(localized: label)), ID: \(id)")
     }
 }
 
 struct PromptButtonView: View {
-    var label: String
+    var label: LocalizedStringResource
     var destination: String
     var icon: String
     var textColor: Color
@@ -130,11 +124,11 @@ struct PromptButtonView: View {
                     .frame(height: 32)
             }
             .frame(height: 76)
-            .accessibility(label: Text(String(localized: "widget.accessibility.openInLumo", defaultValue: "Open \(label) in Lumo")))
+            .accessibilityLabel(Text(L10n.Widget.Accessibility.openInLumo))
         }
         .buttonStyle(PlainButtonStyle())
         .onAppear {
-            WidgetLogger.shared.log("Widget button appeared: \(label) with URL: \(destination)")
+            WidgetLogger.shared.log("Widget button appeared: \(String(localized: label)) with URL: \(destination)")
         }
     }
 }
@@ -289,18 +283,18 @@ struct LumoWidgetProvider: TimelineProvider {
 
     func placeholder(in context: Context) -> LumoWidgetEntry {
         let defaultPrompts = [
-            TimePrompt(labelKey: "widget.prompt.scamSpotting", promptKey: "widget.prompt.scamSpotting.full", id: "scam", icon: "questionmark.shield"),
-            TimePrompt(labelKey: "widget.prompt.physicsExplained", promptKey: "widget.prompt.physicsExplained.full", id: "physics", icon: "atom"),
+            TimePrompt(label: L10n.Widget.Prompt.scamSpotting, prompt: L10n.Widget.PromptFull.scamSpotting, id: "scam", icon: "questionmark.shield"),
+            TimePrompt(label: L10n.Widget.Prompt.physicsExplained, prompt: L10n.Widget.PromptFull.physicsExplained, id: "physics", icon: "atom"),
         ]
-        return LumoWidgetEntry(date: Date(), searchHint: String(localized: "widget.searchHint.default"), prompts: defaultPrompts)
+        return LumoWidgetEntry(date: Date(), searchHint: String(localized: L10n.Widget.searchHintDefault), prompts: defaultPrompts)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (LumoWidgetEntry) -> Void) {
         let defaultPrompts = [
-            TimePrompt(labelKey: "widget.prompt.scamSpotting", promptKey: "widget.prompt.scamSpotting.full", id: "scam", icon: "questionmark.shield"),
-            TimePrompt(labelKey: "widget.prompt.physicsExplained", promptKey: "widget.prompt.physicsExplained.full", id: "physics", icon: "atom"),
+            TimePrompt(label: L10n.Widget.Prompt.scamSpotting, prompt: L10n.Widget.PromptFull.scamSpotting, id: "scam", icon: "questionmark.shield"),
+            TimePrompt(label: L10n.Widget.Prompt.physicsExplained, prompt: L10n.Widget.PromptFull.physicsExplained, id: "physics", icon: "atom"),
         ]
-        let entry = LumoWidgetEntry(date: Date(), searchHint: String(localized: "widget.searchHint.default"), prompts: defaultPrompts)
+        let entry = LumoWidgetEntry(date: Date(), searchHint: String(localized: L10n.Widget.searchHintDefault), prompts: defaultPrompts)
         completion(entry)
     }
 
@@ -381,8 +375,8 @@ struct LumoWidgetExtension: Widget {
         StaticConfiguration(kind: kind, provider: LumoWidgetProvider()) { entry in
             LumoWidgetView(entry: entry)
         }
-        .configurationDisplayName(String(localized: "widget.displayname"))
-        .description(String(localized: "widget.description"))
+        .configurationDisplayName(String(localized: L10n.Widget.displayName))
+        .description(String(localized: L10n.Widget.description))
         .supportedFamilies([.systemSmall, .systemMedium])
         .contentMarginsDisabled()
     }
@@ -397,9 +391,9 @@ struct LumoWidget_Previews: PreviewProvider {
                     date: Date(),
                     searchHint: "Need an afternoon boost?",
                     prompts: [
-                        TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
-                        TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
-                        TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
+                        TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
+                        TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
+                        TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book"),
                     ]
                 )
             )
@@ -413,9 +407,9 @@ struct LumoWidget_Previews: PreviewProvider {
                     date: Date(),
                     searchHint: "Need an afternoon boost?",
                     prompts: [
-                        TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
-                        TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
-                        TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
+                        TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
+                        TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book"),
+                        TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book"),
                     ]
                 )
             )
@@ -430,9 +424,9 @@ struct LumoWidget_Previews: PreviewProvider {
                         date: Date(),
                         searchHint: "Need an afternoon boost?",
                         prompts: [
-                            TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
-                            TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
-                            TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
+                            TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
+                            TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
+                            TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book"),
                         ]
                     )
                 )
