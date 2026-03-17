@@ -399,7 +399,7 @@ struct LumoWidget_Previews: PreviewProvider {
                     prompts: [
                         TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
                         TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
-                        TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
+                        TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearning.full", id: "dailylearning", icon: "book"),
                     ]
                 )
             )
@@ -414,8 +414,8 @@ struct LumoWidget_Previews: PreviewProvider {
                     searchHint: "Need an afternoon boost?",
                     prompts: [
                         TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
-                        TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
-                        TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
+                        TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearning.full", id: "dailylearning", icon: "book"),
+                        TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearning.full", id: "dailylearning", icon: "book"),
                     ]
                 )
             )
@@ -432,7 +432,7 @@ struct LumoWidget_Previews: PreviewProvider {
                         prompts: [
                             TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
                             TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "focus", icon: "atom"),
-                            TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearningd.full", id: "dailylearning", icon: "book"),
+                            TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearning.full", id: "dailylearning", icon: "book"),
                         ]
                     )
                 )
