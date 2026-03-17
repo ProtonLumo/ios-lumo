@@ -37,105 +37,105 @@ func getTimeSensitiveSuggestion(hour: Int, prompts: Int) -> (hint: String, promp
     if hour >= TimePeriod.earlyMorningStart && hour < TimePeriod.earlyMorningEnd {
         // Early morning prompts
         let earlyMorningPrompts = [
-            TimePrompt(labelKey: "widget.prompt.breakfastIdeas", promptKey: "widget.prompt.breakfast.full", id: "breakfast", icon: "sunrise"),
-            TimePrompt(labelKey: "widget.prompt.morningExercise", promptKey: "widget.prompt.morningExercise.full", id: "morning_exercise", icon: "figure.run"),
-            TimePrompt(labelKey: "widget.prompt.funFactGenerator", promptKey: "widget.prompt.funFactGenerator.full", id: "fun_fact", icon: "lightbulb"),
-            TimePrompt(labelKey: "widget.prompt.morningEnergy", promptKey: "widget.prompt.energy.full", id: "energy", icon: "flame"),
-            TimePrompt(labelKey: "widget.prompt.privacyTips", promptKey: "widget.prompt.privacyTips.full", id: "privacy_tips", icon: "lock.shield"),
+            TimePrompt(label: L10n.Widget.Prompt.breakfastIdeas, prompt: L10n.Widget.PromptFull.breakfast, id: "breakfast", icon: "sunrise"),
+            TimePrompt(label: L10n.Widget.Prompt.morningExercise, prompt: L10n.Widget.PromptFull.morningExercise, id: "morning_exercise", icon: "figure.run"),
+            TimePrompt(label: L10n.Widget.Prompt.funFactGenerator, prompt: L10n.Widget.PromptFull.funFactGenerator, id: "fun_fact", icon: "lightbulb"),
+            TimePrompt(label: L10n.Widget.Prompt.morningEnergy, prompt: L10n.Widget.PromptFull.energy, id: "energy", icon: "flame"),
+            TimePrompt(label: L10n.Widget.Prompt.privacyTips, prompt: L10n.Widget.PromptFull.privacyTips, id: "privacy_tips", icon: "lock.shield"),
         ]
 
         return (
-            hint: String(localized: "widget.hint.startDay"),
+            hint: String(localized: L10n.Widget.Hint.startDay),
             prompts: Array(earlyMorningPrompts.shuffled().prefix(prompts))
         )
     } else if hour >= TimePeriod.morningProductivityStart && hour < TimePeriod.morningProductivityEnd {
         // Morning productivity prompts
         let morningProductivityPrompts = [
-            TimePrompt(labelKey: "widget.prompt.timeManagement", promptKey: "widget.prompt.timeManagement.full", id: "time", icon: "clock"),
-            TimePrompt(labelKey: "widget.prompt.diversePerspectives", promptKey: "widget.prompt.diversePerspectives.full", id: "diverse_perspectives", icon: "person.3"),
-            TimePrompt(labelKey: "widget.prompt.physicsDaily", promptKey: "widget.prompt.physicsDaily.full", id: "physics_daily", icon: "atom"),
-            TimePrompt(labelKey: "widget.prompt.creativeThinking", promptKey: "widget.prompt.creative.full", id: "creative", icon: "paintbrush"),
-            TimePrompt(labelKey: "widget.prompt.echoChambers", promptKey: "widget.prompt.echoChambers.full", id: "echo_chambers", icon: "bubble.left.and.bubble.right"),
-            TimePrompt(labelKey: "widget.prompt.quantumCuriosity", promptKey: "widget.prompt.quantumCuriosity.full", id: "quantum_curiosity", icon: "sparkles"),
+            TimePrompt(label: L10n.Widget.Prompt.timeManagement, prompt: L10n.Widget.PromptFull.timeManagement, id: "time", icon: "clock"),
+            TimePrompt(label: L10n.Widget.Prompt.diversePerspectives, prompt: L10n.Widget.PromptFull.diversePerspectives, id: "diverse_perspectives", icon: "person.3"),
+            TimePrompt(label: L10n.Widget.Prompt.physicsDaily, prompt: L10n.Widget.PromptFull.physicsDaily, id: "physics_daily", icon: "atom"),
+            TimePrompt(label: L10n.Widget.Prompt.creativeThinking, prompt: L10n.Widget.PromptFull.creative, id: "creative", icon: "paintbrush"),
+            TimePrompt(label: L10n.Widget.Prompt.echoChambers, prompt: L10n.Widget.PromptFull.echoChambers, id: "echo_chambers", icon: "bubble.left.and.bubble.right"),
+            TimePrompt(label: L10n.Widget.Prompt.quantumCuriosity, prompt: L10n.Widget.PromptFull.quantumCuriosity, id: "quantum_curiosity", icon: "sparkles"),
         ]
 
         return (
-            hint: String(localized: "widget.hint.morningProductivity"),
+            hint: String(localized: L10n.Widget.Hint.morningProductivity),
             prompts: Array(morningProductivityPrompts.shuffled().prefix(prompts))
         )
     } else if hour >= TimePeriod.lunchBreakStart && hour < TimePeriod.lunchBreakEnd {
         // Lunch break prompts
         let lunchBreakPrompts = [
-            TimePrompt(labelKey: "widget.prompt.quickLunchIdeas", promptKey: "widget.prompt.lunch.full", id: "lunch", icon: "fork.knife"),
-            TimePrompt(labelKey: "widget.prompt.universeExplorer", promptKey: "widget.prompt.universeExplorer.full", id: "universe_explorer", icon: "globe"),
-            TimePrompt(labelKey: "widget.prompt.physicsExplained", promptKey: "widget.prompt.physicsExplained.full", id: "physics_explained", icon: "brain.head.profile"),
-            TimePrompt(labelKey: "widget.prompt.healthyLunch", promptKey: "widget.prompt.healthyLunch.full", id: "healthy_lunch", icon: "leaf"),
-            TimePrompt(labelKey: "widget.prompt.relaxation", promptKey: "widget.prompt.relaxation.full", id: "relax", icon: "sparkles"),
+            TimePrompt(label: L10n.Widget.Prompt.quickLunchIdeas, prompt: L10n.Widget.PromptFull.lunch, id: "lunch", icon: "fork.knife"),
+            TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "universe_explorer", icon: "globe"),
+            TimePrompt(label: L10n.Widget.Prompt.physicsExplained, prompt: L10n.Widget.PromptFull.physicsExplained, id: "physics_explained", icon: "brain.head.profile"),
+            TimePrompt(label: L10n.Widget.Prompt.healthyLunch, prompt: L10n.Widget.PromptFull.healthyLunch, id: "healthy_lunch", icon: "leaf"),
+            TimePrompt(label: L10n.Widget.Prompt.relaxation, prompt: L10n.Widget.PromptFull.relaxation, id: "relax", icon: "sparkles"),
         ]
 
         return (
-            hint: String(localized: "widget.hint.lunchBreak"),
+            hint: String(localized: L10n.Widget.Hint.lunchBreak),
             prompts: Array(lunchBreakPrompts.shuffled().prefix(prompts))
         )
     } else if hour >= TimePeriod.afternoonBoostStart && hour < TimePeriod.afternoonBoostEnd {
         // Afternoon boost prompts
         let afternoonBoostPrompts = [
-            TimePrompt(labelKey: "widget.prompt.focusTechniques", promptKey: "widget.prompt.focus.full", id: "focus", icon: "brain.head.profile"),
-            TimePrompt(labelKey: "widget.prompt.mediaLiteracy", promptKey: "widget.prompt.mediaLiteracy.full", id: "media_literacy", icon: "newspaper"),
-            TimePrompt(labelKey: "widget.prompt.quickStretches", promptKey: "widget.prompt.stretches.full", id: "stretches", icon: "figure.flexibility"),
-            TimePrompt(labelKey: "widget.prompt.scientificWonder", promptKey: "widget.prompt.scientificWonder.full", id: "scientific_wonder", icon: "star"),
-            TimePrompt(labelKey: "widget.prompt.cognitiveBias", promptKey: "widget.prompt.cognitiveBias.full", id: "cognitive_bias", icon: "brain"),
-            TimePrompt(labelKey: "widget.prompt.particlePlayground", promptKey: "widget.prompt.particlePlayground.full", id: "particle_playground", icon: "atom"),
-            TimePrompt(labelKey: "widget.prompt.dailyLearning", promptKey: "widget.prompt.dailyLearning.full", id: "daily_learning", icon: "book"),
-            TimePrompt(labelKey: "widget.prompt.factChecking", promptKey: "widget.prompt.factChecking.full", id: "fact_checking", icon: "magnifyingglass"),
+            TimePrompt(label: L10n.Widget.Prompt.focusTechniques, prompt: L10n.Widget.PromptFull.focus, id: "focus", icon: "brain.head.profile"),
+            TimePrompt(label: L10n.Widget.Prompt.mediaLiteracy, prompt: L10n.Widget.PromptFull.mediaLiteracy, id: "media_literacy", icon: "newspaper"),
+            TimePrompt(label: L10n.Widget.Prompt.quickStretches, prompt: L10n.Widget.PromptFull.stretches, id: "stretches", icon: "figure.flexibility"),
+            TimePrompt(label: L10n.Widget.Prompt.scientificWonder, prompt: L10n.Widget.PromptFull.scientificWonder, id: "scientific_wonder", icon: "star"),
+            TimePrompt(label: L10n.Widget.Prompt.cognitiveBias, prompt: L10n.Widget.PromptFull.cognitiveBias, id: "cognitive_bias", icon: "brain"),
+            TimePrompt(label: L10n.Widget.Prompt.particlePlayground, prompt: L10n.Widget.PromptFull.particlePlayground, id: "particle_playground", icon: "atom"),
+            TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "daily_learning", icon: "book"),
+            TimePrompt(label: L10n.Widget.Prompt.factChecking, prompt: L10n.Widget.PromptFull.factChecking, id: "fact_checking", icon: "magnifyingglass"),
         ]
 
         return (
-            hint: String(localized: "widget.hint.afternoonBoost"),
+            hint: String(localized: L10n.Widget.Hint.afternoonBoost),
             prompts: Array(afternoonBoostPrompts.shuffled().prefix(prompts))
         )
     } else if hour >= TimePeriod.eveningWindDownStart && hour < TimePeriod.eveningWindDownEnd {
         // Evening wind-down prompts
         let eveningWindDownPrompts = [
-            TimePrompt(labelKey: "widget.prompt.dinnerRecipes", promptKey: "widget.prompt.dinner.full", id: "dinner", icon: "cooktop"),
-            TimePrompt(labelKey: "widget.prompt.cosmicPerspective", promptKey: "widget.prompt.cosmicPerspective.full", id: "cosmic_perspective", icon: "globe"),
-            TimePrompt(labelKey: "widget.prompt.familyActivities", promptKey: "widget.prompt.family.full", id: "family", icon: "person.3"),
-            TimePrompt(labelKey: "widget.prompt.scamSpotting", promptKey: "widget.prompt.scamSpotting.full", id: "scam_spotting", icon: "shield"),
-            TimePrompt(labelKey: "widget.prompt.relaxationTechniques", promptKey: "widget.prompt.relaxationTechniques.full", id: "relaxation", icon: "sparkles"),
-            TimePrompt(labelKey: "widget.prompt.bedtimeStory", promptKey: "widget.prompt.bedtimeStory.full", id: "bedtime_story", icon: "book"),
+            TimePrompt(label: L10n.Widget.Prompt.dinnerRecipes, prompt: L10n.Widget.PromptFull.dinner, id: "dinner", icon: "cooktop"),
+            TimePrompt(label: L10n.Widget.Prompt.cosmicPerspective, prompt: L10n.Widget.PromptFull.cosmicPerspective, id: "cosmic_perspective", icon: "globe"),
+            TimePrompt(label: L10n.Widget.Prompt.familyActivities, prompt: L10n.Widget.PromptFull.family, id: "family", icon: "person.3"),
+            TimePrompt(label: L10n.Widget.Prompt.scamSpotting, prompt: L10n.Widget.PromptFull.scamSpotting, id: "scam_spotting", icon: "shield"),
+            TimePrompt(label: L10n.Widget.Prompt.relaxationTechniques, prompt: L10n.Widget.PromptFull.relaxationTechniques, id: "relaxation", icon: "sparkles"),
+            TimePrompt(label: L10n.Widget.Prompt.bedtimeStory, prompt: L10n.Widget.PromptFull.bedtimeStory, id: "bedtime_story", icon: "book"),
         ]
 
         return (
-            hint: String(localized: "widget.hint.windingDown"),
+            hint: String(localized: L10n.Widget.Hint.windingDown),
             prompts: Array(eveningWindDownPrompts.shuffled().prefix(prompts))
         )
     } else if hour >= TimePeriod.nightTimeStart && hour < TimePeriod.nightTimeEnd {
         // Night time prompts
         let nightTimePrompts = [
-            TimePrompt(labelKey: "widget.prompt.sleepTips", promptKey: "widget.prompt.sleep.full", id: "sleep", icon: "moon.stars"),
-            TimePrompt(labelKey: "widget.prompt.phishingProtection", promptKey: "widget.prompt.phishingProtection.full", id: "phishing_protection", icon: "shield.checkered"),
-            TimePrompt(labelKey: "widget.prompt.eveningStretches", promptKey: "widget.prompt.eveningStretches.full", id: "stretches", icon: "figure.flexibility"),
-            TimePrompt(labelKey: "widget.prompt.sleepEnvironment", promptKey: "widget.prompt.environment.full", id: "environment", icon: "house"),
+            TimePrompt(label: L10n.Widget.Prompt.sleepTips, prompt: L10n.Widget.PromptFull.sleep, id: "sleep", icon: "moon.stars"),
+            TimePrompt(label: L10n.Widget.Prompt.phishingProtection, prompt: L10n.Widget.PromptFull.phishingProtection, id: "phishing_protection", icon: "shield.checkered"),
+            TimePrompt(label: L10n.Widget.Prompt.eveningStretches, prompt: L10n.Widget.PromptFull.eveningStretches, id: "stretches", icon: "figure.flexibility"),
+            TimePrompt(label: L10n.Widget.Prompt.sleepEnvironment, prompt: L10n.Widget.PromptFull.environment, id: "environment", icon: "house"),
         ]
 
         return (
-            hint: String(localized: "widget.hint.gettingReady"),
+            hint: String(localized: L10n.Widget.Hint.gettingReady),
             prompts: Array(nightTimePrompts.shuffled().prefix(prompts))
         )
     } else {
         // Late night prompts
         let lateNightPrompts = [
-            TimePrompt(labelKey: "widget.prompt.sleepMeditation", promptKey: "widget.prompt.meditation.full", id: "meditation", icon: "moon.zzz"),
-            TimePrompt(labelKey: "widget.prompt.criticalThinking", promptKey: "widget.prompt.criticalThinking.full", id: "critical_thinking", icon: "brain.head.profile"),
-            TimePrompt(labelKey: "widget.prompt.breathingExercises", promptKey: "widget.prompt.breathing.full", id: "breathing", icon: "wind"),
-            TimePrompt(labelKey: "widget.prompt.misinformation", promptKey: "widget.prompt.misinformation.full", id: "misinformation", icon: "checkmark.shield"),
-            TimePrompt(labelKey: "widget.prompt.sleepEnvironment", promptKey: "widget.prompt.environment.full", id: "environment", icon: "house"),
-            TimePrompt(labelKey: "widget.prompt.perspectiveBroadening", promptKey: "widget.prompt.perspectiveBroadening.full", id: "perspective_broadening", icon: "eye"),
-            TimePrompt(labelKey: "widget.prompt.calmingMusic", promptKey: "widget.prompt.bedtime.full", id: "bedtime", icon: "music.note"),
+            TimePrompt(label: L10n.Widget.Prompt.sleepMeditation, prompt: L10n.Widget.PromptFull.meditation, id: "meditation", icon: "moon.zzz"),
+            TimePrompt(label: L10n.Widget.Prompt.criticalThinking, prompt: L10n.Widget.PromptFull.criticalThinking, id: "critical_thinking", icon: "brain.head.profile"),
+            TimePrompt(label: L10n.Widget.Prompt.breathingExercises, prompt: L10n.Widget.PromptFull.breathing, id: "breathing", icon: "wind"),
+            TimePrompt(label: L10n.Widget.Prompt.misinformation, prompt: L10n.Widget.PromptFull.misinformation, id: "misinformation", icon: "checkmark.shield"),
+            TimePrompt(label: L10n.Widget.Prompt.sleepEnvironment, prompt: L10n.Widget.PromptFull.environment, id: "environment", icon: "house"),
+            TimePrompt(label: L10n.Widget.Prompt.perspectiveBroadening, prompt: L10n.Widget.PromptFull.perspectiveBroadening, id: "perspective_broadening", icon: "eye"),
+            TimePrompt(label: L10n.Widget.Prompt.calmingMusic, prompt: L10n.Widget.PromptFull.bedtime, id: "bedtime", icon: "music.note"),
         ]
 
         return (
-            hint: String(localized: "widget.hint.troubleSleeping"),
+            hint: String(localized: L10n.Widget.Hint.troubleSleeping),
             prompts: Array(lateNightPrompts.shuffled().prefix(prompts))
         )
     }
