@@ -10,18 +10,18 @@ public struct ComposerScreen<WebContent: View>: View {
     @StateObject private var store: ComposerStateStore
     private let isWebViewReady: Bool
     private let toastStateStore: ToastStateStore
-    private let onPremiumModelTapped: () -> Void
+    private let onThinkingUpsellTapped: () -> Void
     @ViewBuilder private let webContent: () -> WebContent
 
     @State private var sheetHeight: CGFloat = 250
     @State private var selectedPhotoItem: PhotosPickerItem?
-    @State private var pendingPremiumModelTap = false
+    @State private var pendingThinkingUpsellTap = false
 
     public init(
         webBridge: WebComposerBridging,
         isWebViewReady: Bool,
         toastStateStore: ToastStateStore,
-        onPremiumModelTapped: @escaping () -> Void,
+        onThinkingUpsellTapped: @escaping () -> Void,
         webContent: @escaping () -> WebContent
     ) {
         self.init(
@@ -29,7 +29,7 @@ public struct ComposerScreen<WebContent: View>: View {
             webBridge: webBridge,
             isWebViewReady: isWebViewReady,
             toastStateStore: toastStateStore,
-            onPremiumModelTapped: onPremiumModelTapped,
+            onThinkingUpsellTapped: onThinkingUpsellTapped,
             webContent: webContent
         )
     }
@@ -40,7 +40,7 @@ public struct ComposerScreen<WebContent: View>: View {
         webBridge: WebComposerBridging,
         isWebViewReady: Bool,
         toastStateStore: ToastStateStore,
-        onPremiumModelTapped: @escaping () -> Void,
+        onThinkingUpsellTapped: @escaping () -> Void,
         webContent: @escaping () -> WebContent
     ) {
         _store = .init(
@@ -52,7 +52,7 @@ public struct ComposerScreen<WebContent: View>: View {
         )
         self.isWebViewReady = isWebViewReady
         self.toastStateStore = toastStateStore
-        self.onPremiumModelTapped = onPremiumModelTapped
+        self.onThinkingUpsellTapped = onThinkingUpsellTapped
         self.webContent = webContent
     }
 
@@ -102,9 +102,9 @@ public struct ComposerScreen<WebContent: View>: View {
         .sheet(
             item: activeSheetBinding,
             onDismiss: {
-                if pendingPremiumModelTap {
-                    pendingPremiumModelTap = false
-                    onPremiumModelTapped()
+                if pendingThinkingUpsellTap {
+                    pendingThinkingUpsellTap = false
+                    onThinkingUpsellTapped()
                 }
             },
             content: { sheet in
@@ -136,7 +136,7 @@ public struct ComposerScreen<WebContent: View>: View {
             )
             .ignoresSafeArea()
         }
-        .onReceive(store.premiumModelTappedSubject) { pendingPremiumModelTap = true }
+        .onReceive(store.freeUserThinkingTappedPublisher) { pendingThinkingUpsellTap = true }
         .environment(\.featureFlags, store.state.webState.featureFlags)
     }
 
@@ -270,7 +270,7 @@ private struct SheetHeightKey: PreferenceKey {
             webBridge: WebComposerBridge(),
             isWebViewReady: true,
             toastStateStore: ToastStateStore(initialState: .initial),
-            onPremiumModelTapped: {},
+            onThinkingUpsellTapped: {},
             webContent: { EmptyView() }
         )
     }

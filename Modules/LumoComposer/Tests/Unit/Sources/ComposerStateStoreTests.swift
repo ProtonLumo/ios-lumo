@@ -585,15 +585,15 @@ final class ComposerStateStoreTests {
     @Test(.stubbedUUID(.testData2))
     func modelSelectionSheetAction_ThinkingSelected_WhenPaidUser_ExecutesCorrectJavaScript() async {
         var cancellables: Set<AnyCancellable> = []
-        var premiumModelTappedCount = 0
+        var freeUserThinkingTappedCount = 0
 
         initialState = initialState.copy(\.webState, to: .initialPaidUser)
 
         webBridge.attach(to: webViewSpy)
 
         sut
-            .premiumModelTappedSubject
-            .sink { premiumModelTappedCount += 1 }
+            .freeUserThinkingTappedPublisher
+            .sink { freeUserThinkingTappedCount += 1 }
             .store(in: &cancellables)
 
         await sut.send(action: .taskStarted)
@@ -602,22 +602,22 @@ final class ComposerStateStoreTests {
         let javascript = "window.nativeComposerApi?.changeModelTier('\(UUID.testData2.uuidString)', 'thinking');"
         #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript)
         #expect(toastStateStore.state.toasts.isEmpty)
-        #expect(premiumModelTappedCount == 0)
+        #expect(freeUserThinkingTappedCount == 0)
     }
 
     @Test
-    func modelSelectionSheetAction_ThinkingSelected_WhenFreeUser_EmitsShowSubscriptionsEvent() async {
+    func modelSelectionSheetAction_ThinkingSelected_WhenFreeUser_EmitsFreeUserThinkingTappedEvent() async {
         var cancellables: Set<AnyCancellable> = []
-        var premiumModelTappedCount = 0
+        var freeUserThinkingTappedCount = 0
 
         sut
-            .premiumModelTappedSubject
-            .sink { premiumModelTappedCount += 1 }
+            .freeUserThinkingTappedPublisher
+            .sink { freeUserThinkingTappedCount += 1 }
             .store(in: &cancellables)
 
         await sut.send(action: .modelSelectionSheetAction(.modelSelected(.thinking)))
 
-        #expect(premiumModelTappedCount == 1)
+        #expect(freeUserThinkingTappedCount == 1)
     }
 
     @Test

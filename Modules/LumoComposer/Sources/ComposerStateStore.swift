@@ -5,7 +5,11 @@ import UIKit
 import WebKit
 
 final class ComposerStateStore: StateStore {
-    let premiumModelTappedSubject = PassthroughSubject<Void, Never>()
+    private let freeUserThinkingTappedSubject = PassthroughSubject<Void, Never>()
+
+    var freeUserThinkingTappedPublisher: AnyPublisher<Void, Never> {
+        freeUserThinkingTappedSubject.eraseToAnyPublisher()
+    }
 
     enum Action {
         case webViewReadyChanged(Bool)
@@ -161,7 +165,7 @@ final class ComposerStateStore: StateStore {
             case .modelSelected(let model):
                 if model == .thinking && state.webState.isFreeUser {
                     state = state.copy(\.activeSheet, to: nil)
-                    premiumModelTappedSubject.send()
+                    freeUserThinkingTappedSubject.send()
                 } else {
                     state = state.copy(\.activeSheet, to: nil)
                     await execute { () async throws(WebComposerBridgeError) in
