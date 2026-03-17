@@ -137,6 +137,7 @@ struct ContentView: View {
                     webViewIsActive = false
                     performWebViewCleanup()
                 }
+                .floatingKeyboardAware()
             }
 
             if !webViewReady && (showLoader || currentWebViewURL == nil) {
