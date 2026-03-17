@@ -40,6 +40,7 @@ public struct WebComposerState: Equatable, Decodable {
     let showTermsAndPrivacy: Bool
     let attachedFiles: [File]
     let featureFlags: FeatureFlags
+    let isFreeUser: Bool
 
     enum CodingKeys: String, CodingKey {
         case mode = "lumoMode"
@@ -51,6 +52,7 @@ public struct WebComposerState: Equatable, Decodable {
         case showTermsAndPrivacy = "showTsAndCs"
         case attachedFiles
         case featureFlags
+        case isFreeUser
     }
 
     func copy(attachedFiles: [File]) -> Self {
@@ -63,7 +65,8 @@ public struct WebComposerState: Equatable, Decodable {
             isVisible: isVisible,
             showTermsAndPrivacy: showTermsAndPrivacy,
             attachedFiles: attachedFiles,
-            featureFlags: featureFlags
+            featureFlags: featureFlags,
+            isFreeUser: isFreeUser
         )
     }
 }
@@ -79,7 +82,8 @@ extension WebComposerState {
             isVisible: true,
             showTermsAndPrivacy: true,
             attachedFiles: [],
-            featureFlags: .initial
+            featureFlags: .initial,
+            isFreeUser: true
         )
     }
 }

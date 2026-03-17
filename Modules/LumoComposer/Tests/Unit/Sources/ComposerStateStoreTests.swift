@@ -195,7 +195,8 @@ final class ComposerStateStoreTests {
                         isVisible: true,
                         showTermsAndPrivacy: true,
                         attachedFiles: [],
-                        featureFlags: .initial
+                        featureFlags: .initial,
+                        isFreeUser: true
                     )
                 ),
                 initialState,
@@ -560,7 +561,7 @@ final class ComposerStateStoreTests {
     }
 
     @Test(.stubbedUUID(.testData2))
-    func modelSelectionSheetAction_ModelSelected_ExecutesCorrectJavaScriptForAllModelTiers() async {
+    func modelSelectionSheetAction_ModelSelected_ExecutesCorrectJavaScriptForAutoAndFast() async {
         webBridge.attach(to: webViewSpy)
 
         await sut.send(action: .taskStarted)
@@ -577,12 +578,65 @@ final class ComposerStateStoreTests {
         await sut.send(action: .modelSelectionSheetAction(.modelSelected(.fast)))
         #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("fast"))
 
+        #expect(webViewSpy.evaluateJavaScriptCalls.count == 2)
+        #expect(toastStateStore.state.toasts.isEmpty)
+    }
+
+    @Test(.stubbedUUID(.testData2))
+    func modelSelectionSheetAction_ThinkingSelected_WhenPaidUser_ExecutesCorrectJavaScript() async {
+        var cancellables: Set<AnyCancellable> = []
+        var freeUserThinkingTappedCount = 0
+
+        initialState = initialState.copy(\.webState, to: .initialPaidUser)
+
+        webBridge.attach(to: webViewSpy)
+
+        sut
+            .freeUserThinkingTappedPublisher
+            .sink { freeUserThinkingTappedCount += 1 }
+            .store(in: &cancellables)
+
+        await sut.send(action: .taskStarted)
+        await sut.send(action: .modelSelectionSheetAction(.modelSelected(.thinking)))
+
+        let javascript = "window.nativeComposerApi?.changeModelTier('\(UUID.testData2.uuidString)', 'thinking');"
+        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript)
+        #expect(toastStateStore.state.toasts.isEmpty)
+        #expect(freeUserThinkingTappedCount == 0)
+    }
+
+    @Test
+    func modelSelectionSheetAction_ThinkingSelected_WhenFreeUser_EmitsFreeUserThinkingTappedEvent() async {
+        var cancellables: Set<AnyCancellable> = []
+        var freeUserThinkingTappedCount = 0
+
+        sut
+            .freeUserThinkingTappedPublisher
+            .sink { freeUserThinkingTappedCount += 1 }
+            .store(in: &cancellables)
+
+        await sut.send(action: .modelSelectionSheetAction(.modelSelected(.thinking)))
+
+        #expect(freeUserThinkingTappedCount == 1)
+    }
+
+    @Test
+    func modelSelectionSheetAction_ThinkingSelected_WhenFreeUser_DismissesSheet() async {
         await sut.send(action: .showSheet(.modelSelection))
         await sut.send(action: .modelSelectionSheetAction(.modelSelected(.thinking)))
-        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript("thinking"))
 
-        #expect(webViewSpy.evaluateJavaScriptCalls.count == 3)
+        #expect(sut.state.activeSheet == nil)
         #expect(toastStateStore.state.toasts.isEmpty)
+    }
+
+    @Test
+    func modelSelectionSheetAction_ThinkingSelected_WhenFreeUser_DoesNotCallBridge() async {
+        webBridge.attach(to: webViewSpy)
+
+        await sut.send(action: .taskStarted)
+        await sut.send(action: .modelSelectionSheetAction(.modelSelected(.thinking)))
+
+        #expect(webViewSpy.evaluateJavaScriptCalls.isEmpty)
     }
 
     @Test
@@ -832,7 +886,8 @@ final class ComposerStateStoreTests {
                             attachedFiles: [
                                 File(id: "<id_1>", name: "document.pdf", type: .pdf, preview: .none)
                             ],
-                            featureFlags: .initial
+                            featureFlags: .initial,
+                            isFreeUser: true
                         )
                     ),
             ]
@@ -1029,6 +1084,7 @@ final class ComposerStateStoreTests {
                 "isImageGenEnabled": false,
                 "isModelSelectionEnabled": false,
             ],
+            "isFreeUser": true,
         ]
 
         webBridge.handleStateChange(state: state)
@@ -1043,6 +1099,23 @@ private extension UUID {
     static let testData = UUID(uuidString: "F82958B5-6EB1-42A7-BC2B-A7F6617E1EF7")!
     static let testData2 = UUID(uuidString: "BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB")!
     static let testData3 = UUID(uuidString: "CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC")!
+}
+
+private extension WebComposerState {
+    static var initialPaidUser: Self {
+        .init(
+            mode: .idle,
+            model: .auto,
+            isGhostModeEnabled: false,
+            isWebSearchEnabled: false,
+            isCreateImageEnabled: false,
+            isVisible: true,
+            showTermsAndPrivacy: true,
+            attachedFiles: [],
+            featureFlags: .initial,
+            isFreeUser: false
+        )
+    }
 }
 
 private struct TestPhotosItem: PhotosItemLoading {
