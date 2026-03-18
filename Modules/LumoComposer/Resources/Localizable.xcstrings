@@ -1707,7 +1707,7 @@
         }
       }
     },
-    "You've reached your usage limit." : {
+    "You've reached your limit, upgrade for unlimited chats." : {
       "comment" : "Error shown when the user has exceeded their plan's usage quota"
     },
     "Your request contains content that cannot be processed." : {

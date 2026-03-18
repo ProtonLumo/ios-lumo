@@ -64,7 +64,7 @@ enum L10n {
             comment: "Error shown when the streaming connection to the AI service is interrupted"
         )
         static let tierLimit = LocalizedStringResource(
-            "You've reached your usage limit.",
+            "You've reached your limit, upgrade for unlimited chats.",
             bundle: .module,
             comment: "Error shown when the user has exceeded their plan's usage quota"
         )
