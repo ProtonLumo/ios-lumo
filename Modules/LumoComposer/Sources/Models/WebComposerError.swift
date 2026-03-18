@@ -15,21 +15,21 @@ public enum WebComposerError: String, Decodable, LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .unknown:
-            String(localized: L10n.Error.generic)
+            L10n.Error.generic.string
         case .streamDisconnected:
-            String(localized: L10n.Error.streamDisconnected)
+            L10n.Error.streamDisconnected.string
         case .generationError:
-            String(localized: L10n.Error.generationError)
+            L10n.Error.generationError.string
         case .highDemand:
-            String(localized: L10n.Error.highDemand)
+            L10n.Error.highDemand.string
         case .generationRejected:
-            String(localized: L10n.Error.generationRejected)
+            L10n.Error.generationRejected.string
         case .harmfulContent:
-            String(localized: L10n.Error.harmfulContent)
+            L10n.Error.harmfulContent.string
         case .tierLimit:
-            String(localized: L10n.Error.tierLimit)
+            L10n.Error.tierLimit.string
         case .duplicateFile:
-            String(localized: L10n.Error.duplicateFile)
+            L10n.Error.duplicateFile.string
         }
     }
 }

@@ -46,7 +46,7 @@ final class ComposerStateStore: StateStore {
     private let webBridge: WebComposerBridging
     private let toastStateStore: ToastStateStore
     private let fileLoader: FileLoader
-    private var observationTask: Task<Void, Never>?
+    private var stateObservationTask: Task<Void, Never>?
     private var errorObservationTask: Task<Void, Never>?
 
     init(
@@ -67,8 +67,8 @@ final class ComposerStateStore: StateStore {
             state = state.copy(\.isWebViewReady, to: newValue)
 
         case .taskStarted:
-            observationTask?.cancel()
-            observationTask = Task {
+            stateObservationTask?.cancel()
+            stateObservationTask = Task {
                 for await webState in webBridge.stateUpdates {
                     guard !Task.isCancelled else { break }
                     state = state.copy(applyingWebState: webState)
@@ -83,8 +83,8 @@ final class ComposerStateStore: StateStore {
             }
 
         case .onDisappear:
-            observationTask?.cancel()
-            observationTask = nil
+            stateObservationTask?.cancel()
+            stateObservationTask = nil
             errorObservationTask?.cancel()
             errorObservationTask = nil
 
@@ -199,10 +199,10 @@ final class ComposerStateStore: StateStore {
                     let data = try fileLoader(url)
                     await sendUploadFile(data: data, name: url.lastPathComponent)
                 } catch {
-                    toastStateStore.present(toast: .error(message: String(localized: L10n.Error.generic)))
+                    toastStateStore.present(toast: .error(message: L10n.Error.generic.string))
                 }
             case .failure:
-                toastStateStore.present(toast: .error(message: String(localized: L10n.Error.generic)))
+                toastStateStore.present(toast: .error(message: L10n.Error.generic.string))
             }
 
         case .photoPicked(let item):
@@ -211,7 +211,7 @@ final class ComposerStateStore: StateStore {
                 let name = PhotoFileNameExtractor.fileName(from: item)
                 await sendUploadFile(data: data, name: name)
             } catch {
-                toastStateStore.present(toast: .error(message: String(localized: L10n.Error.generic)))
+                toastStateStore.present(toast: .error(message: L10n.Error.generic.string))
             }
 
         case .imageCaptured(let image):

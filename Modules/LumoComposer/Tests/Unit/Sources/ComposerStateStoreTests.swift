@@ -121,7 +121,7 @@ final class ComposerStateStoreTests {
 
         try? await Task.sleep(for: .milliseconds(50))
 
-        #expect(Array(toastStateStore.state.toasts) == allCases.map { .webComposerError($0) })
+        #expect(Array(toastStateStore.state.toasts) == allCases.map(Toast.webComposerError))
     }
 
     @Test
