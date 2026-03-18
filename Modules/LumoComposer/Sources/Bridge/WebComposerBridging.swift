@@ -42,4 +42,7 @@ public protocol WebComposerBridging {
 
     /// Stream of state updates from WebView
     var stateUpdates: AsyncStream<WebComposerState> { get }
+
+    /// Stream of errors received from WebView
+    var errorUpdates: AsyncStream<WebComposerError> { get }
 }
