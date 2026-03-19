@@ -46,7 +46,8 @@ final class ComposerStateStore: StateStore {
     private let webBridge: WebComposerBridging
     private let toastStateStore: ToastStateStore
     private let fileLoader: FileLoader
-    private var observationTask: Task<Void, Never>?
+    private var stateObservationTask: Task<Void, Never>?
+    private var errorObservationTask: Task<Void, Never>?
 
     init(
         initialState: ComposerViewState,
@@ -66,17 +67,26 @@ final class ComposerStateStore: StateStore {
             state = state.copy(\.isWebViewReady, to: newValue)
 
         case .taskStarted:
-            observationTask?.cancel()
-            observationTask = Task {
+            stateObservationTask?.cancel()
+            stateObservationTask = Task {
                 for await webState in webBridge.stateUpdates {
                     guard !Task.isCancelled else { break }
                     state = state.copy(applyingWebState: webState)
                 }
             }
+            errorObservationTask?.cancel()
+            errorObservationTask = Task {
+                for await error in webBridge.errorUpdates {
+                    guard !Task.isCancelled else { break }
+                    toastStateStore.present(toast: .error(message: error.localizedDescription))
+                }
+            }
 
         case .onDisappear:
-            observationTask?.cancel()
-            observationTask = nil
+            stateObservationTask?.cancel()
+            stateObservationTask = nil
+            errorObservationTask?.cancel()
+            errorObservationTask = nil
 
         case .textChanged(let newText):
             state = state.copy(\.currentText, to: newText)
@@ -183,18 +193,26 @@ final class ComposerStateStore: StateStore {
             state = state.copy(\.activeSystemPicker, to: nil)
 
         case .filesPicked(let result):
-            guard case .success(let url) = result else { return }
-            do {
-                let data = try fileLoader(url)
-                await sendUploadFile(data: data, name: url.lastPathComponent)
-            } catch {}
+            switch result {
+            case .success(let url):
+                do {
+                    let data = try fileLoader(url)
+                    await sendUploadFile(data: data, name: url.lastPathComponent)
+                } catch {
+                    toastStateStore.present(toast: .error(message: L10n.Error.generic.string))
+                }
+            case .failure:
+                toastStateStore.present(toast: .error(message: L10n.Error.generic.string))
+            }
 
         case .photoPicked(let item):
             do {
                 guard let data = try await item.loadTransferableData() else { return }
                 let name = PhotoFileNameExtractor.fileName(from: item)
                 await sendUploadFile(data: data, name: name)
-            } catch {}
+            } catch {
+                toastStateStore.present(toast: .error(message: L10n.Error.generic.string))
+            }
 
         case .imageCaptured(let image):
             guard let data = image.jpegData(compressionQuality: 0.7) else { return }

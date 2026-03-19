@@ -463,6 +463,9 @@
         }
       }
     },
+    "Connection lost. Please try again." : {
+      "comment" : "Error shown when the streaming connection to the AI service is interrupted"
+    },
     "Create image" : {
       "comment" : "Option in tools sheet to enable image creation mode",
       "localizations" : {
@@ -693,6 +696,9 @@
           }
         }
       }
+    },
+    "Failed to generate a response. Please try again." : {
+      "comment" : "Error shown when the AI response generation fails"
     },
     "Fast" : {
       "comment" : "Name of the Fast model in the model selection sheet",
@@ -1001,6 +1007,9 @@
           }
         }
       }
+    },
+    "Lumo is experiencing high demand. Please try again later." : {
+      "comment" : "Error shown when the AI service is overloaded due to high demand"
     },
     "Models" : {
       "comment" : "Title of the model selection bottom sheet",
@@ -1541,6 +1550,9 @@
         }
       }
     },
+    "This file is already attached." : {
+      "comment" : "Error shown when the user tries to attach a file that has already been attached to the message"
+    },
     "Tools" : {
       "comment" : "Title of the tools bottom sheet",
       "localizations" : {
@@ -1694,6 +1706,15 @@
           }
         }
       }
+    },
+    "You've reached your limit, upgrade for unlimited chats." : {
+      "comment" : "Error shown when the user has exceeded their plan's usage quota"
+    },
+    "Your request contains content that cannot be processed." : {
+      "comment" : "Error shown when the user's message is detected as harmful or violating content policy"
+    },
+    "Your request could not be processed. Please try again." : {
+      "comment" : "Error shown when the AI response generation is rejected"
     }
   },
   "version" : "1.1"

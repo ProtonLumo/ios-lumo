@@ -33,6 +33,41 @@ enum L10n {
             bundle: .module,
             comment: "Generic error message shown in a toast when communication between the iOS app and the Web API fails (e.g. sending a prompt, toggling web search, changing the model)"
         )
+        static let duplicateFile = LocalizedStringResource(
+            "This file is already attached.",
+            bundle: .module,
+            comment: "Error shown when the user tries to attach a file that has already been attached to the message"
+        )
+        static let generationError = LocalizedStringResource(
+            "Failed to generate a response. Please try again.",
+            bundle: .module,
+            comment: "Error shown when the AI response generation fails"
+        )
+        static let generationRejected = LocalizedStringResource(
+            "Your request could not be processed. Please try again.",
+            bundle: .module,
+            comment: "Error shown when the AI response generation is rejected"
+        )
+        static let harmfulContent = LocalizedStringResource(
+            "Your request contains content that cannot be processed.",
+            bundle: .module,
+            comment: "Error shown when the user's message is detected as harmful or violating content policy"
+        )
+        static let highDemand = LocalizedStringResource(
+            "Lumo is experiencing high demand. Please try again later.",
+            bundle: .module,
+            comment: "Error shown when the AI service is overloaded due to high demand"
+        )
+        static let streamDisconnected = LocalizedStringResource(
+            "Connection lost. Please try again.",
+            bundle: .module,
+            comment: "Error shown when the streaming connection to the AI service is interrupted"
+        )
+        static let tierLimit = LocalizedStringResource(
+            "You've reached your limit, upgrade for unlimited chats.",
+            bundle: .module,
+            comment: "Error shown when the user has exceeded their plan's usage quota"
+        )
     }
 
     enum Attachment {

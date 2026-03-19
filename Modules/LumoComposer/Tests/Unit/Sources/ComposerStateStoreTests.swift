@@ -88,6 +88,56 @@ final class ComposerStateStoreTests {
         #expect(toastStateStore.state.toasts.isEmpty)
     }
 
+    // MARK: - Web Error observation
+
+    @Test
+    func taskStartedAction_StartsObservingErrorUpdates() async {
+        webBridge.attach(to: webViewSpy)
+
+        await sut.send(action: .taskStarted)
+
+        simulateWebError(.generationError)
+
+        try? await Task.sleep(for: .milliseconds(50))
+
+        #expect(toastStateStore.state.toasts == [.webComposerError(.generationError)])
+    }
+
+    @Test
+    func taskStartedAction_ErrorUpdates_EachErrorCaseShowsCorrectToast() async {
+        webBridge.attach(to: webViewSpy)
+
+        await sut.send(action: .taskStarted)
+
+        let allCases: [WebComposerError] = [
+            .unknown, .streamDisconnected, .generationError,
+            .highDemand, .generationRejected, .harmfulContent,
+            .tierLimit, .duplicateFile,
+        ]
+
+        for error in allCases {
+            simulateWebError(error)
+        }
+
+        try? await Task.sleep(for: .milliseconds(50))
+
+        #expect(Array(toastStateStore.state.toasts) == allCases.map(Toast.webComposerError))
+    }
+
+    @Test
+    func onDisappearAction_CancelsErrorObservation() async {
+        webBridge.attach(to: webViewSpy)
+
+        await sut.send(action: .taskStarted)
+        await sut.send(action: .onDisappear)
+
+        simulateWebError(.generationError)
+
+        await Task.yield()
+
+        #expect(toastStateStore.state.toasts.isEmpty)
+    }
+
     // MARK: - .textChanged action
 
     @Test
@@ -956,18 +1006,18 @@ final class ComposerStateStoreTests {
     }
 
     @Test
-    func filesPickedAction_Failure_DoesNothing() async {
+    func filesPickedAction_Failure_ShowsErrorToast() async {
         webBridge.attach(to: webViewSpy)
 
         await sut.send(action: .taskStarted)
         await sut.send(action: .filesPicked(.failure(CocoaError(.fileNoSuchFile))))
 
         #expect(webViewSpy.evaluateJavaScriptCalls.isEmpty)
-        #expect(toastStateStore.state.toasts.isEmpty)
+        #expect(toastStateStore.state.toasts == [.genericError])
     }
 
     @Test
-    func filesPickedAction_WhenLoaderThrows_DoesNothing() async {
+    func filesPickedAction_WhenLoaderThrows_ShowsErrorToast() async {
         let sut = ComposerStateStore(
             initialState: initialState,
             webBridge: webBridge,
@@ -980,7 +1030,7 @@ final class ComposerStateStoreTests {
         await sut.send(action: .filesPicked(.success(URL(string: "file:///Documents/report.pdf")!)))
 
         #expect(webViewSpy.evaluateJavaScriptCalls.isEmpty)
-        #expect(toastStateStore.state.toasts.isEmpty)
+        #expect(toastStateStore.state.toasts == [.genericError])
     }
 
     // MARK: - .photoPicked action
@@ -1016,14 +1066,14 @@ final class ComposerStateStoreTests {
     }
 
     @Test
-    func photoPickedAction_WhenLoadThrows_DoesNothing() async {
+    func photoPickedAction_WhenLoadThrows_ShowsErrorToast() async {
         webBridge.attach(to: webViewSpy)
 
         await sut.send(action: .taskStarted)
         await sut.send(action: .photoPicked(TestPhotosItem(stubbedResult: .failure(CocoaError(.coderInvalidValue)))))
 
         #expect(webViewSpy.evaluateJavaScriptCalls.isEmpty)
-        #expect(toastStateStore.state.toasts.isEmpty)
+        #expect(toastStateStore.state.toasts == [.genericError])
     }
 
     // MARK: - .imageCaptured action
@@ -1054,6 +1104,10 @@ final class ComposerStateStoreTests {
         sut.$state
             .sink { state in stateChange(state) }
             .store(in: &cancellables)
+    }
+
+    private func simulateWebError(_ error: WebComposerError) {
+        webBridge.handleError(["status": "error", "error": error.rawValue])
     }
 
     private func simulateWebStateChange(
@@ -1093,6 +1147,10 @@ final class ComposerStateStoreTests {
 
 private extension Toast {
     static let bridgeError = Toast.error(message: WebComposerBridgeError.webViewNotAttached.localizedDescription)
+    static let genericError = Toast.error(message: WebComposerError.unknown.localizedDescription)
+    static func webComposerError(_ error: WebComposerError) -> Toast {
+        .error(message: error.localizedDescription)
+    }
 }
 
 private extension UUID {
