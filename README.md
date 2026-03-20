@@ -170,7 +170,7 @@ graph TB
 ### Prerequisites
 - macOS with Xcode 26.0+
 - iOS 17.6+
-- Swift 6.0+
+- Swift 5.9+
 - [Tuist](https://tuist.dev) 4.0+
 
 #### Installing Tuist
@@ -192,13 +192,13 @@ mise install tuist
    - Installs pre-commit hook that auto-formats Swift code with `swift-format`
 5. Open the project in Xcode:
    - **`Lumo.xcodeproj`** - For regular development (recommended for most cases)
-   - **`Lumo.xcworkspace`** - Only if you need to browse/edit dependency source code (Lottie, ProtonUIFoundations, etc.)
+   - **`Lumo.xcworkspace`** - Only if you need to browse/edit dependency source code
 6. Select the **LumoApp** scheme (production)
 7. Build and run
 
 > **Note:** After modifying `Project.swift` or `Package.swift`, run `tuist generate` to regenerate the workspace.
 >
-> **Workspace vs Project:** Both work for building and running the app. The workspace includes dependency projects (Lottie, ProtonUIFoundations, swift-collections, swiftui-introspect) for direct source code access, while the project file resolves dependencies automatically. Use the workspace only when you need to debug or modify dependency code.
+> **Workspace vs Project:** Both work for building and running the app. The workspace includes dependency projects for direct source code access, while the project file resolves dependencies automatically. Use the workspace only when you need to debug or modify dependency code.
 
 ### Available Schemes
 - **LumoApp** - Production build pointing to `lumo.proton.me`
@@ -211,7 +211,6 @@ For developing against a local web client, use the **LumoApp-Dev** scheme.
 #### Prerequisites
 - Access to `proton/web/clients` repository with local-sso configured and running
 - HAProxy: `brew install haproxy`
-- Bash 5.x+: `brew install bash`
 - mkcert: `brew install mkcert`
 
 #### One-time Setup per Machine
@@ -232,20 +231,6 @@ This will:
 - Start HAProxy and the development server
 
 The root CA is created at `/Users/<username>/Library/Application Support/mkcert/rootCA.pem`
-
-**⚠️ IMPORTANT: Check your bash version before running yarn**
-
-System bash (3.2) may cause the dev server to resolve to the latest master version instead of your local environment. Use Homebrew bash (5.x):
-
-```bash
-which bash
-# /opt/homebrew/bin/bash
-
-bash --version
-# GNU bash, version 5.x or higher
-```
-
-If `which bash` shows `/bin/bash`, fix your PATH order to prioritize Homebrew.
 
 **Note:** Certificates are generated only once. Subsequent runs of `yarn start-all` will reuse existing certificates.
 
