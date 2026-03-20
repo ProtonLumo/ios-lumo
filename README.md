@@ -170,7 +170,7 @@ graph TB
 ### Prerequisites
 - macOS with Xcode 26.0+
 - iOS 17.6+
-- Swift 5.0+
+- Swift 5.9+
 - [Tuist](https://tuist.dev) 4.0+
 
 #### Installing Tuist
