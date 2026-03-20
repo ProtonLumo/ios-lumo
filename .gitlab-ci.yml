@@ -25,6 +25,7 @@ release-publish-github:
   stage: publish
   extends: .release-publish-github-shared
   variables:
+    GIT_DEPTH: 0
     OAUTH_URL: "https://oauth2:${GITHUB_PAT}@github.com/ProtonLumo/ios-lumo.git"
     RELEASE_SYNC_TO_BRANCH: "main"
     RELEASE_SYNC_FROM_BRANCH: "main"
