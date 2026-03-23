@@ -163,10 +163,76 @@
       "comment" : "Privacy - Camera Usage Description",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo needs camera access to let you capture and attach photos to your messages."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo benötigt Kamerazugriff, damit du Fotos aufnehmen und an deine Nachrichten anhängen kannst."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Lumo needs camera access to let you capture and attach photos to your messages."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo necesita acceso a la cámara para permitirle capturar y adjuntar fotos a sus mensajes."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo necesita acceso a la cámara para permitirle capturar y adjuntar fotos a sus mensajes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo a besoin d'accéder à l'appareil photo pour vous permettre de capturer et de joindre des photos à vos messages."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo necessita di accedere alla fotocamera per permetterti di acquisire e allegare foto ai tuoi messaggi."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo heeft cameratoegang nodig om u foto's te laten vastleggen en bij uw berichten te voegen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo needs camera access to let you capture and attach photos to your messages."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo needs camera access to let you capture and attach photos to your messages."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo needs camera access to let you capture and attach photos to your messages."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo'nun mesajlarınıza fotoğraf çekip ekleyebilmeniz için kamera erişimine ihtiyaç duyuyor."
           }
         }
       }
@@ -253,10 +319,76 @@
       "comment" : "Privacy - Photo Library Usage Description",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo needs photo library access to let you attach photos to your messages."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo benötigt Zugriff auf deine Fotobibliothek, damit du Fotos an deine Nachrichten anhängen kannst."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Lumo needs photo library access to let you attach photos to your messages."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo necesita acceder a la fototeca para que puedas adjuntar fotos a tus mensajes."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo necesita acceso a la biblioteca de fotos para permitirte adjuntar imágenes a tus mensajes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo a besoin d'accéder à la photothèque pour vous permettre de joindre des photos à vos messages."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo necessita di accedere alla libreria foto per permetterti di allegare foto ai tuoi messaggi."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo heeft toegang tot de fotobibliotheek nodig om u foto's bij uw berichten te laten voegen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo needs photo library access to let you attach photos to your messages."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo needs photo library access to let you attach photos to your messages."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumo needs photo library access to let you attach photos to your messages."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mesajlarınıza fotoğraf ekleyebilmeniz için Lumo'nun fotoğraf kitaplığına erişmesi gerekiyor."
           }
         }
       }

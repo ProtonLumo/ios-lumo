@@ -215,7 +215,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Auto"
+            "value" : "Automático"
           }
         },
         "ru" : {
@@ -274,13 +274,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Auto choose the best model"
+            "value" : "Seleziona automaticamente il modello migliore"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Auto choose the best model"
+            "value" : "Kies automatisch het beste model"
           }
         },
         "pl" : {
@@ -428,7 +428,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Camera"
+            "value" : "Fotocamera"
           }
         },
         "nl" : {
@@ -446,7 +446,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Camera"
+            "value" : "Câmera"
           }
         },
         "ru" : {
@@ -464,7 +464,81 @@
       }
     },
     "Connection lost. Please try again." : {
-      "comment" : "Error shown when the streaming connection to the AI service is interrupted"
+      "comment" : "Error shown when the streaming connection to the AI service is interrupted",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection lost. Please try again."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbindung unterbrochen. Bitte versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection lost. Please try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha perdido la conexión. Vuelve a intentarlo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conexión perdida. Inténtelo de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connexion perdue. Veuillez réessayer."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection lost. Please try again."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection lost. Please try again."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection lost. Please try again."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection lost. Please try again."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection lost. Please try again."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bağlantı kesildi. Lütfen tekrar deneyin."
+          }
+        }
+      }
     },
     "Create image" : {
       "comment" : "Option in tools sheet to enable image creation mode",
@@ -508,13 +582,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Create image"
+            "value" : "Crea immagine"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Create image"
+            "value" : "Afbeelding maken"
           }
         },
         "pl" : {
@@ -526,7 +600,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Create image"
+            "value" : "Criar imagem"
           }
         },
         "ru" : {
@@ -585,13 +659,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Describe your image"
+            "value" : "Descrivi la tua immagine"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Describe your image"
+            "value" : "Beschrijf uw afbeelding"
           }
         },
         "pl" : {
@@ -603,7 +677,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Describe your image"
+            "value" : "Descreva sua imagem"
           }
         },
         "ru" : {
@@ -662,13 +736,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Draw a sketch"
+            "value" : "Disegna uno schizzo"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Draw a sketch"
+            "value" : "Maak een schets"
           }
         },
         "pl" : {
@@ -680,7 +754,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Draw a sketch"
+            "value" : "Desenhar um rascunho"
           }
         },
         "ru" : {
@@ -698,7 +772,81 @@
       }
     },
     "Failed to generate a response. Please try again." : {
-      "comment" : "Error shown when the AI response generation fails"
+      "comment" : "Error shown when the AI response generation fails",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to generate a response. Please try again."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Generieren der Antwort. Bitte versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to generate a response. Please try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo generar una respuesta. Inténtalo de nuevo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al generar una respuesta. Intente de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de générer une réponse. Veuillez réessayer."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to generate a response. Please try again."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to generate a response. Please try again."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to generate a response. Please try again."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to generate a response. Please try again."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to generate a response. Please try again."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yanıt oluşturulamadı. Lütfen tekrar deneyin."
+          }
+        }
+      }
     },
     "Fast" : {
       "comment" : "Name of the Fast model in the model selection sheet",
@@ -742,13 +890,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fast"
+            "value" : "Veloce"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fast"
+            "value" : "Snel"
           }
         },
         "pl" : {
@@ -760,7 +908,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fast"
+            "value" : "Rápido"
           }
         },
         "ru" : {
@@ -825,7 +973,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Files"
+            "value" : "Bestanden"
           }
         },
         "pl" : {
@@ -837,7 +985,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Files"
+            "value" : "Arquivos"
           }
         },
         "ru" : {
@@ -1009,7 +1157,81 @@
       }
     },
     "Lumo is experiencing high demand. Please try again later." : {
-      "comment" : "Error shown when the AI service is overloaded due to high demand"
+      "comment" : "Error shown when the AI service is overloaded due to high demand",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo is experiencing high demand. Please try again later."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo verzeichnet derzeit eine hohe Nachfrage. Bitte versuche es später erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo is experiencing high demand. Please try again later."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo está experimentando una gran demanda. Vuelve a intentarlo más tarde."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo está experimentando una alta demanda. Vuelva a intentarlo más tarde."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo fait face à une forte demande. Veuillez réessayer plus tard."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo is experiencing high demand. Please try again later."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo is experiencing high demand. Please try again later."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo is experiencing high demand. Please try again later."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo is experiencing high demand. Please try again later."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo is experiencing high demand. Please try again later."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo'ya yoğun talep var. Lütfen daha sonra tekrar deneyin."
+          }
+        }
+      }
     },
     "Models" : {
       "comment" : "Title of the model selection bottom sheet",
@@ -1053,13 +1275,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Models"
+            "value" : "Modelli"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Models"
+            "value" : "Modellen"
           }
         },
         "pl" : {
@@ -1071,7 +1293,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Models"
+            "value" : "Modelos"
           }
         },
         "ru" : {
@@ -1130,13 +1352,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Photos"
+            "value" : "Foto"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Photos"
+            "value" : "Foto's"
           }
         },
         "pl" : {
@@ -1148,7 +1370,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Photos"
+            "value" : "Fotos"
           }
         },
         "ru" : {
@@ -1284,13 +1506,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quick responses"
+            "value" : "Risposte rapide"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quick responses"
+            "value" : "Snelle antwoorden"
           }
         },
         "pl" : {
@@ -1302,7 +1524,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quick responses"
+            "value" : "Respostas rápidas"
           }
         },
         "ru" : {
@@ -1367,7 +1589,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Solves complex problems"
+            "value" : "Lost complexe problemen op"
           }
         },
         "pl" : {
@@ -1379,7 +1601,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Solves complex problems"
+            "value" : "Resolve problemas complexos"
           }
         },
         "ru" : {
@@ -1438,13 +1660,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Something went wrong. Please try again."
+            "value" : "Qualcosa è andato storto. Riprova."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Something went wrong. Please try again."
+            "value" : "Er is iets fout gegaan. Probeer het alstublieft opnieuw."
           }
         },
         "pl" : {
@@ -1456,7 +1678,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Something went wrong. Please try again."
+            "value" : "Ocorreu um erro. Tente novamente mais tarde."
           }
         },
         "ru" : {
@@ -1515,13 +1737,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Thinking"
+            "value" : "Sto pensando"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Thinking"
+            "value" : "Denken"
           }
         },
         "pl" : {
@@ -1533,7 +1755,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Thinking"
+            "value" : "Pensador"
           }
         },
         "ru" : {
@@ -1551,7 +1773,81 @@
       }
     },
     "This file is already attached." : {
-      "comment" : "Error shown when the user tries to attach a file that has already been attached to the message"
+      "comment" : "Error shown when the user tries to attach a file that has already been attached to the message",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This file is already attached."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Datei wurde bereits angehängt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This file is already attached."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este archivo ya se ha adjuntado."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este archivo ya está adjunto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce fichier est déjà attaché."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This file is already attached."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This file is already attached."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This file is already attached."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This file is already attached."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This file is already attached."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu dosya zaten eklenmiştir."
+          }
+        }
+      }
     },
     "Tools" : {
       "comment" : "Title of the tools bottom sheet",
@@ -1595,13 +1891,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tools"
+            "value" : "Strumenti"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tools"
+            "value" : "Hulpmiddelen"
           }
         },
         "pl" : {
@@ -1613,7 +1909,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tools"
+            "value" : "Ferramentas"
           }
         },
         "ru" : {
@@ -1672,13 +1968,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Web search"
+            "value" : "Ricerca Web"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Web search"
+            "value" : "Online zoeken"
           }
         },
         "pl" : {
@@ -1690,7 +1986,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Web search"
+            "value" : "Pesquisa web"
           }
         },
         "ru" : {
@@ -1708,13 +2004,235 @@
       }
     },
     "You've reached your limit, upgrade for unlimited chats." : {
-      "comment" : "Error shown when the user has exceeded their plan's usage quota"
+      "comment" : "Error shown when the user has exceeded their plan's usage quota",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've reached your limit, upgrade for unlimited chats."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast dein Limit erreicht. Erweitere dein Abonnement für unbegrenzte Anzahl von Chats."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've reached your limit, upgrade for unlimited chats."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Has alcanzado tu límite, pásate a un plan superior para disfrutar de chats ilimitados."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ha alcanzado su límite, actualice para obtener chats ilimitados."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous avez atteint votre limite, changez d'abonnement pour des discussions illimitées."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've reached your limit, upgrade for unlimited chats."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've reached your limit, upgrade for unlimited chats."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've reached your limit, upgrade for unlimited chats."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've reached your limit, upgrade for unlimited chats."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've reached your limit, upgrade for unlimited chats."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sınırınıza ulaştınız; sınırsız sohbet için yükseltin."
+          }
+        }
+      }
     },
     "Your request contains content that cannot be processed." : {
-      "comment" : "Error shown when the user's message is detected as harmful or violating content policy"
+      "comment" : "Error shown when the user's message is detected as harmful or violating content policy",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request contains content that cannot be processed."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Anfrage enthält Inhalte, die nicht verarbeitet werden können."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request contains content that cannot be processed."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu solicitud contiene contenido que no se puede procesar."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Su solicitud incluye contenido que no puede ser procesado."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre demande contient un contenu qui ne peut pas être traité."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request contains content that cannot be processed."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request contains content that cannot be processed."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request contains content that cannot be processed."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request contains content that cannot be processed."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request contains content that cannot be processed."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İsteğinizde işlenemeyen içerik bulunmaktadır."
+          }
+        }
+      }
     },
     "Your request could not be processed. Please try again." : {
-      "comment" : "Error shown when the AI response generation is rejected"
+      "comment" : "Error shown when the AI response generation is rejected",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request could not be processed. Please try again."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Anfrage konnte nicht verarbeitet werden. Bitte versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request could not be processed. Please try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido procesar tu solicitud. Vuelve a intentarlo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo procesar su solicitud. Intente de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre requête n'a pas pu être traitée. Veuillez réessayer."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request could not be processed. Please try again."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request could not be processed. Please try again."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request could not be processed. Please try again."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sua solicitação não pôde ser processada. Tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request could not be processed. Please try again."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İsteğiniz işleme alınamadı. Lütfen tekrar deneyin."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"
