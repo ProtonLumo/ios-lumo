@@ -77,7 +77,6 @@
         
         function applyStabilization(triggerEvent) {
             console.log(`🎯 ${triggerEvent} - applying layout stabilization`);
-            window.webkit?.messageHandlers?.submitButtonClicked?.postMessage({});
             if (applyLayoutStabilization()) {
                 setTimeout(() => {
                     restoreLayout();
@@ -99,6 +98,7 @@
                 (clickedElement.tagName === 'BUTTON' && clickedElement.closest('.composer'));
             
             if (isSubmitButton) {
+                window.webkit?.messageHandlers?.submitButtonClicked?.postMessage({});
                 applyStabilization('Submit button click');
             }
         };
@@ -122,6 +122,7 @@
         };
         
         submitListener = function(event) {
+            window.webkit?.messageHandlers?.submitButtonClicked?.postMessage({});
             applyStabilization('Form submission');
         };
         
