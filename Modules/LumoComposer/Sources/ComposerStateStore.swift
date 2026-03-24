@@ -171,24 +171,24 @@ final class ComposerStateStore: StateStore {
             }
 
         case .modelSelectionSheetAction(let action):
+            state = state.copy(\.activeSheet, to: nil)
+
             switch action {
             case .modelSelected(let model):
-                if model == .thinking && state.webState.userFlags.isGuestUser {
-                    state = state.copy(\.activeSheet, to: nil)
+                switch model {
+                case .thinking where state.webState.userFlags.isGuestUser:
                     await execute { () async throws(WebComposerBridgeError) in
                         try await webBridge.openAccount()
                     }
-                } else if model == .thinking && state.webState.userFlags.isFreeUser {
-                    state = state.copy(\.activeSheet, to: nil)
+                case .thinking where state.webState.userFlags.isFreeUser:
                     freeUserThinkingTappedSubject.send()
-                } else {
-                    state = state.copy(\.activeSheet, to: nil)
+                case .auto, .fast, .thinking:
                     await execute { () async throws(WebComposerBridgeError) in
                         try await webBridge.changeModelTier(model)
                     }
                 }
             case .closeTapped:
-                state = state.copy(\.activeSheet, to: nil)
+                break
             }
 
         case .showPicker(let picker):
