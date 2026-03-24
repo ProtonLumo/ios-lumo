@@ -31,6 +31,11 @@ public struct WebComposerState: Equatable, Decodable {
         }
     }
 
+    struct UserFlags: Equatable, Decodable {
+        let isFreeUser: Bool
+        let isGuestUser: Bool
+    }
+
     let mode: Mode
     let model: ModelTier
     let isGhostModeEnabled: Bool
@@ -40,7 +45,7 @@ public struct WebComposerState: Equatable, Decodable {
     let showTermsAndPrivacy: Bool
     let attachedFiles: [File]
     let featureFlags: FeatureFlags
-    let isFreeUser: Bool
+    let userFlags: UserFlags
 
     enum CodingKeys: String, CodingKey {
         case mode = "lumoMode"
@@ -52,7 +57,7 @@ public struct WebComposerState: Equatable, Decodable {
         case showTermsAndPrivacy = "showTsAndCs"
         case attachedFiles
         case featureFlags
-        case isFreeUser
+        case userFlags
     }
 
     func copy(attachedFiles: [File]) -> Self {
@@ -66,7 +71,7 @@ public struct WebComposerState: Equatable, Decodable {
             showTermsAndPrivacy: showTermsAndPrivacy,
             attachedFiles: attachedFiles,
             featureFlags: featureFlags,
-            isFreeUser: isFreeUser
+            userFlags: userFlags
         )
     }
 }
@@ -83,7 +88,7 @@ extension WebComposerState {
             showTermsAndPrivacy: true,
             attachedFiles: [],
             featureFlags: .initial,
-            isFreeUser: true
+            userFlags: .initial
         )
     }
 }
@@ -91,5 +96,11 @@ extension WebComposerState {
 extension WebComposerState.FeatureFlags {
     static var initial: Self {
         .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
+    }
+}
+
+extension WebComposerState.UserFlags {
+    static var initial: Self {
+        .init(isFreeUser: true, isGuestUser: true)
     }
 }

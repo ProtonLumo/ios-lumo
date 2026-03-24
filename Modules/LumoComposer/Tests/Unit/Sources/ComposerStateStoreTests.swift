@@ -246,7 +246,7 @@ final class ComposerStateStoreTests {
                         showTermsAndPrivacy: true,
                         attachedFiles: [],
                         featureFlags: .initial,
-                        isFreeUser: true
+                        userFlags: .initial
                     )
                 ),
                 initialState,
@@ -689,6 +689,47 @@ final class ComposerStateStoreTests {
         #expect(webViewSpy.evaluateJavaScriptCalls.isEmpty)
     }
 
+    @Test(.stubbedUUID(.testData2))
+    func modelSelectionSheetAction_ThinkingSelected_WhenGuestUser_CallsOpenAccount() async {
+        initialState = initialState.copy(\.webState, to: .initialGuestUser)
+
+        webBridge.attach(to: webViewSpy)
+
+        await sut.send(action: .taskStarted)
+        await sut.send(action: .modelSelectionSheetAction(.modelSelected(.thinking)))
+
+        let javascript = "window.nativeComposerApi?.openAccount('\(UUID.testData2.uuidString)');"
+        #expect(webViewSpy.evaluateJavaScriptCalls.last?.javaScript == javascript)
+        #expect(toastStateStore.state.toasts.isEmpty)
+    }
+
+    @Test
+    func modelSelectionSheetAction_ThinkingSelected_WhenGuestUser_DismissesSheet() async {
+        initialState = initialState.copy(\.webState, to: .initialGuestUser)
+
+        webBridge.attach(to: webViewSpy)
+
+        await sut.send(action: .showSheet(.modelSelection))
+        await sut.send(action: .modelSelectionSheetAction(.modelSelected(.thinking)))
+
+        #expect(sut.state.activeSheet == nil)
+        #expect(toastStateStore.state.toasts.isEmpty)
+    }
+
+    @Test
+    func modelSelectionSheetAction_ThinkingSelected_WhenGuestUser_DoesNotCallChangeModelTier() async {
+        initialState = initialState.copy(\.webState, to: .initialGuestUser)
+
+        webBridge.attach(to: webViewSpy)
+
+        await sut.send(action: .taskStarted)
+        await sut.send(action: .modelSelectionSheetAction(.modelSelected(.thinking)))
+
+        let hasChangeModelTierCall = webViewSpy.evaluateJavaScriptCalls
+            .contains { params in params.javaScript.contains("changeModelTier") }
+        #expect(!hasChangeModelTierCall)
+    }
+
     @Test
     func modelSelectionSheetAction_ModelSelected_WhenWebViewNotAttached_ShowsErrorToast() async {
         await sut.send(action: .modelSelectionSheetAction(.modelSelected(.auto)))
@@ -937,7 +978,7 @@ final class ComposerStateStoreTests {
                                 File(id: "<id_1>", name: "document.pdf", type: .pdf, preview: .none)
                             ],
                             featureFlags: .initial,
-                            isFreeUser: true
+                            userFlags: .initial
                         )
                     ),
             ]
@@ -1138,7 +1179,10 @@ final class ComposerStateStoreTests {
                 "isImageGenEnabled": false,
                 "isModelSelectionEnabled": false,
             ],
-            "isFreeUser": true,
+            "userFlags": [
+                "isFreeUser": true,
+                "isGuestUser": true,
+            ],
         ]
 
         webBridge.handleStateChange(state: state)
@@ -1161,6 +1205,14 @@ private extension UUID {
 
 private extension WebComposerState {
     static var initialPaidUser: Self {
+        .testUser(isFreeUser: false, isGuestUser: false)
+    }
+
+    static var initialGuestUser: Self {
+        .testUser(isFreeUser: false, isGuestUser: true)
+    }
+
+    private static func testUser(isFreeUser: Bool, isGuestUser: Bool) -> Self {
         .init(
             mode: .idle,
             model: .auto,
@@ -1171,7 +1223,7 @@ private extension WebComposerState {
             showTermsAndPrivacy: true,
             attachedFiles: [],
             featureFlags: .initial,
-            isFreeUser: false
+            userFlags: .init(isFreeUser: isFreeUser, isGuestUser: isGuestUser)
         )
     }
 }

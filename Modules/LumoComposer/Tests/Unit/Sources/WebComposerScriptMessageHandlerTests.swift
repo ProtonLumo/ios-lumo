@@ -48,7 +48,10 @@ final class WebComposerScriptMessageHandlerTests {
                         "isImageGenEnabled": false,
                         "isModelSelectionEnabled": false,
                     ],
-                    "isFreeUser": true,
+                    "userFlags": [
+                        "isFreeUser": true,
+                        "isGuestUser": false,
+                    ],
                 ],
                 expectedState: .init(
                     mode: .idle,
@@ -60,7 +63,7 @@ final class WebComposerScriptMessageHandlerTests {
                     showTermsAndPrivacy: true,
                     attachedFiles: [],
                     featureFlags: .initial,
-                    isFreeUser: true
+                    userFlags: .init(isFreeUser: true, isGuestUser: false)
                 )
             ),
             TestCase(
@@ -83,7 +86,10 @@ final class WebComposerScriptMessageHandlerTests {
                         "isImageGenEnabled": true,
                         "isModelSelectionEnabled": true,
                     ],
-                    "isFreeUser": false,
+                    "userFlags": [
+                        "isFreeUser": false,
+                        "isGuestUser": true,
+                    ],
                 ],
                 expectedState: .init(
                     mode: .working,
@@ -97,7 +103,7 @@ final class WebComposerScriptMessageHandlerTests {
                         File(id: "<file-123>", name: "document.pdf", type: .pdf, preview: .none)
                     ],
                     featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
-                    isFreeUser: false
+                    userFlags: .init(isFreeUser: false, isGuestUser: true)
                 )
             ),
         ]

@@ -25,6 +25,9 @@ public protocol WebComposerBridging {
     /// Open sketch/drawing interface
     func openSketch() async throws(WebComposerBridgeError)
 
+    /// Open account creation/login flow
+    func openAccount() async throws(WebComposerBridgeError)
+
     /// Toggle image generation
     func toggleCreateImage() async throws(WebComposerBridgeError)
 
