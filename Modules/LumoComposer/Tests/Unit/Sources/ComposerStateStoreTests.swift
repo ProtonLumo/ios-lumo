@@ -657,6 +657,8 @@ final class ComposerStateStoreTests {
 
     @Test
     func modelSelectionSheetAction_ThinkingSelected_WhenFreeUser_EmitsFreeUserThinkingTappedEvent() async {
+        initialState = initialState.copy(\.webState, to: .initialFreeUser)
+
         var cancellables: Set<AnyCancellable> = []
         var freeUserThinkingTappedCount = 0
 
@@ -672,6 +674,8 @@ final class ComposerStateStoreTests {
 
     @Test
     func modelSelectionSheetAction_ThinkingSelected_WhenFreeUser_DismissesSheet() async {
+        initialState = initialState.copy(\.webState, to: .initialFreeUser)
+
         await sut.send(action: .showSheet(.modelSelection))
         await sut.send(action: .modelSelectionSheetAction(.modelSelected(.thinking)))
 
@@ -681,6 +685,8 @@ final class ComposerStateStoreTests {
 
     @Test
     func modelSelectionSheetAction_ThinkingSelected_WhenFreeUser_DoesNotCallBridge() async {
+        initialState = initialState.copy(\.webState, to: .initialFreeUser)
+
         webBridge.attach(to: webViewSpy)
 
         await sut.send(action: .taskStarted)
@@ -1210,6 +1216,10 @@ private extension WebComposerState {
 
     static var initialGuestUser: Self {
         .testUser(isFreeUser: false, isGuestUser: true)
+    }
+
+    static var initialFreeUser: Self {
+        .testUser(isFreeUser: true, isGuestUser: false)
     }
 
     private static func testUser(isFreeUser: Bool, isGuestUser: Bool) -> Self {

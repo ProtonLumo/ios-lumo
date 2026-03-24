@@ -173,14 +173,14 @@ final class ComposerStateStore: StateStore {
         case .modelSelectionSheetAction(let action):
             switch action {
             case .modelSelected(let model):
-                if model == .thinking && state.webState.userFlags.isFreeUser {
-                    state = state.copy(\.activeSheet, to: nil)
-                    freeUserThinkingTappedSubject.send()
-                } else if model == .thinking && state.webState.userFlags.isGuestUser {
+                if model == .thinking && state.webState.userFlags.isGuestUser {
                     state = state.copy(\.activeSheet, to: nil)
                     await execute { () async throws(WebComposerBridgeError) in
                         try await webBridge.openAccount()
                     }
+                } else if model == .thinking && state.webState.userFlags.isFreeUser {
+                    state = state.copy(\.activeSheet, to: nil)
+                    freeUserThinkingTappedSubject.send()
                 } else {
                     state = state.copy(\.activeSheet, to: nil)
                     await execute { () async throws(WebComposerBridgeError) in
