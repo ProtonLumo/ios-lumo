@@ -37,7 +37,6 @@
     
     let isListenerSetup = false;
     let clickListener = null;
-    let keydownListener = null;
     let submitListener = null;
     
     console.log('🔧 Message submission listener script starting...');
@@ -46,10 +45,6 @@
         if (clickListener) {
             document.removeEventListener('click', clickListener, true);
             clickListener = null;
-        }
-        if (keydownListener) {
-            document.removeEventListener('keydown', keydownListener, true);
-            keydownListener = null;
         }
         if (submitListener) {
             document.removeEventListener('submit', submitListener, true);
@@ -77,7 +72,6 @@
         
         function applyStabilization(triggerEvent) {
             console.log(`🎯 ${triggerEvent} - applying layout stabilization`);
-            window.webkit?.messageHandlers?.submitButtonClicked?.postMessage({});
             if (applyLayoutStabilization()) {
                 setTimeout(() => {
                     restoreLayout();
@@ -99,34 +93,17 @@
                 (clickedElement.tagName === 'BUTTON' && clickedElement.closest('.composer'));
             
             if (isSubmitButton) {
+                window.webkit?.messageHandlers?.submitButtonClicked?.postMessage({});
                 applyStabilization('Submit button click');
             }
         };
         
-        keydownListener = function(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                const target = event.target;
-                
-                const isComposerInput = 
-                    target.classList.contains('composer') ||
-                    target.classList.contains('ProseMirror') ||
-                    target.tagName === 'TEXTAREA' ||
-                    target.getAttribute('contenteditable') === 'true' ||
-                    target.closest('.composer') ||
-                    target.closest('.tiptap');
-                
-                if (isComposerInput) {
-                    applyStabilization('Enter key press');
-                }
-            }
-        };
-        
         submitListener = function(event) {
+            window.webkit?.messageHandlers?.submitButtonClicked?.postMessage({});
             applyStabilization('Form submission');
         };
         
         document.addEventListener('click', clickListener, true);
-        document.addEventListener('keydown', keydownListener, true);
         document.addEventListener('submit', submitListener, true);
         
         isListenerSetup = true;
