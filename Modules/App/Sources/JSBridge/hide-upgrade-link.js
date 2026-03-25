@@ -99,6 +99,7 @@
         const style = document.createElement('style');
         style.id = 'lumo-spring-sale-2026-hide';
         style.textContent =
+            '.lumo-spring-sale-2026-promotion { display: none !important; }' +
             '.button-promotion--pink { display: none !important; }' +
             '.modal-two:has([class*="offer-spring-sale-2026"]) { display: none !important; }' +
             'body:has([class*="offer-spring-sale-2026"]) > .modal-two-backdrop { display: none !important; }';
@@ -109,14 +110,14 @@
         const springSaleModal = document.querySelector('[class*="offer-spring-sale-2026"]');
         if (springSaleModal) {
             const modalTwo = springSaleModal.closest('.modal-two');
-            if (modalTwo) {
+            if (modalTwo && modalTwo.style.display !== 'none') {
                 modalTwo.style.display = 'none';
                 const prev = modalTwo.previousElementSibling;
                 if (prev && prev.classList.contains('modal-two-backdrop')) {
                     prev.style.display = 'none';
                 }
+                document.body.style.overflow = '';
             }
-            document.body.style.overflow = '';
         }
     }
 

@@ -108,14 +108,14 @@
         const springSaleModal = document.querySelector('[class*="offer-spring-sale-2026"]');
         if (springSaleModal) {
             const modalTwo = springSaleModal.closest('.modal-two');
-            if (modalTwo) {
+            if (modalTwo && modalTwo.style.display !== 'none') {
                 modalTwo.style.display = 'none';
                 const prev = modalTwo.previousElementSibling;
                 if (prev && prev.classList.contains('modal-two-backdrop')) {
                     prev.style.display = 'none';
                 }
+                document.body.style.overflow = '';
             }
-            document.body.style.overflow = '';
         }
     }
 
