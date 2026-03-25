@@ -91,11 +91,40 @@
         return removedCount > 0;
     }
     
+    // Hide Spring Sale 2026 promotion UI (button, modal, backdrop).
+    // Uses CSS injection to survive React re-renders + JS fallback for the backdrop sibling.
+    if (!document.getElementById('lumo-spring-sale-2026-hide')) {
+        const style = document.createElement('style');
+        style.id = 'lumo-spring-sale-2026-hide';
+        style.textContent =
+            '.lumo-spring-sale-2026-promotion { display: none !important; }' +
+            '.button-promotion--pink { display: none !important; }' +
+            '.modal-two:has([class*="offer-spring-sale-2026"]) { display: none !important; }' +
+            'body:has([class*="offer-spring-sale-2026"]) > .modal-two-backdrop { display: none !important; }';
+        document.head.appendChild(style);
+    }
+
+    function hideSpringSaleOverlay() {
+        const springSaleModal = document.querySelector('[class*="offer-spring-sale-2026"]');
+        if (springSaleModal) {
+            const modalTwo = springSaleModal.closest('.modal-two');
+            if (modalTwo) {
+                modalTwo.style.display = 'none';
+                const prev = modalTwo.previousElementSibling;
+                if (prev && prev.classList.contains('modal-two-backdrop')) {
+                    prev.style.display = 'none';
+                }
+            }
+            document.body.style.overflow = '';
+        }
+    }
+
     // Run immediately
     modifySignupLinks();
     removeDropdownButton();
     removeUnwantedLinks();
     removeIfExists('header > ul > li.no-print');
+    hideSpringSaleOverlay();
     
     // Set up mutation observer to handle dynamically added links
     const observer = new MutationObserver(mutations => {
@@ -115,6 +144,7 @@
             removeIfExists('header > div > ul > li.no-print');
             removeIfExists('.button-for-icon.lumo-bf2025-promotion.button-promotion--icon-gradient.bf-2025-free', '');
             removeIfExists('.lumo-spring-sale-2026-promotion', '');
+            hideSpringSaleOverlay();
         }
     });
     
