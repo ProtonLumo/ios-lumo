@@ -94,15 +94,44 @@
 
     }
     
+    // Hide Spring Sale 2026 promotion UI (button, modal, backdrop).
+    if (!document.getElementById('lumo-spring-sale-2026-hide')) {
+        const style = document.createElement('style');
+        style.id = 'lumo-spring-sale-2026-hide';
+        style.textContent =
+            '.lumo-spring-sale-2026-promotion { display: none !important; }' +
+            '.button-promotion--pink { display: none !important; }' +
+            '.modal-two:has([class*="offer-spring-sale-2026"]) { display: none !important; }' +
+            'body:has([class*="offer-spring-sale-2026"]) > .modal-two-backdrop { display: none !important; }';
+        document.head.appendChild(style);
+    }
+
+    function hideSpringSaleOverlay() {
+        const springSaleModal = document.querySelector('[class*="offer-spring-sale-2026"]');
+        if (springSaleModal) {
+            const modalTwo = springSaleModal.closest('.modal-two');
+            if (modalTwo && modalTwo.style.display !== 'none') {
+                modalTwo.style.display = 'none';
+                const prev = modalTwo.previousElementSibling;
+                if (prev && prev.classList.contains('modal-two-backdrop')) {
+                    prev.style.display = 'none';
+                }
+                document.body.style.overflow = '';
+            }
+        }
+    }
+
     // Run immediately in case elements already exist
     console.log('Lumo: Initializing account page modifier');
     modifyAccountPage();
+    hideSpringSaleOverlay();
     
     // Observe DOM changes (handles sidebar open + async content)
     const observer = new MutationObserver((mutationsList) => {
         for (const mutation of mutationsList) {
             if (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0) {
                 modifyAccountPage();
+                hideSpringSaleOverlay();
                 break; // one pass per batch is enough
             }
         }
