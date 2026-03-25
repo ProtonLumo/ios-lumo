@@ -33,7 +33,7 @@ struct ComposerScreenSnapshotTests {
                         .init(id: "<id_3>", name: "data", type: .protonSheet, preview: .none),
                     ],
                     featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
-                    isFreeUser: false
+                    userFlags: .init(isFreeUser: false, isGuestUser: false)
                 )
             )
             .copy(\.currentText, to: "")
@@ -68,7 +68,7 @@ struct ComposerScreenSnapshotTests {
                     showTermsAndPrivacy: false,
                     attachedFiles: [],
                     featureFlags: .initial,
-                    isFreeUser: false
+                    userFlags: .init(isFreeUser: false, isGuestUser: false)
                 )
             )
         let sut = makeSUT(initialState: state)

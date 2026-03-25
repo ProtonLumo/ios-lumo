@@ -27,6 +27,7 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
         case uploadFiles([FileUploadData])
         case openProtonDrive
         case openSketch
+        case openAccount
         case toggleWebSearch
         case toggleCreateImage
         case changeModelTier(WebComposerState.ModelTier)
@@ -55,6 +56,8 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
                 command = "openProtonDrive('\(id)');"
             case .openSketch:
                 command = "openSketch('\(id)');"
+            case .openAccount:
+                command = "openAccount('\(id)');"
             case .toggleWebSearch:
                 command = "toggleWebSearch('\(id)');"
             case .toggleCreateImage:
@@ -105,6 +108,10 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
 
     public func openSketch() async throws(WebComposerBridgeError) {
         try await executeJavaScript(.openSketch)
+    }
+
+    public func openAccount() async throws(WebComposerBridgeError) {
+        try await executeJavaScript(.openAccount)
     }
 
     public func toggleCreateImage() async throws(WebComposerBridgeError) {
