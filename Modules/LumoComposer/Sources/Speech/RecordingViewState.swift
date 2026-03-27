@@ -11,7 +11,7 @@ extension RecordingViewState {
     static var initial: Self {
         .init(
             transcription: "",
-            audioLevels: Array(repeating: 0.1, count: 30),
+            audioLevels: AudioLevelNormalizer.initialLevels,
             duration: .zero,
             isOnDevice: false
         )
