@@ -43,7 +43,7 @@ final class SpeechRecordingServiceSpy: SpeechRecordingServiceProtocol {
         cancelCallCount += 1
     }
 
-    // MARK: - Spy
+    // MARK: - Spy interface
 
     func simulateUpdate(_ update: SpeechRecordingUpdate) {
         _continuation.yield(update)

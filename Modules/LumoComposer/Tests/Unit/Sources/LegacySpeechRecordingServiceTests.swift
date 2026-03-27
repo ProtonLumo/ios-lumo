@@ -135,12 +135,11 @@ final class LegacySpeechRecordingServiceTests {
     // MARK: - startRecording — audio engine
 
     @Test
-    func startRecording_preparesAndStartsEngine() async throws {
+    func startRecording_startsEngine() async throws {
         let sut = makeSUT()
 
         try await sut.startRecording()
 
-        #expect(engineSpy.prepareCalled)
         #expect(engineSpy.startCalled)
         #expect(engineSpy.tapBlock != nil)
     }
@@ -363,9 +362,6 @@ final class LegacySpeechRecordingServiceTests {
         let sut = makeSUT()
 
         try await sut.startRecording()
-
-        engineSpy.isRunning = true
-
         try await sut.startRecording()
 
         #expect(engineSpy.startCalled)

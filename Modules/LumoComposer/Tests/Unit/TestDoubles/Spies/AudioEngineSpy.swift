@@ -5,14 +5,11 @@ import AVFoundation
 final class AudioEngineSpy: AudioEngine {
     var stubbedStartError: (any Error)?
 
-    var prepareCalled = false
-    var startCalled = false
-    var stopCalled = false
+    private(set) var startCalled = false
+    private(set) var stopCalled = false
     private(set) var tapBlock: (@Sendable (AVAudioPCMBuffer) -> Void)?
 
     // MARK: - AudioEngine
-
-    var isRunning = false
 
     func installInputTap(
         bufferSize: AVAudioFrameCount,
@@ -21,29 +18,19 @@ final class AudioEngineSpy: AudioEngine {
         tapBlock = block
     }
 
-    func removeInputTap() {
-        tapBlock = nil
-    }
-
-    func prepare() {
-        prepareCalled = true
-    }
-
     func start() throws {
         if let error = stubbedStartError {
             throw error
         }
 
-        isRunning = true
         startCalled = true
     }
 
     func stop() {
-        isRunning = false
         stopCalled = true
     }
 
-    // MARK: - Test helpers
+    // MARK: - Spy interface
 
     func simulateTapBlock(_ buffer: AVAudioPCMBuffer) {
         tapBlock?(buffer)

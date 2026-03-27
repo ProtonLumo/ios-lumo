@@ -1,26 +1,18 @@
 import AVFoundation
 
 protocol AudioEngine {
-    var isRunning: Bool { get }
-
     func installInputTap(
         bufferSize: AVAudioFrameCount,
         block: @escaping @Sendable (AVAudioPCMBuffer) -> Void
     )
-    func removeInputTap()
-    func prepare()
+    /// Prepares resources and starts the engine.
     func start() throws
+    /// Removes the input tap and stops the engine.
     func stop()
 }
 
 final class AVAudioEngineAdapter: AudioEngine {
     private let engine = AVAudioEngine()
-
-    // MARK: - AudioEngine
-
-    var isRunning: Bool {
-        engine.isRunning
-    }
 
     func installInputTap(
         bufferSize: AVAudioFrameCount,
@@ -33,19 +25,13 @@ final class AVAudioEngineAdapter: AudioEngine {
         }
     }
 
-    func removeInputTap() {
-        engine.inputNode.removeTap(onBus: 0)
-    }
-
-    func prepare() {
-        engine.prepare()
-    }
-
     func start() throws {
+        engine.prepare()
         try engine.start()
     }
 
     func stop() {
+        engine.inputNode.removeTap(onBus: 0)
         engine.stop()
     }
 }

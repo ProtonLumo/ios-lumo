@@ -63,10 +63,7 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
         continuation = cont
         audioLevels = AudioLevelNormalizer.initialLevels
 
-        if audioEngine.isRunning {
-            audioEngine.stop()
-            audioEngine.removeInputTap()
-        }
+        audioEngine.stop()
 
         do {
             try audioSession.setCategory(
@@ -117,8 +114,6 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
             }
         }
 
-        audioEngine.prepare()
-
         try audioEngine.start()
     }
 
@@ -160,10 +155,7 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
     }
 
     private func tearDown() {
-        if audioEngine.isRunning {
-            audioEngine.stop()
-        }
-        audioEngine.removeInputTap()
+        audioEngine.stop()
 
         recognitionRequest = nil
         recognitionTask = nil

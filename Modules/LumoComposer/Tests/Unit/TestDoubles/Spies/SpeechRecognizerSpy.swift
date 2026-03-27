@@ -18,7 +18,7 @@ final class SpeechRecognizerSpy: SpeechRecognizerProviding {
         return stubbedRecognictionTask
     }
 
-    // MARK: - Test helpers
+    // MARK: - Spy interface
 
     func simulateResult(_ text: String) {
         resultHandler?(text, nil)
