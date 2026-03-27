@@ -2,7 +2,7 @@ import Combine
 import Foundation
 
 @MainActor
-final class SpeechStateStore {
+final class SpeechStateStore: StateStore {
     enum State: Equatable {
         case idle
         case permissionDenied
@@ -24,7 +24,7 @@ final class SpeechStateStore {
         case _failed
     }
 
-    @Published private(set) var state: State = .idle
+    @Published var state: State = .idle
 
     /// Async closure invoked when recording is submitted.
     /// WebView: `insertPrompt()` + sleep. Native composer: set `currentText`, return immediately.

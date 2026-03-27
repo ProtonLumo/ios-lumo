@@ -190,6 +190,51 @@ final class SpeechStateStoreTests {
         #expect(spy.cancelCallCount == 1)
     }
 
+    @Test
+    func failedRecognizerUnavailable_TransitionsToIdle() async {
+        await startRecordingSuccessfully()
+
+        spy.simulateUpdate(.failed(.recognizerUnavailable))
+        try? await Task.sleep(for: .milliseconds(50))
+
+        #expect(sut.state == .idle)
+        #expect(spy.cancelCallCount == 1)
+    }
+
+    // MARK: - Edge cases
+
+    @Test
+    func submitRecording_WithoutOnTranscriptionComplete_DoesNotCrash() async {
+        await startRecordingSuccessfully()
+        sut.onTranscriptionComplete = nil
+
+        await sut.send(action: .submitRecording)
+
+        #expect(sut.state == .idle)
+        #expect(spy.stopRecordingCallCount == 1)
+    }
+
+    @Test
+    func cancelRecording_WhenIdle_DoesNothing() async {
+        #expect(sut.state == .idle)
+
+        await sut.send(action: .cancelRecording)
+
+        #expect(sut.state == .idle)
+    }
+
+    @Test
+    func internalActions_WhenNotRecording_AreIgnored() async {
+        #expect(sut.state == .idle)
+
+        await sut.send(action: ._transcriptionUpdated("ignored"))
+        await sut.send(action: ._audioLevelsUpdated([]))
+        await sut.send(action: ._durationTick)
+        await sut.send(action: ._isOnDeviceChanged(true))
+
+        #expect(sut.state == .idle)
+    }
+
     // MARK: - Duration tick
 
     @Test
