@@ -45,7 +45,7 @@ struct WebView: UIViewRepresentable {
             NotificationCenter.default.addObserver(
                 forName: NSNotification.Name("ImportantDomainNavigation"),
                 object: nil,
-                queue: .main
+                queue: .main,
             ) { [weak self] notification in
                 guard let self = self else { return }
 
@@ -63,7 +63,7 @@ struct WebView: UIViewRepresentable {
             NotificationCenter.default.addObserver(
                 forName: UIResponder.keyboardWillShowNotification,
                 object: nil,
-                queue: .main
+                queue: .main,
             ) { [weak self] _ in
                 self?.handleKeyboardWillShow()
             }
@@ -71,7 +71,7 @@ struct WebView: UIViewRepresentable {
             NotificationCenter.default.addObserver(
                 forName: UIResponder.keyboardWillHideNotification,
                 object: nil,
-                queue: .main
+                queue: .main,
             ) { [weak self] _ in
                 self?.handleKeyboardWillHide()
             }
@@ -79,7 +79,7 @@ struct WebView: UIViewRepresentable {
             NotificationCenter.default.addObserver(
                 forName: UIResponder.keyboardDidHideNotification,
                 object: nil,
-                queue: .main
+                queue: .main,
             ) { [weak self] _ in
                 self?.handleKeyboardDidHide()
             }
@@ -198,7 +198,7 @@ struct WebView: UIViewRepresentable {
 
             let isCrossDomainTransition = self.parent.isCrossDomainTransition(
                 from: currentUrlString,
-                to: urlString
+                to: urlString,
             )
 
             // If we're navigating between domains, show loader IMMEDIATELY before navigation starts
@@ -210,7 +210,7 @@ struct WebView: UIViewRepresentable {
                     NotificationCenter.default.post(
                         name: NSNotification.Name("ImportantDomainNavigation"),
                         object: nil,
-                        userInfo: ["url": urlString, "isCrossDomain": true]
+                        userInfo: ["url": urlString, "isCrossDomain": true],
                     )
                 }
             } else if urlString.contains(Config.ACCOUNT_BASE_URL) && currentUrlString.contains(Config.ACCOUNT_BASE_URL) {
@@ -633,13 +633,13 @@ struct WebView: UIViewRepresentable {
                             "url": urlString,
                             "isCrossDomain": true,
                             "isAccountToLumo": true,
-                        ]
+                        ],
                     )
                 } else {
                     NotificationCenter.default.post(
                         name: NSNotification.Name("ImportantDomainNavigation"),
                         object: nil,
-                        userInfo: ["url": urlString, "isCrossDomain": true]
+                        userInfo: ["url": urlString, "isCrossDomain": true],
                     )
                 }
 
@@ -694,7 +694,7 @@ struct WebView: UIViewRepresentable {
 
                 NotificationCenter.default.post(
                     name: NSNotification.Name("WebContentProcessDidTerminate"),
-                    object: nil
+                    object: nil,
                 )
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -815,11 +815,24 @@ struct WebView: UIViewRepresentable {
         paymentBridgeHandler.registerForAll(in: configuration)
         webComposerHandler.registerForAll(in: configuration)
 
-        if let voiceEntryScript = JSBridgeManager.shared.createUserScript(.voiceEntrySetup, injectionTime: .atDocumentEnd, forMainFrameOnly: false) {
+        let jsBridge = JSBridgeManager.shared
+        let appVersion = Bundle.main.bundleShortVersion
+
+        // Override x-pm-appversion header — must be injected at document start before any fetch calls
+        if let script = jsBridge.createUserScript(
+            .appversionOverride,
+            parameters: ["APP_VERSION": appVersion],
+            injectionTime: .atDocumentStart,
+            forMainFrameOnly: false,
+        ) {
+            configuration.userContentController.addUserScript(script)
+        }
+
+        if let voiceEntryScript = jsBridge.createUserScript(.voiceEntrySetup, injectionTime: .atDocumentEnd, forMainFrameOnly: false) {
             configuration.userContentController.addUserScript(voiceEntryScript)
         }
 
-        if let externalLinkScript = JSBridgeManager.shared.createUserScript(.externalLinkHandler, injectionTime: .atDocumentEnd, forMainFrameOnly: false) {
+        if let externalLinkScript = jsBridge.createUserScript(.externalLinkHandler, injectionTime: .atDocumentEnd, forMainFrameOnly: false) {
             configuration.userContentController.addUserScript(externalLinkScript)
         }
 
@@ -995,7 +1008,7 @@ struct WebView: UIViewRepresentable {
                     NotificationCenter.default.post(
                         name: NSNotification.Name("getPlansResponseReceived"),
                         object: nil,
-                        userInfo: ["response": jsonResult]
+                        userInfo: ["response": jsonResult],
                     )
                 }
             }
