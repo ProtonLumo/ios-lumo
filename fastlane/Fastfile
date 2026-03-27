@@ -3,22 +3,13 @@ default_platform(:ios)
 platform :ios do
   desc "Sync development and App Store certificates and provisioning profiles via Match"
   lane :certificates do
-    match(
-      type: "development",
-      app_identifier: ["me.proton.lumo", "me.proton.lumo.LumoWidgetExtension"]
-    )
-    match(
-      type: "appstore",
-      app_identifier: ["me.proton.lumo", "me.proton.lumo.LumoWidgetExtension"]
-    )
+    match(type: "development")
+    match(type: "appstore")
   end
 
   desc "Build and deploy to TestFlight\nUsage: bundle exec fastlane deploy"
   lane :deploy do
-    match(
-      type: "appstore",
-      app_identifier: ["me.proton.lumo", "me.proton.lumo.LumoWidgetExtension"]
-    )
+    match(type: "appstore")
 
     next_build_number = current_testflight_build_number + 1
 
