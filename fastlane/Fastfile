@@ -27,7 +27,6 @@ platform :ios do
       skip_waiting_for_build_processing: true
     )
 
-    marketing_version = File.read("../Project.swift").match(/let marketingVersion = "([^"]+)"/)[1]
     tag = "v#{marketing_version}_#{next_build_number}"
 
     add_git_tag(tag: tag)
@@ -50,11 +49,13 @@ platform :ios do
     )
   end
 
-  def current_testflight_build_number
-    app_version = File.read("../Project.swift").match(/let marketingVersion = "([^"]+)"/)[1]
+  def marketing_version
+    File.read("../Project.swift").match(/let marketingVersion = "([^"]+)"/)[1]
+  end
 
+  def current_testflight_build_number
     latest_testflight_build_number(
-      version: app_version,
+      version: marketing_version,
       initial_build_number: 0
     )
   end
