@@ -55,8 +55,7 @@ extension WKWebView {
     /// Generates a custom user agent string following Proton standard format
     /// Format: "Proton<product>/<product-version> (<os-name-and-version>; <platform-or-device>)"
     static func generateCustomUserAgent() -> String {
-        // Get app version
-        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+        let appVersion = Bundle.main.bundleShortVersion
 
         // Get OS name and version dynamically
         let osName = UIDevice.current.systemName

@@ -816,10 +816,9 @@ struct WebView: UIViewRepresentable {
         webComposerHandler.registerForAll(in: configuration)
 
         let jsBridge = JSBridgeManager.shared
+        let appVersion = Bundle.main.bundleShortVersion
 
         // Override x-pm-appversion header — must be injected at document start before any fetch calls
-        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
-
         if let script = jsBridge.createUserScript(
             .appversionOverride,
             parameters: ["APP_VERSION": appVersion],
