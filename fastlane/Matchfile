@@ -1,4 +1,5 @@
 git_url("https://gitlab.protontech.ch/apple/shared/release-secrets")
 git_branch("ios/lumo")
+app_identifier(["me.proton.lumo", "me.proton.lumo.LumoWidgetExtension"])
 readonly(true)
 type("appstore")
