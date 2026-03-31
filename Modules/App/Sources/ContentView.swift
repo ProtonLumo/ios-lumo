@@ -871,12 +871,8 @@ struct ContentView: View {
     // MARK: - Permission Handling
 
     private func checkMicrophonePermissionOnForeground() {
-        PermissionManager.shared.checkForPermissionChanges { [speechRecorder] granted in
-            if granted {
-                DispatchQueue.main.async {
-                    speechRecorder.dismissPermissionAlert()
-                }
-            }
+        if AVAudioApplication.recordPermission.granted == .granted {
+            speechRecorder.dismissPermissionAlert()
         }
     }
 
