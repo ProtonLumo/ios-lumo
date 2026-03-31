@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import LumoCore
 import WebKit
 
 /// Centralized coordinator for all WebView JavaScript operations

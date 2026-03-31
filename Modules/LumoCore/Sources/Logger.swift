@@ -2,10 +2,10 @@ import SwiftUI
 import os.log
 
 // MARK: - Logger Class
-class Logger {
+public class Logger {
     // MARK: - Static Properties
-    static let shared = Logger()
-    static let logsUpdatedNotification = Notification.Name("LoggerLogsUpdated")
+    public static let shared = Logger()
+    public static let logsUpdatedNotification = Notification.Name("LoggerLogsUpdated")
 
     // MARK: - Private Properties
     private var logFileURL: URL?
@@ -22,7 +22,7 @@ class Logger {
     }
 
     // MARK: - Public Methods
-    func log(_ message: String, category: String? = nil) {
+    public func log(_ message: String, category: String? = nil) {
         let timestamp = dateFormatter.string(from: Date())
         let categoryPrefix = category != nil ? "[\(category!)]" : ""
         let logMessage = "[\(timestamp)]\(categoryPrefix) \(message)"
@@ -38,7 +38,7 @@ class Logger {
         }
     }
 
-    func getLogContents() -> String? {
+    public func getLogContents() -> String? {
         guard let logFileURL = logFileURL,
             fileManager.fileExists(atPath: logFileURL.path)
         else {
@@ -53,7 +53,7 @@ class Logger {
         }
     }
 
-    func getLogContentsForApp(identifier: String? = nil) -> String? {
+    public func getLogContentsForApp(identifier: String? = nil) -> String? {
         guard let allLogs = getLogContents() else {
             return nil
         }
@@ -68,7 +68,7 @@ class Logger {
     }
 
     @discardableResult
-    func clearLogs() -> Bool {
+    public func clearLogs() -> Bool {
         guard let logFileURL = logFileURL else { return false }
 
         do {
@@ -83,7 +83,7 @@ class Logger {
         }
     }
 
-    func getLogFilePath() -> String? {
+    public func getLogFilePath() -> String? {
         logFileURL?.path
     }
 

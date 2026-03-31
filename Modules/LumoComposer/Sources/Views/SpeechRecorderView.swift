@@ -1,8 +1,9 @@
+import LumoCore
 import LumoDesignSystem
 import LumoUI
 import SwiftUI
 
-struct SpeechRecorderView: View {
+public struct SpeechRecorderView: View {
     @ObservedObject var speechRecognizer: SpeechRecognizer
     @Binding var recordingDuration: TimeInterval
     @Binding var isSubmitting: Bool
@@ -10,7 +11,21 @@ struct SpeechRecorderView: View {
     let formatDuration: (TimeInterval) -> String
     private let brandPurple = DS.Color.primary
 
-    var body: some View {
+    public init(
+        speechRecognizer: SpeechRecognizer,
+        recordingDuration: Binding<TimeInterval>,
+        isSubmitting: Binding<Bool>,
+        stopRecording: @escaping (Bool) -> Void,
+        formatDuration: @escaping (TimeInterval) -> String
+    ) {
+        self._speechRecognizer = ObservedObject(wrappedValue: speechRecognizer)
+        self._recordingDuration = recordingDuration
+        self._isSubmitting = isSubmitting
+        self.stopRecording = stopRecording
+        self.formatDuration = formatDuration
+    }
+
+    public var body: some View {
         VStack(spacing: 0) {
             Spacer()
             ZStack {

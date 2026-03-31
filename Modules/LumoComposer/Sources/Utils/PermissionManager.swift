@@ -1,22 +1,23 @@
+import LumoCore
 import AVFoundation
 import Foundation
 
 /// Manages permission states and tracks recent permission requests
-class PermissionManager {
+public class PermissionManager {
     /// Shared singleton instance
-    static let shared = PermissionManager()
+    public static let shared = PermissionManager()
 
     /// Time when microphone permission was last requested
     private var lastMicrophonePermissionRequestTime: Date?
 
     /// Track that microphone permission was just requested
-    func trackMicrophonePermissionRequest() {
+    public func trackMicrophonePermissionRequest() {
         lastMicrophonePermissionRequestTime = Date()
         Logger.shared.log("Tracked microphone permission request at \(Date())")
     }
 
     /// Request microphone permission with tracking
-    func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
+    public func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
         // Mark that we're requesting permission
         trackMicrophonePermissionRequest()
 
@@ -36,7 +37,7 @@ class PermissionManager {
 
     /// Check if microphone permission has been granted since the app was last backgrounded
     /// This is useful for detecting when user has changed permissions in Settings
-    func checkForPermissionChanges(completion: @escaping (Bool) -> Void) {
+    public func checkForPermissionChanges(completion: @escaping (Bool) -> Void) {
         let currentStatus = AVAudioSession.sharedInstance().recordPermission
 
         switch currentStatus {

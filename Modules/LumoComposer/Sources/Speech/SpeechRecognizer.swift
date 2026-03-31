@@ -1,9 +1,10 @@
 import AVFoundation
 import Foundation
+import LumoCore
 import Speech
 import SwiftUI
 
-class SpeechRecognizer: ObservableObject {
+public class SpeechRecognizer: ObservableObject {
     private var speechRecognizer: SFSpeechRecognizer?
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
@@ -11,13 +12,13 @@ class SpeechRecognizer: ObservableObject {
     private var taskHasBeenCancelled = false
     private var audioLevelTimer: Timer?
 
-    @Published var isRecording = false
-    @Published var transcribedText = ""
-    @Published var audioLevels: [CGFloat] = Array(repeating: 0.1, count: 30)
-    @Published var supportsOnDeviceRecognition = false
-    @Published var showingPermissionAlert = false
+    @Published public var isRecording = false
+    @Published public var transcribedText = ""
+    @Published public var audioLevels: [CGFloat] = Array(repeating: 0.1, count: 30)
+    @Published public var supportsOnDeviceRecognition = false
+    @Published public var showingPermissionAlert = false
 
-    init() {
+    public init() {
         let locale = Locale.current
 
         do {
@@ -68,7 +69,7 @@ class SpeechRecognizer: ObservableObject {
         }
     }
 
-    func startRecording() {
+    public func startRecording() {
         taskHasBeenCancelled = false
 
         recognitionTask?.cancel()
@@ -321,7 +322,7 @@ class SpeechRecognizer: ObservableObject {
         }
     }
 
-    func stopRecording() {
+    public func stopRecording() {
         taskHasBeenCancelled = true
 
         audioEngine.stop()

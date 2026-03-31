@@ -1,3 +1,4 @@
+import LumoCore
 import SwiftUI
 
 @main

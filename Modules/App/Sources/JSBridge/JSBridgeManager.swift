@@ -1,4 +1,5 @@
 import Foundation
+import LumoCore
 import WebKit
 
 enum JSBridgeScript: String, CaseIterable {

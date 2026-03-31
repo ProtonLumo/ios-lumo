@@ -1,11 +1,11 @@
 import ProtonUIFoundations
 import SwiftUI
 
-struct PermissionAlertView: View {
+public struct PermissionAlertView: View {
     let onSettings: () -> Void
     let onDismiss: () -> Void
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 20) {
             // Icon
             Image(systemName: "mic.slash")
@@ -57,12 +57,18 @@ struct PermissionAlertView: View {
     }
 }
 
-struct PermissionAlertOverlay: View {
+public struct PermissionAlertOverlay: View {
     @Binding var isPresented: Bool
     let permissionType: String
     let onSettings: () -> Void
 
-    var body: some View {
+    public init(isPresented: Binding<Bool>, permissionType: String, onSettings: @escaping () -> Void) {
+        self._isPresented = isPresented
+        self.permissionType = permissionType
+        self.onSettings = onSettings
+    }
+
+    public var body: some View {
         if isPresented {
             ZStack {
                 // Background overlay

@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "app.speech.ondevice" : {
+
+    },
     "Ask anything..." : {
       "comment" : "Placeholder text shown in the composer input field when empty for non-image mode",
       "localizations" : {
@@ -1309,6 +1312,18 @@
           }
         }
       }
+    },
+    "permission.cancel.button" : {
+
+    },
+    "permission.microphone.denied.message" : {
+
+    },
+    "permission.microphone.denied.title" : {
+
+    },
+    "permission.settings.button" : {
+
     },
     "Photos" : {
       "comment" : "Attachment menu option to select a photo from the photo library",

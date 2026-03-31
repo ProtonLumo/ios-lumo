@@ -5469,6 +5469,7 @@
       }
     },
     "app.speech.ondevice" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {

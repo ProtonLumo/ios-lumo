@@ -1,4 +1,5 @@
 import Foundation
+import LumoCore
 import StoreKit
 
 final class PlansComposer: @unchecked Sendable {

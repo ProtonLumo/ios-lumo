@@ -1,5 +1,6 @@
 import Darwin
 import LumoComposer
+import LumoCore
 import SwiftUI
 @preconcurrency import WebKit
 import os.log

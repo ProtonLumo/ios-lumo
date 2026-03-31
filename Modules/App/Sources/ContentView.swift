@@ -1,4 +1,5 @@
 import LumoComposer
+import LumoCore
 import LumoDesignSystem
 import ProtonUIFoundations
 import Speech

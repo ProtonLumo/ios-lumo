@@ -1,3 +1,4 @@
+import LumoCore
 import LumoDesignSystem
 import LumoUI
 import ProtonUIFoundations
