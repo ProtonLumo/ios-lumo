@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "app.speech.ondevice" : {
-
-    },
     "Ask anything..." : {
       "comment" : "Placeholder text shown in the composer input field when empty for non-image mode",
       "localizations" : {
@@ -465,6 +462,9 @@
           }
         }
       }
+    },
+    "Cancel" : {
+      "comment" : "Cancel button in permission alert"
     },
     "Connection lost. Please try again." : {
       "comment" : "Error shown when the streaming connection to the AI service is interrupted",
@@ -1236,6 +1236,9 @@
         }
       }
     },
+    "Microphone Access Required" : {
+      "comment" : "Title of the alert shown when microphone permission is denied"
+    },
     "Models" : {
       "comment" : "Title of the model selection bottom sheet",
       "localizations" : {
@@ -1313,17 +1316,8 @@
         }
       }
     },
-    "permission.cancel.button" : {
-
-    },
-    "permission.microphone.denied.message" : {
-
-    },
-    "permission.microphone.denied.title" : {
-
-    },
-    "permission.settings.button" : {
-
+    "Open Settings" : {
+      "comment" : "Button to open device Settings app from permission alert"
     },
     "Photos" : {
       "comment" : "Attachment menu option to select a photo from the photo library",
@@ -1864,6 +1858,9 @@
         }
       }
     },
+    "To use voice input, please enable microphone access in your device settings." : {
+      "comment" : "Message of the alert shown when microphone permission is denied"
+    },
     "Tools" : {
       "comment" : "Title of the tools bottom sheet",
       "localizations" : {
@@ -1940,6 +1937,9 @@
           }
         }
       }
+    },
+    "Transcription running on device" : {
+      "comment" : "Badge shown in speech recorder when on-device recognition is active"
     },
     "Web search" : {
       "comment" : "Option in tools sheet to toggle web search",

@@ -40,7 +40,7 @@ public struct SpeechRecorderView: View {
                                 Image(systemName: "checkmark.shield.fill")
                                     .font(.system(size: 12))
                                     .foregroundColor(.white.opacity(0.9))
-                                Text(String(localized: "app.speech.ondevice"))
+                                Text(L10n.Speech.onDevice)
                                     .font(.system(size: 12, weight: .medium))
                                     .foregroundColor(.white.opacity(0.9))
                             }

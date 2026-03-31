@@ -12,13 +12,13 @@ public struct PermissionAlertView: View {
                 .font(.system(size: 48))
                 .foregroundColor(Theme.color.notificationError)
 
-            Text(String(localized: "permission.microphone.denied.title"))
+            Text(L10n.Permission.microphoneTitle)
                 .font(.title2)
                 .fontWeight(.semibold)
                 .foregroundColor(Theme.color.textNorm)
                 .multilineTextAlignment(.center)
 
-            Text(String(localized: "permission.microphone.denied.message"))
+            Text(L10n.Permission.microphoneMessage)
                 .font(.body)
                 .foregroundColor(Theme.color.textWeak)
                 .multilineTextAlignment(.center)
@@ -28,7 +28,7 @@ public struct PermissionAlertView: View {
             VStack(spacing: 12) {
                 // Go to Settings button
                 Button(action: onSettings) {
-                    Text(String(localized: "permission.settings.button"))
+                    Text(L10n.Permission.openSettings)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -39,7 +39,7 @@ public struct PermissionAlertView: View {
 
                 // Cancel button
                 Button(action: onDismiss) {
-                    Text(String(localized: "permission.cancel.button"))
+                    Text(L10n.Permission.cancel)
                         .font(.system(size: 16, weight: .regular))
                         .foregroundColor(Theme.color.textWeak)
                         .frame(maxWidth: .infinity)
