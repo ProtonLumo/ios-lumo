@@ -6,21 +6,15 @@ public struct SpeechRecorderView: View {
     let state: SpeechStateStore.State
     let onSubmit: () -> Void
     let onCancel: () -> Void
-    let onDismissPermission: () -> Void
-    let onOpenSettings: () -> Void
 
     public init(
         state: SpeechStateStore.State,
         onSubmit: @escaping () -> Void,
-        onCancel: @escaping () -> Void,
-        onDismissPermission: @escaping () -> Void,
-        onOpenSettings: @escaping () -> Void
+        onCancel: @escaping () -> Void
     ) {
         self.state = state
         self.onSubmit = onSubmit
         self.onCancel = onCancel
-        self.onDismissPermission = onDismissPermission
-        self.onOpenSettings = onOpenSettings
     }
 
     public var body: some View {

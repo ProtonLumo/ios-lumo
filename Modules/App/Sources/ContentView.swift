@@ -1,8 +1,8 @@
+import AVFAudio
 import LumoComposer
 import LumoCore
 import LumoDesignSystem
 import ProtonUIFoundations
-import Speech
 import SwiftUI
 import WebKit
 import os.log
@@ -164,9 +164,7 @@ struct ContentView: View {
                 SpeechRecorderView(
                     state: speechRecorder.state,
                     onSubmit: { speechRecorder.submitRecording() },
-                    onCancel: { speechRecorder.cancelRecording() },
-                    onDismissPermission: { speechRecorder.dismissPermissionAlert() },
-                    onOpenSettings: { speechRecorder.openSettings() }
+                    onCancel: { speechRecorder.cancelRecording() }
                 )
                 .transition(.move(edge: .bottom))
             }

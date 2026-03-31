@@ -1,6 +1,5 @@
 import Combine
 import LumoCore
-import SwiftUI
 
 /// Thin wrapper around `SpeechStateStore` for the legacy WebView ContentView.
 /// Will be removed when ContentView migrates to native composer.
