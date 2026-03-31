@@ -154,8 +154,8 @@ extension SpeechStateStore.State {
 
     var isActive: Bool {
         switch self {
-        case .idle: false
-        case .permissionDenied, .recording, .submitting: true
+        case .idle, .permissionDenied: false
+        case .recording, .submitting: true
         }
     }
 

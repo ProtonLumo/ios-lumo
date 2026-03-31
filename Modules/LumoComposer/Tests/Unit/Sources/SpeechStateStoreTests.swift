@@ -263,7 +263,7 @@ final class SpeechStateStoreTests {
     @Test
     func stateHelpers_IsActive() {
         #expect(SpeechStateStore.State.idle.isActive == false)
-        #expect(SpeechStateStore.State.permissionDenied.isActive == true)
+        #expect(SpeechStateStore.State.permissionDenied.isActive == false)
         #expect(SpeechStateStore.State.recording(.initial).isActive == true)
         #expect(SpeechStateStore.State.submitting(.initial).isActive == true)
     }
