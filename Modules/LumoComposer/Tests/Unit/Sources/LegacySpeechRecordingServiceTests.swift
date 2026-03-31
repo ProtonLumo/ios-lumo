@@ -264,7 +264,7 @@ final class LegacySpeechRecordingServiceTests {
     func startRecording_unknownErrorWithResult_errorIsIgnored() async throws {
         let service = makeSUT()
 
-        let store = SpeechStateStore(service: service)
+        let store = SpeechStateStore(service: service, urlOpener: URLOpenerSpy())
 
         await store.send(action: .startRecording)
         try await Task.sleep(for: .milliseconds(50))

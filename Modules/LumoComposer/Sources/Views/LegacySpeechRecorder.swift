@@ -1,4 +1,5 @@
 import Combine
+import LumoCore
 import SwiftUI
 
 /// Thin wrapper around `SpeechStateStore` for the legacy WebView ContentView.
@@ -16,8 +17,8 @@ public final class LegacySpeechRecorder: ObservableObject {
         store.state
     }
 
-    public init() {
-        self.store = SpeechStateStore(service: SpeechRecordingServiceFactory.make())
+    public init(urlOpener: any URLOpenerProtocol) {
+        self.store = SpeechStateStore(service: SpeechRecordingServiceFactory.make(), urlOpener: urlOpener)
 
         cancellable = store.$state.sink { [weak self] state in
             self?.isActive = state.isActive
@@ -39,6 +40,10 @@ public final class LegacySpeechRecorder: ObservableObject {
 
     public func dismissPermissionAlert() {
         store.send(action: .dismissPermissionAlert)
+    }
+
+    public func openSettings() {
+        store.send(action: .openSettings)
     }
 
     public func setTranscriptionHandler(_ handler: @escaping (String) async -> Void) {

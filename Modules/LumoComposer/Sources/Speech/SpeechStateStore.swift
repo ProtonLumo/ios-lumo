@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import LumoCore
 
 @MainActor
 public final class SpeechStateStore: StateStore {
@@ -15,6 +16,7 @@ public final class SpeechStateStore: StateStore {
         case submitRecording
         case cancelRecording
         case dismissPermissionAlert
+        case openSettings
         // Internal — dispatched from stream listener / timer:
         case _transcriptionUpdated(String)
         case _audioLevelsUpdated([CGFloat])
@@ -30,12 +32,14 @@ public final class SpeechStateStore: StateStore {
     /// WebView: `insertPrompt()` + sleep. Native composer: set `currentText`, return immediately.
     var onTranscriptionComplete: ((String) async -> Void)?
 
-    private let service: any SpeechRecordingServiceProtocol
+    private let service: SpeechRecordingServiceProtocol
+    private let urlOpener: URLOpenerProtocol
     private var streamTask: Task<Void, Never>?
     private var durationTask: Task<Void, Never>?
 
-    init(service: any SpeechRecordingServiceProtocol) {
+    init(service: SpeechRecordingServiceProtocol, urlOpener: URLOpenerProtocol) {
         self.service = service
+        self.urlOpener = urlOpener
     }
 
     func send(action: Action) async {
@@ -99,6 +103,9 @@ public final class SpeechStateStore: StateStore {
 
         case .dismissPermissionAlert:
             state = .idle
+
+        case .openSettings:
+            urlOpener(.settings)
 
         case ._transcriptionUpdated(let text):
             guard case .recording(var viewState) = state else { return }

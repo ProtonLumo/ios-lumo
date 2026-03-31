@@ -5,11 +5,12 @@ import SwiftUI
 struct LumoApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.openURL) private var openURL
     @StateObject private var themeProvider = ThemeProvider()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(urlOpener: openURL)
                 .environmentObject(themeProvider)
                 .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LumoPromptReceived"))) { notification in
                     if let prompt = notification.userInfo?["prompt"] as? String {

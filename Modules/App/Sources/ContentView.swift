@@ -48,7 +48,7 @@ struct ContentView: View {
     @EnvironmentObject private var themeProvider: ThemeProvider
 
     // MARK: - State Properties
-    @StateObject private var speechRecorder = LegacySpeechRecorder()
+    @StateObject private var speechRecorder: LegacySpeechRecorder
     @StateObject private var jsCoordinator = WebViewCoordinator()
     @StateObject private var webComposerBridge = WebComposerBridge()
     @State private var isLoading = true
@@ -76,7 +76,9 @@ struct ContentView: View {
 
     private let safetyTimeoutDuration: TimeInterval = 3.0
 
-    init() {
+    init(urlOpener: URLOpenerProtocol) {
+        _speechRecorder = StateObject(wrappedValue: LegacySpeechRecorder(urlOpener: urlOpener))
+
         paymentSheetDelegate.onSubscriptionRequest = { [weak paymentSheetDelegate] payload in
             paymentSheetDelegate?.contentView?.performPostSubscription(payload: payload)
         }
@@ -164,7 +166,7 @@ struct ContentView: View {
                     onSubmit: { speechRecorder.submitRecording() },
                     onCancel: { speechRecorder.cancelRecording() },
                     onDismissPermission: { speechRecorder.dismissPermissionAlert() },
-                    onOpenSettings: { openAppSettings() }
+                    onOpenSettings: { speechRecorder.openSettings() }
                 )
                 .transition(.move(edge: .bottom))
             }
@@ -173,7 +175,7 @@ struct ContentView: View {
                 PermissionAlertOverlay(
                     isPresented: .constant(true),
                     permissionType: "microphone",
-                    onSettings: { openAppSettings() }
+                    onSettings: { speechRecorder.openSettings() }
                 )
             }
 
@@ -867,16 +869,6 @@ struct ContentView: View {
 
     // MARK: - Permission Handling
 
-    private func openAppSettings() {
-        Logger.shared.log("Opening app settings for permission change")
-
-        if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
-            if UIApplication.shared.canOpenURL(settingsUrl) {
-                UIApplication.shared.open(settingsUrl, completionHandler: nil)
-            }
-        }
-    }
-
     private func checkMicrophonePermissionOnForeground() {
         PermissionManager.shared.checkForPermissionChanges { [speechRecorder] granted in
             if granted {
@@ -912,7 +904,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(urlOpener: OpenURLAction { _ in .discarded })
             .environmentObject(ThemeProvider())
     }
 }

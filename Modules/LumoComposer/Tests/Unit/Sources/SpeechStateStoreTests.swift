@@ -7,7 +7,8 @@ import Testing
 @MainActor
 final class SpeechStateStoreTests {
     let spy = SpeechRecordingServiceSpy()
-    lazy var sut = SpeechStateStore(service: spy)
+    let urlOpener = URLOpenerSpy()
+    lazy var sut = SpeechStateStore(service: spy, urlOpener: urlOpener)
 
     // MARK: - startRecording
 
@@ -151,6 +152,15 @@ final class SpeechStateStoreTests {
 
         #expect(sut.state == .idle)
         #expect(spy.cancelCallCount == 1)
+    }
+
+    // MARK: - openSettings
+
+    @Test
+    func openSettings_OpensSettingsURL() async {
+        await sut.send(action: .openSettings)
+
+        #expect(urlOpener.callAsFunctionInvokedWithURL == [.settings])
     }
 
     // MARK: - dismissPermissionAlert
