@@ -48,16 +48,13 @@ struct ContentView: View {
     @EnvironmentObject private var themeProvider: ThemeProvider
 
     // MARK: - State Properties
-    @StateObject private var speechRecognizer = SpeechRecognizer()
+    @StateObject private var speechRecorder = LegacySpeechRecorder()
     @StateObject private var jsCoordinator = WebViewCoordinator()
     @StateObject private var webComposerBridge = WebComposerBridge()
     @State private var isLoading = true
     @State private var webViewIsActive = true
     @State private var webViewReady = false
 
-    @State private var isInsertingText = false
-    @State private var recordingDuration: TimeInterval = 0
-    @State private var recordingTimer: Timer?
     @State private var webViewAction: WebViewAction? = nil
     @State private var paymentResponse: [String: Any]? = nil
     @State private var webViewCanGoBack: Bool = false
@@ -66,7 +63,6 @@ struct ContentView: View {
     @State private var networkError: Bool = false
     @State private var processTerminated: Bool = false
     @State private var paymentHandler: PaymentHandler? = nil
-    @State private var isSubmittingSpeech = false
     @State private var webProcessTerminated = false
     @State private var processTerminationCount = 0
     @State private var lastTerminationTime: Date? = nil
@@ -162,26 +158,24 @@ struct ContentView: View {
                 )
             }
 
-            if speechRecognizer.isRecording || isSubmittingSpeech {
+            if speechRecorder.isActive {
                 SpeechRecorderView(
-                    speechRecognizer: speechRecognizer,
-                    recordingDuration: $recordingDuration,
-                    isSubmitting: $isSubmittingSpeech,
-                    stopRecording: stopRecording,
-                    formatDuration: formatDuration
+                    state: speechRecorder.state,
+                    onSubmit: { speechRecorder.submitRecording() },
+                    onCancel: { speechRecorder.cancelRecording() },
+                    onDismissPermission: { speechRecorder.dismissPermissionAlert() },
+                    onOpenSettings: { openAppSettings() }
                 )
-                .transition(.opacity)
-                .animation(.easeInOut(duration: 0.2), value: isSubmittingSpeech)
+                .transition(.move(edge: .bottom))
             }
 
-            // Permission alert overlay
-            PermissionAlertOverlay(
-                isPresented: $speechRecognizer.showingPermissionAlert,
-                permissionType: "microphone",
-                onSettings: {
-                    openAppSettings()
-                }
-            )
+            if speechRecorder.isPermissionDenied {
+                PermissionAlertOverlay(
+                    isPresented: .constant(true),
+                    permissionType: "microphone",
+                    onSettings: { openAppSettings() }
+                )
+            }
 
             // Lockdown Mode warning overlay
             if showLockdownModeWarning {
@@ -207,15 +201,14 @@ struct ContentView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: Notification.Name("StartVoiceEntryNotification"))) { _ in
-            if !speechRecognizer.isRecording {
-                speechRecognizer.startRecording()
-                startRecordingTimer()
+            if !speechRecorder.isActive {
+                speechRecorder.startRecording()
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            // Check if microphone permissions have changed since we last checked
-            // This helps handle cases where user went to Settings and changed permissions
-            checkMicrophonePermissionOnForeground()
+            if speechRecorder.isPermissionDenied {
+                checkMicrophonePermissionOnForeground()
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("ThemeChangedFromWeb"))) { _ in
             updateThemeState()
@@ -245,6 +238,7 @@ struct ContentView: View {
             }
 
             setupNotificationObservers()
+            setupSpeechRecorder()
 
             // Check for Lockdown Mode on app load
             checkLockdownMode()
@@ -416,76 +410,19 @@ struct ContentView: View {
     }
 
     // MARK: - Speech Recognition
-    private func formatDuration(_ duration: TimeInterval) -> String {
-        let minutes = Int(duration) / 60
-        let seconds = Int(duration) % 60
-        return String(format: "%02d:%02d", minutes, seconds)
-    }
 
-    private func startRecordingTimer() {
-        recordingDuration = 0
-        recordingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            recordingDuration += 1
-        }
-    }
-
-    private func stopRecording(submitText: Bool) {
-        recordingTimer?.invalidate()
-        recordingTimer = nil
-
-        if submitText && !speechRecognizer.transcribedText.isEmpty {
-            if !isSubmittingSpeech {
-                DispatchQueue.main.async {
-                    withAnimation(.easeIn(duration: 0.1)) {
-                        self.isSubmittingSpeech = true
-                    }
-                }
+    private func setupSpeechRecorder() {
+        speechRecorder.setTranscriptionHandler { [jsCoordinator] transcription in
+            let result = await jsCoordinator.insertPrompt(transcription, editorType: .tiptap)
+            switch result {
+            case .success:
+                Logger.shared.log("✅ Voice transcription inserted successfully")
+            case .failure(let error):
+                Logger.shared.log("❌ Failed to insert voice transcription: \(error.errorDescription ?? "")")
             }
-
-            let transcribedText = speechRecognizer.transcribedText
-
-            DispatchQueue.global(qos: .userInitiated)
-                .async {
-                    self.speechRecognizer.stopRecording()
-
-                    DispatchQueue.main.async {
-                        self.speechRecognizer.transcribedText = ""
-                        self.isInsertingText = true
-
-                        Task {
-                            let result = await self.jsCoordinator.insertPrompt(transcribedText, editorType: .tiptap)
-
-                            switch result {
-                            case .success:
-                                Logger.shared.log("✅ Voice transcription inserted successfully")
-                                await self.observeTextInsertion()
-                            case .failure(let error):
-                                Logger.shared.log("❌ Failed to insert voice transcription: \(error.errorDescription ?? "")")
-                                self.isInsertingText = false
-                                self.isSubmittingSpeech = false
-                            }
-                        }
-                    }
-                }
-        } else {
-            speechRecognizer.stopRecording()
-            isSubmittingSpeech = false
+            // Wait for DOM to update before dismissing overlay
+            try? await Task.sleep(for: .milliseconds(500))
         }
-    }
-
-    private func observeTextInsertion() async {
-        Logger.shared.log("⏳ Waiting for text insertion to complete...")
-
-        // Wait for DOM to update
-        try? await Task.sleep(nanoseconds: 500_000_000)  // 0.5 seconds
-
-        Logger.shared.log("✅ Text insertion completed")
-        finishSpeechInsertion()
-    }
-
-    private func finishSpeechInsertion() {
-        isSubmittingSpeech = false
-        isInsertingText = false
     }
 
     // MARK: - Payment Handling
@@ -941,23 +878,11 @@ struct ContentView: View {
     }
 
     private func checkMicrophonePermissionOnForeground() {
-        guard speechRecognizer.showingPermissionAlert else { return }
-
-        Logger.shared.log("App came to foreground - checking if microphone permission changed")
-
-        // Check if permission status has changed
-        PermissionManager.shared.checkForPermissionChanges { [self] granted in
+        PermissionManager.shared.checkForPermissionChanges { [speechRecorder] granted in
             if granted {
-                Logger.shared.log("Microphone permission was granted while app was in background")
                 DispatchQueue.main.async {
-                    // Hide the permission alert since permission is now granted
-                    self.speechRecognizer.showingPermissionAlert = false
-
-                    // Don't automatically start recording - let user tap the voice button again
-                    // This provides better UX control
+                    speechRecorder.dismissPermissionAlert()
                 }
-            } else {
-                Logger.shared.log("Microphone permission still denied after app foreground")
             }
         }
     }

@@ -1,28 +1,37 @@
-import LumoCore
 import LumoDesignSystem
 import LumoUI
 import SwiftUI
 
 public struct SpeechRecorderView: View {
-    @ObservedObject var speechRecognizer: SpeechRecognizer
-    @Binding var recordingDuration: TimeInterval
-    @Binding var isSubmitting: Bool
-    let stopRecording: (Bool) -> Void
-    let formatDuration: (TimeInterval) -> String
+    let state: SpeechStateStore.State
+    let onSubmit: () -> Void
+    let onCancel: () -> Void
+    let onDismissPermission: () -> Void
+    let onOpenSettings: () -> Void
+
     private let brandPurple = DS.Color.primary
 
+    private var isSubmitting: Bool {
+        if case .submitting = state { return true }
+        return false
+    }
+
+    private var viewState: RecordingViewState {
+        state.recordingViewState ?? .initial
+    }
+
     public init(
-        speechRecognizer: SpeechRecognizer,
-        recordingDuration: Binding<TimeInterval>,
-        isSubmitting: Binding<Bool>,
-        stopRecording: @escaping (Bool) -> Void,
-        formatDuration: @escaping (TimeInterval) -> String
+        state: SpeechStateStore.State,
+        onSubmit: @escaping () -> Void,
+        onCancel: @escaping () -> Void,
+        onDismissPermission: @escaping () -> Void,
+        onOpenSettings: @escaping () -> Void
     ) {
-        self._speechRecognizer = ObservedObject(wrappedValue: speechRecognizer)
-        self._recordingDuration = recordingDuration
-        self._isSubmitting = isSubmitting
-        self.stopRecording = stopRecording
-        self.formatDuration = formatDuration
+        self.state = state
+        self.onSubmit = onSubmit
+        self.onCancel = onCancel
+        self.onDismissPermission = onDismissPermission
+        self.onOpenSettings = onOpenSettings
     }
 
     public var body: some View {
@@ -35,7 +44,7 @@ public struct SpeechRecorderView: View {
                     // Privacy indicator
                     HStack(alignment: .center) {
                         Spacer()
-                        if speechRecognizer.supportsOnDeviceRecognition {
+                        if viewState.isOnDevice {
                             HStack(spacing: 5) {
                                 Image(systemName: "checkmark.shield.fill")
                                     .font(.system(size: 12))
@@ -55,9 +64,7 @@ public struct SpeechRecorderView: View {
                     Spacer().frame(height: 4)
 
                     HStack(spacing: 15) {
-                        Button(action: {
-                            stopRecording(false)
-                        }) {
+                        Button(action: onCancel) {
                             Circle()
                                 .fill(brandPurple.opacity(0.7))
                                 .square(size: 50)
@@ -72,37 +79,20 @@ public struct SpeechRecorderView: View {
 
                         // Waveform visualization
                         HStack(spacing: 2) {
-                            ForEach(0..<30, id: \.self) { index in
+                            ForEach(0..<AudioLevelNormalizer.barCount, id: \.self) { index in
                                 RoundedRectangle(cornerRadius: 1)
                                     .fill(Color.white)
-                                    .frame(width: 2, height: speechRecognizer.audioLevels[index] * 30)
+                                    .frame(width: 2, height: viewState.audioLevels[index] * 30)
                             }
                         }
                         .padding(.top, 10)
 
-                        Text(formatDuration(recordingDuration))
+                        Text(formatDuration(viewState.duration))
                             .foregroundColor(.white)
                             .font(.system(size: 14, weight: .semibold))
                             .frame(width: 45, alignment: .center)
 
-                        Button(action: {
-                            let buttonPressTime = Date()
-                            Logger.shared.log("Submit button pressed")
-
-                            DispatchQueue.main.async {
-                                withAnimation(Animation.easeIn(duration: 0.1)) {
-                                    isSubmitting = true
-                                }
-
-                                Logger.shared.log("Submit state set to true: \(Date().timeIntervalSince(buttonPressTime) * 1000)ms after press")
-
-                                DispatchQueue.main.async {
-                                    stopRecording(true)
-
-                                    Logger.shared.log("stopRecording called: \(Date().timeIntervalSince(buttonPressTime) * 1000)ms after press")
-                                }
-                            }
-                        }) {
+                        Button(action: onSubmit) {
                             Circle()
                                 .fill(Color.white)
                                 .frame(width: 50, height: 50)
@@ -114,18 +104,16 @@ public struct SpeechRecorderView: View {
                                                     .fill(brandPurple.opacity(0.2))
                                                     .frame(width: 40, height: 40)
                                                     .scaleEffect(isSubmitting ? 1.2 : 1.0)
-                                                    .animation(Animation.easeInOut(duration: 0.7).repeatForever(autoreverses: true), value: isSubmitting)
+                                                    .animation(
+                                                        Animation.easeInOut(duration: 0.7)
+                                                            .repeatForever(autoreverses: true),
+                                                        value: isSubmitting
+                                                    )
 
                                                 ProgressView()
                                                     .progressViewStyle(CircularProgressViewStyle())
                                                     .tint(brandPurple)
                                                     .scaleEffect(1.3)
-                                            }
-                                            .onAppear {
-                                                withAnimation(.easeInOut(duration: 0.7).repeatForever(autoreverses: true)) {
-                                                    // This empty block triggers the animation
-                                                }
-                                                Logger.shared.log("Spinner onAppear triggered")
                                             }
                                         } else {
                                             Image(systemName: "arrow.up")
@@ -134,7 +122,6 @@ public struct SpeechRecorderView: View {
                                         }
                                     }
                                 )
-                                // Add transition for spinner to emphasize its appearance
                                 .animation(.easeIn(duration: 0.15), value: isSubmitting)
                         }
                         .padding(.trailing, 5)
@@ -150,8 +137,15 @@ public struct SpeechRecorderView: View {
             }
         }
         .transition(.move(edge: .bottom))
-        .animation(.easeInOut(duration: 0.3), value: speechRecognizer.isRecording)
         .zIndex(90)
+    }
+
+    // MARK: - Private
+
+    private func formatDuration(_ duration: TimeInterval) -> String {
+        let minutes = Int(duration) / 60
+        let seconds = Int(duration) % 60
+        return String(format: "%02d:%02d", minutes, seconds)
     }
 }
 

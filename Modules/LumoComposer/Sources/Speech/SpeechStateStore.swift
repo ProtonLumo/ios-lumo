@@ -2,8 +2,8 @@ import Combine
 import Foundation
 
 @MainActor
-final class SpeechStateStore: StateStore {
-    enum State: Equatable {
+public final class SpeechStateStore: StateStore {
+    public enum State: Equatable {
         case idle
         case permissionDenied
         case recording(RecordingViewState)
