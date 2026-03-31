@@ -173,9 +173,8 @@ struct ContentView: View {
 
             if speechRecorder.isPermissionDenied {
                 PermissionAlertOverlay(
-                    isPresented: .constant(true),
-                    permissionType: "microphone",
-                    onSettings: { speechRecorder.openSettings() }
+                    onSettings: { speechRecorder.openSettings() },
+                    onDismiss: { speechRecorder.dismissPermissionAlert() }
                 )
             }
 
@@ -186,6 +185,8 @@ struct ContentView: View {
                 }
             }
         }
+        .animation(.easeInOut(duration: 0.3), value: speechRecorder.isActive)
+        .animation(.easeInOut(duration: 0.3), value: speechRecorder.isPermissionDenied)
         .onChange(of: currentWebViewURL) { newURL in
             handleURLChange(newURL)
         }
