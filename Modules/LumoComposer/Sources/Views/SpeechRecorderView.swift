@@ -9,17 +9,6 @@ public struct SpeechRecorderView: View {
     let onDismissPermission: () -> Void
     let onOpenSettings: () -> Void
 
-    private let brandPurple = DS.Color.primary
-
-    private var isSubmitting: Bool {
-        if case .submitting = state { return true }
-        return false
-    }
-
-    private var viewState: RecordingViewState {
-        state.recordingViewState ?? .initial
-    }
-
     public init(
         state: SpeechStateStore.State,
         onSubmit: @escaping () -> Void,
@@ -141,6 +130,17 @@ public struct SpeechRecorderView: View {
     }
 
     // MARK: - Private
+
+    private let brandPurple = DS.Color.primary
+
+    private var isSubmitting: Bool {
+        if case .submitting = state { return true }
+        return false
+    }
+
+    private var viewState: RecordingViewState {
+        state.recordingViewState ?? .initial
+    }
 
     private func formatDuration(_ duration: TimeInterval) -> String {
         let minutes = Int(duration) / 60

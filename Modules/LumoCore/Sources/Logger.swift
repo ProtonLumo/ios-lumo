@@ -1,19 +1,17 @@
-import SwiftUI
+import Foundation
 import os.log
 
-// MARK: - Logger Class
-public class Logger {
-    // MARK: - Static Properties
+public final class Logger {
     public static let shared = Logger()
     public static let logsUpdatedNotification = Notification.Name("LoggerLogsUpdated")
 
-    // MARK: - Private Properties
     private var logFileURL: URL?
     private let fileManager = FileManager.default
     private let dateFormatter: DateFormatter
     private let queue = DispatchQueue(label: "com.lumo.logger", qos: .utility)
 
     // MARK: - Initialization
+
     private init() {
         dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
@@ -21,7 +19,8 @@ public class Logger {
         log("Logger initialized", category: "Logger")
     }
 
-    // MARK: - Public Methods
+    // MARK: - Public
+
     public func log(_ message: String, category: String? = nil) {
         let timestamp = dateFormatter.string(from: Date())
         let categoryPrefix = category != nil ? "[\(category!)]" : ""
@@ -38,7 +37,9 @@ public class Logger {
         }
     }
 
-    public func getLogContents() -> String? {
+    // MARK: - Private
+
+    private func getLogContents() -> String? {
         guard let logFileURL = logFileURL,
             fileManager.fileExists(atPath: logFileURL.path)
         else {
@@ -53,7 +54,7 @@ public class Logger {
         }
     }
 
-    public func getLogContentsForApp(identifier: String? = nil) -> String? {
+    private func getLogContentsForApp(identifier: String? = nil) -> String? {
         guard let allLogs = getLogContents() else {
             return nil
         }
@@ -68,7 +69,7 @@ public class Logger {
     }
 
     @discardableResult
-    public func clearLogs() -> Bool {
+    private func clearLogs() -> Bool {
         guard let logFileURL = logFileURL else { return false }
 
         do {
@@ -83,11 +84,10 @@ public class Logger {
         }
     }
 
-    public func getLogFilePath() -> String? {
+    private func getLogFilePath() -> String? {
         logFileURL?.path
     }
 
-    // MARK: - Private Methods
     private func writeToFile(_ message: String) {
         guard let logFileURL = logFileURL else {
             print("Log file URL not set")

@@ -17,7 +17,7 @@ public final class LegacySpeechRecorder: ObservableObject {
         store.state
     }
 
-    public init(urlOpener: any URLOpenerProtocol) {
+    public init(urlOpener: URLOpenerProtocol) {
         self.store = SpeechStateStore(service: SpeechRecordingServiceFactory.make(), urlOpener: urlOpener)
 
         cancellable = store.$state.sink { [weak self] state in
