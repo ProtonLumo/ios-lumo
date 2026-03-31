@@ -187,10 +187,10 @@ struct ContentView: View {
         }
         .animation(.easeInOut(duration: 0.3), value: speechRecorder.isActive)
         .animation(.easeInOut(duration: 0.3), value: speechRecorder.isPermissionDenied)
-        .onChange(of: currentWebViewURL) { newURL in
+        .onChange(of: currentWebViewURL) { _, newURL in
             handleURLChange(newURL)
         }
-        .onChange(of: webViewReady) { isReady in
+        .onChange(of: webViewReady) { _, isReady in
             if isReady {
                 showLoader = false
 

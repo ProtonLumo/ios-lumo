@@ -21,7 +21,7 @@ struct LumoApp: App {
                     Logger.shared.log("Scene received URL: \(url)", category: "AppDelegate")
                     _ = appDelegate.application(UIApplication.shared, open: url, options: [:])
                 }
-                .onChange(of: scenePhase) { newPhase in
+                .onChange(of: scenePhase) { _, newPhase in
                     Logger.shared.log("Scene phase changed to: \(newPhase)", category: "AppDelegate")
 
                     switch newPhase {
