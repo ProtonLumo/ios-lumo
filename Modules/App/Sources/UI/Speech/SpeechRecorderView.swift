@@ -1,3 +1,4 @@
+import LumoDesignSystem
 import LumoUI
 import SwiftUI
 
@@ -7,7 +8,7 @@ struct SpeechRecorderView: View {
     @Binding var isSubmitting: Bool
     let stopRecording: (Bool) -> Void
     let formatDuration: (TimeInterval) -> String
-    let brandPurple: Color
+    private let brandPurple = DS.Color.primary
 
     var body: some View {
         VStack(spacing: 0) {

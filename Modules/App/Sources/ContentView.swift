@@ -76,7 +76,6 @@ struct ContentView: View {
 
     // MARK: - Constants
     private let paymentSheetDelegate = PaymentSheetDelegate()
-    private let brandPurple = Color(hex: 0x6D4AFF)
 
     private let safetyTimeoutDuration: TimeInterval = 3.0
 
@@ -168,8 +167,7 @@ struct ContentView: View {
                     recordingDuration: $recordingDuration,
                     isSubmitting: $isSubmittingSpeech,
                     stopRecording: stopRecording,
-                    formatDuration: formatDuration,
-                    brandPurple: brandPurple
+                    formatDuration: formatDuration
                 )
                 .transition(.opacity)
                 .animation(.easeInOut(duration: 0.2), value: isSubmittingSpeech)
