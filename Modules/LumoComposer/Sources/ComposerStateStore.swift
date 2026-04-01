@@ -158,8 +158,6 @@ final class ComposerStateStore: StateStore {
                 .sink { [weak self] speechState in self?.state.speechState = speechState }
                 .store(in: &speechStateCancellable)
             store.onTranscriptionComplete = { [weak self] text in
-                self?.detachSpeechStore()
-                self?.state.speechState = .idle
                 self?.state.currentText = text
             }
             speechStore = store
@@ -254,6 +252,7 @@ final class ComposerStateStore: StateStore {
             switch recorderAction {
             case .submit:
                 await speechStore?.send(action: .submitRecording)
+                detachSpeechStore()
             case .cancel:
                 await speechStore?.send(action: .cancelRecording)
                 detachSpeechStore()
