@@ -269,7 +269,7 @@ class AppleSubscriptionManager: ObservableObject {
             "App-prefs:APPLE_ACCOUNT&path=SUBSCRIPTIONS",
             "prefs:root=APPLE_ACCOUNT&path=SUBSCRIPTIONS",
             "App-prefs:root=APPLE_ACCOUNT",
-            "prefs:root=APPLE_ACCOUNT",
+            "prefs:root=APPLE_ACCOUNT"
         ]
 
         await MainActor.run {

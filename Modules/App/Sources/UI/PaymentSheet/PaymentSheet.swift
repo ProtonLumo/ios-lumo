@@ -18,7 +18,7 @@ struct SkeletonPlanCard: View {
                             gradient: Gradient(colors: [
                                 Color.clear,
                                 DS.Color.gradient.opacity(0.6),
-                                Color.clear,
+                                Color.clear
                             ]),
                             startPoint: .leading,
                             endPoint: .trailing
@@ -75,7 +75,7 @@ struct SkeletonFeatureRow: View {
                 gradient: Gradient(colors: [
                     Color.clear,
                     DS.Color.gradient.opacity(0.4),
-                    Color.clear,
+                    Color.clear
                 ]),
                 startPoint: .leading,
                 endPoint: .trailing
@@ -179,13 +179,13 @@ struct PaymentSheet: View {
                             Color(hex: 0x1f1d28),
                             Color(hex: 0x1f1d28),
                             Color(hex: 0x1f1d28),
-                            Color(hex: 0x16141c),
+                            Color(hex: 0x16141c)
                         ]
                         : [
                             Color(hex: 0xF2EEFF),
                             Color(hex: 0xF2EEFF),
                             Color(hex: 0xF2EEFF),
-                            .white,
+                            .white
                         ]
                 ),
                 startPoint: UnitPoint(x: 0, y: 1),

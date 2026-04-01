@@ -56,7 +56,7 @@ struct PlanOptionViewModelTests {
                 type: .month,
                 isSelected: false
             )
-        ),
+        )
     ])
     func planHasCorrectDisplayData(testCase: TestCase) {
         let sut = PlanOptionViewModel(
@@ -101,7 +101,7 @@ fileprivate extension ComposedPlan {
                         price: [
                             Price(current: 1299, currency: "EUR", id: "<price_id_1>"),
                             Price(current: 1299, currency: "USD", id: "<price_id_2>"),
-                            Price(current: 1299, currency: "CHF", id: "<price_id_3>"),
+                            Price(current: 1299, currency: "CHF", id: "<price_id_3>")
                         ],
                         description: "Per month",
                         cycle: 1,
@@ -112,13 +112,13 @@ fileprivate extension ComposedPlan {
                         price: [
                             Price(current: 11988, currency: "EUR", id: "<price_id_1>"),
                             Price(current: 11988, currency: "USD", id: "<price_id_2>"),
-                            Price(current: 11988, currency: "CHF", id: "<price_id_3>"),
+                            Price(current: 11988, currency: "CHF", id: "<price_id_3>")
                         ],
                         description: "Per year",
                         cycle: 12,
                         periodEnd: 1_801_920_861,
                         vendors: .init(apple: .none)
-                    ),
+                    )
                 ],
                 name: "__NOT_USED__",
                 state: 1,

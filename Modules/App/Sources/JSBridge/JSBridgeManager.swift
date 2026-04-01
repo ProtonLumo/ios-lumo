@@ -111,7 +111,7 @@ class JSBridgeManager {
             .paymentApi,
             parameters: parameters,
             in: webView,
-            completion: completion )
+            completion: completion)
     }
 
     func setupThemeChangeListener(

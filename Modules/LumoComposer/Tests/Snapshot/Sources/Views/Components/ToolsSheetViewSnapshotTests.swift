@@ -14,7 +14,7 @@ struct ToolsSheetViewSnapshotTests {
 
     static let testCases: [TestCase] = [
         TestCase(isImageGenEnabled: true, isWebSearchEnabled: false, testName: "web_search_off"),
-        TestCase(isImageGenEnabled: false, isWebSearchEnabled: true, testName: "web_search_on"),
+        TestCase(isImageGenEnabled: false, isWebSearchEnabled: true, testName: "web_search_on")
     ]
 
     @Test(arguments: testCases)

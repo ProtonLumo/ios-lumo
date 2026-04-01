@@ -46,12 +46,12 @@ final class WebComposerScriptMessageHandlerTests {
                     "attachedFiles": [],
                     "featureFlags": [
                         "isImageGenEnabled": false,
-                        "isModelSelectionEnabled": false,
+                        "isModelSelectionEnabled": false
                     ],
                     "userFlags": [
                         "isFreeUser": true,
-                        "isGuestUser": false,
-                    ],
+                        "isGuestUser": false
+                    ]
                 ],
                 expectedState: .init(
                     mode: .idle,
@@ -79,17 +79,17 @@ final class WebComposerScriptMessageHandlerTests {
                         [
                             "id": "<file-123>",
                             "name": "document.pdf",
-                            "type": "PDF",
+                            "type": "PDF"
                         ]
                     ],
                     "featureFlags": [
                         "isImageGenEnabled": true,
-                        "isModelSelectionEnabled": true,
+                        "isModelSelectionEnabled": true
                     ],
                     "userFlags": [
                         "isFreeUser": false,
-                        "isGuestUser": true,
-                    ],
+                        "isGuestUser": true
+                    ]
                 ],
                 expectedState: .init(
                     mode: .working,
@@ -105,7 +105,7 @@ final class WebComposerScriptMessageHandlerTests {
                     featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
                     userFlags: .init(isFreeUser: false, isGuestUser: true)
                 )
-            ),
+            )
         ]
     )
     func handleStateChange_EmitsStateUpdateToStateUpdates(testCase: TestCase) async {
@@ -137,7 +137,7 @@ final class WebComposerScriptMessageHandlerTests {
         let error = WebComposerError.tierLimit
         let resultDict: [String: Any] = [
             "status": "error",
-            "error": error.rawValue,
+            "error": error.rawValue
         ]
         let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
 
@@ -169,7 +169,7 @@ final class WebComposerScriptMessageHandlerTests {
             "requestId": "123",
             "result": [
                 "status": "success"
-            ],
+            ]
         ]
         let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
 
@@ -233,7 +233,7 @@ final class WebComposerScriptMessageHandlerTests {
         let errors: [WebComposerError] = [
             .tierLimit,
             .generationError,
-            .unknown,
+            .unknown
         ]
         let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerHandler
 
@@ -251,7 +251,7 @@ final class WebComposerScriptMessageHandlerTests {
         for error in errors {
             let resultDict: [String: Any] = [
                 "status": "error",
-                "error": error.rawValue,
+                "error": error.rawValue
             ]
 
             sut.userContentController(

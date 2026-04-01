@@ -108,7 +108,7 @@ class WebViewCoordinator: ObservableObject {
             .setupMessageHandlers,
             .setupPromotionHandler,
             .setupVoiceEntry,
-            .setupThemeListener,
+            .setupThemeListener
         ]
 
         _ = await executeBatch(setupCommands)

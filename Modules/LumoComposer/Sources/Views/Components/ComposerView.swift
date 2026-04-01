@@ -143,7 +143,7 @@ struct ComposerView: View {
                     .init(id: "2", name: "Data.xls", type: .xls, preview: .none),
                     .init(id: "3", name: "Slides.ppt", type: .ppt, preview: .none),
                     .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
-                    .init(id: "5", name: "Video.mp4", type: .video, preview: .none),
+                    .init(id: "5", name: "Video.mp4", type: .video, preview: .none)
                 ],
                 model: .auto,
                 isCreateImageEnabled: false,
@@ -182,7 +182,7 @@ struct ComposerView: View {
                     .init(id: "2", name: "Data.xls", type: .xls, preview: .none),
                     .init(id: "3", name: "Slides.ppt", type: .ppt, preview: .none),
                     .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
-                    .init(id: "5", name: "Video.mp4", type: .video, preview: .none),
+                    .init(id: "5", name: "Video.mp4", type: .video, preview: .none)
                 ],
                 model: .thinking,
                 isCreateImageEnabled: true,

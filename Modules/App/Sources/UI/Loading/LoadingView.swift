@@ -23,7 +23,7 @@ struct LoadingView: View {
         String(localized: "app.loading.plotting"),
         String(localized: "app.loading.purringengines"),
         String(localized: "app.loading.sharpening"),
-        String(localized: "app.loading.stretching"),
+        String(localized: "app.loading.stretching")
     ]
 
     var body: some View {

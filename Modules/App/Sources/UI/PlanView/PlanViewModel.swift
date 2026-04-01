@@ -109,7 +109,7 @@ public class PlanViewModel: ObservableObject, Identifiable {
         if let endPeriod = currentPlan.periodEnd {
             let texts = [
                 TextStyle(text: Constants.footerText(renew: currentPlan.renew ?? 0), font: .callout, color: Theme.color.shade80),
-                TextStyle(text: Formatter.formatDate(Double(endPeriod), formatType: .MMddYYYY), font: .headline, color: Theme.color.textNorm),
+                TextStyle(text: Formatter.formatDate(Double(endPeriod), formatType: .MMddYYYY), font: .headline, color: Theme.color.textNorm)
             ]
             createFooterText(texts: texts)
         }

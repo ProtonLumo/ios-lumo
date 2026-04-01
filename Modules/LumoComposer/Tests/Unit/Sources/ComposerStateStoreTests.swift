@@ -36,7 +36,7 @@ final class ComposerStateStoreTests {
             stateChanges,
             [
                 initialState,
-                initialState.copy(\.isWebViewReady, to: true),
+                initialState.copy(\.isWebViewReady, to: true)
             ]
         )
     }
@@ -112,7 +112,7 @@ final class ComposerStateStoreTests {
         let allCases: [WebComposerError] = [
             .unknown, .streamDisconnected, .generationError,
             .highDemand, .generationRejected, .harmfulContent,
-            .tierLimit, .duplicateFile,
+            .tierLimit, .duplicateFile
         ]
 
         for error in allCases {
@@ -170,7 +170,7 @@ final class ComposerStateStoreTests {
                 initialState,
                 initialState.copy(\.currentText, to: "Tell me something about AI"),
                 initialState.copy(\.isProcessing, to: true),
-                initialState.copy(\.currentText, to: "Tell me something about AI"),
+                initialState.copy(\.currentText, to: "Tell me something about AI")
             ]
         )
         #expect(toastStateStore.state.toasts == [.bridgeError])
@@ -249,7 +249,7 @@ final class ComposerStateStoreTests {
                         userFlags: .initial
                     )
                 ),
-                initialState,
+                initialState
             ]
         )
         #expect(toastStateStore.state.toasts.isEmpty)
@@ -280,7 +280,7 @@ final class ComposerStateStoreTests {
                 initialState,
                 initialState.copy(\.currentText, to: "Tell me a story"),
                 initialState.copy(\.isProcessing, to: true),
-                initialState.copy(\.currentText, to: "Tell me a story"),
+                initialState.copy(\.currentText, to: "Tell me a story")
             ]
         )
         #expect(toastStateStore.state.toasts == [.bridgeError])
@@ -344,7 +344,7 @@ final class ComposerStateStoreTests {
                 input: "Line 1\u{2028}Line 2\u{2029}Line 3",
                 expectedOutput: "Line 1\\u2028Line 2\\u2029Line 3",
                 comment: "Unicode line/paragraph separators (U+2028, U+2029) must be escaped to prevent breaking JavaScript"
-            ),
+            )
         ]
     )
     func sendPromptAction_TextEscaping_EscapesTextCorrectly(testCase: TextEscapingTestCase) async {
@@ -782,7 +782,7 @@ final class ComposerStateStoreTests {
 
         let files = [
             FileUploadData(base64: "ZGF0YTE=", name: "file1.pdf"),
-            FileUploadData(base64: "ZGF0YTI=", name: "file2.png"),
+            FileUploadData(base64: "ZGF0YTI=", name: "file2.png")
         ]
         await sut.send(action: .uploadFilesTapped(files))
 
@@ -986,7 +986,7 @@ final class ComposerStateStoreTests {
                             featureFlags: .initial,
                             userFlags: .initial
                         )
-                    ),
+                    )
             ]
         )
     }
@@ -1183,12 +1183,12 @@ final class ComposerStateStoreTests {
             "attachedFiles": attachedFiles,
             "featureFlags": [
                 "isImageGenEnabled": false,
-                "isModelSelectionEnabled": false,
+                "isModelSelectionEnabled": false
             ],
             "userFlags": [
                 "isFreeUser": true,
-                "isGuestUser": true,
-            ],
+                "isGuestUser": true
+            ]
         ]
 
         webBridge.handleStateChange(state: state)
