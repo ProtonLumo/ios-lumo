@@ -3,7 +3,6 @@ import LumoCore
 import PhotosUI
 import ProtonUIFoundations
 import UIKit
-import WebKit
 
 final class ComposerStateStore: StateStore {
     private let freeUserThinkingTappedSubject = PassthroughSubject<Void, Never>()
