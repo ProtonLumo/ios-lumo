@@ -259,7 +259,8 @@ final class ComposerStateStore: StateStore {
                 await speechStore?.send(action: .cancelRecording)
                 detachSpeechStore()
             case .dismiss:
-                break
+                await speechStore?.send(action: .dismissPermissionAlert)
+                detachSpeechStore()
             case .openSettings:
                 await speechStore?.send(action: .openSettings)
             }
