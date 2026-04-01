@@ -1197,6 +1197,26 @@ final class ComposerStateStoreTests {
     }
 
     @Test
+    func onDisappear_DuringRecording_DetachesSpeechStore() async {
+        await sut.send(action: .startRecordingTapped)
+
+        guard case .recording = sut.state.speechState else {
+            Issue.record("Precondition failed: expected .recording")
+            return
+        }
+
+        await sut.send(action: .onDisappear)
+
+        #expect(sut.state.speechState == .idle)
+
+        speechServiceSpy.simulateUpdate(.transcriptionUpdated("hello world"))
+        try? await Task.sleep(for: .milliseconds(50))
+        await sut.send(action: .recorder(.submit))
+
+        #expect(sut.state.currentText == "")
+    }
+
+    @Test
     func recorderDismiss_WhenPermissionDenied_ResetsSpeechState() async {
         speechServiceSpy.stubbedRequestPermissionsResult = .denied
         await sut.send(action: .startRecordingTapped)
