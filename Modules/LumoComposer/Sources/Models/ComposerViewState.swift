@@ -20,6 +20,8 @@ struct ComposerViewState: Equatable, Copying {
     var activeSheet: ActiveSheet?
     /// Currently active system picker, or `nil` when none is shown
     var activeSystemPicker: ActiveSystemPicker?
+    /// Speech recording state — `.idle` when not recording
+    var speechState: SpeechStateStore.State
     /// In-memory cache mapping file IDs to their base64 preview strings
     ///
     /// The WebAPI only returns `preview` on the first upload; subsequent state updates omit it.
@@ -32,7 +34,8 @@ struct ComposerViewState: Equatable, Copying {
         isWebViewReady: Bool,
         webState: WebComposerState,
         activeSheet: ActiveSheet?,
-        activePicker: ActiveSystemPicker?
+        activePicker: ActiveSystemPicker?,
+        speechState: SpeechStateStore.State = .idle
     ) {
         self.currentText = currentText
         self.isProcessing = isProcessing
@@ -40,6 +43,7 @@ struct ComposerViewState: Equatable, Copying {
         self.webState = webState
         self.activeSheet = activeSheet
         self.activeSystemPicker = activePicker
+        self.speechState = speechState
         self.filePreviewsCache = [:]
     }
 

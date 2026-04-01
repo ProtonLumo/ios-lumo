@@ -1,4 +1,5 @@
 import Combine
+import LumoCore
 import PhotosUI
 import ProtonUIFoundations
 import UIKit
@@ -37,6 +38,8 @@ final class ComposerStateStore: StateStore {
         case filesPicked(Result<URL, any Error>)
         case photoPicked(any PhotosItemLoading)
         case imageCaptured(UIImage)
+
+        case submitRecordingTapped
     }
 
     typealias FileLoader = @Sendable (URL) throws -> Data
@@ -46,18 +49,26 @@ final class ComposerStateStore: StateStore {
     private let webBridge: WebComposerBridging
     private let toastStateStore: ToastStateStore
     private let fileLoader: FileLoader
+    private let speechService: SpeechRecordingServiceProtocol
+    private let urlOpener: URLOpenerProtocol
     private var stateObservationTask: Task<Void, Never>?
     private var errorObservationTask: Task<Void, Never>?
+    private var speechStore: SpeechStateStore?
+    private var speechStateCancellable: Set<AnyCancellable> = []
 
     init(
         initialState: ComposerViewState,
         webBridge: WebComposerBridging,
         toastStateStore: ToastStateStore,
+        speechService: SpeechRecordingServiceProtocol,
+        urlOpener: URLOpenerProtocol,
         fileLoader: @escaping FileLoader = { url in try securityScopedFileLoader(url: url) }
     ) {
         self.state = initialState
         self.webBridge = webBridge
         self.toastStateStore = toastStateStore
+        self.speechService = speechService
+        self.urlOpener = urlOpener
         self.fileLoader = fileLoader
     }
 
@@ -136,8 +147,19 @@ final class ComposerStateStore: StateStore {
             }
 
         case .startRecordingTapped:
-            // FIXME: Implement when UI is migrated from main target
-            break
+            let store = SpeechStateStore(service: speechService, urlOpener: urlOpener)
+            store
+                .$state
+                .sink { [weak self] speechState in self?.state.speechState = speechState }
+                .store(in: &speechStateCancellable)
+            store.onTranscriptionComplete = { [weak self] text in
+                self?.speechStore = nil
+                self?.speechStateCancellable = []
+                self?.state.speechState = .idle
+                self?.state.currentText = text
+            }
+            speechStore = store
+            await store.send(action: .startRecording)
 
         case .previewAttachmentTapped(let id):
             await execute { () async throws(WebComposerBridgeError) in
@@ -223,6 +245,9 @@ final class ComposerStateStore: StateStore {
             guard let data = image.jpegData(compressionQuality: 0.7) else { return }
             let name = "\(UUIDEnvironment.uuid().uuidString).jpg"
             await sendUploadFile(data: data, name: name)
+
+        case .submitRecordingTapped:
+            await speechStore?.send(action: .submitRecording)
         }
     }
 

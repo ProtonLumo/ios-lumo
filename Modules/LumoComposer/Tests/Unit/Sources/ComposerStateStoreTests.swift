@@ -13,7 +13,15 @@ final class ComposerStateStoreTests {
     let webViewSpy = WKWebViewSpy()
     let webBridge = WebComposerBridge()
     let toastStateStore = ToastStateStore(initialState: .initial)
-    lazy var sut = ComposerStateStore(initialState: initialState, webBridge: webBridge, toastStateStore: toastStateStore)
+    let speechServiceSpy = SpeechRecordingServiceSpy()
+    let urlOpenerSpy = URLOpenerSpy()
+    lazy var sut = ComposerStateStore(
+        initialState: initialState,
+        webBridge: webBridge,
+        toastStateStore: toastStateStore,
+        speechService: speechServiceSpy,
+        urlOpener: urlOpenerSpy
+    )
 
     var initialState = ComposerViewState.initial
     var cancellables: Set<AnyCancellable> = []
@@ -1038,6 +1046,8 @@ final class ComposerStateStoreTests {
             initialState: initialState,
             webBridge: webBridge,
             toastStateStore: toastStateStore,
+            speechService: speechServiceSpy,
+            urlOpener: urlOpenerSpy,
             fileLoader: { _ in fileData }
         )
         webBridge.attach(to: webViewSpy)
@@ -1069,6 +1079,8 @@ final class ComposerStateStoreTests {
             initialState: initialState,
             webBridge: webBridge,
             toastStateStore: toastStateStore,
+            speechService: speechServiceSpy,
+            urlOpener: urlOpenerSpy,
             fileLoader: { _ in throw CocoaError(.fileReadNoPermission) }
         )
         webBridge.attach(to: webViewSpy)
@@ -1143,6 +1155,31 @@ final class ComposerStateStoreTests {
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(webViewSpy.evaluateJavaScriptCalls.last == .init(javaScript: javascript, frame: .none, contentWorld: .page))
         #expect(toastStateStore.state.toasts.isEmpty)
+    }
+
+    // MARK: - startRecordingTapped
+
+    @Test
+    func startRecordingTapped_SpeechStateBecomesRecording() async {
+        await sut.send(action: .startRecordingTapped)
+
+        guard case .recording = sut.state.speechState else {
+            Issue.record("Expected .recording, got \(sut.state.speechState)")
+            return
+        }
+    }
+
+    @Test
+    func startRecordingTapped_WhenTranscriptionCompletes_SetsCurrentTextAndResetsState() async {
+        await sut.send(action: .startRecordingTapped)
+
+        speechServiceSpy.simulateUpdate(.transcriptionUpdated("hello world"))
+        try? await Task.sleep(for: .milliseconds(50))
+
+        await sut.send(action: .submitRecordingTapped)
+
+        #expect(sut.state.currentText == "hello world")
+        #expect(sut.state.speechState == .idle)
     }
 
     // MARK: - Private
