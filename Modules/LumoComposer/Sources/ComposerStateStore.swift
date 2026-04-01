@@ -40,6 +40,7 @@ final class ComposerStateStore: StateStore {
         case imageCaptured(UIImage)
 
         case submitRecordingTapped
+        case cancelRecordingTapped
     }
 
     typealias FileLoader = @Sendable (URL) throws -> Data
@@ -153,8 +154,7 @@ final class ComposerStateStore: StateStore {
                 .sink { [weak self] speechState in self?.state.speechState = speechState }
                 .store(in: &speechStateCancellable)
             store.onTranscriptionComplete = { [weak self] text in
-                self?.speechStore = nil
-                self?.speechStateCancellable = []
+                self?.detachSpeechStore()
                 self?.state.speechState = .idle
                 self?.state.currentText = text
             }
@@ -248,6 +248,10 @@ final class ComposerStateStore: StateStore {
 
         case .submitRecordingTapped:
             await speechStore?.send(action: .submitRecording)
+
+        case .cancelRecordingTapped:
+            await speechStore?.send(action: .cancelRecording)
+            detachSpeechStore()
         }
     }
 
@@ -266,5 +270,10 @@ final class ComposerStateStore: StateStore {
         let file = FileUploadData(base64: base64, name: name)
 
         await send(action: .uploadFilesTapped([file]))
+    }
+
+    private func detachSpeechStore() {
+        speechStore = nil
+        speechStateCancellable = []
     }
 }

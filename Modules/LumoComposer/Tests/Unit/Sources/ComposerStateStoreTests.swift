@@ -1170,6 +1170,20 @@ final class ComposerStateStoreTests {
     }
 
     @Test
+    func cancelRecordingTapped_ResetsSpeechState() async {
+        await sut.send(action: .startRecordingTapped)
+
+        guard case .recording = sut.state.speechState else {
+            Issue.record("Precondition failed: expected .recording")
+            return
+        }
+
+        await sut.send(action: .cancelRecordingTapped)
+
+        #expect(sut.state.speechState == .idle)
+    }
+
+    @Test
     func startRecordingTapped_WhenTranscriptionCompletes_SetsCurrentTextAndResetsState() async {
         await sut.send(action: .startRecordingTapped)
 
