@@ -1196,6 +1196,15 @@ final class ComposerStateStoreTests {
         #expect(sut.state.speechState == .idle)
     }
 
+    @Test
+    func recorderOpenSettings_OpensSettingsURL() async {
+        await sut.send(action: .startRecordingTapped)
+
+        await sut.send(action: .recorder(.openSettings))
+
+        #expect(urlOpenerSpy.callAsFunctionInvokedWithURL == [.settings])
+    }
+
     // MARK: - Private
 
     private func observeStateChanges(_ stateChange: @escaping (ComposerViewState) -> Void) {

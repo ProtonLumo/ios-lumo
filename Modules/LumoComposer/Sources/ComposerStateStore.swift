@@ -45,6 +45,7 @@ final class ComposerStateStore: StateStore {
     enum RecorderAction {
         case submit
         case cancel
+        case openSettings
     }
 
     typealias FileLoader = @Sendable (URL) throws -> Data
@@ -256,6 +257,8 @@ final class ComposerStateStore: StateStore {
             case .cancel:
                 await speechStore?.send(action: .cancelRecording)
                 detachSpeechStore()
+            case .openSettings:
+                break
             }
         }
     }
