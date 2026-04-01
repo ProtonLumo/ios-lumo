@@ -105,6 +105,8 @@ final class ComposerStateStore: StateStore {
             stateObservationTask = nil
             errorObservationTask?.cancel()
             errorObservationTask = nil
+            detachSpeechStore()
+            state.speechState = .idle
 
         case .textChanged(let newText):
             state = state.copy(\.currentText, to: newText)
