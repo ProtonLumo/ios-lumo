@@ -14,7 +14,7 @@ struct ModelSelectionSheetViewSnapshotTests {
     static let testCases: [TestCase] = [
         TestCase(modelTier: .auto, testName: "selected_auto"),
         TestCase(modelTier: .fast, testName: "selected_fast"),
-        TestCase(modelTier: .thinking, testName: "selected_thinking"),
+        TestCase(modelTier: .thinking, testName: "selected_thinking")
     ]
 
     @Test(arguments: testCases)

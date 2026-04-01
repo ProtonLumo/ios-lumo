@@ -188,7 +188,7 @@ struct LumoWidgetView: View {
                         LinearGradient(
                             gradient: Gradient(colors: [
                                 backgroundColor,
-                                backgroundColor.opacity(0.95),
+                                backgroundColor.opacity(0.95)
                             ]),
                             startPoint: .top,
                             endPoint: .bottom
@@ -284,7 +284,7 @@ struct LumoWidgetProvider: TimelineProvider {
     func placeholder(in context: Context) -> LumoWidgetEntry {
         let defaultPrompts = [
             TimePrompt(label: L10n.Widget.Prompt.scamSpotting, prompt: L10n.Widget.PromptFull.scamSpotting, id: "scam", icon: "questionmark.shield"),
-            TimePrompt(label: L10n.Widget.Prompt.physicsExplained, prompt: L10n.Widget.PromptFull.physicsExplained, id: "physics", icon: "atom"),
+            TimePrompt(label: L10n.Widget.Prompt.physicsExplained, prompt: L10n.Widget.PromptFull.physicsExplained, id: "physics", icon: "atom")
         ]
         return LumoWidgetEntry(date: Date(), searchHint: String(localized: L10n.Widget.searchHintDefault), prompts: defaultPrompts)
     }
@@ -292,7 +292,7 @@ struct LumoWidgetProvider: TimelineProvider {
     func getSnapshot(in context: Context, completion: @escaping (LumoWidgetEntry) -> Void) {
         let defaultPrompts = [
             TimePrompt(label: L10n.Widget.Prompt.scamSpotting, prompt: L10n.Widget.PromptFull.scamSpotting, id: "scam", icon: "questionmark.shield"),
-            TimePrompt(label: L10n.Widget.Prompt.physicsExplained, prompt: L10n.Widget.PromptFull.physicsExplained, id: "physics", icon: "atom"),
+            TimePrompt(label: L10n.Widget.Prompt.physicsExplained, prompt: L10n.Widget.PromptFull.physicsExplained, id: "physics", icon: "atom")
         ]
         let entry = LumoWidgetEntry(date: Date(), searchHint: String(localized: L10n.Widget.searchHintDefault), prompts: defaultPrompts)
         completion(entry)
@@ -393,7 +393,7 @@ struct LumoWidget_Previews: PreviewProvider {
                     prompts: [
                         TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
                         TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
-                        TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book"),
+                        TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book")
                     ]
                 )
             )
@@ -409,7 +409,7 @@ struct LumoWidget_Previews: PreviewProvider {
                     prompts: [
                         TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
                         TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book"),
-                        TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book"),
+                        TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book")
                     ]
                 )
             )
@@ -426,7 +426,7 @@ struct LumoWidget_Previews: PreviewProvider {
                         prompts: [
                             TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
                             TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
-                            TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book"),
+                            TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book")
                         ]
                     )
                 )

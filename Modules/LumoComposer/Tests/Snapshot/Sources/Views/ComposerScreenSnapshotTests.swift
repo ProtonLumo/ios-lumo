@@ -30,7 +30,7 @@ struct ComposerScreenSnapshotTests {
                     attachedFiles: [
                         .init(id: "<id_1>", name: "selfie.png", type: .image, preview: .none),
                         .init(id: "<id_2>", name: "information_about_me.pdf", type: .pdf, preview: .none),
-                        .init(id: "<id_3>", name: "data", type: .protonSheet, preview: .none),
+                        .init(id: "<id_3>", name: "data", type: .protonSheet, preview: .none)
                     ],
                     featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
                     userFlags: .init(isFreeUser: false, isGuestUser: false)

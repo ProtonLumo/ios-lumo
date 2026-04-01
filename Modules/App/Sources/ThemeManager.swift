@@ -105,7 +105,7 @@ class ThemeManager: NSObject {
                 userInfo: [
                     "theme": currentTheme.rawValue,
                     "mode": currentMode.rawValue,
-                    "source": "system_update",
+                    "source": "system_update"
                 ]
             )
         } else if currentTheme == .system && modeChanged {
@@ -118,7 +118,7 @@ class ThemeManager: NSObject {
                 userInfo: [
                     "theme": currentTheme.rawValue,
                     "mode": newSystemMode.rawValue,
-                    "source": "system_appearance_change",
+                    "source": "system_appearance_change"
                 ]
             )
         }
@@ -135,7 +135,7 @@ class ThemeManager: NSObject {
             userInfo: [
                 "theme": theme.rawValue,
                 "mode": currentMode.rawValue,
-                "source": "stored",
+                "source": "stored"
             ]
         )
     }
@@ -153,7 +153,7 @@ class ThemeManager: NSObject {
             userInfo: [
                 "theme": currentTheme.rawValue,
                 "mode": currentMode.rawValue,
-                "source": "default_system",
+                "source": "default_system"
             ]
         )
     }
@@ -191,7 +191,7 @@ class ThemeManager: NSObject {
             userInfo: [
                 "theme": theme.rawValue,
                 "mode": currentMode.rawValue,
-                "themeName": themeName,
+                "themeName": themeName
             ]
         )
     }

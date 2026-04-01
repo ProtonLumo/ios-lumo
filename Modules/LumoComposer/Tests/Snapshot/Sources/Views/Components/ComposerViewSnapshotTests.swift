@@ -67,7 +67,7 @@ struct ComposerViewSnapshotTests {
             actionButton: .none,
             featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "idle_empty_ghost_mode_web_search"
-        ),
+        )
     ]
 
     /// Short prompt
@@ -95,7 +95,7 @@ struct ComposerViewSnapshotTests {
             actionButton: .send,
             featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "short_prompt_ghost_mode"
-        ),
+        )
     ]
 
     /// Long prompt
@@ -125,7 +125,7 @@ struct ComposerViewSnapshotTests {
             actionButton: .send,
             featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "long_prompt_ghost_mode_web_search"
-        ),
+        )
     ]
 
     /// Send state - ready to send
@@ -153,7 +153,7 @@ struct ComposerViewSnapshotTests {
             actionButton: .send,
             featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "send_state_ready_web_search"
-        ),
+        )
     ]
 
     /// Sending state
@@ -181,7 +181,7 @@ struct ComposerViewSnapshotTests {
             actionButton: .stop,
             featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "sending_state_ghost_mode_web_search"
-        ),
+        )
     ]
 
     /// With files
@@ -216,7 +216,7 @@ struct ComposerViewSnapshotTests {
             initialText: "Compare these documents",
             files: [
                 .init(id: "1", name: "Contract_v1.pdf", type: .pdf, preview: .none),
-                .init(id: "2", name: "Budget.xls", type: .xls, preview: .none),
+                .init(id: "2", name: "Budget.xls", type: .xls, preview: .none)
             ],
             model: .auto,
             isCreateImageEnabled: false,
@@ -231,7 +231,7 @@ struct ComposerViewSnapshotTests {
             initialText: "Compare these documents",
             files: [
                 .init(id: "1", name: "Contract_v1.pdf", type: .pdf, preview: .none),
-                .init(id: "2", name: "Budget.xls", type: .xls, preview: .none),
+                .init(id: "2", name: "Budget.xls", type: .xls, preview: .none)
             ],
             model: .auto,
             isCreateImageEnabled: false,
@@ -250,7 +250,7 @@ struct ComposerViewSnapshotTests {
                 .init(id: "2", name: "Data.xls", type: .xls, preview: .none),
                 .init(id: "3", name: "Slides.ppt", type: .ppt, preview: .none),
                 .init(id: "4", name: "Image.jpg", type: .image, preview: .landscapeImage),
-                .init(id: "5", name: "Video.mp4", type: .video, preview: .none),
+                .init(id: "5", name: "Video.mp4", type: .video, preview: .none)
             ],
             model: .fast,
             isCreateImageEnabled: false,
@@ -268,7 +268,7 @@ struct ComposerViewSnapshotTests {
                 .init(id: "2", name: "Data.xls", type: .xls, preview: .none),
                 .init(id: "4", name: "Image.jpg", type: .image, preview: .landscapeImage),
                 .init(id: "3", name: "Slides.ppt", type: .ppt, preview: .none),
-                .init(id: "5", name: "Video.mp4", type: .video, preview: .none),
+                .init(id: "5", name: "Video.mp4", type: .video, preview: .none)
             ],
             model: .fast,
             isCreateImageEnabled: false,
@@ -278,7 +278,7 @@ struct ComposerViewSnapshotTests {
             actionButton: .send,
             featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
             testName: "with_many_files_ghost_mode_web_search"
-        ),
+        )
     ]
 
     @Test(arguments: idleEmptyComposer + shortPrompt + longPrompt + readyToSend + sending + withFiles)

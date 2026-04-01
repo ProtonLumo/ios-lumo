@@ -2,14 +2,14 @@ import ProjectDescription
 
 // MARK: - Version Configuration
 
-let marketingVersion = "1.2.8"
+let marketingVersion = "1.2.9"
 let developmentTeam = "2SB5Z68H26"
 
 // MARK: - Shared Settings
 
 let moduleVerifierSettings: SettingsDictionary = [
     "ENABLE_MODULE_VERIFIER": true,
-    "ENABLE_MODULE_VERIFIER_SUPPORTED_LANGUAGES": true,
+    "ENABLE_MODULE_VERIFIER_SUPPORTED_LANGUAGES": true
 ]
 
 // MARK: - Signing
@@ -21,22 +21,22 @@ func signingConfigurations(bundleId: String, extraDebugDevSettings: SettingsDict
             settings: [
                 "CODE_SIGN_STYLE": "Manual",
                 "CODE_SIGN_IDENTITY": "Apple Development",
-                "PROVISIONING_PROFILE_SPECIFIER": "match Development \(bundleId)",
+                "PROVISIONING_PROFILE_SPECIFIER": "match Development \(bundleId)"
             ]),
         .debug(
             name: "Debug-Dev",
             settings: extraDebugDevSettings.merging([
                 "CODE_SIGN_STYLE": "Manual",
                 "CODE_SIGN_IDENTITY": "Apple Development",
-                "PROVISIONING_PROFILE_SPECIFIER": "match Development \(bundleId)",
+                "PROVISIONING_PROFILE_SPECIFIER": "match Development \(bundleId)"
             ]) { $1 }),
         .release(
             name: "Release",
             settings: [
                 "CODE_SIGN_STYLE": "Manual",
                 "CODE_SIGN_IDENTITY": "Apple Distribution",
-                "PROVISIONING_PROFILE_SPECIFIER": "match AppStore \(bundleId)",
-            ]),
+                "PROVISIONING_PROFILE_SPECIFIER": "match AppStore \(bundleId)"
+            ])
     ]
 }
 
@@ -67,12 +67,12 @@ let project = Project(
             // Warnings - Additional useful warnings
             "CLANG_WARN_DOCUMENTATION_COMMENTS": true,
             "CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER": true,
-            "CLANG_WARN_UNGUARDED_AVAILABILITY": "YES_AGGRESSIVE",
+            "CLANG_WARN_UNGUARDED_AVAILABILITY": "YES_AGGRESSIVE"
         ],
         configurations: [
             .debug(name: "Debug", xcconfig: "Xcconfigs/Debug.xcconfig"),
             .debug(name: "Debug-Dev", xcconfig: "Xcconfigs/Debug-Dev.xcconfig"),
-            .release(name: "Release", xcconfig: "Xcconfigs/Release.xcconfig"),
+            .release(name: "Release", xcconfig: "Xcconfigs/Release.xcconfig")
         ]
     ),
     targets: [
@@ -88,7 +88,7 @@ let project = Project(
                 "Modules/App/Resources/**",
                 "Modules/App/Sources/JSBridge/*.js",
                 "Modules/App/Sources/Helpers/LumoPlans.storekit",
-                "Modules/App/Sources/Helpers/plans.json",
+                "Modules/App/Sources/Helpers/plans.json"
             ],
             entitlements: "Modules/App/SupportingFiles/lumo.entitlements",
             dependencies: [
@@ -98,14 +98,14 @@ let project = Project(
                 .target(name: "LumoComposer"),
                 .target(name: "LumoCore"),
                 .target(name: "LumoDesignSystem"),
-                .target(name: "LumoUI"),
+                .target(name: "LumoUI")
             ],
             settings: .settings(
                 base: [
                     "DEVELOPMENT_TEAM": .string(developmentTeam),
                     "MARKETING_VERSION": .string(marketingVersion),
                     "CURRENT_PROJECT_VERSION": "1",
-                    "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.productivity",
+                    "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.productivity"
                 ],
                 configurations: signingConfigurations(
                     bundleId: "me.proton.lumo",
@@ -119,7 +119,7 @@ let project = Project(
                 "Modules/App/SupportingFiles/Info-Dev.plist",
                 .glob(pattern: "Modules/App/Sources/JSBridge/*.js"),
                 "Modules/App/Sources/Helpers/LumoPlans.storekit",
-                "Modules/App/Sources/Helpers/plans.json",
+                "Modules/App/Sources/Helpers/plans.json"
             ]
         ),
         .target(
@@ -134,7 +134,7 @@ let project = Project(
                 "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
                 "NSExtension": [
                     "NSExtensionPointIdentifier": "com.apple.widgetkit-extension"
-                ],
+                ]
             ]),
             sources: ["Modules/WidgetExtension/Sources/**"],
             resources: [
@@ -142,13 +142,13 @@ let project = Project(
             ],
             dependencies: [
                 .external(name: "Lottie"),
-                .target(name: "LumoUI"),
+                .target(name: "LumoUI")
             ],
             settings: .settings(
                 base: [
                     "DEVELOPMENT_TEAM": .string(developmentTeam),
                     "MARKETING_VERSION": .string(marketingVersion),
-                    "CURRENT_PROJECT_VERSION": "1",
+                    "CURRENT_PROJECT_VERSION": "1"
                 ],
                 configurations: signingConfigurations(bundleId: "me.proton.lumo.LumoWidgetExtension")
             )
@@ -167,7 +167,7 @@ let project = Project(
                 .external(name: "ProtonUIFoundations"),
                 .target(name: "LumoCore"),
                 .target(name: "LumoDesignSystem"),
-                .target(name: "LumoUI"),
+                .target(name: "LumoUI")
             ],
             settings: .settings(base: moduleVerifierSettings)
         ),
@@ -226,15 +226,15 @@ let project = Project(
                 .external(name: "Difference"),
                 .target(name: "LumoComposer"),
                 .target(name: "LumoApp"),
-                .external(name: "SnapshotTesting"),
+                .external(name: "SnapshotTesting")
             ],
             settings: .settings(
                 base: [
                     "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/LumoApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LumoApp",
-                    "BUNDLE_LOADER": "$(TEST_HOST)",
+                    "BUNDLE_LOADER": "$(TEST_HOST)"
                 ]
             )
-        ),
+        )
     ],
     schemes: [
         .scheme(
@@ -244,7 +244,7 @@ let project = Project(
             testAction: .targets(
                 [
                     .testableTarget(target: .target("LumoAppUnitTests")),
-                    .testableTarget(target: .target("LumoComposerTests")),
+                    .testableTarget(target: .target("LumoComposerTests"))
                 ],
                 configuration: "Debug"
             ),
@@ -260,7 +260,7 @@ let project = Project(
             testAction: .targets(
                 [
                     .testableTarget(target: .target("LumoAppUnitTests")),
-                    .testableTarget(target: .target("LumoComposerTests")),
+                    .testableTarget(target: .target("LumoComposerTests"))
                 ],
                 configuration: "Debug-Dev"
             ),
@@ -276,6 +276,6 @@ let project = Project(
                 targets: [.target("LumoWidgetExtension")]
             ),
             runAction: .runAction(configuration: "Debug")
-        ),
+        )
     ]
 )

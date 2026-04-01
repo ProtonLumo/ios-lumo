@@ -352,7 +352,7 @@ struct ContentView: View {
 
             let handlerNames = [
                 "insertPrompt", "startVoiceEntry", "navigationState",
-                "paymentResponse", "elementFound", "showPayment",
+                "paymentResponse", "elementFound", "showPayment"
             ]
 
             for name in handlerNames {
@@ -365,7 +365,7 @@ struct ContentView: View {
             Task {
                 let cleanupCommands: [JSCommand] = [
                     .simulateGarbageCollection,
-                    .clearHistory,
+                    .clearHistory
                 ]
 
                 let results = await self.jsCoordinator.executeBatch(cleanupCommands)
@@ -378,7 +378,7 @@ struct ContentView: View {
             let cacheOnlyDataTypes: Set<String> = [
                 WKWebsiteDataTypeDiskCache,
                 WKWebsiteDataTypeMemoryCache,
-                WKWebsiteDataTypeOfflineWebApplicationCache,
+                WKWebsiteDataTypeOfflineWebApplicationCache
             ]
 
             WKWebsiteDataStore.default()
@@ -714,7 +714,7 @@ struct ContentView: View {
                         }
                     }
                 }
-            ),
+            )
 
         ]
 
@@ -753,7 +753,7 @@ struct ContentView: View {
                     let cacheOnlyDataTypes: Set<String> = [
                         WKWebsiteDataTypeDiskCache,
                         WKWebsiteDataTypeMemoryCache,
-                        WKWebsiteDataTypeOfflineWebApplicationCache,
+                        WKWebsiteDataTypeOfflineWebApplicationCache
                     ]
 
                     WKWebsiteDataStore.default()
@@ -845,7 +845,7 @@ struct ContentView: View {
                     WKWebsiteDataTypeLocalStorage,
                     WKWebsiteDataTypeSessionStorage,
                     WKWebsiteDataTypeIndexedDBDatabases,
-                    WKWebsiteDataTypeWebSQLDatabases,
+                    WKWebsiteDataTypeWebSQLDatabases
                 ]
 
                 // Fetch all data to force synchronization to disk

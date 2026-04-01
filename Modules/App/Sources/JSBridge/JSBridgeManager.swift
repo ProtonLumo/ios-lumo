@@ -13,7 +13,6 @@ enum JSBridgeScript: String, CaseIterable {
     case messageSubmissionListener = "message-submission-listener"
     case externalLinkHandler = "external-link-handler"
 
-    case appversionOverride = "appversion-override"
     case paymentApi = "payment-api"
 
     // Theme management scripts
@@ -26,7 +25,7 @@ enum JSBridgeScript: String, CaseIterable {
 
     var requiresParameters: Bool {
         switch self {
-        case .appversionOverride, .paymentApi:
+        case .paymentApi:
             return true
         default:
             return false
@@ -48,28 +47,25 @@ class JSBridgeManager {
 
     func createUserScript(
         _ script: JSBridgeScript,
-        parameters: [String: String] = [:],
         injectionTime: WKUserScriptInjectionTime = .atDocumentEnd,
-        forMainFrameOnly: Bool = true,
+        forMainFrameOnly: Bool = true
     ) -> WKUserScript? {
         guard let source = loadScript(script) else {
             Logger.shared.log("❌ Failed to load script: \(script.rawValue)")
             return nil
         }
 
-        let finalSource = parameters.isEmpty ? source : substituteParameters(in: source, parameters: parameters)
-
         return WKUserScript(
-            source: finalSource,
+            source: source,
             injectionTime: injectionTime,
-            forMainFrameOnly: forMainFrameOnly,
+            forMainFrameOnly: forMainFrameOnly
         )
     }
 
     func evaluateScript(
         _ script: JSBridgeScript,
         in webView: WKWebView,
-        completion: ((Any?, Error?) -> Void)? = nil,
+        completion: ((Any?, Error?) -> Void)? = nil
     ) {
         guard let source = loadScript(script) else {
             Logger.shared.log("❌ Failed to load script for evaluation: \(script.rawValue)")
@@ -84,7 +80,7 @@ class JSBridgeManager {
         _ script: JSBridgeScript,
         parameters: [String: String],
         in webView: WKWebView,
-        completion: ((Any?, Error?) -> Void)? = nil,
+        completion: ((Any?, Error?) -> Void)? = nil
     ) {
         guard script.requiresParameters else {
             Logger.shared.log("❌ Script \(script.rawValue) is not a parameterized script")
@@ -106,7 +102,7 @@ class JSBridgeManager {
         operation: String,
         data: String? = nil,
         in webView: WKWebView,
-        completion: ((Any?, Error?) -> Void)? = nil,
+        completion: ((Any?, Error?) -> Void)? = nil
     ) {
         var parameters = ["OPERATION": operation]
         parameters["DATA"] = data ?? ""
@@ -115,12 +111,12 @@ class JSBridgeManager {
             .paymentApi,
             parameters: parameters,
             in: webView,
-            completion: completion, )
+            completion: completion)
     }
 
     func setupThemeChangeListener(
         in webView: WKWebView,
-        completion: ((Any?, Error?) -> Void)? = nil,
+        completion: ((Any?, Error?) -> Void)? = nil
     ) {
         evaluateScript(.themeChangeListener, in: webView, completion: completion)
     }

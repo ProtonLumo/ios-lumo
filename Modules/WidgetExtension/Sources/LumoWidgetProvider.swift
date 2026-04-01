@@ -41,7 +41,7 @@ func getTimeSensitiveSuggestion(hour: Int, prompts: Int) -> (hint: String, promp
             TimePrompt(label: L10n.Widget.Prompt.morningExercise, prompt: L10n.Widget.PromptFull.morningExercise, id: "morning_exercise", icon: "figure.run"),
             TimePrompt(label: L10n.Widget.Prompt.funFactGenerator, prompt: L10n.Widget.PromptFull.funFactGenerator, id: "fun_fact", icon: "lightbulb"),
             TimePrompt(label: L10n.Widget.Prompt.morningEnergy, prompt: L10n.Widget.PromptFull.energy, id: "energy", icon: "flame"),
-            TimePrompt(label: L10n.Widget.Prompt.privacyTips, prompt: L10n.Widget.PromptFull.privacyTips, id: "privacy_tips", icon: "lock.shield"),
+            TimePrompt(label: L10n.Widget.Prompt.privacyTips, prompt: L10n.Widget.PromptFull.privacyTips, id: "privacy_tips", icon: "lock.shield")
         ]
 
         return (
@@ -56,7 +56,7 @@ func getTimeSensitiveSuggestion(hour: Int, prompts: Int) -> (hint: String, promp
             TimePrompt(label: L10n.Widget.Prompt.physicsDaily, prompt: L10n.Widget.PromptFull.physicsDaily, id: "physics_daily", icon: "atom"),
             TimePrompt(label: L10n.Widget.Prompt.creativeThinking, prompt: L10n.Widget.PromptFull.creative, id: "creative", icon: "paintbrush"),
             TimePrompt(label: L10n.Widget.Prompt.echoChambers, prompt: L10n.Widget.PromptFull.echoChambers, id: "echo_chambers", icon: "bubble.left.and.bubble.right"),
-            TimePrompt(label: L10n.Widget.Prompt.quantumCuriosity, prompt: L10n.Widget.PromptFull.quantumCuriosity, id: "quantum_curiosity", icon: "sparkles"),
+            TimePrompt(label: L10n.Widget.Prompt.quantumCuriosity, prompt: L10n.Widget.PromptFull.quantumCuriosity, id: "quantum_curiosity", icon: "sparkles")
         ]
 
         return (
@@ -70,7 +70,7 @@ func getTimeSensitiveSuggestion(hour: Int, prompts: Int) -> (hint: String, promp
             TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "universe_explorer", icon: "globe"),
             TimePrompt(label: L10n.Widget.Prompt.physicsExplained, prompt: L10n.Widget.PromptFull.physicsExplained, id: "physics_explained", icon: "brain.head.profile"),
             TimePrompt(label: L10n.Widget.Prompt.healthyLunch, prompt: L10n.Widget.PromptFull.healthyLunch, id: "healthy_lunch", icon: "leaf"),
-            TimePrompt(label: L10n.Widget.Prompt.relaxation, prompt: L10n.Widget.PromptFull.relaxation, id: "relax", icon: "sparkles"),
+            TimePrompt(label: L10n.Widget.Prompt.relaxation, prompt: L10n.Widget.PromptFull.relaxation, id: "relax", icon: "sparkles")
         ]
 
         return (
@@ -87,7 +87,7 @@ func getTimeSensitiveSuggestion(hour: Int, prompts: Int) -> (hint: String, promp
             TimePrompt(label: L10n.Widget.Prompt.cognitiveBias, prompt: L10n.Widget.PromptFull.cognitiveBias, id: "cognitive_bias", icon: "brain"),
             TimePrompt(label: L10n.Widget.Prompt.particlePlayground, prompt: L10n.Widget.PromptFull.particlePlayground, id: "particle_playground", icon: "atom"),
             TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "daily_learning", icon: "book"),
-            TimePrompt(label: L10n.Widget.Prompt.factChecking, prompt: L10n.Widget.PromptFull.factChecking, id: "fact_checking", icon: "magnifyingglass"),
+            TimePrompt(label: L10n.Widget.Prompt.factChecking, prompt: L10n.Widget.PromptFull.factChecking, id: "fact_checking", icon: "magnifyingglass")
         ]
 
         return (
@@ -102,7 +102,7 @@ func getTimeSensitiveSuggestion(hour: Int, prompts: Int) -> (hint: String, promp
             TimePrompt(label: L10n.Widget.Prompt.familyActivities, prompt: L10n.Widget.PromptFull.family, id: "family", icon: "person.3"),
             TimePrompt(label: L10n.Widget.Prompt.scamSpotting, prompt: L10n.Widget.PromptFull.scamSpotting, id: "scam_spotting", icon: "shield"),
             TimePrompt(label: L10n.Widget.Prompt.relaxationTechniques, prompt: L10n.Widget.PromptFull.relaxationTechniques, id: "relaxation", icon: "sparkles"),
-            TimePrompt(label: L10n.Widget.Prompt.bedtimeStory, prompt: L10n.Widget.PromptFull.bedtimeStory, id: "bedtime_story", icon: "book"),
+            TimePrompt(label: L10n.Widget.Prompt.bedtimeStory, prompt: L10n.Widget.PromptFull.bedtimeStory, id: "bedtime_story", icon: "book")
         ]
 
         return (
@@ -115,7 +115,7 @@ func getTimeSensitiveSuggestion(hour: Int, prompts: Int) -> (hint: String, promp
             TimePrompt(label: L10n.Widget.Prompt.sleepTips, prompt: L10n.Widget.PromptFull.sleep, id: "sleep", icon: "moon.stars"),
             TimePrompt(label: L10n.Widget.Prompt.phishingProtection, prompt: L10n.Widget.PromptFull.phishingProtection, id: "phishing_protection", icon: "shield.checkered"),
             TimePrompt(label: L10n.Widget.Prompt.eveningStretches, prompt: L10n.Widget.PromptFull.eveningStretches, id: "stretches", icon: "figure.flexibility"),
-            TimePrompt(label: L10n.Widget.Prompt.sleepEnvironment, prompt: L10n.Widget.PromptFull.environment, id: "environment", icon: "house"),
+            TimePrompt(label: L10n.Widget.Prompt.sleepEnvironment, prompt: L10n.Widget.PromptFull.environment, id: "environment", icon: "house")
         ]
 
         return (
@@ -131,7 +131,7 @@ func getTimeSensitiveSuggestion(hour: Int, prompts: Int) -> (hint: String, promp
             TimePrompt(label: L10n.Widget.Prompt.misinformation, prompt: L10n.Widget.PromptFull.misinformation, id: "misinformation", icon: "checkmark.shield"),
             TimePrompt(label: L10n.Widget.Prompt.sleepEnvironment, prompt: L10n.Widget.PromptFull.environment, id: "environment", icon: "house"),
             TimePrompt(label: L10n.Widget.Prompt.perspectiveBroadening, prompt: L10n.Widget.PromptFull.perspectiveBroadening, id: "perspective_broadening", icon: "eye"),
-            TimePrompt(label: L10n.Widget.Prompt.calmingMusic, prompt: L10n.Widget.PromptFull.bedtime, id: "bedtime", icon: "music.note"),
+            TimePrompt(label: L10n.Widget.Prompt.calmingMusic, prompt: L10n.Widget.PromptFull.bedtime, id: "bedtime", icon: "music.note")
         ]
 
         return (

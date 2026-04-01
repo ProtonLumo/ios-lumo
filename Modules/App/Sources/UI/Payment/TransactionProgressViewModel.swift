@@ -12,7 +12,7 @@ class TransactionProgressViewModel: ObservableObject {
     let progressSteps = [
         String(localized: "app.payment.transaction.step.confirming"),  // "Confirming your payment",
         String(localized: "app.payment.transaction.step.updating"),  //"Updating your account",
-        String(localized: "app.payment.transaction.step.updated"),  // "Account updated",
+        String(localized: "app.payment.transaction.step.updated")  // "Account updated",
     ]
 
     var onCompletion: (() -> Void)?

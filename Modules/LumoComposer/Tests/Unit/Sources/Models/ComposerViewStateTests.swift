@@ -57,7 +57,7 @@ struct ComposerViewStateTests {
             TestCase(given: .testData(currentText: "Test", isProcessing: true, mode: .idle), expected: .stop),
             TestCase(given: .testData(currentText: "", isProcessing: false, mode: .working), expected: .stop),
             TestCase(given: .testData(currentText: "Test", isProcessing: false, mode: .working), expected: .stop),
-            TestCase(given: .testData(currentText: "", isProcessing: true, mode: .working), expected: .stop),
+            TestCase(given: .testData(currentText: "", isProcessing: true, mode: .working), expected: .stop)
         ]
     )
     func actionButton(testCase: TestCase) {

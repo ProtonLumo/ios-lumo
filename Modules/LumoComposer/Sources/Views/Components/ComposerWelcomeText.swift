@@ -19,6 +19,6 @@ struct ComposerWelcomeText: View {
     private let lines: [String] = [
         String(localized: L10n.Welcome.greeting),
         String(localized: L10n.Welcome.prompt),
-        String(localized: L10n.Welcome.confidentiality),
+        String(localized: L10n.Welcome.confidentiality)
     ]
 }

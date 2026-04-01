@@ -4,7 +4,7 @@ public struct PreviewsData {
             [
                 Entitlement.description(DescriptionEntitlement(type: "description", text: "10 VPN connections", iconName: "shield")),
                 Entitlement.description(DescriptionEntitlement(type: "description", text: "Highest VPN speed", iconName: "rocket")),
-                Entitlement.description(DescriptionEntitlement(type: "description", text: "5 users", iconName: "user")),
+                Entitlement.description(DescriptionEntitlement(type: "description", text: "5 users", iconName: "user"))
             ]
         }
 
@@ -12,7 +12,7 @@ public struct PreviewsData {
             [
                 Entitlement.progress(ProgressEntitlement(type: "progress", text: "0.1 GB of 1 GB", min: 0, max: 10, current: 1)),
                 Entitlement.progress(ProgressEntitlement(type: "progress", text: "0.6 GB of 1 GB", min: 0, max: 10, current: 6)),
-                Entitlement.progress(ProgressEntitlement(type: "progress", text: "0.9 GB of 1 GB", min: 0, max: 10, current: 9)),
+                Entitlement.progress(ProgressEntitlement(type: "progress", text: "0.9 GB of 1 GB", min: 0, max: 10, current: 9))
             ]
         }
 
@@ -43,7 +43,7 @@ public struct PreviewsData {
                 Entitlement.description(DescriptionEntitlement(type: "description", text: "10 VPN connections", iconName: "shield")),
                 Entitlement.description(DescriptionEntitlement(type: "description", text: "Highest VPN speed", iconName: "rocket")),
                 Entitlement.description(DescriptionEntitlement(type: "description", text: "5 users", iconName: "user")),
-                Entitlement.progress(ProgressEntitlement(type: "progress", text: "0.6 GB of 1 GB", min: 0, max: 10, current: 6)),
+                Entitlement.progress(ProgressEntitlement(type: "progress", text: "0.6 GB of 1 GB", min: 0, max: 10, current: 6))
             ],
             decorations: []
         )
