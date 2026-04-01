@@ -45,6 +45,7 @@ final class ComposerStateStore: StateStore {
     enum RecorderAction {
         case submit
         case cancel
+        case dismiss
         case openSettings
     }
 
@@ -257,6 +258,8 @@ final class ComposerStateStore: StateStore {
             case .cancel:
                 await speechStore?.send(action: .cancelRecording)
                 detachSpeechStore()
+            case .dismiss:
+                break
             case .openSettings:
                 await speechStore?.send(action: .openSettings)
             }

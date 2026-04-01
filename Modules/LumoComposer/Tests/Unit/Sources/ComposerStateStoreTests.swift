@@ -1197,6 +1197,21 @@ final class ComposerStateStoreTests {
     }
 
     @Test
+    func recorderDismiss_WhenPermissionDenied_ResetsSpeechState() async {
+        speechServiceSpy.stubbedRequestPermissionsResult = .denied
+        await sut.send(action: .startRecordingTapped)
+
+        guard sut.state.speechState == .permissionDenied else {
+            Issue.record("Precondition failed: expected .permissionDenied")
+            return
+        }
+
+        await sut.send(action: .recorder(.dismiss))
+
+        #expect(sut.state.speechState == .idle)
+    }
+
+    @Test
     func recorderOpenSettings_OpensSettingsURL() async {
         await sut.send(action: .startRecordingTapped)
 
