@@ -39,8 +39,12 @@ final class ComposerStateStore: StateStore {
         case photoPicked(any PhotosItemLoading)
         case imageCaptured(UIImage)
 
-        case submitRecordingTapped
-        case cancelRecordingTapped
+        case recorder(RecorderAction)
+    }
+
+    enum RecorderAction {
+        case submit
+        case cancel
     }
 
     typealias FileLoader = @Sendable (URL) throws -> Data
@@ -246,12 +250,14 @@ final class ComposerStateStore: StateStore {
             let name = "\(UUIDEnvironment.uuid().uuidString).jpg"
             await sendUploadFile(data: data, name: name)
 
-        case .submitRecordingTapped:
-            await speechStore?.send(action: .submitRecording)
-
-        case .cancelRecordingTapped:
-            await speechStore?.send(action: .cancelRecording)
-            detachSpeechStore()
+        case .recorder(let recorderAction):
+            switch recorderAction {
+            case .submit:
+                await speechStore?.send(action: .submitRecording)
+            case .cancel:
+                await speechStore?.send(action: .cancelRecording)
+                detachSpeechStore()
+            }
         }
     }
 

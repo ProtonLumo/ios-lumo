@@ -1178,7 +1178,7 @@ final class ComposerStateStoreTests {
             return
         }
 
-        await sut.send(action: .cancelRecordingTapped)
+        await sut.send(action: .recorder(.cancel))
 
         #expect(sut.state.speechState == .idle)
     }
@@ -1190,7 +1190,7 @@ final class ComposerStateStoreTests {
         speechServiceSpy.simulateUpdate(.transcriptionUpdated("hello world"))
         try? await Task.sleep(for: .milliseconds(50))
 
-        await sut.send(action: .submitRecordingTapped)
+        await sut.send(action: .recorder(.submit))
 
         #expect(sut.state.currentText == "hello world")
         #expect(sut.state.speechState == .idle)
