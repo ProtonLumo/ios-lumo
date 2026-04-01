@@ -1206,7 +1206,7 @@ final class ComposerStateStoreTests {
             return
         }
 
-        await sut.send(action: .recorder(.dismiss))
+        await sut.send(action: .recorder(.dismissPermissionAlert))
 
         #expect(sut.state.speechState == .idle)
     }
