@@ -1216,19 +1216,24 @@ final class ComposerStateStoreTests {
         #expect(sut.state.currentText == "")
     }
 
-    @Test
-    func recorderDismiss_WhenPermissionDenied_ResetsSpeechState() async {
-        speechServiceSpy.stubbedRequestPermissionsResult = .denied
-        await sut.send(action: .startRecordingTapped)
-
-        guard sut.state.speechState == .permissionDenied else {
-            Issue.record("Precondition failed: expected .permissionDenied")
-            return
+    @Test(arguments: [
+        ComposerStateStore.RecorderAction.submit,
+        .cancel,
+        .dismissPermissionAlert
+    ])
+    func recorderAction_DetachesSpeechStore(action: ComposerStateStore.RecorderAction) async {
+        if case .dismissPermissionAlert = action {
+            speechServiceSpy.stubbedRequestPermissionsResult = .denied
         }
 
-        await sut.send(action: .recorder(.dismissPermissionAlert))
+        await sut.send(action: .startRecordingTapped)
+        await sut.send(action: .recorder(action))
 
-        #expect(sut.state.speechState == .idle)
+        let cancelCountAfterDetach = speechServiceSpy.cancelCallCount
+
+        await sut.send(action: .recorder(.cancel))
+
+        #expect(speechServiceSpy.cancelCallCount == cancelCountAfterDetach, "recorder(.cancel) should be a no-op after store is detached")
     }
 
     @Test
