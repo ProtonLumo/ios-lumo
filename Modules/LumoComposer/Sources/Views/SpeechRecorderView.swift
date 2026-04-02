@@ -21,28 +21,22 @@ public struct SpeechRecorderView: View {
         VStack(spacing: 0) {
             Spacer()
             ZStack {
-                VStack {
+                VStack(alignment: .center) {
                     Spacer().frame(height: 10)
 
-                    // Privacy indicator
-                    HStack(alignment: .center) {
-                        Spacer()
-                        if viewState.isOnDevice {
-                            HStack(spacing: 5) {
-                                Image(systemName: "checkmark.shield.fill")
-                                    .font(.system(size: 12))
-                                    .foregroundColor(.white.opacity(0.9))
-                                Text(L10n.Speech.onDevice)
-                                    .font(.system(size: 12, weight: .medium))
-                                    .foregroundColor(.white.opacity(0.9))
-                            }
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 4)
-                            .background(Color.white.opacity(0.2))
-                            .cornerRadius(14)
-                        }
-                        Spacer()
+                    HStack(spacing: DS.Spacing.compact) {
+                        Image(systemName: "checkmark.shield.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(.white.opacity(0.9))
+                        Text(L10n.Speech.onDevice)
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.white.opacity(0.9))
                     }
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(Color.white.opacity(0.2))
+                    .cornerRadius(14)
+                    .opacity(viewState.isOnDevice ? 1 : 0)
 
                     Spacer().frame(height: 4)
 
