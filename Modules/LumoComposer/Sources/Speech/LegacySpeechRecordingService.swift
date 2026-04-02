@@ -91,8 +91,7 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
 
         guard let recognizer = speechRecognizer else {
             continuation?.yield(.failed(.recognizerUnavailable))
-            continuation?.finish()
-            continuation = nil
+            tearDown()
             return
         }
 
