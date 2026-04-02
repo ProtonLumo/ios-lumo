@@ -1,8 +1,8 @@
 import Combine
+import LumoCore
 import PhotosUI
 import ProtonUIFoundations
 import UIKit
-import WebKit
 
 final class ComposerStateStore: StateStore {
     private let freeUserThinkingTappedSubject = PassthroughSubject<Void, Never>()
@@ -24,6 +24,7 @@ final class ComposerStateStore: StateStore {
         case openSketchTapped
         case toggleCreateImageTapped
         case startRecordingTapped
+        case appDidBecomeActive
         case previewAttachmentTapped(id: String)
         case removeAttachmentTapped(id: String)
 
@@ -37,6 +38,15 @@ final class ComposerStateStore: StateStore {
         case filesPicked(Result<URL, any Error>)
         case photoPicked(any PhotosItemLoading)
         case imageCaptured(UIImage)
+
+        case recorder(RecorderAction)
+    }
+
+    enum RecorderAction {
+        case submit
+        case cancel
+        case dismissPermissionAlert
+        case openSettings
     }
 
     typealias FileLoader = @Sendable (URL) throws -> Data
@@ -46,18 +56,26 @@ final class ComposerStateStore: StateStore {
     private let webBridge: WebComposerBridging
     private let toastStateStore: ToastStateStore
     private let fileLoader: FileLoader
+    private let speechService: SpeechRecordingServiceProtocol
+    private let urlOpener: URLOpenerProtocol
     private var stateObservationTask: Task<Void, Never>?
     private var errorObservationTask: Task<Void, Never>?
+    private var speechStore: SpeechStateStore?
+    private var speechStateCancellable: Set<AnyCancellable> = []
 
     init(
         initialState: ComposerViewState,
         webBridge: WebComposerBridging,
         toastStateStore: ToastStateStore,
+        speechService: SpeechRecordingServiceProtocol,
+        urlOpener: URLOpenerProtocol,
         fileLoader: @escaping FileLoader = { url in try securityScopedFileLoader(url: url) }
     ) {
         self.state = initialState
         self.webBridge = webBridge
         self.toastStateStore = toastStateStore
+        self.speechService = speechService
+        self.urlOpener = urlOpener
         self.fileLoader = fileLoader
     }
 
@@ -87,6 +105,8 @@ final class ComposerStateStore: StateStore {
             stateObservationTask = nil
             errorObservationTask?.cancel()
             errorObservationTask = nil
+            detachSpeechStore()
+            state.speechState = .idle
 
         case .textChanged(let newText):
             state = state.copy(\.currentText, to: newText)
@@ -136,8 +156,27 @@ final class ComposerStateStore: StateStore {
             }
 
         case .startRecordingTapped:
-            // FIXME: Implement when UI is migrated from main target
-            break
+            guard speechStore == nil else { return }
+            let store = SpeechStateStore(service: speechService, urlOpener: urlOpener)
+            store
+                .$state
+                .sink { [weak self] speechState in self?.state.speechState = speechState }
+                .store(in: &speechStateCancellable)
+            store.onTranscriptionComplete = { [weak self] text in
+                guard let self else { return }
+                let existing = state.currentText
+                state.currentText = existing.isEmpty ? text : existing + " " + text
+            }
+            speechStore = store
+            await store.send(action: .startRecording)
+
+        case .appDidBecomeActive:
+            guard state.speechState.isPermissionDenied else { return }
+            let permission = await speechService.requestPermissions()
+            if permission == .granted {
+                detachSpeechStore()
+                state.speechState = .idle
+            }
 
         case .previewAttachmentTapped(let id):
             await execute { () async throws(WebComposerBridgeError) in
@@ -223,6 +262,21 @@ final class ComposerStateStore: StateStore {
             guard let data = image.jpegData(compressionQuality: 0.7) else { return }
             let name = "\(UUIDEnvironment.uuid().uuidString).jpg"
             await sendUploadFile(data: data, name: name)
+
+        case .recorder(let recorderAction):
+            switch recorderAction {
+            case .submit:
+                await speechStore?.send(action: .submitRecording)
+                detachSpeechStore()
+            case .cancel:
+                await speechStore?.send(action: .cancelRecording)
+                detachSpeechStore()
+            case .dismissPermissionAlert:
+                await speechStore?.send(action: .dismissPermissionAlert)
+                detachSpeechStore()
+            case .openSettings:
+                await speechStore?.send(action: .openSettings)
+            }
         }
     }
 
@@ -241,5 +295,10 @@ final class ComposerStateStore: StateStore {
         let file = FileUploadData(base64: base64, name: name)
 
         await send(action: .uploadFilesTapped([file]))
+    }
+
+    private func detachSpeechStore() {
+        speechStore = nil
+        speechStateCancellable = []
     }
 }

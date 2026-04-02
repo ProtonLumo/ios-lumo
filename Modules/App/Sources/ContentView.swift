@@ -2,6 +2,7 @@ import AVFAudio
 import LumoComposer
 import LumoCore
 import LumoDesignSystem
+import LumoUI
 import ProtonUIFoundations
 import SwiftUI
 import WebKit
@@ -201,31 +202,31 @@ struct ContentView: View {
                 }
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("StartVoiceEntryNotification"))) { _ in
+        .onReceive(notification: Notification.Name("StartVoiceEntryNotification")) {
             if !speechRecorder.isActive {
                 speechRecorder.startRecording()
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+        .onReceive(notification: UIApplication.willEnterForegroundNotification) {
             if speechRecorder.isPermissionDenied {
                 checkMicrophonePermissionOnForeground()
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("ThemeChangedFromWeb"))) { _ in
+        .onReceive(notification: NSNotification.Name("ThemeChangedFromWeb")) {
             updateThemeState()
         }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+        .onReceive(notification: UIApplication.didBecomeActiveNotification) {
             updateThemeState()
             // End background task when app becomes active
             BackgroundTaskManager.shared.endBackgroundTask()
         }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+        .onReceive(notification: UIApplication.willResignActiveNotification) {
             // Start background task when app goes to background
             // This gives us ~30 seconds to finish any ongoing generation
             Logger.shared.log("📱 App will resign active - starting background task to complete AI generation")
             BackgroundTaskManager.shared.beginBackgroundTask()
         }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)) { _ in
+        .onReceive(notification: UIApplication.didEnterBackgroundNotification) {
             Logger.shared.log("📱 App entered background")
             if BackgroundTaskManager.shared.hasActiveBackgroundTask {
                 Logger.shared.log("✅ Background task is active - generation can continue")

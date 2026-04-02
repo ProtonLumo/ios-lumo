@@ -1,4 +1,5 @@
 import Lottie
+import LumoCore
 import LumoDesignSystem
 import PhotosUI
 import ProtonUIFoundations
@@ -21,6 +22,7 @@ public struct ComposerScreen<WebContent: View>: View {
         webBridge: WebComposerBridging,
         isWebViewReady: Bool,
         toastStateStore: ToastStateStore,
+        urlOpener: URLOpenerProtocol,
         onThinkingUpsellTapped: @escaping () -> Void,
         webContent: @escaping () -> WebContent
     ) {
@@ -29,6 +31,7 @@ public struct ComposerScreen<WebContent: View>: View {
             webBridge: webBridge,
             isWebViewReady: isWebViewReady,
             toastStateStore: toastStateStore,
+            urlOpener: urlOpener,
             onThinkingUpsellTapped: onThinkingUpsellTapped,
             webContent: webContent
         )
@@ -40,6 +43,7 @@ public struct ComposerScreen<WebContent: View>: View {
         webBridge: WebComposerBridging,
         isWebViewReady: Bool,
         toastStateStore: ToastStateStore,
+        urlOpener: URLOpenerProtocol,
         onThinkingUpsellTapped: @escaping () -> Void,
         webContent: @escaping () -> WebContent
     ) {
@@ -47,7 +51,9 @@ public struct ComposerScreen<WebContent: View>: View {
             wrappedValue: .init(
                 initialState: initialState,
                 webBridge: webBridge,
-                toastStateStore: toastStateStore
+                toastStateStore: toastStateStore,
+                speechService: SpeechRecordingServiceFactory.make(),
+                urlOpener: urlOpener
             )
         )
         self.isWebViewReady = isWebViewReady
@@ -92,6 +98,22 @@ public struct ComposerScreen<WebContent: View>: View {
                         .padding(.bottom, DS.Spacing.standard)
                     }
                 }
+
+                if store.state.speechState.isActive {
+                    SpeechRecorderView(
+                        state: store.state.speechState,
+                        onSubmit: { store.send(action: .recorder(.submit)) },
+                        onCancel: { store.send(action: .recorder(.cancel)) }
+                    )
+                }
+            }
+        }
+        .overlay {
+            if store.state.speechState.isPermissionDenied {
+                PermissionAlertOverlay(
+                    onSettings: { store.send(action: .recorder(.openSettings)) },
+                    onDismiss: { store.send(action: .recorder(.dismissPermissionAlert)) }
+                )
             }
         }
         .onChange(of: isWebViewReady, initial: true) { _, newValue in
@@ -99,6 +121,9 @@ public struct ComposerScreen<WebContent: View>: View {
         }
         .task { store.send(action: .taskStarted) }
         .onDisappear { store.send(action: .onDisappear) }
+        .onReceive(notification: UIApplication.didBecomeActiveNotification) {
+            store.send(action: .appDidBecomeActive)
+        }
         .sheet(
             item: activeSheetBinding,
             onDismiss: {
@@ -270,6 +295,7 @@ private struct SheetHeightKey: PreferenceKey {
             webBridge: WebComposerBridge(),
             isWebViewReady: true,
             toastStateStore: ToastStateStore(initialState: .initial),
+            urlOpener: OpenURLAction { _ in .discarded },
             onThinkingUpsellTapped: {},
             webContent: { EmptyView() }
         )

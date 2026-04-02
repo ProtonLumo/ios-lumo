@@ -13,7 +13,15 @@ final class ComposerStateStoreTests {
     let webViewSpy = WKWebViewSpy()
     let webBridge = WebComposerBridge()
     let toastStateStore = ToastStateStore(initialState: .initial)
-    lazy var sut = ComposerStateStore(initialState: initialState, webBridge: webBridge, toastStateStore: toastStateStore)
+    let speechServiceSpy = SpeechRecordingServiceSpy()
+    let urlOpenerSpy = URLOpenerSpy()
+    lazy var sut = ComposerStateStore(
+        initialState: initialState,
+        webBridge: webBridge,
+        toastStateStore: toastStateStore,
+        speechService: speechServiceSpy,
+        urlOpener: urlOpenerSpy
+    )
 
     var initialState = ComposerViewState.initial
     var cancellables: Set<AnyCancellable> = []
@@ -1038,6 +1046,8 @@ final class ComposerStateStoreTests {
             initialState: initialState,
             webBridge: webBridge,
             toastStateStore: toastStateStore,
+            speechService: speechServiceSpy,
+            urlOpener: urlOpenerSpy,
             fileLoader: { _ in fileData }
         )
         webBridge.attach(to: webViewSpy)
@@ -1069,6 +1079,8 @@ final class ComposerStateStoreTests {
             initialState: initialState,
             webBridge: webBridge,
             toastStateStore: toastStateStore,
+            speechService: speechServiceSpy,
+            urlOpener: urlOpenerSpy,
             fileLoader: { _ in throw CocoaError(.fileReadNoPermission) }
         )
         webBridge.attach(to: webViewSpy)
@@ -1143,6 +1155,147 @@ final class ComposerStateStoreTests {
         #expect(webViewSpy.evaluateJavaScriptCalls.count == 1)
         #expect(webViewSpy.evaluateJavaScriptCalls.last == .init(javaScript: javascript, frame: .none, contentWorld: .page))
         #expect(toastStateStore.state.toasts.isEmpty)
+    }
+
+    // MARK: - startRecordingTapped
+
+    @Test
+    func startRecordingTapped_SpeechStateBecomesRecording() async {
+        await sut.send(action: .startRecordingTapped)
+
+        guard case .recording = sut.state.speechState else {
+            Issue.record("Expected .recording, got \(sut.state.speechState)")
+            return
+        }
+    }
+
+    @Test
+    func cancelRecordingTapped_ResetsSpeechState() async {
+        await sut.send(action: .startRecordingTapped)
+
+        guard case .recording = sut.state.speechState else {
+            Issue.record("Precondition failed: expected .recording")
+            return
+        }
+
+        await sut.send(action: .recorder(.cancel))
+
+        #expect(sut.state.speechState == .idle)
+    }
+
+    @Test
+    func startRecordingTapped_WhenTranscriptionCompletes_SetsCurrentTextAndResetsState() async {
+        await sut.send(action: .startRecordingTapped)
+
+        speechServiceSpy.simulateUpdate(.transcriptionUpdated("hello world"))
+        try? await Task.sleep(for: .milliseconds(50))
+
+        await sut.send(action: .recorder(.submit))
+
+        #expect(sut.state.currentText == "hello world")
+        #expect(sut.state.speechState == .idle)
+    }
+
+    @Test
+    func startRecordingTapped_WhenTranscriptionCompletesWithExistingText_AppendsWithSpace() async {
+        await sut.send(action: .textChanged("Write me a poem about"))
+
+        await sut.send(action: .startRecordingTapped)
+
+        speechServiceSpy.simulateUpdate(.transcriptionUpdated("the mountains at dawn"))
+        try? await Task.sleep(for: .milliseconds(50))
+
+        await sut.send(action: .recorder(.submit))
+
+        #expect(sut.state.currentText == "Write me a poem about the mountains at dawn")
+    }
+
+    @Test
+    func onDisappear_DuringRecording_DetachesSpeechStore() async {
+        await sut.send(action: .startRecordingTapped)
+
+        guard case .recording = sut.state.speechState else {
+            Issue.record("Precondition failed: expected .recording")
+            return
+        }
+
+        await sut.send(action: .onDisappear)
+
+        #expect(sut.state.speechState == .idle)
+
+        speechServiceSpy.simulateUpdate(.transcriptionUpdated("hello world"))
+        try? await Task.sleep(for: .milliseconds(50))
+        await sut.send(action: .recorder(.submit))
+
+        #expect(sut.state.currentText == "")
+    }
+
+    @Test
+    func appDidBecomeActive_WhenPermissionDeniedAndNowGranted_TransitionsToIdle() async {
+        speechServiceSpy.stubbedRequestPermissionsResult = .denied
+        await sut.send(action: .startRecordingTapped)
+
+        #expect(sut.state.speechState == .permissionDenied)
+
+        speechServiceSpy.stubbedRequestPermissionsResult = .granted
+        await sut.send(action: .appDidBecomeActive)
+
+        #expect(sut.state.speechState == .idle)
+    }
+
+    @Test
+    func appDidBecomeActive_WhenPermissionDeniedAndStillDenied_RemainsPermissionDenied() async {
+        speechServiceSpy.stubbedRequestPermissionsResult = .denied
+        await sut.send(action: .startRecordingTapped)
+
+        #expect(sut.state.speechState == .permissionDenied)
+
+        await sut.send(action: .appDidBecomeActive)
+
+        #expect(sut.state.speechState == .permissionDenied)
+    }
+
+    @Test(arguments: [
+        ComposerStateStore.RecorderAction.submit,
+        .cancel,
+        .dismissPermissionAlert
+    ])
+    func recorderAction_DetachesSpeechStore(action: ComposerStateStore.RecorderAction) async {
+        if case .dismissPermissionAlert = action {
+            speechServiceSpy.stubbedRequestPermissionsResult = .denied
+        }
+
+        await sut.send(action: .startRecordingTapped)
+        await sut.send(action: .recorder(action))
+
+        let cancelCountAfterDetach = speechServiceSpy.cancelCallCount
+
+        await sut.send(action: .recorder(.cancel))
+
+        #expect(speechServiceSpy.cancelCallCount == cancelCountAfterDetach, "recorder(.cancel) should be a no-op after store is detached")
+    }
+
+    @Test
+    func recorderOpenSettings_OpensSettingsURL() async {
+        await sut.send(action: .startRecordingTapped)
+
+        await sut.send(action: .recorder(.openSettings))
+
+        #expect(urlOpenerSpy.callAsFunctionInvokedWithURL == [.settings])
+    }
+
+    @Test
+    func startRecordingTapped_WhenAlreadyRecording_DoesNotStartNewSession() async {
+        await sut.send(action: .startRecordingTapped)
+
+        guard case .recording = sut.state.speechState else {
+            Issue.record("Precondition failed: expected .recording")
+            return
+        }
+
+        await sut.send(action: .startRecordingTapped)
+
+        #expect(speechServiceSpy.startRecordingCallCount == 1)
     }
 
     // MARK: - Private

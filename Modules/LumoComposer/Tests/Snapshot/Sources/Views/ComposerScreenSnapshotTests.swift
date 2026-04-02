@@ -84,6 +84,7 @@ struct ComposerScreenSnapshotTests {
             webBridge: WebComposerBridge(),
             isWebViewReady: false,
             toastStateStore: ToastStateStore(initialState: .initial),
+            urlOpener: OpenURLAction { _ in .discarded },
             onThinkingUpsellTapped: {},
             webContent: { EmptyView() }
         )

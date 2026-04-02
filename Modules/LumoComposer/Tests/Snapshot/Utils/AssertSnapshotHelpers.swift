@@ -42,6 +42,7 @@ private func assertSnapshots(
         try? styles.forEach { style in
             let controller = try controller()
             controller.overrideUserInterfaceStyle = style
+            RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.05))
 
             assertSnapshot(
                 of: controller,
