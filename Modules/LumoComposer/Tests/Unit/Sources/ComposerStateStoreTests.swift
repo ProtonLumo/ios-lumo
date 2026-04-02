@@ -1216,6 +1216,31 @@ final class ComposerStateStoreTests {
         #expect(sut.state.currentText == "")
     }
 
+    @Test
+    func recorderAppDidBecomeActive_WhenPermissionDeniedAndNowGranted_TransitionsToIdle() async {
+        speechServiceSpy.stubbedRequestPermissionsResult = .denied
+        await sut.send(action: .startRecordingTapped)
+
+        #expect(sut.state.speechState == .permissionDenied)
+
+        speechServiceSpy.stubbedRequestPermissionsResult = .granted
+        await sut.send(action: .recorder(.appDidBecomeActive))
+
+        #expect(sut.state.speechState == .idle)
+    }
+
+    @Test
+    func recorderAppDidBecomeActive_WhenPermissionDeniedAndStillDenied_RemainsPermissionDenied() async {
+        speechServiceSpy.stubbedRequestPermissionsResult = .denied
+        await sut.send(action: .startRecordingTapped)
+
+        #expect(sut.state.speechState == .permissionDenied)
+
+        await sut.send(action: .recorder(.appDidBecomeActive))
+
+        #expect(sut.state.speechState == .permissionDenied)
+    }
+
     @Test(arguments: [
         ComposerStateStore.RecorderAction.submit,
         .cancel,

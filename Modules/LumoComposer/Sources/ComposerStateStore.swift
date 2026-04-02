@@ -46,6 +46,7 @@ final class ComposerStateStore: StateStore {
         case cancel
         case dismissPermissionAlert
         case openSettings
+        case appDidBecomeActive
     }
 
     typealias FileLoader = @Sendable (URL) throws -> Data
@@ -264,6 +265,8 @@ final class ComposerStateStore: StateStore {
                 detachSpeechStore()
             case .openSettings:
                 await speechStore?.send(action: .openSettings)
+            case .appDidBecomeActive:
+                break
             }
         }
     }
