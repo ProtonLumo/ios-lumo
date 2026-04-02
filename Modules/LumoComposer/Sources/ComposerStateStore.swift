@@ -162,7 +162,9 @@ final class ComposerStateStore: StateStore {
                 .sink { [weak self] speechState in self?.state.speechState = speechState }
                 .store(in: &speechStateCancellable)
             store.onTranscriptionComplete = { [weak self] text in
-                self?.state.currentText = text
+                guard let self else { return }
+                let existing = state.currentText
+                state.currentText = existing.isEmpty ? text : existing + " " + text
             }
             speechStore = store
             await store.send(action: .startRecording)
