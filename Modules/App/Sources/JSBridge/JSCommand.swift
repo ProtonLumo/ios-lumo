@@ -91,27 +91,35 @@ enum JSCommand {
                     if (!editor) {
                         return { success: false, reason: 'editor_not_found' };
                     }
-                    
-                    editor.textContent = prompt;
-                    ['input', 'change'].forEach(eventType => {
-                        editor.dispatchEvent(new Event(eventType, { bubbles: true }));
-                    });
-                    
+
+                    // Synchronous focus + execCommand + blur to avoid keyboard flash.
+                    // iOS keyboard presentation is async, so blur() in the same
+                    // JS execution context prevents it from appearing.
+                    editor.focus();
+                    document.execCommand('selectAll', false, null);
+                    const inserted = document.execCommand('insertText', false, prompt);
+                    editor.blur();
+
                     restoreLayout();
-                    
-                    return { success: true, action: 'text_inserted' };
+
+                    return { success: true, action: inserted ? 'execCommand' : 'execCommand_failed' };
                 })();
                 """
 
         case .clearPrompt:
             return """
                 (function() {
-                    const editor = document.querySelector('.tiptap.ProseMirror.composer') || 
+                    const editor = document.querySelector('.tiptap.ProseMirror.composer') ||
                                   document.querySelector('.composer') ||
                                   document.querySelector('textarea.composer-textarea');
                     if (editor) {
-                        editor.textContent = '';
-                        editor.dispatchEvent(new Event('input', { bubbles: true }));
+                        editor.focus();
+                        const selection = window.getSelection();
+                        const range = document.createRange();
+                        range.selectNodeContents(editor);
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                        document.execCommand('delete', false, null);
                         return { success: true };
                     }
                     return { success: false, reason: 'editor_not_found' };
