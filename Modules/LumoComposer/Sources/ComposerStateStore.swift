@@ -156,6 +156,7 @@ final class ComposerStateStore: StateStore {
             }
 
         case .startRecordingTapped:
+            guard speechStore == nil else { return }
             let store = SpeechStateStore(service: speechService, urlOpener: urlOpener)
             store
                 .$state
