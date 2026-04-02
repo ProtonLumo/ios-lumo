@@ -464,7 +464,75 @@
       }
     },
     "Cancel" : {
-      "comment" : "Cancel button in permission alert"
+      "comment" : "Cancel button in permission alert",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušit"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annulla"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuleren"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anuluj"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отменить"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İptal"
+          }
+        }
+      }
     },
     "Connection lost. Please try again." : {
       "comment" : "Error shown when the streaming connection to the AI service is interrupted",
@@ -1237,7 +1305,75 @@
       }
     },
     "Microphone Access Required" : {
-      "comment" : "Title of the alert shown when microphone permission is denied"
+      "comment" : "Title of the alert shown when microphone permission is denied",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Požadován přístup k mikrofonu"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mikrofonzugriff erforderlich"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere acceso al micrófono"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere acceso al micrófono"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accès au microphone requis"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accesso al microfono richiesto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Microfoontoegang vereist"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wymagany dostęp do mikrofonu"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acesso ao microfone necessário"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Требуется доступ к микрофону"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mikrofona erişme izni gerekiyor"
+          }
+        }
+      }
     },
     "Models" : {
       "comment" : "Title of the model selection bottom sheet",
@@ -1859,7 +1995,75 @@
       }
     },
     "To use voice input, please enable microphone access in your device settings." : {
-      "comment" : "Message of the alert shown when microphone permission is denied"
+      "comment" : "Message of the alert shown when microphone permission is denied",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "K použití hlasového vstupu prosím povolte přístup k mikrofonu v nastavení svého zařízení."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um Spracheingabe zu verwenden, aktiviere bitte den Mikrofonzugriff in deinen Geräteeinstellungen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para usar la entrada de voz, activa el acceso al micrófono en los ajustes de tu dispositivo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para usar la entrada de voz, active el acceso al micrófono en los ajustes de su dispositivo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour utiliser la saisie vocale, veuillez activer l'accès au microphone dans les paramètres de votre appareil."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per usare l'input vocale, attiva l'accesso al microfono nelle impostazioni del tuo dispositivo."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Om steminvoer te gebruiken, gelieve microfoontoegang in te schakelen in de instellingen van uw apparaat."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aby użyć wprowadzania głosowego, włącz dostęp do mikrofonu w ustawieniach Twojego urządzenia."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para usar a entrada de voz, ative o acesso ao microfone nas configurações do seu dispositivo."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чтобы использовать голосовой ввод, включите доступ к микрофону в настройках устройства."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ses girişini kullanmak için aygıt ayarlarınızdan mikrofona erişme izni verin."
+          }
+        }
+      }
     },
     "Tools" : {
       "comment" : "Title of the tools bottom sheet",
