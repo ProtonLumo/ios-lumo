@@ -105,7 +105,7 @@ public struct ComposerScreen<WebContent: View>: View {
         }
         .task { store.send(action: .taskStarted) }
         .onDisappear { store.send(action: .onDisappear) }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+        .onReceive(notification: UIApplication.didBecomeActiveNotification) {
             store.send(action: .appDidBecomeActive)
         }
         .sheet(
