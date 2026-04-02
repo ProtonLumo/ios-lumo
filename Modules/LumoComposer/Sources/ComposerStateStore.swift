@@ -266,7 +266,12 @@ final class ComposerStateStore: StateStore {
             case .openSettings:
                 await speechStore?.send(action: .openSettings)
             case .appDidBecomeActive:
-                break
+                guard state.speechState.isPermissionDenied else { return }
+                let permission = await speechService.requestPermissions()
+                if permission == .granted {
+                    detachSpeechStore()
+                    state.speechState = .idle
+                }
             }
         }
     }
