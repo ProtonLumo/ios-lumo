@@ -1284,6 +1284,20 @@ final class ComposerStateStoreTests {
         #expect(urlOpenerSpy.callAsFunctionInvokedWithURL == [.settings])
     }
 
+    @Test
+    func startRecordingTapped_WhenAlreadyRecording_DoesNotStartNewSession() async {
+        await sut.send(action: .startRecordingTapped)
+
+        guard case .recording = sut.state.speechState else {
+            Issue.record("Precondition failed: expected .recording")
+            return
+        }
+
+        await sut.send(action: .startRecordingTapped)
+
+        #expect(speechServiceSpy.startRecordingCallCount == 1)
+    }
+
     // MARK: - Private
 
     private func observeStateChanges(_ stateChange: @escaping (ComposerViewState) -> Void) {
