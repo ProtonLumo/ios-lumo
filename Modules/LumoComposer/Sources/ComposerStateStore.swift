@@ -24,6 +24,7 @@ final class ComposerStateStore: StateStore {
         case openSketchTapped
         case toggleCreateImageTapped
         case startRecordingTapped
+        case appDidBecomeActive
         case previewAttachmentTapped(id: String)
         case removeAttachmentTapped(id: String)
 
@@ -46,7 +47,6 @@ final class ComposerStateStore: StateStore {
         case cancel
         case dismissPermissionAlert
         case openSettings
-        case appDidBecomeActive
     }
 
     typealias FileLoader = @Sendable (URL) throws -> Data
@@ -167,6 +167,14 @@ final class ComposerStateStore: StateStore {
             speechStore = store
             await store.send(action: .startRecording)
 
+        case .appDidBecomeActive:
+            guard state.speechState.isPermissionDenied else { return }
+            let permission = await speechService.requestPermissions()
+            if permission == .granted {
+                detachSpeechStore()
+                state.speechState = .idle
+            }
+
         case .previewAttachmentTapped(let id):
             await execute { () async throws(WebComposerBridgeError) in
                 try await webBridge.previewAttachment(id: id)
@@ -265,13 +273,6 @@ final class ComposerStateStore: StateStore {
                 detachSpeechStore()
             case .openSettings:
                 await speechStore?.send(action: .openSettings)
-            case .appDidBecomeActive:
-                guard state.speechState.isPermissionDenied else { return }
-                let permission = await speechService.requestPermissions()
-                if permission == .granted {
-                    detachSpeechStore()
-                    state.speechState = .idle
-                }
             }
         }
     }
