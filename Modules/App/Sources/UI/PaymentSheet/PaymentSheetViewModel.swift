@@ -1,4 +1,5 @@
 import Foundation
+import LumoCore
 import ProtonUIFoundations
 import StoreKit
 import SwiftUI

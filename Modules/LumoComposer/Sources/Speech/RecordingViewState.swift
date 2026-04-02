@@ -1,10 +1,10 @@
 import Foundation
 
-struct RecordingViewState: Equatable, Copying {
-    var transcription: String
-    var audioLevels: [CGFloat]
-    var duration: TimeInterval
-    var isOnDevice: Bool
+public struct RecordingViewState: Equatable, Copying {
+    public var transcription: String
+    public var audioLevels: [CGFloat]
+    public var duration: TimeInterval
+    public var isOnDevice: Bool
 }
 
 extension RecordingViewState {

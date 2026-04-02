@@ -1,34 +1,56 @@
 import ProtonUIFoundations
 import SwiftUI
 
-struct PermissionAlertView: View {
+public struct PermissionAlertOverlay: View {
+    let onSettings: () -> Void
+    let onDismiss: () -> Void
+
+    public init(onSettings: @escaping () -> Void, onDismiss: @escaping () -> Void) {
+        self.onSettings = onSettings
+        self.onDismiss = onDismiss
+    }
+
+    public var body: some View {
+        ZStack {
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+                .onTapGesture { onDismiss() }
+
+            PermissionAlertView(
+                onSettings: onSettings,
+                onDismiss: onDismiss
+            )
+        }
+        .transition(.opacity)
+        .zIndex(999)
+    }
+}
+
+private struct PermissionAlertView: View {
     let onSettings: () -> Void
     let onDismiss: () -> Void
 
     var body: some View {
         VStack(spacing: 20) {
-            // Icon
             Image(systemName: "mic.slash")
                 .font(.system(size: 48))
                 .foregroundColor(Theme.color.notificationError)
 
-            Text(String(localized: "permission.microphone.denied.title"))
+            Text(L10n.Permission.microphoneTitle)
                 .font(.title2)
                 .fontWeight(.semibold)
                 .foregroundColor(Theme.color.textNorm)
                 .multilineTextAlignment(.center)
 
-            Text(String(localized: "permission.microphone.denied.message"))
+            Text(L10n.Permission.microphoneMessage)
                 .font(.body)
                 .foregroundColor(Theme.color.textWeak)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 8)
 
-            // Buttons
             VStack(spacing: 12) {
-                // Go to Settings button
                 Button(action: onSettings) {
-                    Text(String(localized: "permission.settings.button"))
+                    Text(L10n.Permission.openSettings)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -37,9 +59,8 @@ struct PermissionAlertView: View {
                         .cornerRadius(8)
                 }
 
-                // Cancel button
                 Button(action: onDismiss) {
-                    Text(String(localized: "permission.cancel.button"))
+                    Text(L10n.Permission.cancel)
                         .font(.system(size: 16, weight: .regular))
                         .foregroundColor(Theme.color.textWeak)
                         .frame(maxWidth: .infinity)
@@ -54,39 +75,5 @@ struct PermissionAlertView: View {
                 .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: 8)
         )
         .padding(.horizontal, 32)
-    }
-}
-
-struct PermissionAlertOverlay: View {
-    @Binding var isPresented: Bool
-    let permissionType: String
-    let onSettings: () -> Void
-
-    var body: some View {
-        if isPresented {
-            ZStack {
-                // Background overlay
-                Color.black.opacity(0.4)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        // Allow dismissing by tapping background
-                        isPresented = false
-                    }
-
-                // Alert content
-                PermissionAlertView(
-                    onSettings: {
-                        onSettings()
-                        isPresented = false
-                    },
-                    onDismiss: {
-                        isPresented = false
-                    }
-                )
-            }
-            .transition(.opacity.combined(with: .scale))
-            .animation(.easeInOut(duration: 0.3), value: isPresented)
-            .zIndex(999)
-        }
     }
 }

@@ -154,6 +154,37 @@ enum L10n {
         )
     }
 
+    enum Permission {
+        static let microphoneTitle = LocalizedStringResource(
+            "Microphone Access Required",
+            bundle: .module,
+            comment: "Title of the alert shown when microphone permission is denied"
+        )
+        static let microphoneMessage = LocalizedStringResource(
+            "To use voice input, please enable microphone access in your device settings.",
+            bundle: .module,
+            comment: "Message of the alert shown when microphone permission is denied"
+        )
+        static let openSettings = LocalizedStringResource(
+            "Open Settings",
+            bundle: .module,
+            comment: "Button to open device Settings app from permission alert"
+        )
+        static let cancel = LocalizedStringResource(
+            "Cancel",
+            bundle: .module,
+            comment: "Cancel button in permission alert"
+        )
+    }
+
+    enum Speech {
+        static let onDevice = LocalizedStringResource(
+            "Transcription running on device",
+            bundle: .module,
+            comment: "Badge shown in speech recorder when on-device recognition is active"
+        )
+    }
+
     enum Welcome {
         static let greeting = LocalizedStringResource(
             "Hey, I'm Lumo.",

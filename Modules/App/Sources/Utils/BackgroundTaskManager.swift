@@ -1,4 +1,5 @@
 import Foundation
+import LumoCore
 import UIKit
 
 /// Manages background task execution to allow generation to complete
