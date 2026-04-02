@@ -98,6 +98,22 @@ public struct ComposerScreen<WebContent: View>: View {
                         .padding(.bottom, DS.Spacing.standard)
                     }
                 }
+
+                if store.state.speechState.isActive {
+                    SpeechRecorderView(
+                        state: store.state.speechState,
+                        onSubmit: { store.send(action: .recorder(.submit)) },
+                        onCancel: { store.send(action: .recorder(.cancel)) }
+                    )
+                }
+            }
+        }
+        .overlay {
+            if store.state.speechState.isPermissionDenied {
+                PermissionAlertOverlay(
+                    onSettings: { store.send(action: .recorder(.openSettings)) },
+                    onDismiss: { store.send(action: .recorder(.dismissPermissionAlert)) }
+                )
             }
         }
         .onChange(of: isWebViewReady, initial: true) { _, newValue in
