@@ -5,7 +5,6 @@ import WebKit
 enum JSCommand {
     // MARK: - Prompt Operations
     case insertPrompt(text: String, editorType: EditorType)
-    case clearPrompt
 
     // MARK: - Payment Operations
     case getSubscriptions
@@ -103,26 +102,6 @@ enum JSCommand {
                     restoreLayout();
 
                     return { success: true, action: inserted ? 'execCommand' : 'execCommand_failed' };
-                })();
-                """
-
-        case .clearPrompt:
-            return """
-                (function() {
-                    const editor = document.querySelector('.tiptap.ProseMirror.composer') ||
-                                  document.querySelector('.composer') ||
-                                  document.querySelector('textarea.composer-textarea');
-                    if (editor) {
-                        editor.focus();
-                        const selection = window.getSelection();
-                        const range = document.createRange();
-                        range.selectNodeContents(editor);
-                        selection.removeAllRanges();
-                        selection.addRange(range);
-                        document.execCommand('delete', false, null);
-                        return { success: true };
-                    }
-                    return { success: false, reason: 'editor_not_found' };
                 })();
                 """
 
@@ -236,8 +215,6 @@ enum JSCommand {
         switch self {
         case .insertPrompt(let text, let editorType):
             return "Insert prompt (\(editorType.rawValue)): \(text.prefix(50))..."
-        case .clearPrompt:
-            return "Clear prompt"
         case .getSubscriptions:
             return "Get subscriptions"
         case .restorePurchases:
@@ -272,7 +249,7 @@ enum JSCommand {
     /// Whether this command should be retried on failure
     var isRetryable: Bool {
         switch self {
-        case .insertPrompt, .clearPrompt, .getSubscriptions, .restorePurchases:
+        case .insertPrompt, .getSubscriptions, .restorePurchases:
             return true
         case .simulateGarbageCollection, .clearHistory:
             return false
