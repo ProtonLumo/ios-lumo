@@ -1197,6 +1197,20 @@ final class ComposerStateStoreTests {
     }
 
     @Test
+    func startRecordingTapped_WhenTranscriptionCompletesWithExistingText_AppendsWithSpace() async {
+        await sut.send(action: .textChanged("Write me a poem about"))
+
+        await sut.send(action: .startRecordingTapped)
+
+        speechServiceSpy.simulateUpdate(.transcriptionUpdated("the mountains at dawn"))
+        try? await Task.sleep(for: .milliseconds(50))
+
+        await sut.send(action: .recorder(.submit))
+
+        #expect(sut.state.currentText == "Write me a poem about the mountains at dawn")
+    }
+
+    @Test
     func onDisappear_DuringRecording_DetachesSpeechStore() async {
         await sut.send(action: .startRecordingTapped)
 
