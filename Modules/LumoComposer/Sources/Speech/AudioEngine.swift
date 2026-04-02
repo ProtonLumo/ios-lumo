@@ -31,7 +31,12 @@ final class AVAudioEngineAdapter: AudioEngine {
     }
 
     func stop() {
-        engine.inputNode.removeTap(onBus: 0)
+        // Only touch inputNode if engine is running — accessing it before
+        // setActive(true) with .playAndRecord initializes the audio graph
+        // with no input route, locking the format to 0 Hz permanently.
+        if engine.isRunning {
+            engine.inputNode.removeTap(onBus: 0)
+        }
         engine.stop()
     }
 }
