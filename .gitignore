@@ -57,6 +57,10 @@ Carthage/
 *.xcodeproj.bak/**
 # End of https://www.gitignore.io/api/xcode,osx
 
+# Build artifacts
+*.ipa
+*.dSYM.zip
+
 # Fastlane
 **/fastlane/report.xml
 **/fastlane/Preview.html
