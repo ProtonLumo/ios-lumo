@@ -54,17 +54,22 @@ enum JSCommand {
                     const prompt = '\(safeText)';
                     const editorType = '\(editorType.rawValue)';
 
-                    // Preferred path: React-aware handler registered by useMobilePromptHandler.
-                    // Calls setValue() directly in React state — no DOM mutation, no focus/blur,
-                    // no layout reflow. Works on both 1st and 2nd calls.
-                    if (typeof window.__insertPromptImpl === 'function') {
-                        window.__insertPromptImpl(prompt, false);
-                        return { success: true, action: 'react_state' };
-                    }
-
-                    // Fallback: find the textarea and use execCommand.
-                    // execCommand keeps ProseMirror/textarea state in sync on iOS 18
-                    // (plain textContent assignment breaks on 2nd call).
+                    // Use execCommand to insert text. This is the only approach that correctly
+                    // manages iOS's RTI (Remote Text Input) session lifecycle:
+                    //   1. focus() opens the session
+                    //   2. execCommand('insertText') inserts through the native input path,
+                    //      keeping React's onChange in sync via the fired input event
+                    //   3. blur() closes the session cleanly
+                    //
+                    // All three steps run in the same synchronous JS execution, so iOS never
+                    // gets a chance to show the keyboard (keyboard presentation requires
+                    // yielding to the run loop).
+                    //
+                    // Alternatives that were tried and rejected:
+                    //  - textContent mutation: breaks on 2nd call (React state not updated)
+                    //  - window.__insertPromptImpl / React setState: async commit leaves the RTI
+                    //    session in a stale state, causing "Result accumulator timeout" and
+                    //    keyboard appearing after submit
                     let editor = null;
                     if (editorType === 'tiptap' || editorType === 'basic') {
                         editor = document.querySelector('.tiptap.ProseMirror.composer') ||
