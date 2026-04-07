@@ -53,53 +53,34 @@ enum JSCommand {
                 (function() {
                     const prompt = '\(safeText)';
                     const editorType = '\(editorType.rawValue)';
-                    
-                    // Layout stabilization functions (duplicated from utilities.js to remove dependency)
-                    let stabilizationStyleElement = null;
-                    
-                    function applyLayoutStabilization() {
-                        if (stabilizationStyleElement) {
-                            restoreLayout();
-                        }
-                        stabilizationStyleElement = document.createElement('style');
-                        stabilizationStyleElement.id = 'lumo-layout-stabilization';
-                        stabilizationStyleElement.textContent = 'html:not(.feature-scrollbars-off) * { bottom: 0 !important; }';
-                        document.head.appendChild(stabilizationStyleElement);
-                        return true;
+
+                    // Preferred path: React-aware handler registered by useMobilePromptHandler.
+                    // Calls setValue() directly in React state — no DOM mutation, no focus/blur,
+                    // no layout reflow. Works on both 1st and 2nd calls.
+                    if (typeof window.__insertPromptImpl === 'function') {
+                        window.__insertPromptImpl(prompt);
+                        return { success: true, action: 'react_state' };
                     }
-                    
-                    function restoreLayout() {
-                        if (stabilizationStyleElement) {
-                            document.head.removeChild(stabilizationStyleElement);
-                            stabilizationStyleElement = null;
-                            return true;
-                        }
-                        return false;
-                    }
-                    
-                    applyLayoutStabilization();
-                    
+
+                    // Fallback: find the textarea and use execCommand.
+                    // execCommand keeps ProseMirror/textarea state in sync on iOS 18
+                    // (plain textContent assignment breaks on 2nd call).
                     let editor = null;
                     if (editorType === 'tiptap' || editorType === 'basic') {
-                        editor = document.querySelector('.tiptap.ProseMirror.composer') || 
+                        editor = document.querySelector('.tiptap.ProseMirror.composer') ||
                                 document.querySelector('.composer');
                     } else if (editorType === 'textarea') {
                         editor = document.querySelector('textarea.composer-textarea');
                     }
-                    
+
                     if (!editor) {
                         return { success: false, reason: 'editor_not_found' };
                     }
 
-                    // Synchronous focus + execCommand + blur to avoid keyboard flash.
-                    // iOS keyboard presentation is async, so blur() in the same
-                    // JS execution context prevents it from appearing.
                     editor.focus();
                     document.execCommand('selectAll', false, null);
                     const inserted = document.execCommand('insertText', false, prompt);
                     editor.blur();
-
-                    restoreLayout();
 
                     return { success: true, action: inserted ? 'execCommand' : 'execCommand_failed' };
                 })();
