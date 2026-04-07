@@ -1242,7 +1242,8 @@ final class ComposerStateStoreTests {
             "attachedFiles": attachedFiles,
             "featureFlags": [
                 "isImageGenEnabled": false,
-                "isModelSelectionEnabled": false
+                "isModelSelectionEnabled": false,
+                "isToolsEnabled": false
             ]
         ]
 

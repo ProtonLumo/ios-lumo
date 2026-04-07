@@ -46,7 +46,8 @@ final class WebComposerScriptMessageHandlerTests {
                     "attachedFiles": [],
                     "featureFlags": [
                         "isImageGenEnabled": false,
-                        "isModelSelectionEnabled": false
+                        "isModelSelectionEnabled": false,
+                        "isToolsEnabled": false
                     ]
                 ],
                 expectedState: .init(
@@ -79,7 +80,8 @@ final class WebComposerScriptMessageHandlerTests {
                     ],
                     "featureFlags": [
                         "isImageGenEnabled": true,
-                        "isModelSelectionEnabled": true
+                        "isModelSelectionEnabled": true,
+                        "isToolsEnabled": true
                     ]
                 ],
                 expectedState: .init(
@@ -93,7 +95,7 @@ final class WebComposerScriptMessageHandlerTests {
                     attachedFiles: [
                         File(id: "<file-123>", name: "document.pdf", type: .pdf, preview: .none)
                     ],
-                    featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true)
+                    featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true, isToolsEnabled: true)
                 )
             )
         ]
