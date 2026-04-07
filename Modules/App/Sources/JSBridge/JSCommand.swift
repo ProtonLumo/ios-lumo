@@ -58,7 +58,7 @@ enum JSCommand {
                     // Calls setValue() directly in React state — no DOM mutation, no focus/blur,
                     // no layout reflow. Works on both 1st and 2nd calls.
                     if (typeof window.__insertPromptImpl === 'function') {
-                        window.__insertPromptImpl(prompt);
+                        window.__insertPromptImpl(prompt, false);
                         return { success: true, action: 'react_state' };
                     }
 
