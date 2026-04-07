@@ -6,12 +6,12 @@ struct LumoApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
-    @StateObject private var themeProvider = ThemeProvider()
+    @StateObject private var themeStore = ThemeStore()
 
     var body: some Scene {
         WindowGroup {
             ContentView(urlOpener: openURL)
-                .environmentObject(themeProvider)
+                .environmentObject(themeStore)
                 .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LumoPromptReceived"))) { notification in
                     if let prompt = notification.userInfo?["prompt"] as? String {
                         Logger.shared.log("App received prompt: \(prompt)", category: "AppDelegate")
@@ -45,7 +45,7 @@ struct LumoApp: App {
                         Logger.shared.log("Unknown scene phase: \(newPhase)", category: "AppDelegate")
                     }
                 }
-                .preferredColorScheme(themeProvider.systemColorScheme)
+                .preferredColorScheme(themeStore.colorScheme)
         }
     }
 }
@@ -53,11 +53,6 @@ struct LumoApp: App {
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         Logger.shared.log("App launched with options: \(String(describing: launchOptions))", category: "AppDelegate")
-
-        // CRITICAL: Initialize ThemeManager FIRST before any UI is created
-        // This caches the true system appearance before any overrideUserInterfaceStyle is set
-        _ = ThemeManager.shared
-        Logger.shared.log("ThemeManager initialized early", category: "AppDelegate")
 
         // Initialize Apple Subscription Manager
         Task {

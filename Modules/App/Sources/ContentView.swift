@@ -45,8 +45,7 @@ class PaymentSheetDelegate: NSObject, PaymentSheetViewModelDelegate {
 
 struct ContentView: View {
     // MARK: - Environment
-    @Environment(\.colorScheme) private var colorScheme
-    @EnvironmentObject private var themeProvider: ThemeProvider
+    @EnvironmentObject private var themeStore: ThemeStore
 
     // MARK: - State Properties
     @StateObject private var speechRecorder: LegacySpeechRecorder
@@ -119,7 +118,7 @@ struct ContentView: View {
                 WebView(
                     url: URL.lumoBase!,
                     webComposerBridge: webComposerBridge,
-                    themeProvider: themeProvider,
+                    themeStore: themeStore,
                     isReady: $webViewReady,
                     jsCoordinator: jsCoordinator,
                     action: $webViewAction,
@@ -212,11 +211,7 @@ struct ContentView: View {
                 checkMicrophonePermissionOnForeground()
             }
         }
-        .onReceive(notification: NSNotification.Name("ThemeChangedFromWeb")) {
-            updateThemeState()
-        }
         .onReceive(notification: UIApplication.didBecomeActiveNotification) {
-            updateThemeState()
             // End background task when app becomes active
             BackgroundTaskManager.shared.endBackgroundTask()
         }
@@ -541,21 +536,6 @@ struct ContentView: View {
         setupProcessTerminationObserver()
         setupDomainNavigationObserver()
         setupSessionSaveObserver()
-    }
-
-    private func updateThemeState() {
-        let themeManager = ThemeManager.shared
-
-        Logger.shared.log(
-            "📱 updateThemeState called: currentTheme=\(themeManager.currentTheme.rawValue), currentMode=\(themeManager.currentMode.rawValue), colorScheme=\(colorScheme == .dark ? "dark" : "light")")
-
-        // Update system theme mode to keep ThemeManager in sync
-        if themeManager.currentTheme == .system {
-            themeManager.updateSystemThemeMode(colorScheme == .dark)
-        }
-
-        // Update the centralized ThemeProvider - this will propagate to all views
-        themeProvider.updateTheme()
     }
 
     private func setupPromptObserver() {
@@ -901,6 +881,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView(urlOpener: OpenURLAction { _ in .discarded })
-            .environmentObject(ThemeProvider())
+            .environmentObject(ThemeStore())
     }
 }

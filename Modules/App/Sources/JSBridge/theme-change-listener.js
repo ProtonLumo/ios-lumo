@@ -29,10 +29,7 @@
     function findAndObserveThemeButtons() {
         // Find all theme card buttons
         const buttons = document.querySelectorAll('button.lumo-theme-card-button');
-
-        if (buttons.length > 0) {
-            buttons.forEach(attachClickObserver);
-        }
+        buttons.forEach(attachClickObserver);
     }
 
     // Body observer to detect when theme buttons appear
@@ -42,12 +39,12 @@
                 if (!(node instanceof HTMLElement)) continue;
 
                 // Case 1: the node itself is a theme button
-                if (node.matches("button.lumo-theme-card-button")) {
+                if (node.matches('button.lumo-theme-card-button')) {
                     attachClickObserver(node);
                 }
 
                 // Case 2: theme buttons are inside the added node
-                const buttons = node.querySelectorAll("button.lumo-theme-card-button");
+                const buttons = node.querySelectorAll('button.lumo-theme-card-button');
                 buttons.forEach(attachClickObserver);
             }
         }
