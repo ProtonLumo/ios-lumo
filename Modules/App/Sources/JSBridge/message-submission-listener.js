@@ -93,10 +93,6 @@
                 (clickedElement.tagName === 'BUTTON' && clickedElement.closest('.composer'));
             
             if (isSubmitButton) {
-                // Blur any focused element before submit. This runs in capture phase,
-                // before React's onClick, so iOS never gets to schedule a keyboard
-                // animation for the textarea.
-                document.activeElement?.blur();
                 window.webkit?.messageHandlers?.submitButtonClicked?.postMessage({});
                 applyStabilization('Submit button click');
             }
