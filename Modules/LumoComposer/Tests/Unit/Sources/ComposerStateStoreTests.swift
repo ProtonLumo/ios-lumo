@@ -146,6 +146,32 @@ final class ComposerStateStoreTests {
         #expect(toastStateStore.state.toasts.isEmpty)
     }
 
+    // MARK: - Gallery prompt observation
+
+    @Test
+    func taskStartedAction_StartsObservingGalleryPrompts() async {
+        await sut.send(action: .taskStarted)
+
+        let prompt = "A futuristic cat in space"
+        webBridge.handleGalleryPrompt(prompt)
+
+        try? await Task.sleep(for: .milliseconds(50))
+
+        #expect(sut.state.currentText == prompt)
+    }
+
+    @Test
+    func onDisappearAction_CancelsGalleryPromptObservation() async {
+        await sut.send(action: .taskStarted)
+        await sut.send(action: .onDisappear)
+
+        webBridge.handleGalleryPrompt("A futuristic cat in space")
+
+        await Task.yield()
+
+        #expect(sut.state.currentText == "")
+    }
+
     // MARK: - .textChanged action
 
     @Test

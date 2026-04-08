@@ -220,6 +220,63 @@ final class WebComposerScriptMessageHandlerTests {
         #expect(receivedErrors.isEmpty)
     }
 
+    // MARK: - Gallery prompt
+
+    @Test
+    func handleGalleryPrompt_EmitsPromptToStream() async {
+        let prompt = "A futuristic cat in space"
+        let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerImageGenerationHelperPromptHandler
+
+        let promptTask = Task {
+            var receivedPrompts: [String] = []
+            for await receivedPrompt in composerBridge.galleryPrompts {
+                receivedPrompts.append(receivedPrompt)
+                if receivedPrompts.count == 1 {
+                    break
+                }
+            }
+            return receivedPrompts
+        }
+
+        sut.userContentController(
+            WKUserContentController(),
+            didReceive: WKScriptMessageStub(name: messageName.rawValue, body: prompt)
+        )
+
+        let receivedPrompts = await promptTask.value
+
+        #expect(receivedPrompts.count == 1)
+        #expect(receivedPrompts.first == prompt)
+    }
+
+    @Test
+    func handleGalleryPrompt_WithNonStringBody_DoesNotEmitPrompt() async {
+        let messageName = WebComposerScriptMessageHandler.MessageName.nativeComposerImageGenerationHelperPromptHandler
+
+        let promptTask = Task {
+            var receivedPrompts: [String] = []
+            for await receivedPrompt in composerBridge.galleryPrompts {
+                receivedPrompts.append(receivedPrompt)
+                if receivedPrompts.count == 1 {
+                    break
+                }
+            }
+            return receivedPrompts
+        }
+
+        sut.userContentController(
+            WKUserContentController(),
+            didReceive: WKScriptMessageStub(name: messageName.rawValue, body: ["invalid": "body"])
+        )
+
+        try? await Task.sleep(for: .milliseconds(50))
+
+        promptTask.cancel()
+        let receivedPrompts = await promptTask.value
+
+        #expect(receivedPrompts.isEmpty)
+    }
+
     @Test
     func handleResult_WithMultipleErrors_EmitsAllToStream() async {
         let errors: [WebComposerError] = [

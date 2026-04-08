@@ -45,4 +45,7 @@ public protocol WebComposerBridging {
 
     /// Stream of errors received from WebView
     var errorUpdates: AsyncStream<WebComposerError> { get }
+
+    /// Stream of gallery prompts received from WebView
+    var galleryPrompts: AsyncStream<String> { get }
 }

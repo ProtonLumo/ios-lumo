@@ -17,7 +17,7 @@ class LumoWebView: WKWebView {
 // MARK: - WebView Component
 struct WebView: UIViewRepresentable {
     let url: URL
-    let webComposerBridge: WebComposerStateReceiving & WebComposerErrorReceiving
+    let webComposerBridge: WebComposerReceiving
     let themeProvider: ThemeProvider
     @Binding var isReady: Bool
     @ObservedObject var jsCoordinator: WebViewCoordinator
@@ -35,9 +35,9 @@ struct WebView: UIViewRepresentable {
 
     class Coordinator: NSObject, WKNavigationDelegate, UIScrollViewDelegate {
         let parent: WebView
-        let webComposerBridge: WebComposerStateReceiving & WebComposerErrorReceiving
+        let webComposerBridge: WebComposerReceiving
 
-        init(_ parent: WebView, webComposerBridge: WebComposerStateReceiving & WebComposerErrorReceiving) {
+        init(_ parent: WebView, webComposerBridge: WebComposerReceiving) {
             self.parent = parent
             self.webComposerBridge = webComposerBridge
             super.init()
