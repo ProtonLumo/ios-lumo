@@ -87,7 +87,7 @@ enum JSCommand {
                     const inserted = document.execCommand('insertText', false, prompt);
                     editor.blur();
 
-                    return { success: true, action: inserted ? 'execCommand' : 'execCommand_failed' };
+                    return { success: inserted, action: inserted ? 'execCommand' : 'execCommand_failed' };
                 })();
                 """
 
