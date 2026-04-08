@@ -414,10 +414,13 @@ struct WebView: UIViewRepresentable {
             if urlString.hasPrefix("\(Config.ACCOUNT_BASE_URL)/lumo/signup") && !urlString.contains("?plan=") && !urlString.contains("&plan=") {
                 Logger.shared.log("🔄 FALLBACK: Detected signup page without plan parameter, redirecting...")
 
+                let resolvedColorScheme =
+                    parent.themeStore.colorScheme
+                    ?? (UITraitCollection.current.userInterfaceStyle == .dark ? .dark : .light)
                 let modifiedURLString =
                     urlString
                     .addingQueryParameter("plan", value: "free")
-                    .addingQueryParameter("theme", value: parent.themeStore.colorScheme == .dark ? "dark" : "light")
+                    .addingQueryParameter("theme", value: resolvedColorScheme == .dark ? "dark" : "light")
                     .addingQueryParameter("remember", value: "3")
 
                 Logger.shared.log("🔄 FALLBACK: Redirecting to: \(modifiedURLString)")
