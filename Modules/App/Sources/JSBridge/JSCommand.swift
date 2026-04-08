@@ -5,7 +5,6 @@ import WebKit
 enum JSCommand {
     // MARK: - Prompt Operations
     case insertPrompt(text: String, editorType: EditorType)
-    case clearPrompt
 
     // MARK: - Payment Operations
     case getSubscriptions
@@ -54,67 +53,41 @@ enum JSCommand {
                 (function() {
                     const prompt = '\(safeText)';
                     const editorType = '\(editorType.rawValue)';
-                    
-                    // Layout stabilization functions (duplicated from utilities.js to remove dependency)
-                    let stabilizationStyleElement = null;
-                    
-                    function applyLayoutStabilization() {
-                        if (stabilizationStyleElement) {
-                            restoreLayout();
-                        }
-                        stabilizationStyleElement = document.createElement('style');
-                        stabilizationStyleElement.id = 'lumo-layout-stabilization';
-                        stabilizationStyleElement.textContent = 'html:not(.feature-scrollbars-off) * { bottom: 0 !important; }';
-                        document.head.appendChild(stabilizationStyleElement);
-                        return true;
-                    }
-                    
-                    function restoreLayout() {
-                        if (stabilizationStyleElement) {
-                            document.head.removeChild(stabilizationStyleElement);
-                            stabilizationStyleElement = null;
-                            return true;
-                        }
-                        return false;
-                    }
-                    
-                    applyLayoutStabilization();
-                    
+
+                    // Use execCommand to insert text. This is the only approach that correctly
+                    // manages iOS's RTI (Remote Text Input) session lifecycle:
+                    //   1. focus() opens the session
+                    //   2. execCommand('insertText') inserts through the native input path,
+                    //      keeping React's onChange in sync via the fired input event
+                    //   3. blur() closes the session cleanly
+                    //
+                    // All three steps run in the same synchronous JS execution, so iOS never
+                    // gets a chance to show the keyboard (keyboard presentation requires
+                    // yielding to the run loop).
+                    //
+                    // Alternatives that were tried and rejected:
+                    //  - textContent mutation: breaks on 2nd call (React state not updated)
+                    //  - window.__insertPromptImpl / React setState: async commit leaves the RTI
+                    //    session in a stale state, causing "Result accumulator timeout" and
+                    //    keyboard appearing after submit
                     let editor = null;
                     if (editorType === 'tiptap' || editorType === 'basic') {
-                        editor = document.querySelector('.tiptap.ProseMirror.composer') || 
+                        editor = document.querySelector('.tiptap.ProseMirror.composer') ||
                                 document.querySelector('.composer');
                     } else if (editorType === 'textarea') {
                         editor = document.querySelector('textarea.composer-textarea');
                     }
-                    
+
                     if (!editor) {
                         return { success: false, reason: 'editor_not_found' };
                     }
-                    
-                    editor.textContent = prompt;
-                    ['input', 'change'].forEach(eventType => {
-                        editor.dispatchEvent(new Event(eventType, { bubbles: true }));
-                    });
-                    
-                    restoreLayout();
-                    
-                    return { success: true, action: 'text_inserted' };
-                })();
-                """
 
-        case .clearPrompt:
-            return """
-                (function() {
-                    const editor = document.querySelector('.tiptap.ProseMirror.composer') || 
-                                  document.querySelector('.composer') ||
-                                  document.querySelector('textarea.composer-textarea');
-                    if (editor) {
-                        editor.textContent = '';
-                        editor.dispatchEvent(new Event('input', { bubbles: true }));
-                        return { success: true };
-                    }
-                    return { success: false, reason: 'editor_not_found' };
+                    editor.focus();
+                    document.execCommand('selectAll', false, null);
+                    const inserted = document.execCommand('insertText', false, prompt);
+                    editor.blur();
+
+                    return { success: inserted, action: inserted ? 'execCommand' : 'execCommand_failed' };
                 })();
                 """
 
@@ -228,8 +201,6 @@ enum JSCommand {
         switch self {
         case .insertPrompt(let text, let editorType):
             return "Insert prompt (\(editorType.rawValue)): \(text.prefix(50))..."
-        case .clearPrompt:
-            return "Clear prompt"
         case .getSubscriptions:
             return "Get subscriptions"
         case .restorePurchases:
@@ -264,7 +235,7 @@ enum JSCommand {
     /// Whether this command should be retried on failure
     var isRetryable: Bool {
         switch self {
-        case .insertPrompt, .clearPrompt, .getSubscriptions, .restorePurchases:
+        case .insertPrompt, .getSubscriptions, .restorePurchases:
             return true
         case .simulateGarbageCollection, .clearHistory:
             return false

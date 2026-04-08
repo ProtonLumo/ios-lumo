@@ -87,11 +87,6 @@ class WebViewCoordinator: ObservableObject {
         await execute(.insertPrompt(text: text, editorType: editorType), retryCount: 2)
     }
 
-    /// Convenience method: Clear prompt
-    func clearPrompt() async -> JSBridgeResult {
-        await execute(.clearPrompt)
-    }
-
     /// Convenience method: Get subscriptions
     func getSubscriptions() async -> JSBridgeResult {
         await execute(.getSubscriptions, retryCount: 1)
