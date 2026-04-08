@@ -22,6 +22,8 @@ struct ComposerInput: View {
                 .foregroundStyle(textColor)
                 .focused($isFocused)
                 .lineLimit(1...10)
+                .autocorrectionDisabled()
+                .keyboardType(.asciiCapable)
                 .tint(DS.Color.primary)
         }
         .background(backgroundColor)
