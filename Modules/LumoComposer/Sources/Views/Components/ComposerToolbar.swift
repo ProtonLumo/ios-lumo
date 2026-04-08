@@ -58,17 +58,17 @@ struct ComposerToolbar: View {
                     }
                 )
 
-                if featureFlags.isToolsEnabled {
-                    if featureFlags.isImageGenEnabled && isCreateImageEnabled {
-                        ImageModeButton(action: { action(.exitImageModeTapped) })
-                    } else {
-                        ComposerToggleButton(
-                            icon: DS.Icon.icSliders.swiftUIImage,
-                            iconColor: iconColor,
-                            isDisabled: areButtonsDisabled,
-                            action: { action(.toolsTapped) }
-                        )
-                    }
+                if featureFlags.isImageGenEnabled && isCreateImageEnabled {
+                    ImageModeButton(action: { action(.exitImageModeTapped) })
+                        .disabled(!featureFlags.isToolsEnabled)
+                } else {
+                    ComposerToggleButton(
+                        icon: DS.Icon.icSliders.swiftUIImage,
+                        iconColor: iconColor,
+                        isDisabled: areButtonsDisabled,
+                        action: { action(.toolsTapped) }
+                    )
+                    .disabled(!featureFlags.isToolsEnabled)
                 }
             }
             Spacer()

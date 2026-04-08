@@ -18,5 +18,6 @@ struct ImageModeButton: View {
                     .fill(DS.Color.primary.opacity(0.1))
             }
         }
+        .buttonStyle(.plain)
     }
 }
