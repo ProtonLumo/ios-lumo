@@ -32,8 +32,7 @@ struct ComposerScreenSnapshotTests {
                         .init(id: "<id_2>", name: "information_about_me.pdf", type: .pdf, preview: .none),
                         .init(id: "<id_3>", name: "data", type: .protonSheet, preview: .none)
                     ],
-                    featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
-                    userFlags: .init(isFreeUser: false)
+                    featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true)
                 )
             )
             .copy(\.currentText, to: "")
@@ -67,8 +66,7 @@ struct ComposerScreenSnapshotTests {
                     isVisible: false,
                     showTermsAndPrivacy: false,
                     attachedFiles: [],
-                    featureFlags: .initial,
-                    userFlags: .init(isFreeUser: false)
+                    featureFlags: .initial
                 )
             )
         let sut = makeSUT(initialState: state)
@@ -85,7 +83,6 @@ struct ComposerScreenSnapshotTests {
             isWebViewReady: false,
             toastStateStore: ToastStateStore(initialState: .initial),
             urlOpener: OpenURLAction { _ in .discarded },
-            onThinkingUpsellTapped: {},
             webContent: { EmptyView() }
         )
     }
