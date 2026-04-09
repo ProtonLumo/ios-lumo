@@ -1,5 +1,6 @@
 import LumoDesignSystem
 import SwiftUI
+@_spi(Advanced) import SwiftUIIntrospect
 
 struct ComposerInput: View {
     @Binding var text: String
@@ -20,10 +21,13 @@ struct ComposerInput: View {
 
             TextField(String(""), text: $text, axis: .vertical)
                 .foregroundStyle(textColor)
+                .tint(DS.Color.primary)
                 .focused($isFocused)
                 .lineLimit(1...10)
-                .autocorrectionDisabled()
-                .tint(DS.Color.primary)
+                .introspect(.textEditor, on: .iOS(.v17...)) { textEditor in
+                    textEditor.autocorrectionType = .no
+                    textEditor.spellCheckingType = .no
+                }
         }
         .background(backgroundColor)
         .padding(.vertical, DS.Spacing.large)
