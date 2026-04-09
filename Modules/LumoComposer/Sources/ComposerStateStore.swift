@@ -5,12 +5,6 @@ import ProtonUIFoundations
 import UIKit
 
 final class ComposerStateStore: StateStore {
-    private let freeUserThinkingTappedSubject = PassthroughSubject<Void, Never>()
-
-    var freeUserThinkingTappedPublisher: AnyPublisher<Void, Never> {
-        freeUserThinkingTappedSubject.eraseToAnyPublisher()
-    }
-
     enum Action {
         case webViewReadyChanged(Bool)
         case taskStarted
@@ -214,17 +208,8 @@ final class ComposerStateStore: StateStore {
 
             switch action {
             case .modelSelected(let model):
-                switch model {
-                case .thinking where state.webState.userFlags.isGuestUser:
-                    await execute { () async throws(WebComposerBridgeError) in
-                        try await webBridge.openAccount()
-                    }
-                case .thinking where state.webState.userFlags.isFreeUser:
-                    freeUserThinkingTappedSubject.send()
-                case .auto, .fast, .thinking:
-                    await execute { () async throws(WebComposerBridgeError) in
-                        try await webBridge.changeModelTier(model)
-                    }
+                await execute { () async throws(WebComposerBridgeError) in
+                    try await webBridge.changeModelTier(model)
                 }
             case .closeTapped:
                 break
