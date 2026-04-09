@@ -33,7 +33,6 @@ public struct WebComposerState: Equatable, Decodable {
 
     struct UserFlags: Equatable, Decodable {
         let isFreeUser: Bool
-        let isGuestUser: Bool
     }
 
     let mode: Mode
@@ -101,6 +100,6 @@ extension WebComposerState.FeatureFlags {
 
 extension WebComposerState.UserFlags {
     static var initial: Self {
-        .init(isFreeUser: true, isGuestUser: true)
+        .init(isFreeUser: true)
     }
 }

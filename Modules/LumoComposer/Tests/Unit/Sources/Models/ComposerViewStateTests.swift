@@ -24,7 +24,7 @@ struct ComposerViewStateTests {
                         showTermsAndPrivacy: true,
                         attachedFiles: [],
                         featureFlags: .init(isImageGenEnabled: false, isModelSelectionEnabled: false),
-                        userFlags: .init(isFreeUser: true, isGuestUser: true)
+                        userFlags: .init(isFreeUser: true)
                     ),
                     activeSheet: .none,
                     activePicker: .none
@@ -123,7 +123,7 @@ private extension ComposerViewState {
                 showTermsAndPrivacy: true,
                 attachedFiles: [],
                 featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
-                userFlags: .init(isFreeUser: false, isGuestUser: false)
+                userFlags: .init(isFreeUser: false)
             ),
             activeSheet: .none,
             activePicker: .none
@@ -143,7 +143,7 @@ private extension WebComposerState {
             showTermsAndPrivacy: true,
             attachedFiles: attachedFiles,
             featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true),
-            userFlags: .init(isFreeUser: false, isGuestUser: false)
+            userFlags: .init(isFreeUser: false)
         )
     }
 }

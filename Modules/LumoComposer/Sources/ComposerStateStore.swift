@@ -215,10 +215,6 @@ final class ComposerStateStore: StateStore {
             switch action {
             case .modelSelected(let model):
                 switch model {
-                case .thinking where state.webState.userFlags.isGuestUser:
-                    await execute { () async throws(WebComposerBridgeError) in
-                        try await webBridge.openAccount()
-                    }
                 case .thinking where state.webState.userFlags.isFreeUser:
                     freeUserThinkingTappedSubject.send()
                 case .auto, .fast, .thinking:
