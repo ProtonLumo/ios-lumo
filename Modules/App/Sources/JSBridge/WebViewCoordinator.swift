@@ -23,7 +23,6 @@ class WebViewCoordinator: ObservableObject {
     /// Configure the coordinator with a WebView
     func configure(with webView: WKWebView) {
         self.webView = webView
-        self.isReady = false
     }
 
     /// Mark WebView as ready and process pending commands
