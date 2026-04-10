@@ -18,7 +18,7 @@ class LumoWebView: WKWebView {
 struct WebView: UIViewRepresentable {
     let url: URL
     let webComposerBridge: WebComposerReceiving
-    let themeProvider: ThemeProvider
+    let themeStore: ThemeStore
     @Binding var isReady: Bool
     @ObservedObject var jsCoordinator: WebViewCoordinator
     @Binding var action: WebViewAction?
@@ -405,18 +405,22 @@ struct WebView: UIViewRepresentable {
 
             // Read stored theme from localStorage now that the page is loaded
             // Add a delay to ensure web app has fully initialized
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                ThemeManager.shared.readStoredTheme()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak webView] in
+                guard let webView else { return }
+                JSBridgeManager.shared.readStoredTheme(in: webView)
             }
 
             // Fallback: Check if we landed on a signup page without plan parameter
             if urlString.hasPrefix("\(Config.ACCOUNT_BASE_URL)/lumo/signup") && !urlString.contains("?plan=") && !urlString.contains("&plan=") {
                 Logger.shared.log("🔄 FALLBACK: Detected signup page without plan parameter, redirecting...")
 
+                let resolvedColorScheme =
+                    parent.themeStore.colorScheme
+                    ?? (UITraitCollection.current.userInterfaceStyle == .dark ? .dark : .light)
                 let modifiedURLString =
                     urlString
                     .addingQueryParameter("plan", value: "free")
-                    .addingQueryParameter("theme", value: ThemeManager.shared.currentMode == .dark ? "dark" : "light")
+                    .addingQueryParameter("theme", value: resolvedColorScheme == .dark ? "dark" : "light")
                     .addingQueryParameter("remember", value: "3")
 
                 Logger.shared.log("🔄 FALLBACK: Redirecting to: \(modifiedURLString)")
@@ -562,7 +566,7 @@ struct WebView: UIViewRepresentable {
             }
 
             // Setup theme change listener
-            ThemeManager.shared.setupThemeChangeListener()
+            JSBridgeManager.shared.setupThemeChangeListener(in: webView)
         }
 
         private func checkForElementWithRetry(webView: WKWebView) {
@@ -786,7 +790,7 @@ struct WebView: UIViewRepresentable {
         webView.customUserAgent = WKWebView.generateCustomUserAgent()
         webView.isInspectable = true
 
-        let paymentHandler = PaymentHandler(webView: webView, themeProvider: themeProvider) { action in
+        let paymentHandler = PaymentHandler(webView: webView, themeStore: themeStore) { action in
             switch action.type {
             case .createSubscription:
                 self.action = .postSubscription(payload: action.payload)
@@ -798,7 +802,7 @@ struct WebView: UIViewRepresentable {
                 self.action = .getSubscriptions
             }
         }
-        let themeMessageHandler = ThemeMessageHandler()
+        let themeMessageHandler = ThemeMessageHandler(themeStore: themeStore)
         let unifiedHandler = UnifiedMessageHandler(self)
         let paymentBridgeHandler = PaymentBridgeCallbackHandler()
         let webComposerHandler = WebComposerScriptMessageHandler(webComposerBridge: context.coordinator.webComposerBridge)
@@ -839,9 +843,6 @@ struct WebView: UIViewRepresentable {
         DispatchQueue.main.async {
             self.disableAllZoomGestures(in: webView)
             self.webViewStore = webView
-
-            // Setup theme management
-            ThemeManager.shared.setup(webView: webView)
         }
 
         webView.navigationDelegate = context.coordinator
@@ -903,7 +904,7 @@ struct WebView: UIViewRepresentable {
                 }
 
                 // Setup theme change listener
-                ThemeManager.shared.setupThemeChangeListener()
+                JSBridgeManager.shared.setupThemeChangeListener(in: webView)
             }
         }
 

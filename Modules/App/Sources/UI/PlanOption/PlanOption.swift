@@ -6,7 +6,6 @@ import SwiftUI
 struct PlanOption: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var model: PlanOptionViewModel
-    @EnvironmentObject private var themeProvider: ThemeProvider
     var isPromotionOffer: Bool = false
 
     private let brandPurple: Color = Theme.color.iconAccent

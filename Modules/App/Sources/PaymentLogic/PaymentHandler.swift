@@ -17,12 +17,12 @@ public struct PaymentHandlerActions {
 
 final class PaymentHandler: NSObject, WebScriptMessageHandler {
     private weak var webView: WKWebView?
-    private let themeProvider: ThemeProvider
+    private let themeStore: ThemeStore
     private var completion: (PaymentHandlerActions) -> Void
 
-    public init(webView: WKWebView, themeProvider: ThemeProvider, completion: @escaping (PaymentHandlerActions) -> Void) {
+    public init(webView: WKWebView, themeStore: ThemeStore, completion: @escaping (PaymentHandlerActions) -> Void) {
         self.webView = webView
-        self.themeProvider = themeProvider
+        self.themeStore = themeStore
         self.completion = completion
     }
 
@@ -107,9 +107,8 @@ final class PaymentHandler: NSObject, WebScriptMessageHandler {
             let viewModel = PaymentSheetViewModel(planComposer: composer, isPromotionOffer: isPromotionOffer)
             viewModel.delegate = self
 
-            // Inject the ThemeProvider environment object
             let paymentSheet = PaymentSheet(viewModel: viewModel)
-                .environmentObject(themeProvider)
+                .preferredColorScheme(themeStore.colorScheme)
 
             let hostingController = UIHostingController(rootView: paymentSheet)
 

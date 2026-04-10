@@ -101,7 +101,6 @@ struct SkeletonFeatureRow: View {
 struct PaymentSheet: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var themeProvider: ThemeProvider
     @ObservedObject var viewModel: PaymentSheetViewModel
     @State private var isLoading = false
 

@@ -6,8 +6,8 @@ import SwiftUI
 import UIKit
 
 struct TransactionProgressView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var viewModel: TransactionProgressViewModel
-    @EnvironmentObject private var themeProvider: ThemeProvider
 
     // Callbacks for external control
     var onCompletion: (() -> Void)?
@@ -170,7 +170,7 @@ struct TransactionProgressView: View {
         let darkItem = LottieAnimations.LumoCat.dark
         let lightItem = LottieAnimations.LumoCat.light
 
-        return themeProvider.systemColorScheme == .dark ? darkItem : lightItem
+        return colorScheme == .dark ? darkItem : lightItem
     }
 }
 

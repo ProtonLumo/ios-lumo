@@ -2,6 +2,12 @@ import LumoCore
 import WebKit
 
 final class ThemeMessageHandler: NSObject, WebScriptMessageHandler {
+    private let themeStore: ThemeStore
+
+    init(themeStore: ThemeStore) {
+        self.themeStore = themeStore
+    }
+
     // MARK: - WebScriptMessageHandler
 
     enum MessageName: String, CaseIterable {
@@ -12,9 +18,7 @@ final class ThemeMessageHandler: NSObject, WebScriptMessageHandler {
     // MARK: - WKScriptMessageHandler
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        let messageName = MessageName(rawValue: message.name)
-
-        switch messageName {
+        switch MessageName(rawValue: message.name) {
         case .themeChanged:
             handleThemeChanged(message)
         case .themeRead:
@@ -28,63 +32,56 @@ final class ThemeMessageHandler: NSObject, WebScriptMessageHandler {
 
     private func handleThemeChanged(_ message: WKScriptMessage) {
         guard
-            let messageBody = message.body as? [String: Any],
-            let theme = messageBody["theme"] as? String
+            let body = message.body as? [String: Any],
+            let themeName = body["theme"] as? String
         else {
-            Logger.shared.log("❌ Invalid theme change message format")
+            Logger.shared.log("[THEME] ❌ themeChanged: invalid message format")
             return
         }
 
-        ThemeManager.shared.handleThemeChangeFromWeb(theme)
+        guard let theme = WebColorScheme(name: themeName) else {
+            Logger.shared.log("[THEME] ❌ themeChanged: unknown theme name '\(themeName)'")
+            return
+        }
+
+        themeStore.apply(theme: theme)
     }
 
     private func handleThemeRead(_ message: WKScriptMessage) {
-        guard let messageBody = message.body as? [String: Any] else {
-            Logger.shared.log("❌ Invalid theme read message format")
+        guard let body = message.body as? [String: Any] else {
+            Logger.shared.log("[THEME] ❌ themeRead: invalid message format")
             return
         }
 
-        let success = messageBody["success"] as? Bool ?? false
-
-        if success {
-            let mode: WebUIInterfaceStyle = WebUIInterfaceStyle(rawValue: messageBody["mode"] as? Int, fallback: .light)
-            let key = messageBody["key"] as? String ?? "unknown"
-
-            // Stored theme found - use it (allows web override of system)
-            Logger.shared.log("✅ Theme read from localStorage: mode=\(mode), key=\(key)")
-
-            let lumoTheme: LumoTheme
-            let lumoMode: LumoThemeMode
-
-            switch mode {
-            case .system:
-                lumoTheme = .system
-                // Use ThemeManager's cached system appearance
-                lumoMode = ThemeManager.shared.getSystemThemeMode()
-            case .dark:
-                lumoTheme = .dark
-                lumoMode = .dark
-            case .light:
-                lumoTheme = .light
-                lumoMode = .light
-            }
-
-            ThemeManager.shared.setStoredTheme(lumoTheme, mode: lumoMode)
-        } else {
-            let reason = messageBody["reason"] as? String ?? "Unknown error"
-            Logger.shared.log("⚠️ Could not read stored theme: \(reason)")
-            ThemeManager.shared.setDefaultSystemTheme()
+        guard body["success"] as? Bool == true else {
+            Logger.shared.log("[THEME] ⚠️ themeRead: could not read localStorage – \(body["reason"] as? String ?? "unknown")")
+            return
         }
+
+        let mode = body["mode"] as? Int
+        let theme = WebColorScheme(mode: mode)
+
+        themeStore.apply(theme: theme)
     }
 }
 
-private enum WebUIInterfaceStyle: Int {
-    case system = 0
-    case dark = 1
-    case light = 2
+private extension WebColorScheme {
+    /// Init from localStorage int value (themeRead): 0 = system, 1 = dark, 2 = light.
+    init(mode: Int?) {
+        switch mode {
+        case 1: self = .dark
+        case 2: self = .light
+        default: self = .system
+        }
+    }
 
-    init(rawValue: Int?, fallback: WebUIInterfaceStyle) {
-        let interfaceStyle = rawValue.flatMap(WebUIInterfaceStyle.init)
-        self = interfaceStyle ?? fallback
+    /// Init from JS event string value (themeChanged). Case-insensitive.
+    init?(name: String) {
+        switch name.lowercased() {
+        case "light": self = .light
+        case "dark": self = .dark
+        case "system": self = .system
+        default: return nil
+        }
     }
 }
