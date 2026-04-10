@@ -51,6 +51,7 @@ struct ContentView: View {
     @StateObject private var speechRecorder: LegacySpeechRecorder
     @StateObject private var jsCoordinator = WebViewCoordinator()
     @StateObject private var webComposerBridge = WebComposerBridge()
+    @StateObject private var widgetPromptReceiver = WidgetPromptReceiver()
     @State private var isLoading = true
     @State private var webViewIsActive = true
     @State private var webViewReady = false
@@ -546,6 +547,7 @@ struct ContentView: View {
                 .init("LumoPromptReceived"),
                 { notification in
                     if let prompt = notification.userInfo?["prompt"] as? String {
+                        self.widgetPromptReceiver.receive(prompt)
                         Task {
                             let result = await self.jsCoordinator.insertPrompt(prompt, editorType: .tiptap)
 

@@ -1,4 +1,6 @@
-public final class WidgetPromptReceiver: Sendable {
+import Combine
+
+public final class WidgetPromptReceiver: ObservableObject {
     private let continuation: AsyncStream<String>.Continuation
     public let prompts: AsyncStream<String>
 

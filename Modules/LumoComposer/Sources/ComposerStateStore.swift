@@ -57,6 +57,7 @@ final class ComposerStateStore: StateStore {
     private var stateObservationTask: Task<Void, Never>?
     private var errorObservationTask: Task<Void, Never>?
     private var galleryPromptTask: Task<Void, Never>?
+    private var widgetPromptTask: Task<Void, Never>?
     private var speechStore: SpeechStateStore?
     private var speechStateCancellable: Set<AnyCancellable> = []
 
@@ -105,6 +106,13 @@ final class ComposerStateStore: StateStore {
                     state = state.copy(\.currentText, to: prompt)
                 }
             }
+            widgetPromptTask?.cancel()
+            widgetPromptTask = Task {
+                for await prompt in widgetPromptReceiver.prompts {
+                    guard !Task.isCancelled else { break }
+                    state = state.copy(\.currentText, to: prompt)
+                }
+            }
 
         case .onDisappear:
             stateObservationTask?.cancel()
@@ -113,6 +121,8 @@ final class ComposerStateStore: StateStore {
             errorObservationTask = nil
             galleryPromptTask?.cancel()
             galleryPromptTask = nil
+            widgetPromptTask?.cancel()
+            widgetPromptTask = nil
             detachSpeechStore()
             state.speechState = .idle
 
