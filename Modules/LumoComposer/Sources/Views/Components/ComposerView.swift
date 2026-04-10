@@ -23,6 +23,7 @@ struct ComposerView: View {
     }
 
     @Binding var text: String
+    var isComposerFocused: FocusState<Bool>.Binding
     let files: [File]
     let model: WebComposerState.ModelTier
     let isCreateImageEnabled: Bool
@@ -48,6 +49,7 @@ struct ComposerView: View {
             HStack(alignment: .center, spacing: DS.Spacing.small) {
                 ComposerInput(
                     text: $text,
+                    isFocused: isComposerFocused,
                     placeholderText: featureFlags.isImageGenEnabled && isCreateImageEnabled ? L10n.Composer.placeholderImage : L10n.Composer.placeholder,
                     placeholderColor: isGhostModeEnabled ? DS.Color.Text.hintDark : DS.Color.Text.hint,
                     textColor: isGhostModeEnabled ? DS.Color.Text.normDarkOnly : DS.Color.Text.norm,
@@ -133,66 +135,78 @@ struct ComposerView: View {
 }
 
 #if DEBUG
-    #Preview {
-        VStack {
-            Spacer()
-            ComposerView(
-                text: .constant(""),
-                files: [
-                    .init(id: "1", name: "Report.pdf", type: .pdf, preview: .none),
-                    .init(id: "2", name: "Data.xls", type: .xls, preview: .none),
-                    .init(id: "3", name: "Slides.ppt", type: .ppt, preview: .none),
-                    .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
-                    .init(id: "5", name: "Video.mp4", type: .video, preview: .none)
-                ],
-                model: .auto,
-                isCreateImageEnabled: false,
-                isGhostModeEnabled: false,
-                isWebSearchEnabled: true,
-                areButtonsDisabled: false,
-                actionButton: .none,
-                action: { _ in }
-            )
-            ComposerView(
-                text: .constant("Tell me a long story"),
-                files: [],
-                model: .fast,
-                isCreateImageEnabled: true,
-                isGhostModeEnabled: false,
-                isWebSearchEnabled: false,
-                areButtonsDisabled: true,
-                actionButton: .send,
-                action: { _ in }
-            )
-            ComposerView(
-                text: .constant(""),
-                files: [],
-                model: .thinking,
-                isCreateImageEnabled: true,
-                isGhostModeEnabled: true,
-                isWebSearchEnabled: false,
-                areButtonsDisabled: false,
-                actionButton: .stop,
-                action: { _ in }
-            )
-            ComposerView(
-                text: .constant("Tell me a long story"),
-                files: [
-                    .init(id: "1", name: "Report.pdf", type: .pdf, preview: .none),
-                    .init(id: "2", name: "Data.xls", type: .xls, preview: .none),
-                    .init(id: "3", name: "Slides.ppt", type: .ppt, preview: .none),
-                    .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
-                    .init(id: "5", name: "Video.mp4", type: .video, preview: .none)
-                ],
-                model: .thinking,
-                isCreateImageEnabled: true,
-                isGhostModeEnabled: true,
-                isWebSearchEnabled: true,
-                areButtonsDisabled: false,
-                actionButton: .send,
-                action: { _ in }
-            )
+    private struct ComposerViewPreview: View {
+        @FocusState private var isFocused: Bool
+
+        var body: some View {
+            VStack {
+                Spacer()
+                ComposerView(
+                    text: .constant(""),
+                    isComposerFocused: $isFocused,
+                    files: [
+                        .init(id: "1", name: "Report.pdf", type: .pdf, preview: .none),
+                        .init(id: "2", name: "Data.xls", type: .xls, preview: .none),
+                        .init(id: "3", name: "Slides.ppt", type: .ppt, preview: .none),
+                        .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
+                        .init(id: "5", name: "Video.mp4", type: .video, preview: .none)
+                    ],
+                    model: .auto,
+                    isCreateImageEnabled: false,
+                    isGhostModeEnabled: false,
+                    isWebSearchEnabled: true,
+                    areButtonsDisabled: false,
+                    actionButton: .none,
+                    action: { _ in }
+                )
+                ComposerView(
+                    text: .constant("Tell me a long story"),
+                    isComposerFocused: $isFocused,
+                    files: [],
+                    model: .fast,
+                    isCreateImageEnabled: true,
+                    isGhostModeEnabled: false,
+                    isWebSearchEnabled: false,
+                    areButtonsDisabled: true,
+                    actionButton: .send,
+                    action: { _ in }
+                )
+                ComposerView(
+                    text: .constant(""),
+                    isComposerFocused: $isFocused,
+                    files: [],
+                    model: .thinking,
+                    isCreateImageEnabled: true,
+                    isGhostModeEnabled: true,
+                    isWebSearchEnabled: false,
+                    areButtonsDisabled: false,
+                    actionButton: .stop,
+                    action: { _ in }
+                )
+                ComposerView(
+                    text: .constant("Tell me a long story"),
+                    isComposerFocused: $isFocused,
+                    files: [
+                        .init(id: "1", name: "Report.pdf", type: .pdf, preview: .none),
+                        .init(id: "2", name: "Data.xls", type: .xls, preview: .none),
+                        .init(id: "3", name: "Slides.ppt", type: .ppt, preview: .none),
+                        .init(id: "4", name: "Image.jpg", type: .image, preview: .none),
+                        .init(id: "5", name: "Video.mp4", type: .video, preview: .none)
+                    ],
+                    model: .thinking,
+                    isCreateImageEnabled: true,
+                    isGhostModeEnabled: true,
+                    isWebSearchEnabled: true,
+                    areButtonsDisabled: false,
+                    actionButton: .send,
+                    action: { _ in }
+                )
+            }
+            .background(Color.gray)
         }
-        .background(Color.gray)
+    }
+
+    #Preview {
+        ComposerViewPreview()
     }
 #endif

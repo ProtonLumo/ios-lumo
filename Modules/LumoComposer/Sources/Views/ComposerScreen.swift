@@ -16,6 +16,7 @@ public struct ComposerScreen<WebContent: View>: View {
 
     @State private var sheetHeight: CGFloat = 250
     @State private var selectedPhotoItem: PhotosPickerItem?
+    @FocusState private var isComposerFocused: Bool
 
     public init(
         webBridge: WebComposerBridging,
@@ -88,6 +89,7 @@ public struct ComposerScreen<WebContent: View>: View {
                                 get: { store.state.currentText },
                                 set: { newValue in store.send(action: .textChanged(newValue)) }
                             ),
+                            isComposerFocused: $isComposerFocused,
                             files: store.state.webState.attachedFiles,
                             model: store.state.webState.model,
                             isCreateImageEnabled: store.state.webState.isCreateImageEnabled,
@@ -117,6 +119,11 @@ public struct ComposerScreen<WebContent: View>: View {
                     onSettings: { store.send(action: .recorder(.openSettings)) },
                     onDismiss: { store.send(action: .recorder(.dismissPermissionAlert)) }
                 )
+            }
+        }
+        .onChange(of: store.state.isProcessing) { _, isProcessing in
+            if isProcessing {
+                isComposerFocused = false
             }
         }
         .onChange(of: isWebViewReady, initial: true) { _, newValue in

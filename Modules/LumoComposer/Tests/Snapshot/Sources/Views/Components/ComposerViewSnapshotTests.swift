@@ -306,20 +306,30 @@ struct ComposerViewSnapshotTests {
     // MARK: - Private
 
     private func sut(testCase: TestCase) -> some View {
-        VStack {
-            Spacer()
-            ComposerView(
-                text: .constant(testCase.initialText),
-                files: testCase.files,
-                model: testCase.model,
-                isCreateImageEnabled: testCase.isCreateImageEnabled,
-                isGhostModeEnabled: testCase.isGhostModeEnabled,
-                isWebSearchEnabled: testCase.isWebSearchEnabled,
-                areButtonsDisabled: testCase.areButtonsDisabled,
-                actionButton: testCase.actionButton,
-                action: { _ in }
-            )
-            .environment(\.featureFlags, testCase.featureFlags)
+        Wrapper(testCase: testCase)
+    }
+
+    private struct Wrapper: View {
+        @FocusState private var isFocused: Bool
+        let testCase: TestCase
+
+        var body: some View {
+            VStack {
+                Spacer()
+                ComposerView(
+                    text: .constant(testCase.initialText),
+                    isComposerFocused: $isFocused,
+                    files: testCase.files,
+                    model: testCase.model,
+                    isCreateImageEnabled: testCase.isCreateImageEnabled,
+                    isGhostModeEnabled: testCase.isGhostModeEnabled,
+                    isWebSearchEnabled: testCase.isWebSearchEnabled,
+                    areButtonsDisabled: testCase.areButtonsDisabled,
+                    actionButton: testCase.actionButton,
+                    action: { _ in }
+                )
+                .environment(\.featureFlags, testCase.featureFlags)
+            }
         }
     }
 }
