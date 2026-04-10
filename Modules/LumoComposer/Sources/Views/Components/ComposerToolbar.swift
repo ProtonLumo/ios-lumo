@@ -60,6 +60,7 @@ struct ComposerToolbar: View {
 
                 if featureFlags.isImageGenEnabled && isCreateImageEnabled {
                     ImageModeButton(action: { action(.exitImageModeTapped) })
+                        .disabled(!featureFlags.isToolsEnabled)
                 } else {
                     ComposerToggleButton(
                         icon: DS.Icon.icSliders.swiftUIImage,
@@ -67,6 +68,7 @@ struct ComposerToolbar: View {
                         isDisabled: areButtonsDisabled,
                         action: { action(.toolsTapped) }
                     )
+                    .disabled(!featureFlags.isToolsEnabled)
                 }
             }
             Spacer()

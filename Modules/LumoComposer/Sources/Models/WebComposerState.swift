@@ -24,10 +24,12 @@ public struct WebComposerState: Equatable, Decodable {
     struct FeatureFlags: Equatable, Decodable {
         let isImageGenEnabled: Bool
         let isModelSelectionEnabled: Bool
+        let isToolsEnabled: Bool
 
         enum CodingKeys: String, CodingKey {
             case isImageGenEnabled
             case isModelSelectionEnabled
+            case isToolsEnabled
         }
     }
 
@@ -86,6 +88,6 @@ extension WebComposerState {
 
 extension WebComposerState.FeatureFlags {
     static var initial: Self {
-        .init(isImageGenEnabled: false, isModelSelectionEnabled: false)
+        .init(isImageGenEnabled: false, isModelSelectionEnabled: false, isToolsEnabled: false)
     }
 }

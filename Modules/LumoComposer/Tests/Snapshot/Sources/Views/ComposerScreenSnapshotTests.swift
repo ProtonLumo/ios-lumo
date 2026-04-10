@@ -32,7 +32,7 @@ struct ComposerScreenSnapshotTests {
                         .init(id: "<id_2>", name: "information_about_me.pdf", type: .pdf, preview: .none),
                         .init(id: "<id_3>", name: "data", type: .protonSheet, preview: .none)
                     ],
-                    featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true)
+                    featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true, isToolsEnabled: true)
                 )
             )
             .copy(\.currentText, to: "")

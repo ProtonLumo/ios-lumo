@@ -54,6 +54,7 @@ final class ComposerStateStore: StateStore {
     private let urlOpener: URLOpenerProtocol
     private var stateObservationTask: Task<Void, Never>?
     private var errorObservationTask: Task<Void, Never>?
+    private var galleryPromptTask: Task<Void, Never>?
     private var speechStore: SpeechStateStore?
     private var speechStateCancellable: Set<AnyCancellable> = []
 
@@ -93,12 +94,21 @@ final class ComposerStateStore: StateStore {
                     toastStateStore.present(toast: .error(message: error.localizedDescription))
                 }
             }
+            galleryPromptTask?.cancel()
+            galleryPromptTask = Task {
+                for await prompt in webBridge.galleryPrompts {
+                    guard !Task.isCancelled else { break }
+                    state = state.copy(\.currentText, to: prompt)
+                }
+            }
 
         case .onDisappear:
             stateObservationTask?.cancel()
             stateObservationTask = nil
             errorObservationTask?.cancel()
             errorObservationTask = nil
+            galleryPromptTask?.cancel()
+            galleryPromptTask = nil
             detachSpeechStore()
             state.speechState = .idle
 

@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "git@gitlab.protontech.ch:apple/shared/ProtonUIFoundations.git",
       "state" : {
-        "revision" : "01f8ecee4f1158841e512905639dcbb50b3b6533",
-        "version" : "1.4.4"
+        "revision" : "8c466cc4990ae4daab7e24229ecd77902f1fea3c",
+        "version" : "1.6.0"
       }
     },
     {
@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/swiftui-introspect",
       "state" : {
-        "revision" : "807f73ce09a9b9723f12385e592b4e0aaebd3336",
-        "version" : "1.3.0"
+        "revision" : "26986a57e31c813f98262ddb62d4b07d40008535",
+        "version" : "26.0.1"
       }
     },
     {

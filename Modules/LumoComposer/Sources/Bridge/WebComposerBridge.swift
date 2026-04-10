@@ -16,9 +16,10 @@ public enum WebComposerBridgeError: Error, Equatable, LocalizedError {
     }
 }
 
-public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging, WebComposerStateReceiving, WebComposerErrorReceiving {
-    private let (stream, continuation) = AsyncStream.makeStream(of: WebComposerState.self)
+public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging, WebComposerStateReceiving, WebComposerErrorReceiving, WebComposerGalleryPromptReceiving {
+    private let (stateStream, stateContinuation) = AsyncStream.makeStream(of: WebComposerState.self)
     private let (errorStream, errorContinuation) = AsyncStream.makeStream(of: WebComposerError.self)
+    private let (galleryPromptStream, galleryPromptContinuation) = AsyncStream.makeStream(of: String.self)
 
     /// Commands that can be sent to the WebView's JavaScript layer.
     public enum Command: Equatable {
@@ -123,9 +124,11 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
         try await executeJavaScript(.previewAttachment(id: id))
     }
 
-    public var stateUpdates: AsyncStream<WebComposerState> { stream }
+    public var stateUpdates: AsyncStream<WebComposerState> { stateStream }
 
     public var errorUpdates: AsyncStream<WebComposerError> { errorStream }
+
+    public var galleryPrompts: AsyncStream<String> { galleryPromptStream }
 
     // MARK: - WebComposerStateReceiving
 
@@ -139,7 +142,7 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
             return
         }
 
-        continuation.yield(webState)
+        stateContinuation.yield(webState)
     }
 
     // MARK: - WebComposerErrorReceiving
@@ -150,6 +153,12 @@ public final class WebComposerBridge: WebComposerAttaching, WebComposerBridging,
         }
 
         errorContinuation.yield(response.error)
+    }
+
+    // MARK: - WebComposerGalleryPromptReceiving
+
+    public func handleGalleryPrompt(_ prompt: String) {
+        galleryPromptContinuation.yield(prompt)
     }
 
     // MARK: - Private

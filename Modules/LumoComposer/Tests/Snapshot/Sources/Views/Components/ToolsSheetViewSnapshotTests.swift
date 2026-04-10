@@ -23,7 +23,12 @@ struct ToolsSheetViewSnapshotTests {
         assertSnapshotsOnEdgeDevices(
             of: sut(testCase: testCase)
                 .environment(
-                    \.featureFlags, .init(isImageGenEnabled: testCase.isImageGenEnabled, isModelSelectionEnabled: false)
+                    \.featureFlags,
+                    .init(
+                        isImageGenEnabled: testCase.isImageGenEnabled,
+                        isModelSelectionEnabled: false,
+                        isToolsEnabled: true
+                    )
                 ),
             drawHierarchyInKeyWindow: true,
             testName: testCase.testName
