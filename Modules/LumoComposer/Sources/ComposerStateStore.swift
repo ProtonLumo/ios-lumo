@@ -52,6 +52,8 @@ final class ComposerStateStore: StateStore {
     private let fileLoader: FileLoader
     private let speechService: SpeechRecordingServiceProtocol
     private let urlOpener: URLOpenerProtocol
+    private let widgetPromptReceiver: WidgetPromptReceiver
+
     private var stateObservationTask: Task<Void, Never>?
     private var errorObservationTask: Task<Void, Never>?
     private var galleryPromptTask: Task<Void, Never>?
@@ -64,6 +66,7 @@ final class ComposerStateStore: StateStore {
         toastStateStore: ToastStateStore,
         speechService: SpeechRecordingServiceProtocol,
         urlOpener: URLOpenerProtocol,
+        widgetPromptReceiver: WidgetPromptReceiver,
         fileLoader: @escaping FileLoader = { url in try securityScopedFileLoader(url: url) }
     ) {
         self.state = initialState
@@ -71,6 +74,7 @@ final class ComposerStateStore: StateStore {
         self.toastStateStore = toastStateStore
         self.speechService = speechService
         self.urlOpener = urlOpener
+        self.widgetPromptReceiver = widgetPromptReceiver
         self.fileLoader = fileLoader
     }
 

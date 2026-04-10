@@ -15,12 +15,14 @@ final class ComposerStateStoreTests {
     let toastStateStore = ToastStateStore(initialState: .initial)
     let speechServiceSpy = SpeechRecordingServiceSpy()
     let urlOpenerSpy = URLOpenerSpy()
+    let widgetPromptReceiver = WidgetPromptReceiver()
     lazy var sut = ComposerStateStore(
         initialState: initialState,
         webBridge: webBridge,
         toastStateStore: toastStateStore,
         speechService: speechServiceSpy,
-        urlOpener: urlOpenerSpy
+        urlOpener: urlOpenerSpy,
+        widgetPromptReceiver: widgetPromptReceiver
     )
 
     var initialState = ComposerViewState.initial
@@ -166,6 +168,32 @@ final class ComposerStateStoreTests {
         await sut.send(action: .onDisappear)
 
         webBridge.handleGalleryPrompt("A futuristic cat in space")
+
+        await Task.yield()
+
+        #expect(sut.state.currentText == "")
+    }
+
+    // MARK: - .widgetPrompt
+
+    @Test
+    func taskStartedAction_StartsObservingWidgetPrompts() async {
+        await sut.send(action: .taskStarted)
+
+        let prompt = "Summarize the latest Proton news"
+        widgetPromptReceiver.receive(prompt)
+
+        try? await Task.sleep(for: .milliseconds(50))
+
+        #expect(sut.state.currentText == prompt)
+    }
+
+    @Test
+    func onDisappearAction_CancelsWidgetPromptObservation() async {
+        await sut.send(action: .taskStarted)
+        await sut.send(action: .onDisappear)
+
+        widgetPromptReceiver.receive("Summarize the latest Proton news")
 
         await Task.yield()
 
@@ -980,6 +1008,7 @@ final class ComposerStateStoreTests {
             toastStateStore: toastStateStore,
             speechService: speechServiceSpy,
             urlOpener: urlOpenerSpy,
+            widgetPromptReceiver: widgetPromptReceiver,
             fileLoader: { _ in fileData }
         )
         webBridge.attach(to: webViewSpy)
@@ -1013,6 +1042,7 @@ final class ComposerStateStoreTests {
             toastStateStore: toastStateStore,
             speechService: speechServiceSpy,
             urlOpener: urlOpenerSpy,
+            widgetPromptReceiver: widgetPromptReceiver,
             fileLoader: { _ in throw CocoaError(.fileReadNoPermission) }
         )
         webBridge.attach(to: webViewSpy)
