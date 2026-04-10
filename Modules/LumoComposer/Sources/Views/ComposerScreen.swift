@@ -21,6 +21,7 @@ public struct ComposerScreen<WebContent: View>: View {
         isWebViewReady: Bool,
         toastStateStore: ToastStateStore,
         urlOpener: URLOpenerProtocol,
+        widgetPromptReceiver: WidgetPromptReceiver,
         webContent: @escaping () -> WebContent
     ) {
         self.init(
@@ -29,6 +30,7 @@ public struct ComposerScreen<WebContent: View>: View {
             isWebViewReady: isWebViewReady,
             toastStateStore: toastStateStore,
             urlOpener: urlOpener,
+            widgetPromptReceiver: widgetPromptReceiver,
             webContent: webContent
         )
     }
@@ -40,6 +42,7 @@ public struct ComposerScreen<WebContent: View>: View {
         isWebViewReady: Bool,
         toastStateStore: ToastStateStore,
         urlOpener: URLOpenerProtocol,
+        widgetPromptReceiver: WidgetPromptReceiver,
         webContent: @escaping () -> WebContent
     ) {
         _store = .init(
@@ -48,7 +51,8 @@ public struct ComposerScreen<WebContent: View>: View {
                 webBridge: webBridge,
                 toastStateStore: toastStateStore,
                 speechService: SpeechRecordingServiceFactory.make(),
-                urlOpener: urlOpener
+                urlOpener: urlOpener,
+                widgetPromptReceiver: widgetPromptReceiver
             )
         )
         self.isWebViewReady = isWebViewReady
@@ -283,6 +287,7 @@ private struct SheetHeightKey: PreferenceKey {
             isWebViewReady: true,
             toastStateStore: ToastStateStore(initialState: .initial),
             urlOpener: OpenURLAction { _ in .discarded },
+            widgetPromptReceiver: WidgetPromptReceiver(),
             webContent: { EmptyView() }
         )
     }

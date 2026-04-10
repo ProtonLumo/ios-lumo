@@ -82,6 +82,10 @@ enum JSCommand {
                         return { success: false, reason: 'editor_not_found' };
                     }
 
+                    if (window.getComputedStyle(editor).visibility === 'hidden') {
+                        return { success: false, reason: 'editor_not_visible' };
+                    }
+
                     editor.focus();
                     document.execCommand('selectAll', false, null);
                     const inserted = document.execCommand('insertText', false, prompt);
