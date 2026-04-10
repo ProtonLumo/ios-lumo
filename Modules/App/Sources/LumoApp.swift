@@ -1,4 +1,5 @@
 import LumoCore
+import ProtonUIFoundations
 import SwiftUI
 
 @main
@@ -7,6 +8,7 @@ struct LumoApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
     @StateObject private var themeStore = ThemeStore()
+    @StateObject private var toastStateStore = ToastStateStore(initialState: .initial)
 
     var body: some Scene {
         WindowGroup {
@@ -45,6 +47,10 @@ struct LumoApp: App {
                         Logger.shared.log("Unknown scene phase: \(newPhase)", category: "AppDelegate")
                     }
                 }
+                .overlay {
+                    ToastSceneView(dispatchAfter: DispatchQueue.main.asyncAfter(deadline:execute:))
+                }
+                .environmentObject(toastStateStore)
                 .preferredColorScheme(themeStore.colorScheme)
         }
     }

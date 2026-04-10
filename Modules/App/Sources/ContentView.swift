@@ -45,14 +45,15 @@ class PaymentSheetDelegate: NSObject, PaymentSheetViewModelDelegate {
 
 struct ContentView: View {
     // MARK: - Environment
+    @Environment(\.openURL) private var urlOpener
     @EnvironmentObject private var themeStore: ThemeStore
+    @EnvironmentObject private var toastStateStore: ToastStateStore
 
     // MARK: - State Properties
     @StateObject private var speechRecorder: LegacySpeechRecorder
     @StateObject private var jsCoordinator = WebViewCoordinator()
     @StateObject private var webComposerBridge = WebComposerBridge()
     @StateObject private var widgetPromptReceiver = WidgetPromptReceiver()
-    @State private var isLoading = true
     @State private var webViewIsActive = true
     @State private var webViewReady = false
 
@@ -67,15 +68,12 @@ struct ContentView: View {
     @State private var webProcessTerminated = false
     @State private var processTerminationCount = 0
     @State private var lastTerminationTime: Date? = nil
-    @State private var showLoader = false
     @State private var showCurrentPlans = false
     @State private var currentPlansViewModel: CurrentPlansViewModel?
     @State private var showLockdownModeWarning = false
 
     // MARK: - Constants
     private let paymentSheetDelegate = PaymentSheetDelegate()
-
-    private let safetyTimeoutDuration: TimeInterval = 3.0
 
     init(urlOpener: URLOpenerProtocol) {
         _speechRecorder = StateObject(wrappedValue: LegacySpeechRecorder(urlOpener: urlOpener))
@@ -115,43 +113,35 @@ struct ContentView: View {
                         onBackButtonPress: handleBackButtonPress
                     )
                 }
-
-                WebView(
-                    url: URL.lumoBase!,
-                    webComposerBridge: webComposerBridge,
-                    themeStore: themeStore,
-                    isReady: $webViewReady,
-                    jsCoordinator: jsCoordinator,
-                    action: $webViewAction,
-                    canGoBack: $webViewCanGoBack,
-                    currentURL: $currentWebViewURL,
-                    webViewStore: $webViewReference,
-                    networkError: $networkError,
-                    processTerminated: $processTerminated,
-                    paymentHandler: $paymentHandler
-                )
-                .onAppear { Logger.shared.log("WebView appeared") }
-                .onDisappear {
-                    Logger.shared.log("ContentView disappeared")
-                    webViewIsActive = false
-                    performWebViewCleanup()
+                ComposerScreen(
+                    webBridge: webComposerBridge,
+                    isWebViewReady: webViewReady,
+                    toastStateStore: toastStateStore,
+                    urlOpener: urlOpener,
+                    widgetPromptReceiver: widgetPromptReceiver
+                ) {
+                    WebView(
+                        url: URL.lumoBase!,
+                        webComposerBridge: webComposerBridge,
+                        themeStore: themeStore,
+                        isReady: $webViewReady,
+                        jsCoordinator: jsCoordinator,
+                        action: $webViewAction,
+                        canGoBack: $webViewCanGoBack,
+                        currentURL: $currentWebViewURL,
+                        webViewStore: $webViewReference,
+                        networkError: $networkError,
+                        processTerminated: $processTerminated,
+                        paymentHandler: $paymentHandler
+                    )
+                    .onAppear { Logger.shared.log("WebView appeared") }
+                    .onDisappear {
+                        Logger.shared.log("ContentView disappeared")
+                        webViewIsActive = false
+                        performWebViewCleanup()
+                    }
                 }
                 .floatingKeyboardAware()
-            }
-
-            if !webViewReady && (showLoader || currentWebViewURL == nil) {
-                LoadingView()
-                    .transition(.opacity)
-                    .animation(.easeInOut(duration: 0.3), value: !webViewReady && (showLoader || currentWebViewURL == nil))
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + safetyTimeoutDuration) {
-                            if !webViewReady {
-                                Logger.shared.log("⚠️ LoadingView safety timeout reached - forcing webViewReady=true")
-                                webViewReady = true
-                                showLoader = false
-                            }
-                        }
-                    }
             }
 
             if networkError {
@@ -191,8 +181,6 @@ struct ContentView: View {
         }
         .onChange(of: webViewReady) { _, isReady in
             if isReady {
-                showLoader = false
-
                 // Mark coordinator as ready - it will automatically process pending commands
                 jsCoordinator.markReady()
 
@@ -200,6 +188,11 @@ struct ContentView: View {
                 Task {
                     await jsCoordinator.setupInitialScripts()
                 }
+            }
+        }
+        .onChange(of: webViewReference) { _, newValue in
+            if let webView = newValue {
+                webComposerBridge.attach(to: webView)
             }
         }
         .onReceive(notification: Notification.Name("StartVoiceEntryNotification")) {
@@ -230,10 +223,6 @@ struct ContentView: View {
         }
         .onAppear {
             Logger.shared.log("ContentView appeared")
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                isLoading = false
-            }
 
             setupNotificationObservers()
             setupSpeechRecorder()
@@ -293,7 +282,6 @@ struct ContentView: View {
 
         safeWebViewOperation { webView in
             DispatchQueue.main.async {
-                self.showLoader = true
                 self.webViewReady = false
             }
 
@@ -716,7 +704,6 @@ struct ContentView: View {
             {
                 DispatchQueue.main.async {
                     withAnimation(.easeInOut(duration: 0.1)) {
-                        self.showLoader = true
                         self.webViewReady = false
                     }
                 }
@@ -727,7 +714,6 @@ struct ContentView: View {
                 let isCrossDomain = notification.userInfo?["isCrossDomain"] as? Bool ?? false
 
                 if isCrossDomain {
-                    self.showLoader = true
                     self.webViewReady = false
                 }
             }

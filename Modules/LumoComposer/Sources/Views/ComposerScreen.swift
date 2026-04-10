@@ -11,6 +11,7 @@ public struct ComposerScreen<WebContent: View>: View {
     @StateObject private var store: ComposerStateStore
     private let isWebViewReady: Bool
     private let toastStateStore: ToastStateStore
+    private let device: UIDevice
     @ViewBuilder private let webContent: () -> WebContent
 
     @State private var sheetHeight: CGFloat = 250
@@ -22,6 +23,7 @@ public struct ComposerScreen<WebContent: View>: View {
         toastStateStore: ToastStateStore,
         urlOpener: URLOpenerProtocol,
         widgetPromptReceiver: WidgetPromptReceiver,
+        device: UIDevice = .current,
         webContent: @escaping () -> WebContent
     ) {
         self.init(
@@ -31,6 +33,7 @@ public struct ComposerScreen<WebContent: View>: View {
             toastStateStore: toastStateStore,
             urlOpener: urlOpener,
             widgetPromptReceiver: widgetPromptReceiver,
+            device: device,
             webContent: webContent
         )
     }
@@ -43,6 +46,7 @@ public struct ComposerScreen<WebContent: View>: View {
         toastStateStore: ToastStateStore,
         urlOpener: URLOpenerProtocol,
         widgetPromptReceiver: WidgetPromptReceiver,
+        device: UIDevice,
         webContent: @escaping () -> WebContent
     ) {
         _store = .init(
@@ -57,6 +61,7 @@ public struct ComposerScreen<WebContent: View>: View {
         )
         self.isWebViewReady = isWebViewReady
         self.toastStateStore = toastStateStore
+        self.device = device
         self.webContent = webContent
     }
 
@@ -67,17 +72,17 @@ public struct ComposerScreen<WebContent: View>: View {
             ZStack(alignment: .center) {
                 webContent()
 
-                if !store.state.isWebViewReady && store.state.webState.isVisible {
+                if isNativeComposerVisible && !store.state.isWebViewReady {
                     placeholders(screenSize: proxy.size)
                 }
 
                 VStack(spacing: DS.Spacing.medium) {
                     Spacer()
-                    if store.state.webState.isVisible && store.state.webState.showTermsAndPrivacy {
+                    if isNativeComposerVisible && store.state.webState.showTermsAndPrivacy {
                         TermsAndPrivacyText()
                     }
 
-                    if store.state.webState.isVisible {
+                    if isNativeComposerVisible {
                         ComposerView(
                             text: .init(
                                 get: { store.state.currentText },
@@ -157,6 +162,10 @@ public struct ComposerScreen<WebContent: View>: View {
     }
 
     // MARK: - Private
+
+    private var isNativeComposerVisible: Bool {
+        device.userInterfaceIdiom == .phone && store.state.webState.isVisible
+    }
 
     private var activeSheetBinding: Binding<ActiveSheet?> {
         Binding(
@@ -288,6 +297,7 @@ private struct SheetHeightKey: PreferenceKey {
             toastStateStore: ToastStateStore(initialState: .initial),
             urlOpener: OpenURLAction { _ in .discarded },
             widgetPromptReceiver: WidgetPromptReceiver(),
+            device: .current,
             webContent: { EmptyView() }
         )
     }

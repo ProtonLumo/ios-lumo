@@ -84,6 +84,7 @@ struct ComposerScreenSnapshotTests {
             toastStateStore: ToastStateStore(initialState: .initial),
             urlOpener: OpenURLAction { _ in .discarded },
             widgetPromptReceiver: WidgetPromptReceiver(),
+            device: .current,
             webContent: { EmptyView() }
         )
     }
