@@ -164,6 +164,7 @@ let project = Project(
                 "Modules/LumoComposer/Resources/**"
             ],
             dependencies: [
+                .external(name: "Lottie"),
                 .external(name: "ProtonUIFoundations"),
                 .target(name: "LumoCore"),
                 .target(name: "LumoDesignSystem"),
