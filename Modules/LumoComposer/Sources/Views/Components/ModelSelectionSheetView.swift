@@ -26,6 +26,7 @@ struct ModelSelectionSheetView: View {
                                 isSelected: selectedModel == model,
                                 upsellIcon: model == .thinking ? DS.Icon.lumoPlus.swiftUIImage : nil
                             )
+                            .contentShape(Rectangle())
                         }
                     )
                     .buttonStyle(.plain)
