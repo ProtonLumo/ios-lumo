@@ -89,7 +89,12 @@ final class ComposerStateStore: StateStore {
             stateObservationTask = Task {
                 for await webState in webBridge.stateUpdates {
                     guard !Task.isCancelled else { break }
+                    let wasVisible = state.webState.isVisible
                     state = state.copy(applyingWebState: webState)
+                    let becameHidden = wasVisible && !webState.isVisible
+                    if state.speechState.isActive, becameHidden {
+                        await send(action: .recorder(.cancel))
+                    }
                 }
             }
             errorObservationTask?.cancel()
