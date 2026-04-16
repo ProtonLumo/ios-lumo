@@ -251,7 +251,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
             actionButton: .send,
-            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true, isToolsEnabled: false),
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true, isToolsEnabled: true),
             testName: "with_two_files_ghost_mode"
         ),
         // Many files

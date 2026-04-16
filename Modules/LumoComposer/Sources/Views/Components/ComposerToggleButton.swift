@@ -12,7 +12,7 @@ struct ComposerToggleButton: View {
         Button(action: action) {
             icon
                 .font(.system(size: 20))
-                .foregroundStyle(isDisabled ? iconColor.opacity(0.6) : iconColor)
+                .foregroundStyle(iconColor)
                 .square(size: 36)
         }
         .buttonStyle(ComposerToggleButtonStyle())
@@ -21,8 +21,11 @@ struct ComposerToggleButton: View {
 }
 
 private struct ComposerToggleButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .opacity(isEnabled ? 1 : 0.5)
             .background(configuration.isPressed ? DS.Color.Interaction.defaultHover : .clear)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.medium))
     }

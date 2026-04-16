@@ -65,7 +65,7 @@ struct ComposerToolbar: View {
                     ComposerToggleButton(
                         icon: DS.Icon.icSliders.swiftUIImage,
                         iconColor: iconColor,
-                        isDisabled: areButtonsDisabled && !featureFlags.isToolsEnabled,
+                        isDisabled: areButtonsDisabled || !featureFlags.isToolsEnabled,
                         action: { action(.toolsTapped) }
                     )
                 }
