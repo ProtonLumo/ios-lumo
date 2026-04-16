@@ -3,7 +3,6 @@ import os.log
 
 public final class Logger {
     public static let shared = Logger()
-    public static let logsUpdatedNotification = Notification.Name("LoggerLogsUpdated")
 
     private var logFileURL: URL?
     private let fileManager = FileManager.default
@@ -30,10 +29,6 @@ public final class Logger {
 
         queue.async { [weak self] in
             self?.writeToFile(logMessage)
-
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: Logger.logsUpdatedNotification, object: nil)
-            }
         }
     }
 
@@ -74,9 +69,6 @@ public final class Logger {
 
         do {
             try "".write(to: logFileURL, atomically: true, encoding: .utf8)
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: Logger.logsUpdatedNotification, object: nil)
-            }
             return true
         } catch {
             print("Failed to clear log file: \(error)")
