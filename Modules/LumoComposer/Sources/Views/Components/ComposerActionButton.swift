@@ -3,6 +3,8 @@ import LumoUI
 import SwiftUI
 
 struct ComposerActionButton: View {
+    static let size: CGFloat = 36
+
     let action: () -> Void
     let icon: Image
     let iconColor: Color
@@ -13,7 +15,7 @@ struct ComposerActionButton: View {
             label: {
                 icon
                     .foregroundStyle(iconColor)
-                    .square(size: 36)
+                    .square(size: Self.size)
                     .background {
                         Circle()
                             .fill(DS.Color.primary)

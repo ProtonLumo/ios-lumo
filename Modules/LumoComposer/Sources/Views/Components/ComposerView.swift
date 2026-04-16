@@ -59,6 +59,7 @@ struct ComposerView: View {
                 switch actionButton {
                 case .none:
                     EmptyView()
+                        .square(size: ComposerActionButton.size)
                 case .send:
                     sendButton
                 case .stop:
