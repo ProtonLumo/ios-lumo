@@ -11,7 +11,7 @@ public struct ComposerScreen<WebContent: View>: View {
     @StateObject private var store: ComposerStateStore
     private let isWebViewReady: Bool
     private let toastStateStore: ToastStateStore
-    private let device: UIDevice
+    private let device: DeviceProviding
     @ViewBuilder private let webContent: () -> WebContent
 
     @State private var sheetHeight: CGFloat = 250
@@ -24,7 +24,7 @@ public struct ComposerScreen<WebContent: View>: View {
         toastStateStore: ToastStateStore,
         urlOpener: URLOpenerProtocol,
         widgetPromptReceiver: WidgetPromptReceiver,
-        device: UIDevice = .current,
+        device: DeviceProviding = UIDevice.current,
         webContent: @escaping () -> WebContent
     ) {
         self.init(
@@ -47,7 +47,7 @@ public struct ComposerScreen<WebContent: View>: View {
         toastStateStore: ToastStateStore,
         urlOpener: URLOpenerProtocol,
         widgetPromptReceiver: WidgetPromptReceiver,
-        device: UIDevice,
+        device: DeviceProviding,
         webContent: @escaping () -> WebContent
     ) {
         _store = .init(
@@ -315,7 +315,7 @@ private struct SheetHeightKey: PreferenceKey {
             toastStateStore: ToastStateStore(initialState: .initial),
             urlOpener: OpenURLAction { _ in .discarded },
             widgetPromptReceiver: WidgetPromptReceiver(),
-            device: .current,
+            device: UIDevice.current,
             webContent: { EmptyView() }
         )
     }
