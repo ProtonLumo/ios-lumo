@@ -273,7 +273,12 @@ final class ComposerStateStore: StateStore {
             }
 
         case .imageCaptured(let image):
-            guard let data = image.jpegData(compressionQuality: 0.7) else { return }
+            let jpegData =
+                await Task.detached(priority: .userInitiated) {
+                    image.jpegData(compressionQuality: 0.7)
+                }
+                .value
+            guard let data = jpegData else { return }
             let name = "\(UUIDEnvironment.uuid().uuidString).jpg"
             await sendUploadFile(data: data, name: name)
 
