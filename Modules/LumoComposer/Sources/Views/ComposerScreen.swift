@@ -73,17 +73,17 @@ public struct ComposerScreen<WebContent: View>: View {
             ZStack(alignment: .center) {
                 webContent()
 
-                if isNativeComposerVisible && !store.state.isWebViewReady {
+                if arePlacholdersVisible {
                     placeholders(screenSize: proxy.size)
                 }
 
-                VStack(spacing: DS.Spacing.medium) {
-                    Spacer()
-                    if isNativeComposerVisible && store.state.webState.showTermsAndPrivacy {
+                if isNativeComposerVisible {
+                    VStack(spacing: DS.Spacing.medium) {
+                        Spacer()
                         TermsAndPrivacyText()
-                    }
+                            .opacity(isTextAndPrivacyVisible ? 1 : 0)
+                            .animation(.easeInOut, value: isTextAndPrivacyVisible)
 
-                    if isNativeComposerVisible {
                         ComposerView(
                             text: .init(
                                 get: { store.state.currentText },
@@ -174,6 +174,14 @@ public struct ComposerScreen<WebContent: View>: View {
         device.userInterfaceIdiom == .phone && store.state.webState.isVisible
     }
 
+    private var arePlacholdersVisible: Bool {
+        isNativeComposerVisible && !store.state.isWebViewReady
+    }
+
+    private var isTextAndPrivacyVisible: Bool {
+        store.state.webState.showTermsAndPrivacy && !isComposerFocused
+    }
+
     private var activeSheetBinding: Binding<ActiveSheet?> {
         Binding(
             get: { store.state.activeSheet },
@@ -242,10 +250,10 @@ public struct ComposerScreen<WebContent: View>: View {
         VStack(spacing: DS.Spacing.medium) {
             logoPlaceholder()
             Spacer()
-            catPlaceholder(offsetY: -screenSize.height * 0.07)
+            catPlaceholder(offsetY: -screenSize.height * 0.065)
             Spacer()
         }
-        .ignoresSafeArea(.keyboard)
+        .background(DS.Color.Background.norm)
     }
 
     private func logoPlaceholder() -> some View {
@@ -259,7 +267,7 @@ public struct ComposerScreen<WebContent: View>: View {
     }
 
     private func catPlaceholder(offsetY: CGFloat) -> some View {
-        VStack(spacing: -DS.Spacing.standard) {
+        VStack(spacing: .zero) {
             lottieView()
             ComposerWelcomeText()
         }
