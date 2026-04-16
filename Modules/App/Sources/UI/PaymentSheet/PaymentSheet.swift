@@ -162,7 +162,7 @@ struct PaymentSheet: View {
                                 viewModel.hideTransactionProgress()
                                 viewModel.isLoading = false
                             }
-                            .transition(.opacity.animation(.easeInOut(duration: 0.3)))
+                            .transition(.opacity.animation(.easeInOut))
                     }
                     .zIndex(1000)
                 }

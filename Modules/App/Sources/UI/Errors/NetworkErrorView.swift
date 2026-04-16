@@ -40,7 +40,7 @@ struct NetworkErrorView: View {
             }
             .padding(24)
         }
-        .transition(.opacity.animation(.easeInOut(duration: 0.3)))
+        .transition(.opacity.animation(.easeInOut))
         .zIndex(200)
     }
 }

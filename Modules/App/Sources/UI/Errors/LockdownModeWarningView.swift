@@ -72,7 +72,7 @@ struct LockdownModeWarningView: View {
             .padding(.horizontal, 32)
         }
         .transition(.opacity.combined(with: .scale))
-        .animation(.easeInOut(duration: 0.3), value: true)
+        .animation(.easeInOut, value: true)
         .zIndex(999)
     }
 }

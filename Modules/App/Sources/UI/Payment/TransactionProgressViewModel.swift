@@ -44,14 +44,14 @@ class TransactionProgressViewModel: ObservableObject {
 
     func markAllCompleted() {
         Logger.shared.log("TransactionProgressViewModel: markAllCompleted - completing step 3")
-        withAnimation(.easeInOut(duration: 0.3)) {
+        withAnimation(.easeInOut) {
             isCompleted = true
         }
     }
 
     func markError(_ message: String) {
         Logger.shared.log("TransactionProgressViewModel: markError - \(message)")
-        withAnimation(.easeInOut(duration: 0.3)) {
+        withAnimation(.easeInOut) {
             hasError = true
             errorMessage = message
         }
@@ -73,7 +73,7 @@ class TransactionProgressViewModel: ObservableObject {
             return
         }
 
-        withAnimation(.easeInOut(duration: 0.3)) {
+        withAnimation(.easeInOut) {
             stepStates[step] = true
             if step < progressSteps.count - 1 {
                 currentStep = step + 1
