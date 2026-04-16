@@ -144,9 +144,7 @@ public struct SpeechRecorderView: View {
     }
 
     private func formatDuration(_ duration: TimeInterval) -> String {
-        let minutes = Int(duration) / 60
-        let seconds = Int(duration) % 60
-        return String(format: "%02d:%02d", minutes, seconds)
+        Duration.seconds(duration).formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2)))
     }
 }
 
