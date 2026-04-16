@@ -1246,6 +1246,57 @@ final class ComposerStateStoreTests {
         #expect(urlOpenerSpy.callAsFunctionInvokedWithURL == [.settings])
     }
 
+    // MARK: - Recording + web visibility interaction
+
+    @Test
+    func webStateChange_WhenComposerBecomesHidden_AndRecordingIsActive_CancelsRecording() async {
+        webBridge.attach(to: webViewSpy)
+
+        await sut.send(action: .taskStarted)
+        await sut.send(action: .startRecordingTapped)
+
+        guard case .recording = sut.state.speechState else {
+            Issue.record("Precondition failed: expected .recording")
+            return
+        }
+
+        simulateWebStateChange(
+            lumoMode: "Idle",
+            isGhostModeEnabled: false,
+            isWebSearchEnabled: false,
+            isVisible: false,
+            showTsAndCs: false,
+            files: []
+        )
+
+        try? await Task.sleep(for: .milliseconds(50))
+
+        #expect(sut.state.speechState == .idle)
+    }
+
+    @Test
+    func webStateChange_WhenComposerBecomesHidden_AndRecordingIsNotActive_DoesNothing() async {
+        webBridge.attach(to: webViewSpy)
+
+        await sut.send(action: .taskStarted)
+
+        #expect(sut.state.speechState == .idle)
+
+        simulateWebStateChange(
+            lumoMode: "Idle",
+            isGhostModeEnabled: false,
+            isWebSearchEnabled: false,
+            isVisible: false,
+            showTsAndCs: false,
+            files: []
+        )
+
+        try? await Task.sleep(for: .milliseconds(50))
+
+        #expect(sut.state.speechState == .idle)
+        #expect(speechServiceSpy.cancelCallCount == 0)
+    }
+
     @Test
     func startRecordingTapped_WhenAlreadyRecording_DoesNotStartNewSession() async {
         await sut.send(action: .startRecordingTapped)
