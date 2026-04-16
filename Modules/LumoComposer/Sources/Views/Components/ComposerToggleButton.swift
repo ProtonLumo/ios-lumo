@@ -16,6 +16,7 @@ struct ComposerToggleButton: View {
                 .square(size: 36)
         }
         .buttonStyle(ComposerToggleButtonStyle())
+        .disabled(isDisabled)
     }
 }
 

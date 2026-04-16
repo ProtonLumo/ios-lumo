@@ -65,10 +65,9 @@ struct ComposerToolbar: View {
                     ComposerToggleButton(
                         icon: DS.Icon.icSliders.swiftUIImage,
                         iconColor: iconColor,
-                        isDisabled: areButtonsDisabled,
+                        isDisabled: areButtonsDisabled && !featureFlags.isToolsEnabled,
                         action: { action(.toolsTapped) }
                     )
-                    .disabled(!featureFlags.isToolsEnabled)
                 }
             }
             Spacer()
@@ -84,7 +83,7 @@ struct ComposerToolbar: View {
                 ComposerToggleButton(
                     icon: DS.Icon.icMicrophone.swiftUIImage,
                     iconColor: iconColor,
-                    isDisabled: areButtonsDisabled,
+                    isDisabled: false,
                     action: { action(.microphoneTapped) }
                 )
             }

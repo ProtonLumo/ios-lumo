@@ -103,14 +103,6 @@ public struct ComposerScreen<WebContent: View>: View {
                         .padding(.bottom, DS.Spacing.standard)
                     }
                 }
-
-                if store.state.speechState.isActive {
-                    SpeechRecorderView(
-                        state: store.state.speechState,
-                        onSubmit: { store.send(action: .recorder(.submit)) },
-                        onCancel: { store.send(action: .recorder(.cancel)) }
-                    )
-                }
             }
         }
         .overlay {
@@ -119,6 +111,16 @@ public struct ComposerScreen<WebContent: View>: View {
                     onSettings: { store.send(action: .recorder(.openSettings)) },
                     onDismiss: { store.send(action: .recorder(.dismissPermissionAlert)) }
                 )
+            }
+        }
+        .overlay {
+            if store.state.speechState.isActive {
+                SpeechRecorderView(
+                    state: store.state.speechState,
+                    onSubmit: { store.send(action: .recorder(.submit)) },
+                    onCancel: { store.send(action: .recorder(.cancel)) }
+                )
+                .transition(.move(edge: .bottom))
             }
         }
         .onChange(of: store.state.isProcessing) { _, isProcessing in
@@ -166,6 +168,7 @@ public struct ComposerScreen<WebContent: View>: View {
             .ignoresSafeArea()
         }
         .environment(\.featureFlags, store.state.webState.featureFlags)
+        .animation(.spring(response: 0.35), value: store.state.speechState.isActive)
     }
 
     // MARK: - Private

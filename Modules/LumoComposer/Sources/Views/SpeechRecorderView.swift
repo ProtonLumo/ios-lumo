@@ -18,108 +18,121 @@ public struct SpeechRecorderView: View {
     }
 
     public var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: .zero) {
             Spacer()
-            ZStack {
-                VStack(alignment: .center) {
-                    Spacer().frame(height: 10)
+            VStack(alignment: .center) {
+                Spacer().frame(height: DS.Spacing.mediumLight)
 
-                    HStack(spacing: DS.Spacing.compact) {
-                        Image(systemName: "checkmark.shield.fill")
-                            .font(.system(size: 12))
-                            .foregroundColor(.white.opacity(0.9))
-                        Text(L10n.Speech.onDevice)
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.white.opacity(0.9))
-                    }
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 4)
-                    .background(Color.white.opacity(0.2))
-                    .cornerRadius(14)
-                    .opacity(viewState.isOnDevice ? 1 : 0)
+                transcriptionOnDevice
 
-                    Spacer().frame(height: 4)
+                Spacer().frame(height: DS.Spacing.small)
 
-                    HStack(spacing: 15) {
-                        Button(action: onCancel) {
-                            Circle()
-                                .fill(brandPurple.opacity(0.7))
-                                .square(size: 50)
-                                .overlay(
-                                    Image(systemName: "xmark")
-                                        .font(.system(size: 18, weight: .bold))
-                                        .foregroundColor(.white)
-                                )
-                        }
-                        .padding(.leading, 5)
-                        .disabled(isSubmitting)
-
-                        // Waveform visualization
-                        HStack(spacing: 2) {
-                            ForEach(0..<AudioLevelNormalizer.barCount, id: \.self) { index in
-                                RoundedRectangle(cornerRadius: 1)
-                                    .fill(Color.white)
-                                    .frame(width: 2, height: viewState.audioLevels[index] * 30)
-                            }
-                        }
-                        .padding(.top, 10)
-
-                        Text(formatDuration(viewState.duration))
-                            .foregroundColor(.white)
-                            .font(.system(size: 14, weight: .semibold))
-                            .frame(width: 45, alignment: .center)
-
-                        Button(action: onSubmit) {
-                            Circle()
-                                .fill(Color.white)
-                                .frame(width: 50, height: 50)
-                                .overlay(
-                                    Group {
-                                        if isSubmitting {
-                                            ZStack {
-                                                Circle()
-                                                    .fill(brandPurple.opacity(0.2))
-                                                    .frame(width: 40, height: 40)
-                                                    .scaleEffect(isSubmitting ? 1.2 : 1.0)
-                                                    .animation(
-                                                        Animation.easeInOut(duration: 0.7)
-                                                            .repeatForever(autoreverses: true),
-                                                        value: isSubmitting
-                                                    )
-
-                                                ProgressView()
-                                                    .progressViewStyle(CircularProgressViewStyle())
-                                                    .tint(brandPurple)
-                                                    .scaleEffect(1.3)
-                                            }
-                                        } else {
-                                            Image(systemName: "arrow.up")
-                                                .font(.system(size: 18, weight: .bold))
-                                                .foregroundColor(brandPurple)
-                                        }
-                                    }
-                                )
-                                .animation(.easeIn(duration: 0.15), value: isSubmitting)
-                        }
-                        .padding(.trailing, 5)
-                        .disabled(isSubmitting)
-                    }
+                HStack(spacing: DS.Spacing.large) {
+                    cancelButton
+                    audioWaveform
+                    duration
+                    submitButton
                 }
             }
             .frame(maxWidth: .infinity, minHeight: 110)
+            .geometryGroup()
             .background {
                 RoundedCorners(radius: 20, corners: [.topLeft, .topRight])
                     .fill(brandPurple)
                     .ignoresSafeArea(edges: .bottom)
             }
         }
-        .transition(.move(edge: .bottom))
-        .zIndex(90)
     }
 
     // MARK: - Private
 
     private let brandPurple = DS.Color.primary
+
+    private var transcriptionOnDevice: some View {
+        HStack(spacing: DS.Spacing.compact) {
+            Image(systemName: "checkmark.shield.fill")
+                .font(.system(size: 12))
+                .foregroundColor(.white.opacity(0.9))
+            Text(L10n.Speech.onDevice)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(.white.opacity(0.9))
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 4)
+        .background(Color.white.opacity(0.2))
+        .cornerRadius(14)
+        .opacity(viewState.isOnDevice ? 1 : 0)
+    }
+
+    private var cancelButton: some View {
+        Button(action: onCancel) {
+            Circle()
+                .fill(brandPurple.opacity(0.7))
+                .square(size: 50)
+                .overlay(
+                    Image(systemName: "xmark")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(.white)
+                )
+        }
+        .padding(.leading, 5)
+        .disabled(isSubmitting)
+    }
+
+    private var audioWaveform: some View {
+        HStack(spacing: DS.Spacing.tiny) {
+            ForEach(0..<AudioLevelNormalizer.barCount, id: \.self) { index in
+                RoundedRectangle(cornerRadius: 1)
+                    .fill(Color.white)
+                    .frame(width: 2, height: viewState.audioLevels[index] * 30)
+            }
+        }
+        .padding(.top, DS.Spacing.mediumLight)
+    }
+
+    private var duration: some View {
+        Text(formatDuration(viewState.duration))
+            .foregroundColor(.white)
+            .font(.system(size: 14, weight: .semibold))
+            .frame(width: 45, alignment: .center)
+    }
+
+    private var submitButton: some View {
+        Button(action: onSubmit) {
+            Circle()
+                .fill(Color.white)
+                .square(size: 50)
+                .overlay(
+                    Group {
+                        if isSubmitting {
+                            ZStack {
+                                Circle()
+                                    .fill(brandPurple.opacity(0.2))
+                                    .square(size: 40)
+                                    .scaleEffect(isSubmitting ? 1.2 : 1.0)
+                                    .animation(
+                                        Animation.easeInOut(duration: 0.7)
+                                            .repeatForever(autoreverses: true),
+                                        value: isSubmitting
+                                    )
+
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle())
+                                    .tint(brandPurple)
+                                    .scaleEffect(1.3)
+                            }
+                        } else {
+                            Image(systemName: "arrow.up")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(brandPurple)
+                        }
+                    }
+                )
+                .animation(.easeIn(duration: 0.15), value: isSubmitting)
+        }
+        .padding(.trailing, DS.Spacing.compact)
+        .disabled(isSubmitting)
+    }
 
     private var isSubmitting: Bool {
         if case .submitting = state { return true }
