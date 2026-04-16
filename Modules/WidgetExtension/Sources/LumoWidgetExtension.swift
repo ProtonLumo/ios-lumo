@@ -382,43 +382,11 @@ struct LumoWidgetExtension: Widget {
     }
 }
 
-struct LumoWidget_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            // Medium - Light Mode
-            LumoWidgetView(
-                entry: LumoWidgetEntry(
-                    date: Date(),
-                    searchHint: "Need an afternoon boost?",
-                    prompts: [
-                        TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
-                        TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
-                        TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book")
-                    ]
-                )
-            )
-            .previewContext(WidgetPreviewContext(family: .systemMedium))
-            .environment(\.colorScheme, .light)
-            .previewDisplayName("Medium - Light Mode")
-
-            // Medium - Dark Mode
-            LumoWidgetView(
-                entry: LumoWidgetEntry(
-                    date: Date(),
-                    searchHint: "Need an afternoon boost?",
-                    prompts: [
-                        TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
-                        TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book"),
-                        TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book")
-                    ]
-                )
-            )
-            .previewContext(WidgetPreviewContext(family: .systemMedium))
-            .environment(\.colorScheme, .dark)
-            .previewDisplayName("Medium - Dark Mode")
-
-            // Medium - Tinted Mode (iOS 18)
-            if #available(iOS 18.0, *) {
+#if DEBUG
+    struct LumoWidget_Previews: PreviewProvider {
+        static var previews: some View {
+            Group {
+                // Medium - Light Mode
                 LumoWidgetView(
                     entry: LumoWidgetEntry(
                         date: Date(),
@@ -431,33 +399,67 @@ struct LumoWidget_Previews: PreviewProvider {
                     )
                 )
                 .previewContext(WidgetPreviewContext(family: .systemMedium))
-                .environment(\.widgetRenderingMode, .vibrant)
-                .previewDisplayName("Medium - Tinted Mode")
+                .environment(\.colorScheme, .light)
+                .previewDisplayName("Medium - Light Mode")
+
+                // Medium - Dark Mode
+                LumoWidgetView(
+                    entry: LumoWidgetEntry(
+                        date: Date(),
+                        searchHint: "Need an afternoon boost?",
+                        prompts: [
+                            TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
+                            TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book"),
+                            TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book")
+                        ]
+                    )
+                )
+                .previewContext(WidgetPreviewContext(family: .systemMedium))
+                .environment(\.colorScheme, .dark)
+                .previewDisplayName("Medium - Dark Mode")
+
+                // Medium - Tinted Mode (iOS 18)
+                if #available(iOS 18.0, *) {
+                    LumoWidgetView(
+                        entry: LumoWidgetEntry(
+                            date: Date(),
+                            searchHint: "Need an afternoon boost?",
+                            prompts: [
+                                TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
+                                TimePrompt(label: L10n.Widget.Prompt.universeExplorer, prompt: L10n.Widget.PromptFull.universeExplorer, id: "focus", icon: "atom"),
+                                TimePrompt(label: L10n.Widget.Prompt.dailyLearning, prompt: L10n.Widget.PromptFull.dailyLearning, id: "dailylearning", icon: "book")
+                            ]
+                        )
+                    )
+                    .previewContext(WidgetPreviewContext(family: .systemMedium))
+                    .environment(\.widgetRenderingMode, .vibrant)
+                    .previewDisplayName("Medium - Tinted Mode")
+                }
+
+                // Small - Light Mode
+                LumoWidgetView(
+                    entry: LumoWidgetEntry(
+                        date: Date(),
+                        searchHint: "Need an afternoon boost?",
+                        prompts: []
+                    )
+                )
+                .previewContext(WidgetPreviewContext(family: .systemSmall))
+                .environment(\.colorScheme, .light)
+                .previewDisplayName("Small - Light Mode")
+
+                // Small - Dark Mode
+                LumoWidgetView(
+                    entry: LumoWidgetEntry(
+                        date: Date(),
+                        searchHint: "Need an afternoon boost?",
+                        prompts: []
+                    )
+                )
+                .previewContext(WidgetPreviewContext(family: .systemSmall))
+                .environment(\.colorScheme, .dark)
+                .previewDisplayName("Small - Dark Mode")
             }
-
-            // Small - Light Mode
-            LumoWidgetView(
-                entry: LumoWidgetEntry(
-                    date: Date(),
-                    searchHint: "Need an afternoon boost?",
-                    prompts: []
-                )
-            )
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
-            .environment(\.colorScheme, .light)
-            .previewDisplayName("Small - Light Mode")
-
-            // Small - Dark Mode
-            LumoWidgetView(
-                entry: LumoWidgetEntry(
-                    date: Date(),
-                    searchHint: "Need an afternoon boost?",
-                    prompts: []
-                )
-            )
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
-            .environment(\.colorScheme, .dark)
-            .previewDisplayName("Small - Dark Mode")
         }
     }
-}
+#endif

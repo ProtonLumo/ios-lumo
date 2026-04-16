@@ -57,10 +57,10 @@ public struct SpeechRecorderView: View {
                 .font(.system(size: 12, weight: .medium))
                 .foregroundColor(.white.opacity(0.9))
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 4)
+        .padding(.horizontal, DS.Spacing.mediumLight)
+        .padding(.vertical, DS.Spacing.small)
         .background(Color.white.opacity(0.2))
-        .cornerRadius(14)
+        .cornerRadius(DS.Radius.mediumLarge)
         .opacity(viewState.isOnDevice ? 1 : 0)
     }
 
@@ -75,7 +75,7 @@ public struct SpeechRecorderView: View {
                         .foregroundColor(.white)
                 )
         }
-        .padding(.leading, 5)
+        .padding(.leading, DS.Spacing.compact)
         .disabled(isSubmitting)
     }
 

@@ -13,7 +13,6 @@ struct LumoApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(urlOpener: openURL)
-                .environmentObject(themeStore)
                 .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LumoPromptReceived"))) { notification in
                     if let prompt = notification.userInfo?["prompt"] as? String {
                         Logger.shared.log("App received prompt: \(prompt)", category: "AppDelegate")
@@ -50,6 +49,7 @@ struct LumoApp: App {
                 .overlay {
                     ToastSceneView(dispatchAfter: DispatchQueue.main.asyncAfter(deadline:execute:))
                 }
+                .environmentObject(themeStore)
                 .environmentObject(toastStateStore)
                 .preferredColorScheme(themeStore.colorScheme)
         }

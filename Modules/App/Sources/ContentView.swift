@@ -866,9 +866,11 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView(urlOpener: OpenURLAction { _ in .discarded })
-            .environmentObject(ThemeStore())
+#if DEBUG
+    struct ContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            ContentView(urlOpener: OpenURLAction { _ in .discarded })
+                .environmentObject(ThemeStore())
+        }
     }
-}
+#endif
