@@ -72,6 +72,7 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
                 options: [.duckOthers, .allowBluetoothHFP]
             )
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+            try? audioSession.setAllowHapticsAndSystemSoundsDuringRecording(true)
         } catch {
             continuation?.yield(.failed(.audioSessionFailed(error)))
             continuation?.finish()

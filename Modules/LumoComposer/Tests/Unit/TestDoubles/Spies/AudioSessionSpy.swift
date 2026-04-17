@@ -19,8 +19,7 @@ final class AudioSessionSpy: AudioSession {
 
     private(set) var setCategoryCalls: [SetCategoryParams] = []
     private(set) var setActiveCalls: [SetActiveParams] = []
-    private(set) var setPreferredSampleRateCalls: [Double] = []
-    private(set) var setPreferredIOBufferDurationCalls: [TimeInterval] = []
+    private(set) var setAllowHapticsAndSystemSoundsDuringRecordingCalls: [Bool] = []
 
     // MARK: - AudioSession
 
@@ -44,11 +43,7 @@ final class AudioSessionSpy: AudioSession {
         }
     }
 
-    func setPreferredSampleRate(_ sampleRate: Double) throws {
-        setPreferredSampleRateCalls.append(sampleRate)
-    }
-
-    func setPreferredIOBufferDuration(_ duration: TimeInterval) throws {
-        setPreferredIOBufferDurationCalls.append(duration)
+    func setAllowHapticsAndSystemSoundsDuringRecording(_ inValue: Bool) throws {
+        setAllowHapticsAndSystemSoundsDuringRecordingCalls.append(inValue)
     }
 }

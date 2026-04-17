@@ -74,8 +74,7 @@ final class LegacySpeechRecordingServiceTests {
             audioSession.setActiveCalls == [
                 .init(active: true, options: .notifyOthersOnDeactivation)
             ])
-        #expect(audioSession.setPreferredSampleRateCalls == [16000.0])
-        #expect(audioSession.setPreferredIOBufferDurationCalls == [0.01])
+        #expect(audioSession.setAllowHapticsAndSystemSoundsDuringRecordingCalls == [true])
     }
 
     @Test
