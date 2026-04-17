@@ -1,0 +1,144 @@
+import LumoDesignSystem
+import LumoUI
+import ProtonUIFoundations
+import SwiftUI
+
+public struct SpeechRecorderView: View {
+    let state: SpeechStateStore.State
+    let onSubmit: () -> Void
+    let onCancel: () -> Void
+
+    public init(
+        state: SpeechStateStore.State,
+        onSubmit: @escaping () -> Void,
+        onCancel: @escaping () -> Void
+    ) {
+        self.state = state
+        self.onSubmit = onSubmit
+        self.onCancel = onCancel
+    }
+
+    public var body: some View {
+        VStack(alignment: .center) {
+            Spacer().frame(height: DS.Spacing.mediumLight)
+
+            transcriptionOnDevice
+
+            Spacer().frame(height: DS.Spacing.small)
+
+            HStack(spacing: DS.Spacing.large) {
+                cancelButton
+                audioWaveform
+                duration
+                submitButton
+            }
+        }
+        .frame(maxWidth: .infinity, minHeight: 110)
+        .presentationBackground(brandPurple)
+    }
+
+    // MARK: - Private
+
+    private let brandPurple = DS.Color.primary
+
+    private var transcriptionOnDevice: some View {
+        HStack(spacing: DS.Spacing.compact) {
+            Image(systemName: "checkmark.shield.fill")
+                .font(.system(size: 12))
+                .foregroundColor(.white.opacity(0.9))
+            Text(L10n.Speech.onDevice)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(.white.opacity(0.9))
+        }
+        .padding(.horizontal, DS.Spacing.mediumLight)
+        .padding(.vertical, DS.Spacing.small)
+        .background(Color.white.opacity(0.2))
+        .cornerRadius(DS.Radius.mediumLarge)
+        .opacity(viewState.isOnDevice ? 1 : 0)
+    }
+
+    private var cancelButton: some View {
+        Button(
+            action: onCancel,
+            label: {
+                Image(symbol: .xmarkCircleFill)
+                    .font(.system(size: 36))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(
+                        Color.white,
+                        Color.white.opacity(0.2)
+                    )
+            }
+        )
+        .disabled(isSubmitting)
+    }
+
+    private var audioWaveform: some View {
+        HStack(spacing: DS.Spacing.tiny) {
+            ForEach(0..<AudioLevelNormalizer.barCount, id: \.self) { index in
+                RoundedRectangle(cornerRadius: 1)
+                    .fill(Color.white)
+                    .frame(width: 2, height: viewState.audioLevels[index] * 30)
+            }
+        }
+        .padding(.top, DS.Spacing.mediumLight)
+    }
+
+    private var duration: some View {
+        Text(formatDuration(viewState.duration))
+            .foregroundColor(.white)
+            .font(.system(size: 14, weight: .semibold))
+            .frame(width: 45, alignment: .center)
+    }
+
+    private var submitButton: some View {
+        Button(
+            action: onSubmit,
+            label: {
+                if isSubmitting {
+                    SpinningIndicator(color: brandPurple)
+                } else {
+                    Image(systemName: "arrow.up.circle.fill")
+                        .font(.system(size: 36))
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(brandPurple, .white)
+                }
+            }
+        )
+        .disabled(isSubmitting)
+    }
+
+    private var isSubmitting: Bool {
+        if case .submitting = state { return true }
+        return false
+    }
+
+    private var viewState: RecordingViewState {
+        state.recordingViewState ?? .initial
+    }
+
+    private func formatDuration(_ duration: TimeInterval) -> String {
+        Duration.seconds(duration).formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2)))
+    }
+}
+
+private struct SpinningIndicator: View {
+    let color: Color
+    @State private var rotation: Double = 0
+    private let rotationRange: ClosedRange<Double> = 0...360
+
+    var body: some View {
+        Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90.circle.fill")
+            .font(.system(size: 36))
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(color, .white)
+            .rotationEffect(.degrees(rotation))
+            .onAppear {
+                rotation = rotationRange.lowerBound
+                withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
+                    rotation = rotationRange.upperBound
+                }
+            }
+            .onDisappear { rotation = rotationRange.lowerBound }
+    }
+}

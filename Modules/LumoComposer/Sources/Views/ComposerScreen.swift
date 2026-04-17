@@ -113,16 +113,6 @@ public struct ComposerScreen<WebContent: View>: View {
                 )
             }
         }
-        .overlay {
-            if store.state.speechState.isActive {
-                SpeechRecorderView(
-                    state: store.state.speechState,
-                    onSubmit: { store.send(action: .recorder(.submit)) },
-                    onCancel: { store.send(action: .recorder(.cancel)) }
-                )
-                .transition(.move(edge: .bottom))
-            }
-        }
         .onChange(of: store.state.isProcessing) { _, isProcessing in
             if isProcessing {
                 isComposerFocused = false
@@ -136,6 +126,20 @@ public struct ComposerScreen<WebContent: View>: View {
         .onReceive(notification: UIApplication.didBecomeActiveNotification) {
             store.send(action: .appDidBecomeActive)
         }
+        .sheet(
+            isPresented: .init(get: { store.state.speechState.isActive }, set: { _ in }),
+            content: {
+                SpeechRecorderView(
+                    state: store.state.speechState,
+                    onSubmit: { store.send(action: .recorder(.submit)) },
+                    onCancel: { store.send(action: .recorder(.cancel)) }
+                )
+                .onGeometryChange(for: CGFloat.self, of: \.size.height, action: { sheetHeight = $0 })
+                .presentationDetents([.height(sheetHeight)])
+                .presentationDragIndicator(.hidden)
+                .interactiveDismissDisabled()
+            }
+        )
         .sheet(
             item: activeSheetBinding,
             content: { sheet in
@@ -163,7 +167,6 @@ public struct ComposerScreen<WebContent: View>: View {
             .ignoresSafeArea()
         }
         .environment(\.featureFlags, store.state.webState.featureFlags)
-        .animation(.spring(response: 0.35), value: store.state.speechState.isActive)
         .sensoryFeedback(
             .impact(flexibility: .rigid),
             trigger: store.state.speechState.isActive,

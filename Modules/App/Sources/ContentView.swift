@@ -54,6 +54,7 @@ struct ContentView: View {
     @StateObject private var jsCoordinator = WebViewCoordinator()
     @StateObject private var webComposerBridge = WebComposerBridge()
     @StateObject private var widgetPromptReceiver = WidgetPromptReceiver()
+    @State private var sheetHeight: CGFloat = 250
     @State private var webViewIsActive = true
     @State private var webViewReady = false
 
@@ -151,15 +152,6 @@ struct ContentView: View {
                 )
             }
 
-            if speechRecorder.isActive {
-                SpeechRecorderView(
-                    state: speechRecorder.state,
-                    onSubmit: { speechRecorder.submitRecording() },
-                    onCancel: { speechRecorder.cancelRecording() }
-                )
-                .transition(.move(edge: .bottom))
-            }
-
             if speechRecorder.isPermissionDenied {
                 PermissionAlertOverlay(
                     onSettings: { speechRecorder.openSettings() },
@@ -195,6 +187,20 @@ struct ContentView: View {
                 webComposerBridge.attach(to: webView)
             }
         }
+        .sheet(
+            isPresented: .init(get: { speechRecorder.isActive }, set: { _ in }),
+            content: {
+                SpeechRecorderView(
+                    state: speechRecorder.state,
+                    onSubmit: { speechRecorder.submitRecording() },
+                    onCancel: { speechRecorder.cancelRecording() }
+                )
+                .onGeometryChange(for: CGFloat.self, of: \.size.height, action: { sheetHeight = $0 })
+                .presentationDetents([.height(sheetHeight)])
+                .presentationDragIndicator(.hidden)
+                .interactiveDismissDisabled()
+            }
+        )
         .onReceive(notification: Notification.Name("StartVoiceEntryNotification")) {
             if !speechRecorder.isActive {
                 speechRecorder.startRecording()
@@ -865,12 +871,3 @@ struct ContentView: View {
         }
     }
 }
-
-#if DEBUG
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            ContentView(urlOpener: OpenURLAction { _ in .discarded })
-                .environmentObject(ThemeStore())
-        }
-    }
-#endif

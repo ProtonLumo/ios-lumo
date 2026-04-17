@@ -67,13 +67,15 @@ final class LegacySpeechRecordingServiceTests {
                 .init(
                     category: .playAndRecord,
                     mode: .measurement,
-                    options: [.duckOthers, .allowBluetoothHFP])
+                    options: [.duckOthers, .allowBluetoothHFP]
+                )
             ]
         )
         #expect(
             audioSession.setActiveCalls == [
                 .init(active: true, options: .notifyOthersOnDeactivation)
-            ])
+            ]
+        )
         #expect(audioSession.setAllowHapticsAndSystemSoundsDuringRecordingCalls == [true])
     }
 
