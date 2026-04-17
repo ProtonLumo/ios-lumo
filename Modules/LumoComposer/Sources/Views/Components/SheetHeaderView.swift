@@ -1,4 +1,5 @@
 import LumoDesignSystem
+import ProtonUIFoundations
 import SwiftUI
 
 struct SheetHeaderView: View {
@@ -12,17 +13,7 @@ struct SheetHeaderView: View {
                 .foregroundStyle(DS.Color.Text.norm)
                 .padding(.leading, DS.Spacing.compact)
             Spacer()
-            Button(action: onClose) {
-                Image(systemName: "xmark")
-                    .foregroundStyle(DS.Color.Text.norm)
-                    .square(size: 30)
-                    .padding(DS.Spacing.tiny)
-                    .background {
-                        Circle()
-                            .fill(.secondary)
-                    }
-            }
-            .buttonStyle(.plain)
+            CloseButton(size: 34, action: onClose)
         }
         .padding([.top, .horizontal], DS.Spacing.large)
     }
