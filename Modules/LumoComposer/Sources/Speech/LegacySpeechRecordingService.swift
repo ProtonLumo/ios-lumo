@@ -3,8 +3,8 @@ import Speech
 
 extension AVAudioFrameCount {
     /// Standard buffer size for speech recognition audio tap.
-    /// 4096 frames at 16kHz ≈ 256ms — balances latency vs CPU overhead.
-    static let speechRecognition: AVAudioFrameCount = 4_096
+    /// 1024 frames at native 48kHz ≈ 21ms per callback — matches Apple's sample.
+    static let speechRecognition: AVAudioFrameCount = 1_024
 }
 
 @MainActor
@@ -68,12 +68,10 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
         do {
             try audioSession.setCategory(
                 .playAndRecord,
-                mode: .spokenAudio,
-                options: [.defaultToSpeaker, .allowBluetoothHFP]
+                mode: .measurement,
+                options: [.duckOthers, .allowBluetoothHFP]
             )
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-            try? audioSession.setPreferredSampleRate(16000.0)
-            try? audioSession.setPreferredIOBufferDuration(0.01)
         } catch {
             continuation?.yield(.failed(.audioSessionFailed(error)))
             continuation?.finish()

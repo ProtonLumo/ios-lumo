@@ -66,8 +66,8 @@ final class LegacySpeechRecordingServiceTests {
             audioSession.setCategoryCalls == [
                 .init(
                     category: .playAndRecord,
-                    mode: .spokenAudio,
-                    options: [.defaultToSpeaker, .allowBluetoothHFP])
+                    mode: .measurement,
+                    options: [.duckOthers, .allowBluetoothHFP])
             ]
         )
         #expect(
