@@ -140,12 +140,7 @@ public struct ComposerScreen<WebContent: View>: View {
             item: activeSheetBinding,
             content: { sheet in
                 sheetContent(for: sheet)
-                    .background {
-                        GeometryReader { geometry in
-                            Color.clear.preference(key: SheetHeightKey.self, value: geometry.size.height)
-                        }
-                    }
-                    .onPreferenceChange(SheetHeightKey.self) { sheetHeight = $0 }
+                    .onGeometryChange(for: CGFloat.self, of: \.size.height, action: { sheetHeight = $0 })
                     .presentationDetents([.height(sheetHeight)])
                     .presentationDragIndicator(.visible)
             }
@@ -300,14 +295,6 @@ public struct ComposerScreen<WebContent: View>: View {
         let lightItem = LottieAnimations.LumoCat.light
 
         return colorScheme == .dark ? darkItem : lightItem
-    }
-}
-
-private struct SheetHeightKey: PreferenceKey {
-    static let defaultValue: CGFloat = 0
-
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = max(value, nextValue())
     }
 }
 
