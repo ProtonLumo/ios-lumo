@@ -169,9 +169,11 @@ public struct ComposerScreen<WebContent: View>: View {
         }
         .environment(\.featureFlags, store.state.webState.featureFlags)
         .animation(.spring(response: 0.35), value: store.state.speechState.isActive)
-        .sensoryFeedback(.impact(weight: .medium), trigger: store.state.speechState.isActive) { old, new in
-            !old && new
-        }
+        .sensoryFeedback(
+            .impact(flexibility: .rigid),
+            trigger: store.state.speechState.isActive,
+            condition: { old, new in !old && new }
+        )
     }
 
     // MARK: - Private
