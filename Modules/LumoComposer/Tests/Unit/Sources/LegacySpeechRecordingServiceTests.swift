@@ -9,6 +9,7 @@ final class LegacySpeechRecordingServiceTests {
     let audioSession = AudioSessionSpy()
     let recognizerSpy = SpeechRecognizerSpy()
     let engineSpy = AudioEngineSpy()
+    let notificationCenter = NotificationCenter()
 
     private func makeSUT(
         audioApplication: AudioApplication.Type = AudioApplicationGrantedStub.self,
@@ -346,6 +347,31 @@ final class LegacySpeechRecordingServiceTests {
                 .init(active: false, options: .notifyOthersOnDeactivation)
             ]
         )
+    }
+
+    // MARK: - Audio session interruption
+
+    @Test
+    func startRecording_audioSessionInterrupted_emitsInterrupted() async throws {
+        let sut = makeSUT()
+
+        try await sut.startRecording()
+
+        await Task.yield()
+
+        notificationCenter.post(
+            name: AVAudioSession.interruptionNotification,
+            object: nil,
+            userInfo: [
+                AVAudioSessionInterruptionTypeKey: AVAudioSession.InterruptionType.began.rawValue
+            ]
+        )
+
+        let update = await firstUpdate(from: sut, skippingOnDeviceChanged: true)
+        guard case .failed(.interrupted) = update else {
+            Issue.record("Expected .failed(.interrupted), got \(String(describing: update))")
+            return
+        }
     }
 
     // MARK: - Sequential start without stop
