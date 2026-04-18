@@ -167,7 +167,6 @@ final class LegacySpeechRecordingServiceTests {
         try await sut.startRecording()
 
         recognizerSpy.simulateResult("hello world")
-        try? await Task.sleep(for: .milliseconds(50))
 
         let update = await firstUpdate(from: sut, skippingOnDeviceChanged: true)
         guard case .transcriptionUpdated("hello world") = update else {
@@ -183,7 +182,6 @@ final class LegacySpeechRecordingServiceTests {
         try await sut.startRecording()
 
         recognizerSpy.simulateError(NSError(domain: "kLSRErrorDomain", code: 201))
-        try? await Task.sleep(for: .milliseconds(50))
 
         let update = await firstUpdate(from: sut, skippingOnDeviceChanged: true)
         guard case .failed(.permissionDenied) = update else {
@@ -200,7 +198,6 @@ final class LegacySpeechRecordingServiceTests {
 
         recognizerSpy.simulateError(NSError(domain: "kLSRErrorDomain", code: 301))
         recognizerSpy.simulateResult("continuing")
-        try? await Task.sleep(for: .milliseconds(50))
 
         let update = await firstUpdate(from: sut, skippingOnDeviceChanged: true)
         guard case .transcriptionUpdated("continuing") = update else {
@@ -217,7 +214,6 @@ final class LegacySpeechRecordingServiceTests {
 
         recognizerSpy.simulateError(NSError(domain: "kAFAssistantErrorDomain", code: 1110))
         recognizerSpy.simulateResult("continuing")
-        try? await Task.sleep(for: .milliseconds(50))
 
         let update = await firstUpdate(from: sut, skippingOnDeviceChanged: true)
         guard case .transcriptionUpdated("continuing") = update else {
@@ -234,7 +230,6 @@ final class LegacySpeechRecordingServiceTests {
 
         recognizerSpy.simulateError(NSError(domain: "kAFAssistantErrorDomain", code: 1107))
         recognizerSpy.simulateResult("continuing")
-        try? await Task.sleep(for: .milliseconds(50))
 
         let update = await firstUpdate(from: sut, skippingOnDeviceChanged: true)
         guard case .transcriptionUpdated("continuing") = update else {
@@ -250,7 +245,6 @@ final class LegacySpeechRecordingServiceTests {
         try await sut.startRecording()
 
         recognizerSpy.simulateError(NSError(domain: "kAFAssistantErrorDomain", code: 1700))
-        try? await Task.sleep(for: .milliseconds(50))
 
         let update = await firstUpdate(from: sut, skippingOnDeviceChanged: true)
         guard case .failed(.permissionDenied) = update else {
@@ -289,7 +283,6 @@ final class LegacySpeechRecordingServiceTests {
         try await sut.startRecording()
 
         recognizerSpy.simulateError(NSError(domain: "unknown", code: 999))
-        try? await Task.sleep(for: .milliseconds(50))
 
         let update = await firstUpdate(from: sut, skippingOnDeviceChanged: true)
         guard case .failed(.recognitionFailed) = update else {
@@ -308,7 +301,6 @@ final class LegacySpeechRecordingServiceTests {
 
         let buffer = makeTestBuffer(amplitude: 0.5)
         engineSpy.simulateTapBlock(buffer)
-        try? await Task.sleep(for: .milliseconds(50))
 
         let update = await firstUpdate(from: sut, skippingOnDeviceChanged: true)
         guard case .audioLevelsUpdated(let levels) = update else {
@@ -372,13 +364,25 @@ final class LegacySpeechRecordingServiceTests {
 
     private func firstUpdate(
         from sut: LegacySpeechRecordingService,
-        skippingOnDeviceChanged: Bool = false
+        skippingOnDeviceChanged: Bool = false,
+        timeout: Duration = .milliseconds(50)
     ) async -> SpeechRecordingUpdate? {
-        for await update in sut.updates {
-            if skippingOnDeviceChanged, case .isOnDeviceChanged = update { continue }
-            return update
+        await withTaskGroup(of: SpeechRecordingUpdate?.self) { group in
+            group.addTask {
+                for await update in await sut.updates {
+                    if skippingOnDeviceChanged, case .isOnDeviceChanged = update { continue }
+                    return update
+                }
+                return nil
+            }
+            group.addTask {
+                try? await Task.sleep(for: timeout)
+                return nil
+            }
+            let result = await group.next()!
+            group.cancelAll()
+            return result
         }
-        return nil
     }
 
     private func collectUpdates(
