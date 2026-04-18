@@ -13,7 +13,7 @@ struct ComposerViewSnapshotTests {
         let isGhostModeEnabled: Bool
         let isWebSearchEnabled: Bool
         let areButtonsDisabled: Bool
-        let actionButton: ComposerView.ActionButtonState
+        let actionButton: ComposerView.ActionButtonState?
         let featureFlags: WebComposerState.FeatureFlags
         let testName: String
     }

@@ -17,9 +17,22 @@ struct ComposerView: View {
     }
 
     enum ActionButtonState {
-        case none
         case send
         case stop
+
+        var symbolName: String {
+            switch self {
+            case .send: "arrow.up"
+            case .stop: "stop.fill"
+            }
+        }
+
+        var composerAction: Action {
+            switch self {
+            case .send: .sendTapped
+            case .stop: .stopTapped
+            }
+        }
     }
 
     @Binding var text: String
@@ -30,7 +43,7 @@ struct ComposerView: View {
     let isGhostModeEnabled: Bool
     let isWebSearchEnabled: Bool
     let areButtonsDisabled: Bool
-    let actionButton: ActionButtonState
+    let actionButton: ActionButtonState?
     let action: (Action) -> Void
 
     var body: some View {
@@ -58,14 +71,18 @@ struct ComposerView: View {
 
                 switch actionButton {
                 case .none:
-                    EmptyView()
+                    Color.clear
                         .square(size: ComposerActionButton.size)
-                case .send:
-                    sendButton
-                case .stop:
-                    stopButton
+                case .some(let buttonState):
+                    ComposerActionButton(
+                        state: buttonState,
+                        iconColor: actionButtonIconColor,
+                        action: action
+                    )
+                    .transition(.scale.combined(with: .opacity))
                 }
             }
+            .animation(.easeInOut(duration: 0.2), value: actionButton)
             .frame(minHeight: 52)
             .padding(.horizontal, DS.Spacing.mediumLight)
             .background {
@@ -103,22 +120,6 @@ struct ComposerView: View {
                 .fill(isGhostModeEnabled ? DS.Color.Background.normDarkOnly : DS.Color.Text.invert)
                 .strokeBorder(isGhostModeEnabled ? Color.clear : DS.Color.Border.norm, lineWidth: 1)
         }
-    }
-
-    private var sendButton: some View {
-        ComposerActionButton(
-            action: { action(.sendTapped) },
-            icon: DS.Icon.icArrowRight.swiftUIImage,
-            iconColor: actionButtonIconColor
-        )
-    }
-
-    private var stopButton: some View {
-        ComposerActionButton(
-            action: { action(.stopTapped) },
-            icon: DS.Icon.icStop.swiftUIImage,
-            iconColor: actionButtonIconColor
-        )
     }
 
     private var accentColor: Color {

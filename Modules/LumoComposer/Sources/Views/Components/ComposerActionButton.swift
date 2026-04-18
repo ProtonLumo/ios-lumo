@@ -5,15 +5,16 @@ import SwiftUI
 struct ComposerActionButton: View {
     static let size: CGFloat = 36
 
-    let action: () -> Void
-    let icon: Image
+    let state: ComposerView.ActionButtonState
     let iconColor: Color
+    let action: (ComposerView.Action) -> Void
 
     var body: some View {
         Button(
-            action: action,
+            action: { action(state.composerAction) },
             label: {
-                icon
+                Image(systemName: state.symbolName)
+                    .contentTransition(.symbolEffect(.replace))
                     .foregroundStyle(iconColor)
                     .square(size: Self.size)
                     .background {

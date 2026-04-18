@@ -57,7 +57,7 @@ struct ComposerViewState: Equatable, Copying {
     /// **Instant feedback:**
     /// Button switches to `.stop` immediately when user taps send (via `isProcessing`),
     /// providing instant UI feedback before the web application confirms state change.
-    var actionButton: ComposerView.ActionButtonState {
+    var actionButton: ComposerView.ActionButtonState? {
         guard isWebViewReady else {
             return .none
         }

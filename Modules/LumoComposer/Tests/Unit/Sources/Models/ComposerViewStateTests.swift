@@ -35,7 +35,7 @@ struct ComposerViewStateTests {
 
     struct TestCase {
         let given: ComposerViewState
-        let expected: ComposerView.ActionButtonState
+        let expected: ComposerView.ActionButtonState?
     }
 
     @Test(
