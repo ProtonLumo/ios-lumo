@@ -15,12 +15,14 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: (any SpeechRecognitionTask)?
     private var audioLevels: [CGFloat] = AudioLevelNormalizer.initialLevels
+    private var interruptionTask: Task<Void, Never>?
 
     private let audioSession: AudioSession
     private let audioApplication: AudioApplication.Type
     private let speechAuthorization: SpeechAuthorizationProviding.Type
     private let speechRecognizer: SpeechRecognizerProviding?
     private let audioEngine: AudioEngine
+    private let notificationCenter: NotificationCenter
 
     typealias SpeechRecognizerFactory = @MainActor (Locale) -> SpeechRecognizerProviding?
 
@@ -29,13 +31,15 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
         audioApplication: AudioApplication.Type = AVAudioApplication.self,
         speechAuthorization: SpeechAuthorizationProviding.Type = SFSpeechRecognizer.self,
         speechRecognizerFactory: SpeechRecognizerFactory = SFSpeechRecognizerAdapterFactory.make,
-        audioEngine: AudioEngine = AVAudioEngineAdapter()
+        audioEngine: AudioEngine = AVAudioEngineAdapter(),
+        notificationCenter: NotificationCenter = .default
     ) {
         self.audioSession = audioSession
         self.audioApplication = audioApplication
         self.speechAuthorization = speechAuthorization
         self.audioEngine = audioEngine
         self.speechRecognizer = speechRecognizerFactory(Locale.current)
+        self.notificationCenter = notificationCenter
     }
 
     // MARK: - SpeechRecordingServiceProtocol
@@ -78,6 +82,17 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
             continuation?.finish()
             continuation = nil
             throw error
+        }
+
+        interruptionTask = Task { [weak self, notificationCenter] in
+            for await notification in notificationCenter.notifications(named: AVAudioSession.interruptionNotification) {
+                guard !Task.isCancelled else { break }
+                guard notification.audioSessionInterruptionType == .began else { continue }
+                self?.continuation?.yield(.failed(.interrupted))
+                self?.continuation?.finish()
+                self?.continuation = nil
+                break
+            }
         }
 
         let request = SFSpeechAudioBufferRecognitionRequest()
@@ -155,6 +170,8 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
     private func tearDown() {
         audioEngine.stop()
 
+        interruptionTask?.cancel()
+        interruptionTask = nil
         recognitionRequest = nil
         recognitionTask = nil
 
@@ -162,5 +179,12 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
         continuation = nil
 
         try? audioSession.setActive(false, options: .notifyOthersOnDeactivation)
+    }
+}
+
+private extension Notification {
+    var audioSessionInterruptionType: AVAudioSession.InterruptionType? {
+        guard let typeValue = userInfo?[AVAudioSessionInterruptionTypeKey] as? UInt else { return nil }
+        return AVAudioSession.InterruptionType(rawValue: typeValue)
     }
 }

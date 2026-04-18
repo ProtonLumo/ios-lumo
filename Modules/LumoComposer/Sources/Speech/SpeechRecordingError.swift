@@ -5,4 +5,5 @@ enum SpeechRecordingError: Error, Sendable {
     case recognizerUnavailable
     case audioSessionFailed(any Error)
     case recognitionFailed(any Error)
+    case interrupted
 }

@@ -21,7 +21,8 @@ final class LegacySpeechRecordingServiceTests {
             audioApplication: audioApplication,
             speechAuthorization: speechAuthorization,
             speechRecognizerFactory: speechRecognizerFactory ?? { [recognizerSpy] _ in recognizerSpy },
-            audioEngine: engineSpy
+            audioEngine: engineSpy,
+            notificationCenter: notificationCenter
         )
     }
 
