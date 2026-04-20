@@ -165,8 +165,8 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Lumo needs camera access to let you capture and attach photos to your messages."
+            "state" : "translated",
+            "value" : "Lumo potřebuje přístup k fotoaparátu, abyste mohli pořizovat fotografie a připojovat je ke svým zprávám."
           }
         },
         "de" : {
@@ -232,7 +232,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo'nun mesajlarınıza fotoğraf çekip ekleyebilmeniz için kamera erişimine ihtiyaç duyuyor."
+            "value" : "Lumo iletilerinize, fotoğraf çekip ekleyebilmeniz için kameraya erişme izni vermeniz gerekiyor."
           }
         }
       }
@@ -321,8 +321,8 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Lumo needs photo library access to let you attach photos to your messages."
+            "state" : "translated",
+            "value" : "Lumo potřebuje přístup k fotogalerii, abyste mohli ke svým zprávám připojovat fotografie."
           }
         },
         "de" : {
@@ -346,7 +346,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo necesita acceso a la biblioteca de fotos para permitirte adjuntar imágenes a tus mensajes."
+            "value" : "Lumo necesita acceso a la galería de fotos para permitirle adjuntar imágenes a sus mensajes."
           }
         },
         "fr" : {
@@ -388,7 +388,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mesajlarınıza fotoğraf ekleyebilmeniz için Lumo'nun fotoğraf kitaplığına erişmesi gerekiyor."
+            "value" : "Lumo iletilerinize, fotoğraf ekleyebilmeniz için fotoğraf kitaplığına erişme izni vermeniz gerekiyor."
           }
         }
       }
