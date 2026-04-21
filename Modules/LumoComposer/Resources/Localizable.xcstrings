@@ -161,7 +161,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Auto"
+            "value" : "Automaticky"
           }
         },
         "de" : {
@@ -238,7 +238,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Auto choose the best model"
+            "value" : "Automatický výběr nejvhodnějšího modelu"
           }
         },
         "de" : {
@@ -392,7 +392,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Camera"
+            "value" : "Fotoaparát"
           }
         },
         "de" : {
@@ -478,6 +478,12 @@
             "value" : "Abbrechen"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -511,7 +517,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anuluj"
+            "value" : "Cancel"
           }
         },
         "pt-BR" : {
@@ -523,7 +529,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Отменить"
+            "value" : "Cancel"
           }
         },
         "tr" : {
@@ -540,7 +546,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Connection lost. Please try again."
+            "value" : "Připojení přerušeno. Zkuste to prosím znovu."
           }
         },
         "de" : {
@@ -582,7 +588,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Connection lost. Please try again."
+            "value" : "Verbinding verbroken. Probeer het opnieuw."
           }
         },
         "pl" : {
@@ -594,7 +600,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Connection lost. Please try again."
+            "value" : "A conexão perdida. Tente novamente."
           }
         },
         "ru" : {
@@ -606,7 +612,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bağlantı kesildi. Lütfen tekrar deneyin."
+            "value" : "Bağlantı kesildi. Lütfen yeniden deneyin."
           }
         }
       }
@@ -617,7 +623,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Create image"
+            "value" : "Vytvořit obrázek"
           }
         },
         "de" : {
@@ -694,7 +700,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Describe your image"
+            "value" : "Popište svůj obrázek"
           }
         },
         "de" : {
@@ -771,7 +777,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Draw a sketch"
+            "value" : "Nakreslit skicu"
           }
         },
         "de" : {
@@ -848,7 +854,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Failed to generate a response. Please try again."
+            "value" : "Generování odpovědi selhalo. Zkuste to prosím znovu."
           }
         },
         "de" : {
@@ -890,7 +896,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Failed to generate a response. Please try again."
+            "value" : "Het genereren van een antwoord is mislukt. Probeer het opnieuw."
           }
         },
         "pl" : {
@@ -902,7 +908,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Failed to generate a response. Please try again."
+            "value" : "Falha ao gerar uma resposta. Tente novamente."
           }
         },
         "ru" : {
@@ -914,7 +920,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yanıt oluşturulamadı. Lütfen tekrar deneyin."
+            "value" : "Yanıt oluşturulamadı. Lütfen yeniden deneyin."
           }
         }
       }
@@ -925,7 +931,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fast"
+            "value" : "Rychle"
           }
         },
         "de" : {
@@ -1002,7 +1008,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Files"
+            "value" : "Soubory"
           }
         },
         "de" : {
@@ -1233,7 +1239,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo is experiencing high demand. Please try again later."
+            "value" : "Lumo je momentálně velmi vytížená. Zkuste to prosím později."
           }
         },
         "de" : {
@@ -1257,7 +1263,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo está experimentando una alta demanda. Vuelva a intentarlo más tarde."
+            "value" : "Lumo está experimentando una alta demanda. Intente más tarde."
           }
         },
         "fr" : {
@@ -1275,7 +1281,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo is experiencing high demand. Please try again later."
+            "value" : "Lumo ondervindt momenteel veel vraag. Probeer het later opnieuw."
           }
         },
         "pl" : {
@@ -1287,7 +1293,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo is experiencing high demand. Please try again later."
+            "value" : "O Lumo está enfrentando alta demanda. Tente novamente mais tarde."
           }
         },
         "ru" : {
@@ -1299,7 +1305,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo'ya yoğun talep var. Lütfen daha sonra tekrar deneyin."
+            "value" : "Lumo diğer sorularla ilgileniyor. Lütfen bir süre sonra yeniden deneyin."
           }
         }
       }
@@ -1310,13 +1316,19 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Požadován přístup k mikrofonu"
+            "value" : "Je vyžadován přístup k mikrofonu"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mikrofonzugriff erforderlich"
+            "value" : "Zugriff auf Mikrofon erforderlich"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Microphone Access Required"
           }
         },
         "es" : {
@@ -1334,7 +1346,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Accès au microphone requis"
+            "value" : "L’accès au microphone est exigé."
           }
         },
         "it" : {
@@ -1352,7 +1364,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wymagany dostęp do mikrofonu"
+            "value" : "Microphone Access Required"
           }
         },
         "pt-BR" : {
@@ -1364,7 +1376,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Требуется доступ к микрофону"
+            "value" : "Microphone Access Required"
           }
         },
         "tr" : {
@@ -1381,7 +1393,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Models"
+            "value" : "Modely"
           }
         },
         "de" : {
@@ -1453,7 +1465,81 @@
       }
     },
     "Open Settings" : {
-      "comment" : "Button to open device Settings app from permission alert"
+      "comment" : "Button to open device Settings app from permission alert",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otevřít nastavení"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen öffnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir ajustes"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir ajustes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir les Paramètres"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri Impostazioni"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instellingen openen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir configurações"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayarları aç"
+          }
+        }
+      }
     },
     "Photos" : {
       "comment" : "Attachment menu option to select a photo from the photo library",
@@ -1461,7 +1547,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Photos"
+            "value" : "Fotky"
           }
         },
         "de" : {
@@ -1615,7 +1701,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quick responses"
+            "value" : "Rychlé odpovědi"
           }
         },
         "de" : {
@@ -1692,7 +1778,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Solves complex problems"
+            "value" : "Řeší složité problémy"
           }
         },
         "de" : {
@@ -1769,7 +1855,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Something went wrong. Please try again."
+            "value" : "Něco se pokazilo. Prosím, zkuste to znovu."
           }
         },
         "de" : {
@@ -1811,7 +1897,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Er is iets fout gegaan. Probeer het alstublieft opnieuw."
+            "value" : "Er is iets fout gegaan. Probeer het opnieuw."
           }
         },
         "pl" : {
@@ -1846,7 +1932,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Thinking"
+            "value" : "Přemýšlím"
           }
         },
         "de" : {
@@ -1923,7 +2009,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This file is already attached."
+            "value" : "Tento soubor je již přiložen."
           }
         },
         "de" : {
@@ -1965,7 +2051,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This file is already attached."
+            "value" : "Dit bestand is reeds bevestigd."
           }
         },
         "pl" : {
@@ -1977,7 +2063,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This file is already attached."
+            "value" : "Este arquivo já está anexado."
           }
         },
         "ru" : {
@@ -1989,7 +2075,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu dosya zaten eklenmiştir."
+            "value" : "Bu dosya zaten eklenmiş."
           }
         }
       }
@@ -2006,7 +2092,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Um Spracheingabe zu verwenden, aktiviere bitte den Mikrofonzugriff in deinen Geräteeinstellungen."
+            "value" : "Um die Spracheingabe nutzen zu können, aktiviere bitte den Zugriff auf das Mikrofon in den Einstellungen deines Geräts."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To use voice input, please enable microphone access in your device settings."
           }
         },
         "es" : {
@@ -2042,7 +2134,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aby użyć wprowadzania głosowego, włącz dostęp do mikrofonu w ustawieniach Twojego urządzenia."
+            "value" : "To use voice input, please enable microphone access in your device settings."
           }
         },
         "pt-BR" : {
@@ -2054,7 +2146,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Чтобы использовать голосовой ввод, включите доступ к микрофону в настройках устройства."
+            "value" : "To use voice input, please enable microphone access in your device settings."
           }
         },
         "tr" : {
@@ -2071,7 +2163,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tools"
+            "value" : "Nástroje"
           }
         },
         "de" : {
@@ -2143,7 +2235,81 @@
       }
     },
     "Transcription running on device" : {
-      "comment" : "Badge shown in speech recorder when on-device recognition is active"
+      "comment" : "Badge shown in speech recorder when on-device recognition is active",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přepis běží na zařízení"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transkription wird auf dem Gerät ausgeführt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcription running on device"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcripción ejecutándose en el dispositivo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcripción ejecutándose en el dispositivo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La transcription est exécutée sur l'appareil."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trascrizione sul dispositivo in corso"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcriptie draait op apparaat"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcription running on device"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcrição em andamento no dispositivo"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcription running on device"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazıya dönüştürme aygıt üzerinde çalışıyor"
+          }
+        }
+      }
     },
     "Web search" : {
       "comment" : "Option in tools sheet to toggle web search",
@@ -2151,7 +2317,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Web search"
+            "value" : "Vyhledat na webu"
           }
         },
         "de" : {
@@ -2228,7 +2394,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You've reached your limit, upgrade for unlimited chats."
+            "value" : "Dosáhli jste svého limitu, přejděte na vyšší tarif a získejte neomezené chatování."
           }
         },
         "de" : {
@@ -2270,7 +2436,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You've reached your limit, upgrade for unlimited chats."
+            "value" : "U heeft uw limiet bereikt, upgrade voor onbeperkt chatten."
           }
         },
         "pl" : {
@@ -2294,7 +2460,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sınırınıza ulaştınız; sınırsız sohbet için yükseltin."
+            "value" : "Sohbet sınırınıza ulaştınız. Sınırsız sohbet için tarifenizi yükseltin."
           }
         }
       }
@@ -2305,7 +2471,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your request contains content that cannot be processed."
+            "value" : "Váš požadavek obsahuje obsah, který nelze zpracovat."
           }
         },
         "de" : {
@@ -2347,7 +2513,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your request contains content that cannot be processed."
+            "value" : "Uw verzoek bevat inhoud die niet kan worden verwerkt."
           }
         },
         "pl" : {
@@ -2371,7 +2537,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "İsteğinizde işlenemeyen içerik bulunmaktadır."
+            "value" : "İsteğinizde işlenemeyecek içerik var."
           }
         }
       }
@@ -2382,7 +2548,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your request could not be processed. Please try again."
+            "value" : "Váš požadavek se nepodařilo zpracovat. Zkuste to prosím znovu."
           }
         },
         "de" : {
@@ -2424,7 +2590,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your request could not be processed. Please try again."
+            "value" : "Uw verzoek kon niet worden verwerkt. Probeer het opnieuw."
           }
         },
         "pl" : {
@@ -2448,7 +2614,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "İsteğiniz işleme alınamadı. Lütfen tekrar deneyin."
+            "value" : "İsteğiniz işlenemedi. Lütfen yeniden deneyin."
           }
         }
       }

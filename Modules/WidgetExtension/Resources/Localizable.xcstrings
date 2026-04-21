@@ -7,7 +7,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ask Lumo a question"
+            "value" : "Zeptej se Lumo na otázku"
           }
         },
         "de" : {
@@ -31,7 +31,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pregúntale a Lumo"
+            "value" : "Pregunte a Lumo"
           }
         },
         "fr" : {
@@ -84,7 +84,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bedtime story"
+            "value" : "Pohádka na dobrou noc"
           }
         },
         "de" : {
@@ -161,7 +161,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Boost morning energy"
+            "value" : "Více ranní energie"
           }
         },
         "de" : {
@@ -185,7 +185,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aumenta tu energía matutina"
+            "value" : "Aumente su energía matutina"
           }
         },
         "fr" : {
@@ -238,7 +238,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Boost your energy"
+            "value" : "Zvyšte svou energii"
           }
         },
         "de" : {
@@ -315,7 +315,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Boost your motivation"
+            "value" : "Zvyšte svou motivaci"
           }
         },
         "de" : {
@@ -339,7 +339,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aumenta tu motivación"
+            "value" : "Aumente su motivación"
           }
         },
         "fr" : {
@@ -392,7 +392,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Break echo chambers"
+            "value" : "Prolomit informační bubliny"
           }
         },
         "de" : {
@@ -416,7 +416,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Break echo chambers"
+            "value" : "Rompa el aislamiento ideológico"
           }
         },
         "fr" : {
@@ -458,7 +458,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yankı odalarını kırın"
+            "value" : "Yankı odalarını yıkın"
           }
         }
       }
@@ -469,7 +469,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Broaden perspective"
+            "value" : "Rozšíření perspektivy"
           }
         },
         "de" : {
@@ -493,7 +493,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Broaden perspective"
+            "value" : "Amplíe perspectivas"
           }
         },
         "fr" : {
@@ -546,7 +546,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calm your mind"
+            "value" : "Uklidněte svou mysl"
           }
         },
         "de" : {
@@ -623,7 +623,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choose a healthy lunch"
+            "value" : "Vyberte si zdravý oběd"
           }
         },
         "de" : {
@@ -700,7 +700,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cognitive biases"
+            "value" : "Kognitivní zkreslení"
           }
         },
         "de" : {
@@ -777,7 +777,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cosmic perspective"
+            "value" : "Kosmická perspektiva"
           }
         },
         "de" : {
@@ -854,7 +854,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Critical thinking"
+            "value" : "Kritické myšlení"
           }
         },
         "de" : {
@@ -931,7 +931,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Daily learning"
+            "value" : "Každodenní učení"
           }
         },
         "de" : {
@@ -1008,7 +1008,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Discover dinner ideas"
+            "value" : "Objevte nápady na večeři"
           }
         },
         "de" : {
@@ -1074,7 +1074,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Akşam yemeği fikirlerini keşfedin"
+            "value" : "Akşam yemeği fikirleri bulun"
           }
         }
       }
@@ -1085,7 +1085,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diverse perspectives"
+            "value" : "Rozmanité perspektivy"
           }
         },
         "de" : {
@@ -1162,7 +1162,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Explain a fascinating physics concept to energize my mind today."
+            "value" : "Vysvětlete nějaký fascinující fyzikální koncept, který dnes oživí mou mysl."
           }
         },
         "de" : {
@@ -1186,7 +1186,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Explica un concepto fascinante de física para estimular mi mente."
+            "value" : "Explíqueme un concepto fascinante de física para estimular mi mente hoy."
           }
         },
         "fr" : {
@@ -1239,7 +1239,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Explain how the Large Hadron Collider works in simple terms."
+            "value" : "Vysvětlete jednoduchými slovy, jak funguje velký hadronový urychlovač."
           }
         },
         "de" : {
@@ -1263,7 +1263,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Explica en términos sencillos cómo funciona el Gran Colisionador de Hadrones."
+            "value" : "Explíqueme cómo funciona el Gran Colisionador de Hadrones en términos sencillos."
           }
         },
         "fr" : {
@@ -1305,7 +1305,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Büyük Hadron Çarpıştırıcısı'nın nasıl çalıştığını basit bir dille açıkla."
+            "value" : "Büyük Hadron Çarpıştırıcısı nasıl çalışıyor basit bir dille açıkla."
           }
         }
       }
@@ -1316,7 +1316,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Find lunch ideas"
+            "value" : "Najděte nápady na oběd"
           }
         },
         "de" : {
@@ -1340,7 +1340,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Encuentra ideas para el almuerzo"
+            "value" : "Encuentre ideas para el almuerzo"
           }
         },
         "fr" : {
@@ -1393,7 +1393,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Find your calm"
+            "value" : "Najděte svůj klid"
           }
         },
         "de" : {
@@ -1417,7 +1417,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Find your calm"
+            "value" : "Encuentre su calma"
           }
         },
         "fr" : {
@@ -1459,7 +1459,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Huzurunuzu bulun"
+            "value" : "Huzur bulun"
           }
         }
       }
@@ -1470,7 +1470,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fit in a workout"
+            "value" : "Zařaďte trénink"
           }
         },
         "de" : {
@@ -1494,7 +1494,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fit in a workout"
+            "value" : "Incorpore un entrenamiento"
           }
         },
         "fr" : {
@@ -1536,7 +1536,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bir egzersiz seansı sıkıştırın"
+            "value" : "Araya bir egzersiz sıkıştırın"
           }
         }
       }
@@ -1547,7 +1547,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fun fact"
+            "value" : "Zajímavost"
           }
         },
         "de" : {
@@ -1624,7 +1624,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Getting ready for tomorrow?"
+            "value" : "Připravujete se na zítřek?"
           }
         },
         "de" : {
@@ -1690,7 +1690,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yarın için hazırlanıyor musunuz?"
+            "value" : "Yarına hazırlanıyor musunuz?"
           }
         }
       }
@@ -1701,7 +1701,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Give me a quick 10-minute morning exercise routine to energize my day."
+            "value" : "Ukažte mi rychlou 10minutovou ranní cvičební sestavu na nabití energií do nového dne."
           }
         },
         "de" : {
@@ -1725,7 +1725,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Give me a quick 10-minute morning exercise routine to energize my day."
+            "value" : "Deme una rutina rápida de ejercicios matutinos de 10 minutos para energizar mi día."
           }
         },
         "fr" : {
@@ -1778,7 +1778,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Give me a quick 10-minute workout I can do during my lunch break."
+            "value" : "Ukažte mi rychlé 10minutové cvičení, které mohu provést během své polední pauzy."
           }
         },
         "de" : {
@@ -1802,7 +1802,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Give me a quick 10-minute workout I can do during my lunch break."
+            "value" : "Deme un entrenamiento rápido de 10 minutos que pueda hacer durante mi hora de almuerzo."
           }
         },
         "fr" : {
@@ -1855,7 +1855,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Give me a quick stretching routine to relieve tension and improve circulation."
+            "value" : "Ukažte mi rychlou protahovací sestavu na uvolnění napětí a zlepšení krevního oběhu."
           }
         },
         "de" : {
@@ -1879,7 +1879,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dame una rutina rápida de estiramientos para aliviar la tensión y mejorar la circulación."
+            "value" : "Deme una rutina rápida de estiramientos para aliviar la tensión y mejorar la circulación."
           }
         },
         "fr" : {
@@ -1932,7 +1932,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Give me practical tips to protect my digital privacy today."
+            "value" : "Dejte mi praktické tipy, jak dnes mohu ochránit své digitální soukromí."
           }
         },
         "de" : {
@@ -1956,7 +1956,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dame consejos prácticos para proteger hoy mi privacidad en línea."
+            "value" : "Deme consejos prácticos para proteger mi privacidad digital hoy."
           }
         },
         "fr" : {
@@ -1998,7 +1998,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bugün dijital gizliliğimi korumak için pratik ipuçları ver."
+            "value" : "Dijital gizliliğimi korumak için pratik ipuçları ver."
           }
         }
       }
@@ -2009,7 +2009,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Give me some gentle stretches I can do before bed to relax my body."
+            "value" : "Poraďte mi několik jemných protahovacích cvičení, které mohu dělat před spaním k uvolnění těla."
           }
         },
         "de" : {
@@ -2033,7 +2033,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Give me some gentle stretches I can do before bed to relax my body."
+            "value" : "Deme algunos estiramientos suaves para hacer antes de acostarme y relajar mi cuerpo."
           }
         },
         "fr" : {
@@ -2086,7 +2086,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Guide me through a 5-minute bedtime meditation to calm my mind."
+            "value" : "Proveďte mě 5minutovou meditací před spaním na uklidnění mysli."
           }
         },
         "de" : {
@@ -2110,7 +2110,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Guide me through a 5-minute bedtime meditation to calm my mind."
+            "value" : "Guíeme a través de una meditación de 5 minutos antes de dormir para calmar mi mente."
           }
         },
         "fr" : {
@@ -2152,7 +2152,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zihnimi sakinleştirmek için 5 dakikalık bir yatmadan önce meditasyon seansında bana rehberlik et."
+            "value" : "Zihnimi sakinleştirmek için yatmadan önce 5 dakikalık bir meditasyon rehberliği ver."
           }
         }
       }
@@ -2163,7 +2163,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Guide me through a breathing exercise to help me relax and fall asleep."
+            "value" : "Proveďte mě dechovým cvičením, které mi pomůže uvolnit se a usnout."
           }
         },
         "de" : {
@@ -2187,7 +2187,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Guíame a través de un ejercicio de respiración para ayudarme a relajarme y conciliar el sueño."
+            "value" : "Guíeme a través de un ejercicio de respiración para ayudarme a relajarme y conciliar el sueño."
           }
         },
         "fr" : {
@@ -2240,7 +2240,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Having trouble sleeping?"
+            "value" : "Máte problémy se spánkem?"
           }
         },
         "de" : {
@@ -2264,7 +2264,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Tienes problemas para dormir?"
+            "value" : "¿Tiene problemas para dormir?"
           }
         },
         "fr" : {
@@ -2317,7 +2317,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Help me approach this problem with a fresh perspective and find innovative solutions."
+            "value" : "Pomozte mi přistoupit k tomuto problému s novou perspektivou a najít inovativní řešení."
           }
         },
         "de" : {
@@ -2341,7 +2341,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ayúdame a abordar este problema conuna perspectiva fresca y encontrar soluciones innovadoras."
+            "value" : "Ayúdeme a abordar este problema con una perspectiva fresca y encontrar soluciones innovadoras."
           }
         },
         "fr" : {
@@ -2394,7 +2394,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Help me reprioritize my tasks for the rest of the day based on new information."
+            "value" : "Pomozte mi přehodnotit mé úkoly na zbytek dne na základě nových informací."
           }
         },
         "de" : {
@@ -2418,7 +2418,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ayúdame a priorizar de nuevo mis tareas para el resto del día, de acuerdo con nueva información."
+            "value" : "Ayúdeme a priorizar de nuevo mis tareas para el resto del día basándome en información nueva."
           }
         },
         "fr" : {
@@ -2471,7 +2471,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Help me understand an issue from multiple cultural and ideological perspectives."
+            "value" : "Pomozte mi pochopit problém z více kulturních a ideologických perspektiv."
           }
         },
         "de" : {
@@ -2495,7 +2495,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ayúdame a comprender un problema desde varias perspectivas culturales e ideológicas."
+            "value" : "Ayúdeme a comprender un problema desde varias perspectivas culturales e ideológicas."
           }
         },
         "fr" : {
@@ -2548,7 +2548,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Help me with some calming thoughts to quiet my mind for sleep."
+            "value" : "Pomozte mi s několika uklidňujícími myšlenkami k utišení mysli pro spánek."
           }
         },
         "de" : {
@@ -2572,7 +2572,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Help me with some calming thoughts to quiet my mind for sleep."
+            "value" : "Ayúdame con algunos pensamientos calmantes para tranquilizar mi mente antes de dormir."
           }
         },
         "fr" : {
@@ -2625,7 +2625,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How can I actively seek out and understand viewpoints different from my own?"
+            "value" : "Jak mohu aktivně vyhledávat a chápat názory odlišné od mých vlastních?"
           }
         },
         "de" : {
@@ -2649,7 +2649,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How can I actively seek out and understand viewpoints different from my own?"
+            "value" : "¿Cómo puedo buscar activamente y entender puntos de vista diferentes al mío?"
           }
         },
         "fr" : {
@@ -2691,7 +2691,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kendi bakış açımdan farklı bakış açılarını nasıl aktif olarak arayabilir ve anlayabilirim?"
+            "value" : "Kendi bakış açımdan farklı bakış açılarını aktif olarak nasıl arayabilirim ve anlayabilirim?"
           }
         }
       }
@@ -2702,7 +2702,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How can I better manage my time today to accomplish my most important tasks?"
+            "value" : "Jak mohu dnes lépe hospodařit se svým časem, abych splnil své nejdůležitější úkoly?"
           }
         },
         "de" : {
@@ -2726,7 +2726,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How can I better manage my time today to accomplish my most important tasks?"
+            "value" : "¿Cómo puedo gestionar mejor mi tiempo hoy para realizar mis tareas más importantes?"
           }
         },
         "fr" : {
@@ -2779,7 +2779,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How can I break out of my information bubble and diversify my sources?"
+            "value" : "Jak se mohu vymanit ze své informační bubliny a diverzifikovat své zdroje?"
           }
         },
         "de" : {
@@ -2803,7 +2803,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How can I break out of my information bubble and diversify my sources?"
+            "value" : "¿Cómo puedo salir de mi burbuja informativa y diversificar mis fuentes?"
           }
         },
         "fr" : {
@@ -2845,7 +2845,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bilgi balonumdan nasıl çıkabilir ve kaynaklarımı nasıl çeşitlendirebilirim?"
+            "value" : "Bilgi balonumun dışına nasıl çıkabilirim ve kaynaklarımı nasıl çeşitlendirebilirim?"
           }
         }
       }
@@ -2856,7 +2856,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How can I optimize my bedroom environment for better sleep?"
+            "value" : "Jak mohu optimalizovat prostředí své ložnice pro lepší spánek?"
           }
         },
         "de" : {
@@ -2880,7 +2880,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How can I optimize my bedroom environment for better sleep?"
+            "value" : "¿Cómo puedo optimizar el ambiente de mi dormitorio para dormir mejor?"
           }
         },
         "fr" : {
@@ -2933,7 +2933,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How can I spot and avoid scam texts and suspicious messages?"
+            "value" : "Jak mohu rozpoznat podvodné textové zprávy a podezřelé zprávy a vyhnout se jim?"
           }
         },
         "de" : {
@@ -2999,7 +2999,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dolandırıcılık amaçlı mesajları ve şüpheli mesajları nasıl fark edebilir ve bunlardan nasıl kaçınabilirim?"
+            "value" : "Dolandırıcılık amaçlı ve şüpheli iletileri nasıl fark edebilirim ve bunlardan nasıl kaçınabilirim?"
           }
         }
       }
@@ -3010,7 +3010,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How can I spot misinformation and false claims in the news and social media?"
+            "value" : "Jak mohu rozpoznat dezinformace a falešná tvrzení ve zprávách a sociálních médiích?"
           }
         },
         "de" : {
@@ -3076,7 +3076,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Haberlerde ve sosyal medyada yanlış bilgileri ve asılsız iddiaları nasıl tespit edebilirim?"
+            "value" : "Haberlerde ve sosyal medyada bulunan yanlış bilgileri ve asılsız iddiaları nasıl öğrenebilirim?"
           }
         }
       }
@@ -3087,7 +3087,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How to be media literate"
+            "value" : "Jak být mediálně gramotný"
           }
         },
         "de" : {
@@ -3111,7 +3111,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How to be media literate"
+            "value" : "Cómo mejorar el pensamiento crítico frente a los medios de comunicación"
           }
         },
         "fr" : {
@@ -3153,7 +3153,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Medya okuryazarı nasıl olunur"
+            "value" : "Nasıl medya okuryazarı olunur"
           }
         }
       }
@@ -3164,7 +3164,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How to check facts"
+            "value" : "Jak ověřit fakta"
           }
         },
         "de" : {
@@ -3188,7 +3188,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cómo comprobar la veracidad de los hechos"
+            "value" : "Cómo revisar la veracidad de los hechos"
           }
         },
         "fr" : {
@@ -3241,7 +3241,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ignite your creativity"
+            "value" : "Probuďte svou kreativitu"
           }
         },
         "de" : {
@@ -3265,7 +3265,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Potencia tu creatividad"
+            "value" : "Encienda su creatividad"
           }
         },
         "fr" : {
@@ -3318,7 +3318,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Improve your sleep"
+            "value" : "Zlepšete svůj spánek"
           }
         },
         "de" : {
@@ -3342,7 +3342,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mejora tu sueño"
+            "value" : "Mejore su sueño"
           }
         },
         "fr" : {
@@ -3395,7 +3395,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Learn to relax"
+            "value" : "Naučte se relaxovat"
           }
         },
         "de" : {
@@ -3472,7 +3472,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Listen to calming sounds"
+            "value" : "Poslouchejte uklidňující zvuky"
           }
         },
         "de" : {
@@ -3496,7 +3496,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Escucha sonidos relajantes"
+            "value" : "Escuche sonidos relajantes"
           }
         },
         "fr" : {
@@ -3549,7 +3549,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo Quick Actions"
+            "value" : "Rychlé akce Lumo"
           }
         },
         "de" : {
@@ -3615,7 +3615,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo Hızlı İşlemler"
+            "value" : "Lumo hızlı işlemler"
           }
         }
       }
@@ -3626,7 +3626,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lunch break?"
+            "value" : "Pauza na oběd?"
           }
         },
         "de" : {
@@ -3650,7 +3650,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lunch break?"
+            "value" : "¿Descanso para almorzar?"
           }
         },
         "fr" : {
@@ -3703,7 +3703,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Manage your time"
+            "value" : "Spravujte svůj čas"
           }
         },
         "de" : {
@@ -3727,7 +3727,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gestiona tu tiempo"
+            "value" : "Gestione su tiempo"
           }
         },
         "fr" : {
@@ -3780,7 +3780,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Meditate for sleep"
+            "value" : "Meditujte pro lepší spánek"
           }
         },
         "de" : {
@@ -3804,7 +3804,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Medita para dormir"
+            "value" : "Medite para dormir"
           }
         },
         "fr" : {
@@ -3846,7 +3846,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uyku için meditasyon yapın"
+            "value" : "Uyku meditasyonu yapın"
           }
         }
       }
@@ -3857,7 +3857,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Morning productivity"
+            "value" : "Ranní produktivita"
           }
         },
         "de" : {
@@ -3934,7 +3934,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Need an afternoon boost?"
+            "value" : "Potřebujete odpolední povzbuzení?"
           }
         },
         "de" : {
@@ -3958,7 +3958,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Need an afternoon boost?"
+            "value" : "¿Necesita un impulso por la tarde?"
           }
         },
         "fr" : {
@@ -4011,7 +4011,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open in Lumo"
+            "value" : "Otevřít v Lumo"
           }
         },
         "de" : {
@@ -4077,7 +4077,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo'da aç"
+            "value" : "Lumo ile aç"
           }
         }
       }
@@ -4088,7 +4088,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Optimize your sleep space"
+            "value" : "Optimalizujte svůj prostor na spaní"
           }
         },
         "de" : {
@@ -4112,7 +4112,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Optimiza tu espacio para dormir"
+            "value" : "Optimice su espacio para dormir"
           }
         },
         "fr" : {
@@ -4154,7 +4154,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uyku alanınızı en uygun hale getirin"
+            "value" : "Uyuma alanınızı iyileştirin"
           }
         }
       }
@@ -4165,7 +4165,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Particle playground"
+            "value" : "Hřiště částic"
           }
         },
         "de" : {
@@ -4189,7 +4189,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Particle playground"
+            "value" : "Parque de partículas"
           }
         },
         "fr" : {
@@ -4242,7 +4242,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Phishing protection"
+            "value" : "Ochrana proti phishingu"
           }
         },
         "de" : {
@@ -4266,7 +4266,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Phishing protection"
+            "value" : "Protección contra la suplantación"
           }
         },
         "fr" : {
@@ -4319,7 +4319,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Physics daily dose"
+            "value" : "Denní dávka fyziky"
           }
         },
         "de" : {
@@ -4343,7 +4343,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Physics daily dose"
+            "value" : "Dosis diaria de física"
           }
         },
         "fr" : {
@@ -4396,7 +4396,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Physics explained"
+            "value" : "Fyzikální vysvětlení"
           }
         },
         "de" : {
@@ -4420,7 +4420,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Physics explained"
+            "value" : "La física explicada"
           }
         },
         "fr" : {
@@ -4462,7 +4462,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fiziğin açıklaması"
+            "value" : "Açıklamalı fizik"
           }
         }
       }
@@ -4473,7 +4473,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plan family time"
+            "value" : "Naplánujte si čas s rodinou"
           }
         },
         "de" : {
@@ -4497,7 +4497,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plan family time"
+            "value" : "Planifique tiempo en familia"
           }
         },
         "fr" : {
@@ -4550,7 +4550,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plan your afternoon"
+            "value" : "Naplánujte si odpoledne"
           }
         },
         "de" : {
@@ -4574,7 +4574,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Planifica tu tarde"
+            "value" : "Planifique su tarde"
           }
         },
         "fr" : {
@@ -4627,7 +4627,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plan your breakfast"
+            "value" : "Naplánujte si snídani"
           }
         },
         "de" : {
@@ -4651,7 +4651,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Planifica tu desayuno"
+            "value" : "Planifique su desayuno"
           }
         },
         "fr" : {
@@ -4704,7 +4704,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Practice breathing"
+            "value" : "Procvičujte dýchání"
           }
         },
         "de" : {
@@ -4728,7 +4728,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Practica la respiración"
+            "value" : "Practique la respiración"
           }
         },
         "fr" : {
@@ -4781,7 +4781,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Privacy tips"
+            "value" : "Tipy pro soukromí"
           }
         },
         "de" : {
@@ -4858,7 +4858,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quantum curiosity"
+            "value" : "Kvantová zvědavost"
           }
         },
         "de" : {
@@ -4935,7 +4935,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quick access to AI prompts"
+            "value" : "Rychlý přístup k podnětům pro AI"
           }
         },
         "de" : {
@@ -4959,7 +4959,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quick access to AI prompts"
+            "value" : "Acceso rápido a prompts de IA"
           }
         },
         "fr" : {
@@ -5012,7 +5012,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quick access to Lumo's most useful features"
+            "value" : "Rychlý přístup k nejužitečnějším funkcím Lumo"
           }
         },
         "de" : {
@@ -5036,7 +5036,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acceso rápido a las características más útiles de Lumo"
+            "value" : "Acceso rápido a las funciones más útiles de Lumo"
           }
         },
         "fr" : {
@@ -5078,7 +5078,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lumo'nun en kullanışlı özelliklerine hızlı erişim"
+            "value" : "En kullanışlı Lumo özelliklerine hızlı erişim"
           }
         }
       }
@@ -5089,7 +5089,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Recommend some quick and healthy lunch ideas that I can prepare in 20 minutes or less."
+            "value" : "Doporučte nějaké rychlé a zdravé nápady na oběd, které mohu připravit za 20 minut nebo méně."
           }
         },
         "de" : {
@@ -5113,7 +5113,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Recomienda algunas ideas rápidas y saludables para el almuerzo que pueda preparar en 20 minutos o menos."
+            "value" : "Recomiéndeme algunas ideas de almuerzos rápidos y saludables que pueda preparar en 20 minutos o menos."
           }
         },
         "fr" : {
@@ -5155,7 +5155,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "20 dakika veya daha kısa sürede hazırlayabileceğim hızlı ve sağlıklı öğle yemeği önerileri paylaşır mısınız?"
+            "value" : "20 dakika veya daha kısa sürede hazırlayabileceğim hızlı ve sağlıklı bir öğle yemeği öner."
           }
         }
       }
@@ -5166,7 +5166,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reflect on your day"
+            "value" : "Zamyslete se nad svým dnem"
           }
         },
         "de" : {
@@ -5190,7 +5190,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reflect on your day"
+            "value" : "Reflexione sobre su día"
           }
         },
         "fr" : {
@@ -5232,7 +5232,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gününüzü bir gözden geçirin"
+            "value" : "Gününüzü değerlendirin"
           }
         }
       }
@@ -5243,7 +5243,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Scientific wonder"
+            "value" : "Vědecký zázrak"
           }
         },
         "de" : {
@@ -5320,7 +5320,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share a mind-bending fact about the cosmos and particle physics."
+            "value" : "Sdílejte ohromující fakt o kosmu a částicové fyzice."
           }
         },
         "de" : {
@@ -5344,7 +5344,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share a mind-bending fact about the cosmos and particle physics."
+            "value" : "Comparta un dato impresionante sobre el cosmos y la física de partículas."
           }
         },
         "fr" : {
@@ -5386,7 +5386,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Evren ve parçacık fiziği hakkında akıllara durgunluk veren bir bilgiyi paylaşın."
+            "value" : "Evren ve parçacık fiziği hakkında akıllara durgunluk veren bir bilgiyi paylaş."
           }
         }
       }
@@ -5397,7 +5397,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share an interesting fact that will surprise me today."
+            "value" : "Sdílejte zajímavou skutečnost, která mě dnes překvapí."
           }
         },
         "de" : {
@@ -5421,7 +5421,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comparte un dato interesante que me sorprenda."
+            "value" : "Comparta un dato interesante que me sorprenda hoy."
           }
         },
         "fr" : {
@@ -5474,7 +5474,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share some effective productivity techniques for maintaining focus during work hours."
+            "value" : "Sdílejte některé účinné techniky produktivity pro udržení soustředění během pracovní doby."
           }
         },
         "de" : {
@@ -5498,7 +5498,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comparte algunas técnicas efectivas de productividad para mantener la concentración durante las horas laborales."
+            "value" : "Comparta algunas técnicas de productividad efectivas para mantener la concentración durante las horas de trabajo."
           }
         },
         "fr" : {
@@ -5540,7 +5540,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Çalışma saatleri boyunca konsantrasyonunuzu korumak için etkili verimlilik tekniklerinden bahsedin."
+            "value" : "Çalışma saatlerinde odaklanmayı korumak için etkili verimlilik tekniklerinden bahset."
           }
         }
       }
@@ -5551,7 +5551,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share some motivational tips to help me start my day with enthusiasm."
+            "value" : "Sdílejte nějaké motivační tipy, které mi pomohou začít den s nadšením."
           }
         },
         "de" : {
@@ -5575,7 +5575,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comparte algunos consejos motivacionales que me permitan comenzar el día con entusiasmo."
+            "value" : "Comparta algunos consejos de motivación para ayudarme a comenzar mi día con entusiasmo."
           }
         },
         "fr" : {
@@ -5617,7 +5617,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Güne coşkuyla başlamama yardımcı olacak birkaç motivasyon ipucu paylaşır mısın?"
+            "value" : "Güne coşkuyla başlamama yardımcı olacak birkaç motivasyon ipucu paylaş."
           }
         }
       }
@@ -5628,7 +5628,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share something about the universe that puts life in perspective."
+            "value" : "Sdílejte něco o vesmíru, co dává život do perspektivy."
           }
         },
         "de" : {
@@ -5652,7 +5652,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comparte algo sobre el universo que me haga ver la vida en perspectiva."
+            "value" : "Comparta algo sobre el universo que me haga ver la vida en perspectiva."
           }
         },
         "fr" : {
@@ -5694,7 +5694,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hayatı farklı bir bakış açısıyla ele alan, evrenle ilgili bir şey paylaşın."
+            "value" : "Hayatı farklı bir bakış açısıyla ele alan, evrenle ilgili bir şey paylaş."
           }
         }
       }
@@ -5705,7 +5705,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sharpen your focus"
+            "value" : "Zlepšete své soustředění"
           }
         },
         "de" : {
@@ -5729,7 +5729,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sharpen your focus"
+            "value" : "Agudice su concentración"
           }
         },
         "fr" : {
@@ -5771,7 +5771,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odaklanmanızı güçlendirin"
+            "value" : "Odağınızı keskinleştirin"
           }
         }
       }
@@ -5782,7 +5782,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show me effective techniques for fact-checking claims I encounter online."
+            "value" : "Ukažte mi účinné techniky pro ověřování tvrzení, se kterými se setkávám online."
           }
         },
         "de" : {
@@ -5806,7 +5806,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Muéstrame algunas técnicas efectivas para comprobar las afirmaciones que encuentro en línea."
+            "value" : "Muéstreme técnicas efectivas para verificar la veracidad de las afirmaciones que encuentro en línea."
           }
         },
         "fr" : {
@@ -5848,7 +5848,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "İnternette karşılaştığım iddiaları doğrulamak için etkili yöntemleri gösterin."
+            "value" : "Çevrim içi karşılaştığım iddiaları doğrulamak için etkili teknikleri göster."
           }
         }
       }
@@ -5859,7 +5859,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spark your creativity"
+            "value" : "Zažehněte svou kreativitu"
           }
         },
         "de" : {
@@ -5883,7 +5883,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spark your creativity"
+            "value" : "Despierte su creatividad"
           }
         },
         "fr" : {
@@ -5925,7 +5925,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yaratıcılığınızı harekete geçirin"
+            "value" : "Yaratıcılığınızı ateşleyin"
           }
         }
       }
@@ -5936,7 +5936,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spot misinformation"
+            "value" : "Jak rozpoznat dezinformace"
           }
         },
         "de" : {
@@ -5960,7 +5960,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Identifica las noticias falsas"
+            "value" : "Identificar noticias falsas"
           }
         },
         "fr" : {
@@ -6002,7 +6002,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yanlış bilgileri tespit edin"
+            "value" : "Yanlış bilgileri bulun"
           }
         }
       }
@@ -6013,7 +6013,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spot scams"
+            "value" : "Jak rozpoznat podvody"
           }
         },
         "de" : {
@@ -6037,7 +6037,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Identifica las estafas"
+            "value" : "Detectar las estafas"
           }
         },
         "fr" : {
@@ -6079,7 +6079,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dolandırıcılıkları tespit edin"
+            "value" : "Dolandırıcılıkları bulun"
           }
         }
       }
@@ -6090,7 +6090,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Start your day right"
+            "value" : "Začněte svůj den správně"
           }
         },
         "de" : {
@@ -6114,7 +6114,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Start your day right"
+            "value" : "Comience bien el día"
           }
         },
         "fr" : {
@@ -6167,7 +6167,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Start your workout"
+            "value" : "Začněte svůj trénink"
           }
         },
         "de" : {
@@ -6191,7 +6191,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Start your workout"
+            "value" : "Comience su entrenamiento"
           }
         },
         "fr" : {
@@ -6233,7 +6233,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Egzersizinize başlayın"
+            "value" : "Egzersiz yapmaya başlayın"
           }
         }
       }
@@ -6244,7 +6244,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stretch before bed"
+            "value" : "Protáhněte se před spaním"
           }
         },
         "de" : {
@@ -6268,7 +6268,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Estírate antes de acostarte"
+            "value" : "Estírese antes de acostarse"
           }
         },
         "fr" : {
@@ -6321,7 +6321,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stretch your body"
+            "value" : "Protáhněte své tělo"
           }
         },
         "de" : {
@@ -6345,7 +6345,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Estira tu cuerpo"
+            "value" : "Estire su cuerpo"
           }
         },
         "fr" : {
@@ -6398,7 +6398,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suggest a healthy and quick breakfast recipe that I can make in under 15 minutes."
+            "value" : "Navrhněte zdravý a rychlý recept na snídani, kterou mohu připravit za méně než 15 minut."
           }
         },
         "de" : {
@@ -6422,7 +6422,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sugiere una receta rápida y saludable para el desayuno que pueda preparar en menos de 15 minutos."
+            "value" : "Sugiérame una receta de desayuno saludable y rápida que pueda preparar en menos de 15 minutos."
           }
         },
         "fr" : {
@@ -6464,7 +6464,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "15 dakikadan kısa sürede hazırlayabileceğim sağlıklı ve hızlı bir kahvaltı tarifi önerir misiniz?"
+            "value" : "15 dakikadan kısa sürede hazırlayabileceğim sağlıklı ve hızlı bir kahvaltı tarifi ver."
           }
         }
       }
@@ -6475,7 +6475,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suggest a healthy dinner recipe that I can prepare in 30 minutes or less."
+            "value" : "Navrhněte zdravý recept na večeři, kterou mohu připravit za 30 minut nebo méně."
           }
         },
         "de" : {
@@ -6499,7 +6499,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sugiere una receta saludable para la cena que puedo preparar en 30 minutos o menos."
+            "value" : "Sugiérame una receta de cena saludable que pueda preparar en 30 minutos o menos."
           }
         },
         "fr" : {
@@ -6541,7 +6541,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "30 dakika veya daha kısa sürede hazırlayabileceğim sağlıklı bir akşam yemeği tarifi önerir misiniz?"
+            "value" : "30 dakika veya daha kısa sürede hazırlayabileceğim sağlıklı bir akşam yemeği tarifi öner."
           }
         }
       }
@@ -6552,7 +6552,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suggest some calming music or sounds to help me fall asleep."
+            "value" : "Navrhněte nějakou uklidňující hudbu nebo zvuky, které mi pomohou usnout."
           }
         },
         "de" : {
@@ -6576,7 +6576,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sugiere música o sonidos relajantes para ayudarme a conciliar el sueño."
+            "value" : "Sugiérame música o sonidos relajantes para ayudarme a conciliar el sueño."
           }
         },
         "fr" : {
@@ -6618,7 +6618,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uykuya dalmama yardımcı olacak sakinleştirici müzikler veya sesler önerir misin?"
+            "value" : "Uykuya dalmama yardımcı olacak sakinleştirici müzikler veya sesler öner."
           }
         }
       }
@@ -6629,7 +6629,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suggest some fun family activities we can do together this evening."
+            "value" : "Navrhněte nějaké zábavné rodinné aktivity, které můžeme dnes večer společně podniknout."
           }
         },
         "de" : {
@@ -6653,7 +6653,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sugiere algunas actividades familiares divertidas que podemos hacer juntos esta noche."
+            "value" : "Sugiérame algunas actividades familiares divertidas que podamos hacer juntos esta noche."
           }
         },
         "fr" : {
@@ -6695,7 +6695,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu akşam birlikte yapabileceğimiz eğlenceli aile etkinlikleri önerir misin?"
+            "value" : "Bu akşam birlikte yapabileceğimiz eğlenceli aile etkinlikleri öner."
           }
         }
       }
@@ -6706,7 +6706,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suggest some healthy afternoon snacks that will boost my energy without a sugar crash."
+            "value" : "Navrhněte nějaké zdravé odpolední svačiny, které mi dodají energii bez následného propadu cukru."
           }
         },
         "de" : {
@@ -6730,7 +6730,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sugiere algunos refrigerios saludables para la tarde que aumenten mi energía sin un bajón de azúcar."
+            "value" : "Sugiéreme algunos refrigerios saludables para la tarde que aumenten mi energía sin un bajón de azúcar."
           }
         },
         "fr" : {
@@ -6772,7 +6772,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Şeker komasına girmeden enerjimi artıracak sağlıklı öğleden sonra atıştırmalıkları önerir misiniz?"
+            "value" : "Şeker komasına girmeden enerjimi artıracak sağlıklı öğleden sonra atıştırmalıkları öner."
           }
         }
       }
@@ -6783,7 +6783,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suggest some healthy and energizing coffee break activities to refresh my mind."
+            "value" : "Navrhněte mi několik zdravých a energizujících aktivit pro přestávku na kávu k osvěžení mysli."
           }
         },
         "de" : {
@@ -6807,7 +6807,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suggest some healthy and energizing coffee break activities to refresh my mind."
+            "value" : "Sugiérame algunas actividades saludables y energizantes para la pausa del café que refresquen mi mente."
           }
         },
         "fr" : {
@@ -6849,7 +6849,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zihnimi tazelemek için sağlıklı ve enerji verici kahve molası etkinlikleri önerir misin?"
+            "value" : "Zihnimi tazelemek için sağlıklı ve enerji verici kahve molası etkinlikleri önerir."
           }
         }
       }
@@ -6860,7 +6860,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Take a mindful break"
+            "value" : "Udělejte si vědomou přestávku"
           }
         },
         "de" : {
@@ -6884,7 +6884,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Take a mindful break"
+            "value" : "Tome un descanso consciente"
           }
         },
         "fr" : {
@@ -6926,7 +6926,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bir süre kendinize zaman ayırın"
+            "value" : "Bir farkındalık arası verin"
           }
         }
       }
@@ -6937,7 +6937,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teach me how to identify bias and evaluate the credibility of news sources."
+            "value" : "Naučte mě, jak identifikovat předpojatost a vyhodnocovat důvěryhodnost zpravodajských zdrojů."
           }
         },
         "de" : {
@@ -6961,7 +6961,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teach me how to identify bias and evaluate the credibility of news sources."
+            "value" : "Enséñeme a identificar sesgos y evaluar la credibilidad de las fuentes de noticias."
           }
         },
         "fr" : {
@@ -7003,7 +7003,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bana önyargıları nasıl tespit edeceğimi ve haber kaynaklarının güvenilirliğini nasıl değerlendireceğimi öğretin."
+            "value" : "Önyargıyı nasıl belirleyeceğimi ve haber kaynaklarının güvenilirliğini nasıl değerlendireceğimi öğret."
           }
         }
       }
@@ -7014,7 +7014,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teach me practical critical thinking skills I can use to evaluate information better."
+            "value" : "Naučte mě praktické dovednosti kritického myšlení, které mohu použít k lepšímu hodnocení informací."
           }
         },
         "de" : {
@@ -7038,7 +7038,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teach me practical critical thinking skills I can use to evaluate information better."
+            "value" : "Enséñeme habilidades prácticas de pensamiento crítico que pueda usar para evaluar mejor la información."
           }
         },
         "fr" : {
@@ -7080,7 +7080,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bana bilgileri daha iyi değerlendirebilmem için kullanabileceğim pratik eleştirel düşünme becerilerini öğretin."
+            "value" : "Bilgiyi daha iyi değerlendirmek için kullanabileceğim pratik eleştirel düşünme becerileri öğret."
           }
         }
       }
@@ -7091,7 +7091,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teach me something fascinating in 2 minutes."
+            "value" : "Naučte mě něco fascinujícího za 2 minuty."
           }
         },
         "de" : {
@@ -7115,7 +7115,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teach me something fascinating in 2 minutes."
+            "value" : "Enséñeme algo fascinante en 2 minutos."
           }
         },
         "fr" : {
@@ -7157,7 +7157,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bana 2 dakikada ilginç bir şey öğret."
+            "value" : "Bana 2 dakikada büyüleyici bir şey öğret."
           }
         }
       }
@@ -7168,7 +7168,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tell me about a physics discovery that changed everything."
+            "value" : "Řekněte mi o fyzikálním objevu, který změnil vše."
           }
         },
         "de" : {
@@ -7192,7 +7192,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tell me about a physics discovery that changed everything."
+            "value" : "Cuénteme sobre un descubrimiento en física que lo cambió todo."
           }
         },
         "fr" : {
@@ -7234,7 +7234,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bana her şeyi değiştiren bir fizik keşfinden bahsedin."
+            "value" : "Bana her şeyi değiştiren bir fizik keşfini anlat."
           }
         }
       }
@@ -7245,7 +7245,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Universe explorer"
+            "value" : "Vesmírný průzkumník"
           }
         },
         "de" : {
@@ -7269,7 +7269,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Universe explorer"
+            "value" : "Explorar el universo"
           }
         },
         "fr" : {
@@ -7322,7 +7322,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What are some effective relaxation techniques to unwind after a busy day?"
+            "value" : "Jaké existují účinné relaxační techniky k uvolnění po náročném dni?"
           }
         },
         "de" : {
@@ -7388,7 +7388,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yoğun bir günün ardından gevşemek için etkili rahatlama teknikleri nelerdir?"
+            "value" : "Yoğun bir günün ardından rahatlamak için etkili rahatlama teknikleri nelerdir?"
           }
         }
       }
@@ -7399,7 +7399,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What are some effective techniques to regain focus during the afternoon slump?"
+            "value" : "Jaké existují účinné techniky pro znovuzískání soustředění během odpoledního útlumu?"
           }
         },
         "de" : {
@@ -7423,7 +7423,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What are some effective techniques to regain focus during the afternoon slump?"
+            "value" : "¿Cuáles son algunas técnicas efectivas para recuperar la concentración durante el bajón de la tarde?"
           }
         },
         "fr" : {
@@ -7465,7 +7465,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What are some effective techniques to regain focus during the afternoon slump?"
+            "value" : "Öğleden sonra rehaveti sırasında odaklanmayı yeniden kazanmak için etkili teknikler nelerdir?"
           }
         }
       }
@@ -7476,7 +7476,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What are some natural ways to boost my energy in the afternoon?"
+            "value" : "Jaké jsou přirozené způsoby, jak si odpoledne dodat energii?"
           }
         },
         "de" : {
@@ -7542,7 +7542,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What are some natural ways to boost my energy in the afternoon?"
+            "value" : "Öğleden sonra enerjimi artırmanın doğal yolları nelerdir?"
           }
         }
       }
@@ -7553,7 +7553,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What are some natural ways to boost my energy in the morning without caffeine?"
+            "value" : "Jaké existují přirozené způsoby, jak si ráno dodat energii bez kofeinu?"
           }
         },
         "de" : {
@@ -7619,7 +7619,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What are some natural ways to boost my energy in the morning without caffeine?"
+            "value" : "Sabahları kafein kullanmadan enerjimi artırmanın doğal yolları nelerdir?"
           }
         }
       }
@@ -7630,7 +7630,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What are some proven techniques to help me fall asleep faster?"
+            "value" : "Jaké jsou osvědčené techniky, které mi pomohou rychleji usnout?"
           }
         },
         "de" : {
@@ -7707,7 +7707,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What are some quick relaxation techniques I can do during my lunch break?"
+            "value" : "Jaké existují rychlé relaxační techniky, které mohu provést během své polední pauzy?"
           }
         },
         "de" : {
@@ -7773,7 +7773,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öğle molamda uygulayabileceğim bazı hızlı rahatlama teknikleri nelerdir?"
+            "value" : "Öğle aramda yapabileceğim hızlı rahatlama teknikleri nelerdir?"
           }
         }
       }
@@ -7784,7 +7784,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What are some techniques to boost my creative thinking for this project?"
+            "value" : "Jaké existují techniky pro podporu mého kreativního myšlení pro tento projekt?"
           }
         },
         "de" : {
@@ -7850,7 +7850,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu proje için yaratıcı düşünme becerilerimi geliştirmeme yardımcı olacak bazı teknikler nelerdir?"
+            "value" : "Bu proje için yaratıcı düşünme becerilerimi geliştirmeme yardımcı olacak yöntemler nelerdir?"
           }
         }
       }
@@ -7861,7 +7861,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What are the best practices to protect myself against phishing attacks?"
+            "value" : "Jaké jsou nejlepší postupy na ochranu proti phishingovým útokům?"
           }
         },
         "de" : {
@@ -7938,7 +7938,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What cognitive biases should I be aware of in my own thinking?"
+            "value" : "Jakých kognitivních zkreslení bych si měl(a) být vědom(a) ve svém vlastním myšlení?"
           }
         },
         "de" : {
@@ -7962,7 +7962,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Sobre cuáles sesgos cognitivos debería estar atento en mi forma de pensar?"
+            "value" : "¿De cuáles sesgos cognitivos debería ser consciente en mi propia forma de pensar?"
           }
         },
         "fr" : {
@@ -8004,7 +8004,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kendi düşünme sürecimde hangi bilişsel önyargılara dikkat etmeliyim?"
+            "value" : "Kendi düşüncemde hangi bilişsel önyargıların farkında olmalıyım?"
           }
         }
       }
@@ -8015,7 +8015,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What would happen if I could shrink down to subatomic size?"
+            "value" : "Co by se stalo, kdybych se mohl(a) zmenšit na subatomární velikost?"
           }
         },
         "de" : {
@@ -8039,7 +8039,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Qué sucedería si pudiera reducirme al tamaño subatómico?"
+            "value" : "¿Qué pasaría si pudiera reducirme al tamaño subatómico?"
           }
         },
         "fr" : {
@@ -8081,7 +8081,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eğer atom altı boyuta küçülebilseydim ne olurdu?"
+            "value" : "Atom altı boyuta küçülebilseydim ne olurdu?"
           }
         }
       }
@@ -8092,7 +8092,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What's a balanced lunch that will give me sustained energy for the afternoon?"
+            "value" : "Jaký je vyvážený oběd, který mi dodá trvalou energii na odpoledne?"
           }
         },
         "de" : {
@@ -8169,7 +8169,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What's a good evening workout routine that won't interfere with sleep?"
+            "value" : "Jaká je dobrá večerní cvičební rutina, která nenaruší spánek?"
           }
         },
         "de" : {
@@ -8246,7 +8246,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What's happening at the quantum level around me right now?"
+            "value" : "Co se děje na kvantové úrovni kolem mě právě teď?"
           }
         },
         "de" : {
@@ -8323,7 +8323,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Winding down for the day?"
+            "value" : "Uvolňujete se na konci dne?"
           }
         },
         "de" : {
@@ -8347,7 +8347,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Relajándote para terminar el día?"
+            "value" : "¿Relajándose para terminar el día?"
           }
         },
         "fr" : {
@@ -8389,7 +8389,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Günün sonuna mı geldin?"
+            "value" : "Günü bitirmeye mi hazırlanıyorsunuz?"
           }
         }
       }
@@ -8400,7 +8400,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Write me a short, calming bedtime story."
+            "value" : "Napište mi krátkou, uklidňující pohádku na dobrou noc."
           }
         },
         "de" : {
@@ -8424,7 +8424,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Escribe un cuento corto y relajante para la hora de dormir."
+            "value" : "Escríbame un cuento breve y relajante para la hora de dormir."
           }
         },
         "fr" : {
