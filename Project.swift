@@ -2,7 +2,7 @@ import ProjectDescription
 
 // MARK: - Version Configuration
 
-let marketingVersion = "2.0.0"
+let marketingVersion = "1.2.9"
 let developmentTeam = "2SB5Z68H26"
 
 // MARK: - Shared Settings
