@@ -11,21 +11,6 @@ final class LegacySpeechRecordingServiceTests {
     let engineSpy = AudioEngineSpy()
     let notificationCenter = NotificationCenter()
 
-    private func makeSUT(
-        audioApplication: AudioApplication.Type = AudioApplicationGrantedStub.self,
-        speechAuthorization: SpeechAuthorizationProviding.Type = SpeechAuthorizationAuthorizedStub.self,
-        speechRecognizerFactory: LegacySpeechRecordingService.SpeechRecognizerFactory? = nil
-    ) -> LegacySpeechRecordingService {
-        LegacySpeechRecordingService(
-            audioSession: audioSession,
-            audioApplication: audioApplication,
-            speechAuthorization: speechAuthorization,
-            speechRecognizerFactory: speechRecognizerFactory ?? { [recognizerSpy] _ in recognizerSpy },
-            audioEngine: engineSpy,
-            notificationCenter: notificationCenter
-        )
-    }
-
     // MARK: - requestPermissions
 
     @Test
@@ -388,6 +373,21 @@ final class LegacySpeechRecordingServiceTests {
     }
 
     // MARK: - Helpers
+
+    private func makeSUT(
+        audioApplication: AudioApplication.Type = AudioApplicationGrantedStub.self,
+        speechAuthorization: SpeechAuthorizationProviding.Type = SpeechAuthorizationAuthorizedStub.self,
+        speechRecognizerFactory: LegacySpeechRecordingService.SpeechRecognizerFactory? = nil
+    ) -> LegacySpeechRecordingService {
+        LegacySpeechRecordingService(
+            audioSession: audioSession,
+            audioApplication: audioApplication,
+            speechAuthorization: speechAuthorization,
+            speechRecognizerFactory: speechRecognizerFactory ?? { [recognizerSpy] _ in recognizerSpy },
+            audioEngine: engineSpy,
+            notificationCenter: notificationCenter
+        )
+    }
 
     private func firstUpdate(
         from sut: LegacySpeechRecordingService,
