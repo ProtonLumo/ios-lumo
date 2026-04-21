@@ -176,7 +176,6 @@ struct ContentView: View {
                 }
             }
         }
-        .animation(.easeInOut, value: speechRecorder.isActive)
         .animation(.easeInOut, value: speechRecorder.isPermissionDenied)
         .onChange(of: currentWebViewURL) { _, newURL in
             handleURLChange(newURL)
