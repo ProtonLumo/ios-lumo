@@ -8,7 +8,8 @@ enum AudioLevelNormalizer {
     static let initialLevels: [CGFloat] = Array(repeating: 0.1, count: barCount)
 
     /// Silence floor in decibels. Anything quieter reads as 0.
-    private static let silenceFloorDb: Float = -60.0
+    /// Set to -80 dB to accommodate .measurement mode (AGC disabled) raw mic signal.
+    private static let silenceFloorDb: Float = -80.0
 
     /// Exponent for the visual curve. Values < 1 boost quiet sounds,
     /// making the waveform more responsive to speech.

@@ -7,8 +7,7 @@ protocol AudioSession {
         options: AVAudioSession.CategoryOptions
     ) throws
     func setActive(_ active: Bool, options: AVAudioSession.SetActiveOptions) throws
-    func setPreferredSampleRate(_ sampleRate: Double) throws
-    func setPreferredIOBufferDuration(_ duration: TimeInterval) throws
+    func setAllowHapticsAndSystemSoundsDuringRecording(_ inValue: Bool) throws
 }
 
 extension AVAudioSession: AudioSession {}

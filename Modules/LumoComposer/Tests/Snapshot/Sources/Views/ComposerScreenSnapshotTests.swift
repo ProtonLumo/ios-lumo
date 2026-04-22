@@ -84,7 +84,12 @@ struct ComposerScreenSnapshotTests {
             toastStateStore: ToastStateStore(initialState: .initial),
             urlOpener: OpenURLAction { _ in .discarded },
             widgetPromptReceiver: WidgetPromptReceiver(),
+            device: iPhoneDevice(),
             webContent: { EmptyView() }
         )
     }
+}
+
+private struct iPhoneDevice: DeviceProviding {
+    let userInterfaceIdiom: UIUserInterfaceIdiom = .phone
 }

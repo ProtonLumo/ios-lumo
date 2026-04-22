@@ -7,8 +7,11 @@ import Speech
 final class SpeechRecognizerSpy: SpeechRecognizerProviding {
     let stubbedRecognictionTask = SpeechRecognitionTaskSpy()
 
-    var supportsOnDeviceRecognition = false
     private(set) var resultHandler: (@Sendable (String?, Error?) -> Void)?
+
+    // MARK: - SpeechRecognizerProviding
+
+    var supportsOnDeviceRecognition = false
 
     func recognitionTask(
         with request: SFSpeechAudioBufferRecognitionRequest,

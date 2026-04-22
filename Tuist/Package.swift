@@ -7,7 +7,8 @@ import PackageDescription
     let packageSettings = PackageSettings(
         productTypes: [
             "Lottie": .framework,
-            "ProtonUIFoundations": .framework
+            "ProtonUIFoundations": .framework,
+            "SwiftUIIntrospect": .framework
         ],
         baseSettings: .settings(
             configurations: [

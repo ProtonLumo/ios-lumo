@@ -1,4 +1,5 @@
 import LumoCore
+import ProtonUIFoundations
 import SwiftUI
 
 @main
@@ -7,11 +8,11 @@ struct LumoApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
     @StateObject private var themeStore = ThemeStore()
+    @StateObject private var toastStateStore = ToastStateStore(initialState: .initial)
 
     var body: some Scene {
         WindowGroup {
             ContentView(urlOpener: openURL)
-                .environmentObject(themeStore)
                 .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LumoPromptReceived"))) { notification in
                     if let prompt = notification.userInfo?["prompt"] as? String {
                         Logger.shared.log("App received prompt: \(prompt)", category: "AppDelegate")
@@ -45,6 +46,11 @@ struct LumoApp: App {
                         Logger.shared.log("Unknown scene phase: \(newPhase)", category: "AppDelegate")
                     }
                 }
+                .overlay {
+                    ToastSceneView(dispatchAfter: DispatchQueue.main.asyncAfter(deadline:execute:))
+                }
+                .environmentObject(themeStore)
+                .environmentObject(toastStateStore)
                 .preferredColorScheme(themeStore.colorScheme)
         }
     }

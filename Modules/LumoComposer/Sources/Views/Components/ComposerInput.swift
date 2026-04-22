@@ -4,11 +4,11 @@ import SwiftUI
 
 struct ComposerInput: View {
     @Binding var text: String
+    @FocusState.Binding var isFocused: Bool
     let placeholderText: LocalizedStringResource
     let placeholderColor: Color
     let textColor: Color
     let backgroundColor: Color
-    @FocusState private var isFocused: Bool
 
     var body: some View {
         ZStack(alignment: .topLeading) {

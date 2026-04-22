@@ -53,6 +53,7 @@ struct ContentView: View {
     @StateObject private var webComposerBridge = WebComposerBridge()
     @StateObject private var widgetPromptReceiver = WidgetPromptReceiver()
     @State private var isLoading = true
+    @State private var sheetHeight: CGFloat = 250
     @State private var webViewIsActive = true
     @State private var webViewReady = false
 
@@ -161,15 +162,6 @@ struct ContentView: View {
                 )
             }
 
-            if speechRecorder.isActive {
-                SpeechRecorderView(
-                    state: speechRecorder.state,
-                    onSubmit: { speechRecorder.submitRecording() },
-                    onCancel: { speechRecorder.cancelRecording() }
-                )
-                .transition(.move(edge: .bottom))
-            }
-
             if speechRecorder.isPermissionDenied {
                 PermissionAlertOverlay(
                     onSettings: { speechRecorder.openSettings() },
@@ -184,8 +176,7 @@ struct ContentView: View {
                 }
             }
         }
-        .animation(.easeInOut(duration: 0.3), value: speechRecorder.isActive)
-        .animation(.easeInOut(duration: 0.3), value: speechRecorder.isPermissionDenied)
+        .animation(.easeInOut, value: speechRecorder.isPermissionDenied)
         .onChange(of: currentWebViewURL) { _, newURL in
             handleURLChange(newURL)
         }
@@ -202,6 +193,20 @@ struct ContentView: View {
                 }
             }
         }
+        .sheet(
+            isPresented: .init(get: { speechRecorder.isActive }, set: { _ in }),
+            content: {
+                SpeechRecorderView(
+                    state: speechRecorder.state,
+                    onSubmit: { speechRecorder.submitRecording() },
+                    onCancel: { speechRecorder.cancelRecording() }
+                )
+                .onGeometryChange(for: CGFloat.self, of: \.size.height, action: { sheetHeight = $0 })
+                .presentationDetents([.height(sheetHeight)])
+                .presentationDragIndicator(.hidden)
+                .interactiveDismissDisabled()
+            }
+        )
         .onReceive(notification: Notification.Name("StartVoiceEntryNotification")) {
             if !speechRecorder.isActive {
                 speechRecorder.startRecording()
@@ -877,12 +882,5 @@ struct ContentView: View {
         } else {
             Logger.shared.log("✅ Lockdown Mode is not enabled")
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView(urlOpener: OpenURLAction { _ in .discarded })
-            .environmentObject(ThemeStore())
     }
 }

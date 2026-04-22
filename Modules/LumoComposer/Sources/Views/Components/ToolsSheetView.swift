@@ -29,6 +29,7 @@ struct ToolsSheetView: View {
                                 text: L10n.ToolsSheet.createImage,
                                 trailingElement: .none
                             )
+                            .contentShape(Rectangle())
                         }
                     )
                     .buttonStyle(.plain)

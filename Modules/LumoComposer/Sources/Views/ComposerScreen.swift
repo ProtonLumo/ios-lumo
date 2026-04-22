@@ -11,10 +11,12 @@ public struct ComposerScreen<WebContent: View>: View {
     @StateObject private var store: ComposerStateStore
     private let isWebViewReady: Bool
     private let toastStateStore: ToastStateStore
+    private let device: DeviceProviding
     @ViewBuilder private let webContent: () -> WebContent
 
     @State private var sheetHeight: CGFloat = 250
     @State private var selectedPhotoItem: PhotosPickerItem?
+    @FocusState private var isComposerFocused: Bool
 
     public init(
         webBridge: WebComposerBridging,
@@ -22,6 +24,7 @@ public struct ComposerScreen<WebContent: View>: View {
         toastStateStore: ToastStateStore,
         urlOpener: URLOpenerProtocol,
         widgetPromptReceiver: WidgetPromptReceiver,
+        device: DeviceProviding = UIDevice.current,
         webContent: @escaping () -> WebContent
     ) {
         self.init(
@@ -31,6 +34,7 @@ public struct ComposerScreen<WebContent: View>: View {
             toastStateStore: toastStateStore,
             urlOpener: urlOpener,
             widgetPromptReceiver: widgetPromptReceiver,
+            device: device,
             webContent: webContent
         )
     }
@@ -43,6 +47,7 @@ public struct ComposerScreen<WebContent: View>: View {
         toastStateStore: ToastStateStore,
         urlOpener: URLOpenerProtocol,
         widgetPromptReceiver: WidgetPromptReceiver,
+        device: DeviceProviding,
         webContent: @escaping () -> WebContent
     ) {
         _store = .init(
@@ -57,6 +62,7 @@ public struct ComposerScreen<WebContent: View>: View {
         )
         self.isWebViewReady = isWebViewReady
         self.toastStateStore = toastStateStore
+        self.device = device
         self.webContent = webContent
     }
 
@@ -67,22 +73,23 @@ public struct ComposerScreen<WebContent: View>: View {
             ZStack(alignment: .center) {
                 webContent()
 
-                if !store.state.isWebViewReady && store.state.webState.isVisible {
+                if arePlacholdersVisible {
                     placeholders(screenSize: proxy.size)
                 }
 
-                VStack(spacing: DS.Spacing.medium) {
-                    Spacer()
-                    if store.state.webState.isVisible && store.state.webState.showTermsAndPrivacy {
+                if isNativeComposerVisible {
+                    VStack(spacing: DS.Spacing.medium) {
+                        Spacer()
                         TermsAndPrivacyText()
-                    }
+                            .opacity(isTextAndPrivacyVisible ? 1 : 0)
+                            .animation(.easeInOut, value: isTextAndPrivacyVisible)
 
-                    if store.state.webState.isVisible {
                         ComposerView(
                             text: .init(
                                 get: { store.state.currentText },
                                 set: { newValue in store.send(action: .textChanged(newValue)) }
                             ),
+                            isComposerFocused: $isComposerFocused,
                             files: store.state.webState.attachedFiles,
                             model: store.state.webState.model,
                             isCreateImageEnabled: store.state.webState.isCreateImageEnabled,
@@ -96,14 +103,6 @@ public struct ComposerScreen<WebContent: View>: View {
                         .padding(.bottom, DS.Spacing.standard)
                     }
                 }
-
-                if store.state.speechState.isActive {
-                    SpeechRecorderView(
-                        state: store.state.speechState,
-                        onSubmit: { store.send(action: .recorder(.submit)) },
-                        onCancel: { store.send(action: .recorder(.cancel)) }
-                    )
-                }
             }
         }
         .overlay {
@@ -112,6 +111,11 @@ public struct ComposerScreen<WebContent: View>: View {
                     onSettings: { store.send(action: .recorder(.openSettings)) },
                     onDismiss: { store.send(action: .recorder(.dismissPermissionAlert)) }
                 )
+            }
+        }
+        .onChange(of: store.state.isProcessing) { _, isProcessing in
+            if isProcessing {
+                isComposerFocused = false
             }
         }
         .onChange(of: isWebViewReady, initial: true) { _, newValue in
@@ -123,15 +127,24 @@ public struct ComposerScreen<WebContent: View>: View {
             store.send(action: .appDidBecomeActive)
         }
         .sheet(
+            isPresented: .init(get: { store.state.speechState.isActive }, set: { _ in }),
+            content: {
+                SpeechRecorderView(
+                    state: store.state.speechState,
+                    onSubmit: { store.send(action: .recorder(.submit)) },
+                    onCancel: { store.send(action: .recorder(.cancel)) }
+                )
+                .onGeometryChange(for: CGFloat.self, of: \.size.height, action: { sheetHeight = $0 })
+                .presentationDetents([.height(sheetHeight)])
+                .presentationDragIndicator(.hidden)
+                .interactiveDismissDisabled()
+            }
+        )
+        .sheet(
             item: activeSheetBinding,
             content: { sheet in
                 sheetContent(for: sheet)
-                    .background {
-                        GeometryReader { geometry in
-                            Color.clear.preference(key: SheetHeightKey.self, value: geometry.size.height)
-                        }
-                    }
-                    .onPreferenceChange(SheetHeightKey.self) { sheetHeight = $0 }
+                    .onGeometryChange(for: CGFloat.self, of: \.size.height, action: { sheetHeight = $0 })
                     .presentationDetents([.height(sheetHeight)])
                     .presentationDragIndicator(.visible)
             }
@@ -154,9 +167,26 @@ public struct ComposerScreen<WebContent: View>: View {
             .ignoresSafeArea()
         }
         .environment(\.featureFlags, store.state.webState.featureFlags)
+        .sensoryFeedback(
+            .impact(flexibility: .rigid),
+            trigger: store.state.speechState.isActive,
+            condition: { old, new in !old && new }
+        )
     }
 
     // MARK: - Private
+
+    private var isNativeComposerVisible: Bool {
+        device.userInterfaceIdiom == .phone && store.state.webState.isVisible
+    }
+
+    private var arePlacholdersVisible: Bool {
+        isNativeComposerVisible && !store.state.isWebViewReady
+    }
+
+    private var isTextAndPrivacyVisible: Bool {
+        store.state.webState.showTermsAndPrivacy && !isComposerFocused
+    }
 
     private var activeSheetBinding: Binding<ActiveSheet?> {
         Binding(
@@ -226,10 +256,10 @@ public struct ComposerScreen<WebContent: View>: View {
         VStack(spacing: DS.Spacing.medium) {
             logoPlaceholder()
             Spacer()
-            catPlaceholder(offsetY: -screenSize.height * 0.07)
+            catPlaceholder(offsetY: -screenSize.height * 0.065)
             Spacer()
         }
-        .ignoresSafeArea(.keyboard)
+        .background(DS.Color.Background.norm)
     }
 
     private func logoPlaceholder() -> some View {
@@ -243,7 +273,7 @@ public struct ComposerScreen<WebContent: View>: View {
     }
 
     private func catPlaceholder(offsetY: CGFloat) -> some View {
-        VStack(spacing: -DS.Spacing.standard) {
+        VStack(spacing: .zero) {
             lottieView()
             ComposerWelcomeText()
         }
@@ -271,14 +301,6 @@ public struct ComposerScreen<WebContent: View>: View {
     }
 }
 
-private struct SheetHeightKey: PreferenceKey {
-    static let defaultValue: CGFloat = 0
-
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = max(value, nextValue())
-    }
-}
-
 #if DEBUG
     #Preview {
         ComposerScreen(
@@ -288,6 +310,7 @@ private struct SheetHeightKey: PreferenceKey {
             toastStateStore: ToastStateStore(initialState: .initial),
             urlOpener: OpenURLAction { _ in .discarded },
             widgetPromptReceiver: WidgetPromptReceiver(),
+            device: UIDevice.current,
             webContent: { EmptyView() }
         )
     }

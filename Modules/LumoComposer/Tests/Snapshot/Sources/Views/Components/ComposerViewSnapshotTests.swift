@@ -13,7 +13,7 @@ struct ComposerViewSnapshotTests {
         let isGhostModeEnabled: Bool
         let isWebSearchEnabled: Bool
         let areButtonsDisabled: Bool
-        let actionButton: ComposerView.ActionButtonState
+        let actionButton: ComposerView.ActionButtonState?
         let featureFlags: WebComposerState.FeatureFlags
         let testName: String
     }
@@ -251,7 +251,7 @@ struct ComposerViewSnapshotTests {
             isWebSearchEnabled: false,
             areButtonsDisabled: false,
             actionButton: .send,
-            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true, isToolsEnabled: false),
+            featureFlags: .init(isImageGenEnabled: true, isModelSelectionEnabled: true, isToolsEnabled: true),
             testName: "with_two_files_ghost_mode"
         ),
         // Many files
@@ -306,20 +306,30 @@ struct ComposerViewSnapshotTests {
     // MARK: - Private
 
     private func sut(testCase: TestCase) -> some View {
-        VStack {
-            Spacer()
-            ComposerView(
-                text: .constant(testCase.initialText),
-                files: testCase.files,
-                model: testCase.model,
-                isCreateImageEnabled: testCase.isCreateImageEnabled,
-                isGhostModeEnabled: testCase.isGhostModeEnabled,
-                isWebSearchEnabled: testCase.isWebSearchEnabled,
-                areButtonsDisabled: testCase.areButtonsDisabled,
-                actionButton: testCase.actionButton,
-                action: { _ in }
-            )
-            .environment(\.featureFlags, testCase.featureFlags)
+        Wrapper(testCase: testCase)
+    }
+
+    private struct Wrapper: View {
+        @FocusState private var isFocused: Bool
+        let testCase: TestCase
+
+        var body: some View {
+            VStack {
+                Spacer()
+                ComposerView(
+                    text: .constant(testCase.initialText),
+                    isComposerFocused: $isFocused,
+                    files: testCase.files,
+                    model: testCase.model,
+                    isCreateImageEnabled: testCase.isCreateImageEnabled,
+                    isGhostModeEnabled: testCase.isGhostModeEnabled,
+                    isWebSearchEnabled: testCase.isWebSearchEnabled,
+                    areButtonsDisabled: testCase.areButtonsDisabled,
+                    actionButton: testCase.actionButton,
+                    action: { _ in }
+                )
+                .environment(\.featureFlags, testCase.featureFlags)
+            }
         }
     }
 }

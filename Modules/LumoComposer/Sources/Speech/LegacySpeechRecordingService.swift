@@ -3,8 +3,8 @@ import Speech
 
 extension AVAudioFrameCount {
     /// Standard buffer size for speech recognition audio tap.
-    /// 4096 frames at 16kHz ≈ 256ms — balances latency vs CPU overhead.
-    static let speechRecognition: AVAudioFrameCount = 4_096
+    /// 1024 frames at native 48kHz ≈ 21ms per callback — matches Apple's sample.
+    static let speechRecognition: AVAudioFrameCount = 1_024
 }
 
 @MainActor
@@ -15,12 +15,14 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: (any SpeechRecognitionTask)?
     private var audioLevels: [CGFloat] = AudioLevelNormalizer.initialLevels
+    private var interruptionTask: Task<Void, Never>?
 
     private let audioSession: AudioSession
     private let audioApplication: AudioApplication.Type
     private let speechAuthorization: SpeechAuthorizationProviding.Type
     private let speechRecognizer: SpeechRecognizerProviding?
     private let audioEngine: AudioEngine
+    private let notificationCenter: NotificationCenter
 
     typealias SpeechRecognizerFactory = @MainActor (Locale) -> SpeechRecognizerProviding?
 
@@ -29,13 +31,15 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
         audioApplication: AudioApplication.Type = AVAudioApplication.self,
         speechAuthorization: SpeechAuthorizationProviding.Type = SFSpeechRecognizer.self,
         speechRecognizerFactory: SpeechRecognizerFactory = SFSpeechRecognizerAdapterFactory.make,
-        audioEngine: AudioEngine = AVAudioEngineAdapter()
+        audioEngine: AudioEngine = AVAudioEngineAdapter(),
+        notificationCenter: NotificationCenter = .default
     ) {
         self.audioSession = audioSession
         self.audioApplication = audioApplication
         self.speechAuthorization = speechAuthorization
         self.audioEngine = audioEngine
         self.speechRecognizer = speechRecognizerFactory(Locale.current)
+        self.notificationCenter = notificationCenter
     }
 
     // MARK: - SpeechRecordingServiceProtocol
@@ -68,17 +72,27 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
         do {
             try audioSession.setCategory(
                 .playAndRecord,
-                mode: .spokenAudio,
-                options: [.defaultToSpeaker, .allowBluetoothHFP]
+                mode: .measurement,
+                options: [.duckOthers, .allowBluetoothHFP]
             )
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-            try? audioSession.setPreferredSampleRate(16000.0)
-            try? audioSession.setPreferredIOBufferDuration(0.01)
+            try? audioSession.setAllowHapticsAndSystemSoundsDuringRecording(true)
         } catch {
             continuation?.yield(.failed(.audioSessionFailed(error)))
             continuation?.finish()
             continuation = nil
             throw error
+        }
+
+        interruptionTask = Task { [weak self, notificationCenter] in
+            for await notification in notificationCenter.notifications(named: AVAudioSession.interruptionNotification) {
+                guard !Task.isCancelled else { break }
+                guard notification.audioSessionInterruptionType == .began else { continue }
+                self?.continuation?.yield(.failed(.interrupted))
+                self?.continuation?.finish()
+                self?.continuation = nil
+                break
+            }
         }
 
         let request = SFSpeechAudioBufferRecognitionRequest()
@@ -156,6 +170,8 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
     private func tearDown() {
         audioEngine.stop()
 
+        interruptionTask?.cancel()
+        interruptionTask = nil
         recognitionRequest = nil
         recognitionTask = nil
 
@@ -163,5 +179,12 @@ final class LegacySpeechRecordingService: SpeechRecordingServiceProtocol {
         continuation = nil
 
         try? audioSession.setActive(false, options: .notifyOthersOnDeactivation)
+    }
+}
+
+private extension Notification {
+    var audioSessionInterruptionType: AVAudioSession.InterruptionType? {
+        guard let typeValue = userInfo?[AVAudioSessionInterruptionTypeKey] as? UInt else { return nil }
+        return AVAudioSession.InterruptionType(rawValue: typeValue)
     }
 }
