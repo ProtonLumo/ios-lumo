@@ -2388,6 +2388,12 @@
         }
       }
     },
+    "You've reached your attachment limit." : {
+      "comment" : "Error shown when the user has attached the maximum number of files allowed"
+    },
+    "You've reached your conversation limit." : {
+      "comment" : "Error shown when the user has created the maximum number of conversations allowed"
+    },
     "You've reached your limit, upgrade for unlimited chats." : {
       "comment" : "Error shown when the user has exceeded their plan's usage quota",
       "localizations" : {
@@ -2464,6 +2470,12 @@
           }
         }
       }
+    },
+    "You've reached your message limit." : {
+      "comment" : "Error shown when the user has sent the maximum number of messages allowed"
+    },
+    "You've reached your storage limit." : {
+      "comment" : "Error shown when the user has used all available storage space"
     },
     "Your request contains content that cannot be processed." : {
       "comment" : "Error shown when the user's message is detected as harmful or violating content policy",

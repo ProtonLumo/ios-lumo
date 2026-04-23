@@ -9,6 +9,10 @@ public enum WebComposerError: String, Decodable, LocalizedError {
     case harmfulContent = "HarmfulContent"
     case tierLimit = "TierLimit"
     case duplicateFile = "DuplicateFile"
+    case messageLimitReached = "MessageLimitReached"
+    case assetLimitReached = "AssetLimitReached"
+    case conversationLimitReached = "ConversationLimitReached"
+    case spaceLimitReached = "SpaceLimitReached"
 
     // MARK: - LocalizedError
 
@@ -30,6 +34,14 @@ public enum WebComposerError: String, Decodable, LocalizedError {
             L10n.Error.tierLimit.string
         case .duplicateFile:
             L10n.Error.duplicateFile.string
+        case .messageLimitReached:
+            L10n.Error.messageLimitReached.string
+        case .assetLimitReached:
+            L10n.Error.assetLimitReached.string
+        case .conversationLimitReached:
+            L10n.Error.conversationLimitReached.string
+        case .spaceLimitReached:
+            L10n.Error.spaceLimitReached.string
         }
     }
 }

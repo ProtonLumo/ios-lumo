@@ -68,6 +68,26 @@ enum L10n {
             bundle: .module,
             comment: "Error shown when the user has exceeded their plan's usage quota"
         )
+        static let messageLimitReached = LocalizedStringResource(
+            "You've reached your message limit.",
+            bundle: .module,
+            comment: "Error shown when the user has sent the maximum number of messages allowed"
+        )
+        static let assetLimitReached = LocalizedStringResource(
+            "You've reached your attachment limit.",
+            bundle: .module,
+            comment: "Error shown when the user has attached the maximum number of files allowed"
+        )
+        static let conversationLimitReached = LocalizedStringResource(
+            "You've reached your conversation limit.",
+            bundle: .module,
+            comment: "Error shown when the user has created the maximum number of conversations allowed"
+        )
+        static let spaceLimitReached = LocalizedStringResource(
+            "You've reached your storage limit.",
+            bundle: .module,
+            comment: "Error shown when the user has used all available storage space"
+        )
     }
 
     enum Attachment {
