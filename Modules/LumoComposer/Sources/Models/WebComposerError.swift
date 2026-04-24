@@ -1,6 +1,6 @@
 import Foundation
 
-public enum WebComposerError: String, Decodable, LocalizedError {
+public enum WebComposerError: String, Decodable, LocalizedError, CaseIterable {
     // Generation errors
     case generationError = "GenerationError"
     case generationRejected = "GenerationRejected"
