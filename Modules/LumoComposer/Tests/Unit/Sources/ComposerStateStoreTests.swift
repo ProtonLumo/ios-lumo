@@ -119,11 +119,7 @@ final class ComposerStateStoreTests {
 
         await sut.send(action: .taskStarted)
 
-        let allCases: [WebComposerError] = [
-            .unknown, .streamDisconnected, .generationError,
-            .highDemand, .generationRejected, .harmfulContent,
-            .tierLimit, .duplicateFile
-        ]
+        let allCases: [WebComposerError] = WebComposerError.allCases
 
         for error in allCases {
             simulateWebError(error)
